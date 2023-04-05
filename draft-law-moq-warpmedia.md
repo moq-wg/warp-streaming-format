@@ -45,6 +45,12 @@ author:
     email: vasilvv@google.com
 
 normative:
+  ISOBMFF:
+    title: "Information technology — Coding of audio-visual objects — Part 12: ISO Base Media File Format"
+    date: 2015-12
+  CMAF:
+    title: "Information technology -- Multimedia application format (MPEG-A) -- Part 19: Common media application format (CMAF) for segmented media"
+    date: 2020-03
 
 informative:
 
@@ -58,8 +64,7 @@ This document specifies the WARP Media Format, designed to operate on MoQ Transp
 
 # Introduction
 
-WARP Media Format (WMF) is a media format designed to deliver CMAF compliant media content over the MoQ transport. WMF leverages a simple priotization strategy of assigning newer content a higher send priority, allowing intermediaries to drop older data, and video over adio, in the face of congestion. 
-
+WARP Media Format (WMF) is a media format designed to deliver CMAF compliant media content over the MoQ transport. WMF leverages a simple priotization strategy of assigning newer content a higher send priority, allowing intermediaries to drop older data, and video over adio, in the face of congestion.
 
 # Conventions and Definitions
 
