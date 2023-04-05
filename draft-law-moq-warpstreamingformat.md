@@ -28,6 +28,26 @@ author:
     fullname: Will Law
     organization: Akamai
     email: wilaw@akamai.com
+    
+  -
+    fullname: Luke Curley
+    organization: Twitch
+    email: kixelated@gmail.com
+
+  -
+    fullname: Kirill Pugin
+    organization: Meta
+    email: ikir@meta.com
+
+  -
+    fullname: Suhas Nandakumar
+    organization: Cisco
+    email: snandaku@cisco.com
+
+  -
+    fullname: Victor Vasiliev
+    organization: Google
+    email: vasilvv@google.com
 
 normative:
 
