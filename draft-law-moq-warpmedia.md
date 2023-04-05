@@ -51,10 +51,6 @@ normative:
   CMAF:
     title: "Information technology -- Multimedia application format (MPEG-A) -- Part 19: Common media application format (CMAF) for segmented media"
     date: 2020-03
-  MoQtransport:
-    title: "L.Curley, V. Vasiliev, S. Nandakumar 'WebTransport over HTTP/3', Work in Progress , https://kixelated.github.io/warp-draft/draft-lcurley-warp-transport.html"
-    date: 2023-04
-
 
 informative:
 
