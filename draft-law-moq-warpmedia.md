@@ -44,6 +44,7 @@ author:
     email: vasilvv@google.com
 
 normative:
+  QUIC: RFC9000
   ISOBMFF:
     title: "Information technology — Coding of audio-visual objects — Part 12: ISO Base Media File Format"
     date: 2015-12
@@ -57,20 +58,59 @@ informative:
 
 --- abstract
 
-This document specifies the WARP Media Format, designed to operate on MoQ Transport.
+This document specifies the WARP Media Format, designed to operate on MoQTransport.
 
 
 --- middle
 
 # Introduction
 
-WARP Media Format (WMF) is a media format designed to deliver CMAF {{CMAF}} compliant media content over the MoQ Transport. WMF leverages a simple prioritization strategy of assigning newer content a higher send priority, allowing intermediaries to drop older data, and video over audio, in the face of congestion. Complete Groups of Pictures (GOPS) {{ISOBMFF}} are mapped to MoQ transport Objects. WMF is targeted at interactive levels of live latency.
+WARP Media Format (WMF) is a media format designed to deliver CMAF {{CMAF}} compliant media content over MoQTransport {{MoQTransport}}. WMF leverages a simple prioritization strategy of assigning newer content a higher send priority, allowing intermediaries to drop older data, and video over audio, in the face of congestion. Complete Groups of Pictures (GOPS) {{ISOBMFF}} are mapped to MoQ transport Objects. WMF is targeted at interactive levels of live latency.
 
 # Conventions and Definitions
 
 {::boilerplate bcp14-tagged}
 
+This document uses the conventions detailed in Section 1.3 of {{!RFC9000}} when describing the binary encoding.
+
+
 # Catalog format
+
+The format of the CATALOG payload, as defined by {{MoQtransport}} Sect X.X,  is as follows:
+
+~~~
+CATALOG payload {
+  media format type (i)
+  track count (i),
+  track descriptors (..)
+}
+~~~
+{: #warpmedia-catalog-body title="WARP Media Format CATALOG body"}
+
+* TRACK Count:
+The number of tracks described by the catalog.
+
+For each track, there is a track descriptor with the format:
+
+~~~
+Track Descriptor {
+  track ID (i),
+  init length (i)
+  init payload (..)
+}
+~~~
+{: #warpmedia-track-descriptor title="Warp Media Format track descriptor"}
+
+* Track ID:
+Within WMF, track IDs are numeric integers. Track IDs SHOULD start at 0 and SHOULD increment by 1 for each additional track. 
+
+* Init payload:
+The init payload in a track descriptor MUST consist of a File Type Box (ftyp) followed by a Movie Box (moov).
+This Movie Box (moov) consists of Movie Header Boxes (mvhd), Track Header Boxes (tkhd), Track Boxes (trak), followed by a final Movie Extends Box (mvex). These boxes MUST NOT contain any samples and MUST have a duration of zero. A Common Media Application Format Header {{CMAF}} meets all these requirements.
+
+# Object format
+
+
 
 # Security Considerations
 
