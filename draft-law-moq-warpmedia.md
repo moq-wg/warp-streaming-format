@@ -64,7 +64,7 @@ This document specifies the WARP Media Format, designed to operate on MoQ Transp
 
 # Introduction
 
-WARP Media Format (WMF) is a media format designed to deliver CMAF {{CMAF}} compliant media content over the MoQ Transport. WMF leverages a simple prioritization strategy of assigning newer content a higher send priority, allowing intermediaries to drop older data, and video over audio, in the face of congestion. Complete Groups of Pictures (GOPS) {{ISOBMFF}} are mapped to MoQ transport Objects. WMF is targeted at interactive levels of live latency. 
+WARP Media Format (WMF) is a media format designed to deliver CMAF {{CMAF}} compliant media content over the MoQ Transport. WMF leverages a simple prioritization strategy of assigning newer content a higher send priority, allowing intermediaries to drop older data, and video over audio, in the face of congestion. Complete Groups of Pictures (GOPS) {{ISOBMFF}} are mapped to MoQ transport Objects. WMF is targeted at interactive levels of live latency.
 
 # Conventions and Definitions
 
