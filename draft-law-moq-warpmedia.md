@@ -1,9 +1,8 @@
 ---
-title: "WARP Streaming Format"
-abbrev: "TODO - Abbreviation"
+title: "WARP Media Format"
 category: info
 
-docname: draft-law-moq-warpstreamingformat-latest
+docname: draft-law-moq-warpmedia-latest
 submissiontype: IETF  # also: "independent", "IAB", or "IRTF"
 number:
 date:
@@ -52,20 +51,21 @@ informative:
 
 --- abstract
 
-TODO Abstract
+This document specifies the WARP Media Format, designed to operate on MoQ Transport.
 
 
 --- middle
 
 # Introduction
 
-TODO Introduction
+WARP Media Format (WMF) is a media format designed to deliver CMAF compliant media content over the MoQ transport. WMF leverages a simple priotization strategy of assigning newer content a higher send priority, allowing intermediaries to drop older data, and video over adio, in the face of congestion. 
 
 
 # Conventions and Definitions
 
 {::boilerplate bcp14-tagged}
 
+# Catalog format
 
 # Security Considerations
 
@@ -75,6 +75,16 @@ TODO Security
 # IANA Considerations
 
 This document has no IANA actions.
+
+# Contributors
+*Alan Frindell
+*Ali Begen
+*Charles Krasic
+*Cullen Jennings
+*Hang Shi
+*James Hurley
+*Jordi Cenzano
+*Mike English
 
 
 --- back
