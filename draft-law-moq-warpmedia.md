@@ -51,6 +51,10 @@ normative:
   CMAF:
     title: "Information technology -- Multimedia application format (MPEG-A) -- Part 19: Common media application format (CMAF) for segmented media"
     date: 2020-03
+  MoQtransport:
+    title: "L.Curley, V. Vasiliev, S. Nandakumar 'WebTransport over HTTP/3', Work in Progress , https://kixelated.github.io/warp-draft/draft-lcurley-warp-transport.html"
+    date: 2023-04
+
 
 informative:
 
@@ -64,7 +68,7 @@ This document specifies the WARP Media Format, designed to operate on MoQ Transp
 
 # Introduction
 
-WARP Media Format (WMF) is a media format designed to deliver CMAF compliant media content over the MoQ transport. WMF leverages a simple priotization strategy of assigning newer content a higher send priority, allowing intermediaries to drop older data, and video over adio, in the face of congestion.
+WARP Media Format (WMF) is a media format designed to deliver CMAF {{CMAF}} compliant media content over the MoQ Transport. WMF leverages a simple prioritization strategy of assigning newer content a higher send priority, allowing intermediaries to drop older data, and video over audio, in the face of congestion. Complete Groups of Pictures (GOPS) {{ISOBMFF}} are mapped to MoQ transport Objects. WMF is targeted at interactive levels of live latency. 
 
 # Conventions and Definitions
 
@@ -81,15 +85,7 @@ TODO Security
 
 This document has no IANA actions.
 
-# Contributors
-*Alan Frindell
-*Ali Begen
-*Charles Krasic
-*Cullen Jennings
-*Hang Shi
-*James Hurley
-*Jordi Cenzano
-*Mike English
+
 
 
 --- back
@@ -97,4 +93,11 @@ This document has no IANA actions.
 # Acknowledgments
 {:numbered="false"}
 
-TODO acknowledge.
+- Alan Frindell
+- Ali Begen
+- Charles Krasic
+- Cullen Jennings
+- Hang Shi
+- James Hurley
+- Jordi Cenzano
+- Mike English
