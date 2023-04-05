@@ -102,7 +102,7 @@ Track Descriptor {
 {: #warpmedia-track-descriptor title="Warp Media Format track descriptor"}
 
 * Track ID:
-Within WMF, track IDs are numeric integers. Track IDs SHOULD start at 0 and SHOULD increment by 1 for each additional track. 
+Within WMF, track IDs are numeric integers. Track IDs SHOULD start at 0 and SHOULD increment by 1 for each additional track.
 
 * Init payload:
 The init payload in a track descriptor MUST consist of a File Type Box (ftyp) followed by a Movie Box (moov).
