@@ -51,7 +51,8 @@ normative:
   CMAF:
     title: "Information technology -- Multimedia application format (MPEG-A) -- Part 19: Common media application format (CMAF) for segmented media"
     date: 2020-03
-  MoQTransport: I-D.lcurley-warp
+  [draft-lcurley-warp] Warp - Live Media Transport over QUIC, L. Curley, March 2023
+
 
 informative:
 
