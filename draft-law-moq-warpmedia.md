@@ -88,10 +88,10 @@ CATALOG payload {
 ~~~
 {: #warpmedia-catalog-body title="WARP Media Format CATALOG body"}
 
-* Media format type: this MUST hold the value 0x001 (see {{IANA Considerations}}).
+* Media format type: this MUST hold the value 0x001 (see <<IANA>>).
 
 * Track count:
-The number of tracks described by the catalog. A CATALOG MAY hold 0 tracks.
+The number of tracks described by the catalog. A catalog SHOULD describe at least 1 track. 
 
 Each track is described by a track descriptor with the format:
 
@@ -138,6 +138,7 @@ The Object payload MAY be encrypted. CENC Encoding with cbcs cipher mode is RECO
 
 
 # IANA Considerations
+[[IANA]]
 
 This document has no IANA actions.
 
