@@ -68,7 +68,7 @@ This document specifies the WARP Media Format, designed to operate on MoQTranspo
 
 WARP Media Format (WMF) is a media format designed to deliver CMAF {{CMAF}} compliant media content over MoQTransport {{MoQTransport}}. WMF  works by fragmenting the bitstream into objects that can be transmitted independently. WMF leverages a simple prioritization strategy of assigning newer content a higher send priority, allowing intermediaries to drop older data, and video over audio, in the face of congestion. Complete Groups of Pictures (GOPS) {{ISOBMFF}} are mapped to MoQ transport Objects. WMF is targeted at interactive levels of live latency.
 
-This document describes version 1 of the media format. 
+This document describes version 1 of the media format.
 
 # Conventions and Definitions
 
@@ -93,7 +93,7 @@ CATALOG payload {
 
 * Media format type: this MUST hold the value 0x001 (see {{IANA}}).
 
-* Version: this MUST be the version of WMF to which the media packaging and catalog serialization conforms. 
+* Version: this MUST be the version of WMF to which the media packaging and catalog serialization conforms.
 
 * Track count:
 The number of tracks described by the catalog. A catalog SHOULD describe at least 1 track.
