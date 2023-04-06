@@ -88,10 +88,12 @@ CATALOG payload {
 ~~~
 {: #warpmedia-catalog-body title="WARP Media Format CATALOG body"}
 
-* TRACK Count:
-The number of tracks described by the catalog.
+* Media format type: this MUST hold the value 0x001 (see {{IANA Considerations}}). 
 
-For each track, there is a track descriptor with the format:
+* Track count:
+The number of tracks described by the catalog. A CATALOG MAY hold 0 tracks. 
+
+Each track is described by a track descriptor with the format:
 
 ~~~
 Track Descriptor {
@@ -106,8 +108,7 @@ Track Descriptor {
 Within WMF, track IDs are numeric integers. Track IDs SHOULD start at 0 and SHOULD increment by 1 for each additional track.
 
 * Init payload:
-The init payload in a track descriptor MUST consist of a File Type Box (ftyp) followed by a Movie Box (moov).
-This Movie Box (moov) consists of Movie Header Boxes (mvhd), Track Header Boxes (tkhd), Track Boxes (trak), followed by a final Movie Extends Box (mvex). These boxes MUST NOT contain any samples and MUST have a duration of zero. A Common Media Application Format Header {{CMAF}} meets all these requirements.
+The init payload in a track descriptor MUST consist of a File Type Box (ftyp) followed by a Movie Box (moov). This Movie Box (moov) consists of Movie Header Boxes (mvhd), Track Header Boxes (tkhd), Track Boxes (trak), followed by a final Movie Extends Box (mvex). These boxes MUST NOT contain any samples and MUST have a duration of zero. A Common Media Application Format Header {{CMAF}} meets all these requirements.
 
 # Object format
 
