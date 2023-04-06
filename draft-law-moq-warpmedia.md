@@ -31,19 +31,20 @@ author:
     organization: Twitch
     email: kixelated@gmail.com
  -
-    fullname: Kirill Pugin
-    organization: Meta
-    email: ikir@meta.com
+    fullname: Victor Vasiliev
+    organization: Google
+    email: vasilvv@google.com
  -
     fullname: Suhas Nandakumar
     organization: Cisco
     email: snandaku@cisco.com
  -
-    fullname: Victor Vasiliev
-    organization: Google
-    email: vasilvv@google.com
+    fullname: Kirill Pugin
+    organization: Meta
+    email: ikir@meta.com
 
 normative:
+  MoQTransport: I-D.lcurley-warp
   QUIC: RFC9000
   ISOBMFF:
     title: "Information technology — Coding of audio-visual objects — Part 12: ISO Base Media File Format"
@@ -51,8 +52,6 @@ normative:
   CMAF:
     title: "Information technology -- Multimedia application format (MPEG-A) -- Part 19: Common media application format (CMAF) for segmented media"
     date: 2020-03
-  MoQTransport: I-D.lcurley-warp
-
 
 informative:
 
