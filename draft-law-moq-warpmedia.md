@@ -92,8 +92,8 @@ CATALOG payload {
 {: #warpmedia-catalog-body title="WARP Media Format CATALOG body"}
 
 * Media format type: this MUST hold the value 0x001 (see {{IANA}}).
- 
-* version: this MUST be 
+
+* Version: this MUST be the version of WMF to which the media packaging and catalog serialization conforms. 
 
 * Track count:
 The number of tracks described by the catalog. A catalog SHOULD describe at least 1 track.
