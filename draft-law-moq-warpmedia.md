@@ -141,9 +141,6 @@ The Object payload MAY be encrypted. CENC Encoding with cbcs cipher mode is RECO
 
 This document has no IANA actions.
 
-
-
-
 --- back
 
 # Acknowledgments
