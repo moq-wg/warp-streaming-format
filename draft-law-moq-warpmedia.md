@@ -88,7 +88,7 @@ CATALOG payload {
 ~~~
 {: #warpmedia-catalog-body title="WARP Media Format CATALOG body"}
 
-* Media format type: this MUST hold the value 0x001 (see {{IANA Considerations}}). 
+* Media format type: this MUST hold the value 0x001 (see {{IANA Considerations}}).
 
 * Track count:
 The number of tracks described by the catalog. A CATALOG MAY hold 0 tracks.
@@ -114,11 +114,11 @@ The init payload in a track descriptor MUST consist of a File Type Box (ftyp) fo
 
 ## Tracks
 
-Each codec bitstream MUST be packaged in to a sequence of Objects within a separate track. 
+Each codec bitstream MUST be packaged in to a sequence of Objects within a separate track.
 
 ## Objects
 
-Object Delivery Order MUST match the Object sequence number. 
+Object Delivery Order MUST match the Object sequence number.
 
 The Object payload:
 
@@ -127,14 +127,14 @@ The Object payload:
 * MUST contain media content encoded in decode order. This implies an increasing DTS.
 * MAY contain any number of frames/samples. It is RECOMMENDED that each media fragment consists of a single frame to minimize latency.
 * MAY have gaps between frames/samples.
-* MAY overlap with other objects. This means timestamps may be interleaved between objects. 
+* MAY overlap with other objects. This means timestamps may be interleaved between objects.
 
-A Common Media Application Format Segment {{CMAF}} meets all these requirements and is RECOMMENDED as the preferred packaging format. 
+A Common Media Application Format Segment {{CMAF}} meets all these requirements and is RECOMMENDED as the preferred packaging format.
 
 
 # Security Considerations
 
-The Object payload MAY be encrypted. CENC Encoding with cbcs cipher mode is RECOMMENDED. 
+The Object payload MAY be encrypted. CENC Encoding with cbcs cipher mode is RECOMMENDED.
 
 
 # IANA Considerations
@@ -157,4 +157,4 @@ This document has no IANA actions.
 - James Hurley
 - Jordi Cenzano
 - Mike English
-- the MoQ Workgroup and mailing lists. 
+- the MoQ Workgroup and mailing lists.
