@@ -91,7 +91,7 @@ CATALOG payload {
 * Media format type: this MUST hold the value 0x001 (see <<IANA>>).
 
 * Track count:
-The number of tracks described by the catalog. A catalog SHOULD describe at least 1 track. 
+The number of tracks described by the catalog. A catalog SHOULD describe at least 1 track.
 
 Each track is described by a track descriptor with the format:
 
