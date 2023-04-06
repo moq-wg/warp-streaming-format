@@ -77,7 +77,7 @@ This document uses the conventions detailed in Section 1.3 of {{!RFC9000}} when 
 
 # Catalog format
 
-The format of the CATALOG payload, as defined by {{MoQtransport}} Sect X.X,  is as follows:
+The format of the CATALOG payload, as defined by {{MoQTransport}} Sect X.X,  is as follows:
 
 ~~~
 CATALOG payload {
