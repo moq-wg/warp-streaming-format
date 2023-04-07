@@ -143,6 +143,7 @@ The media object payload:
 * MAY overlap with other objects. This means timestamps may be interleaved between objects.
 
 Two options are RECOMMENDED for packaging CMAF content into WMF media objects:
+
 * the first is to package a complete CMAF Fragment (see {{CMAF}} sect 6.6.1) into a single object within each group. This results in there being a single GOP (Group of Pictures) in the media object and a single media object per group.
 * The second is to package a CMAF chunk (see {{CMAF}} sect 6.6.5), in which the mdat holds a single frame of video, or sample of audio, into each object and to assign a unique group ID to each fragment. This approach is RECOMMENDED to minimize latency.
 
