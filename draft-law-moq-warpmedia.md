@@ -88,7 +88,7 @@ Each codec bitstream MUST be packaged in to a sequence of Objects within a separ
 
 Media tracks SHOULD be media-time aligned. CMAF {{CMAF}} Aligned Switching Sets meet this requirement. A receiver SHOULD be able to cleanly switch between media tracks at group boundaries.
 
-Each group MUST be independently decodeable. Assigning a new group ID to each CMAF Segment (see {{CMAF}} sect 6.6.4) meets this requirement. 
+Each group MUST be independently decodeable. Assigning a new group ID to each CMAF Segment (see {{CMAF}} sect 6.6.4) meets this requirement.
 
 ## Catalog objects
 
@@ -142,12 +142,12 @@ The media object payload:
 * MUST consist of a Segment Type Box (styp) followed by any number of media fragments. Each media fragment consists of a Movie Fragment Box (moof) followed by a Media Data Box (mdat). The Media Fragment Box (moof) MUST contain a Movie Fragment Header Box (mfhd) and Track Box (trak) with a Track ID (`track_ID`) matching a Track Box in the initialization fragment.
 * MUST contain a single track.
 * MUST contain media content encoded in decode order. This implies an increasing DTS.
-* MAY contain any number of frames/samples. 
+* MAY contain any number of frames/samples.
 * MAY have gaps between frames/samples.
 * MAY overlap with other objects. This means timestamps may be interleaved between objects.
 
 Two options are RECOMMENDED for packaging CMAF content in to WMF media objects:
-* the first is to package a complete CMAF Fragment (see {{CMAF}} sect 6.6.1) into a single object within each group. This results in there being a single GOP (Group of Pictures) in the media object and a single media object per group. 
+* the first is to package a complete CMAF Fragment (see {{CMAF}} sect 6.6.1) into a single object within each group. This results in there being a single GOP (Group of Pictures) in the media object and a single media object per group.
 * The second is to package a CMAF chunk (see {{CMAF}} sect 6.6.5), in which the mdat holds a single frame of video, or sample of audio, into each object and to assign a unique group ID to each fragment. This approach is RECOMMENDED to minimize latency.
 
 # Workflow
@@ -158,9 +158,9 @@ At the completion of a session, a publisher should publish a catalog object with
 
 # Content proection and encruption
 
-The catalog and media object payloads MAY be encrypted. Common Encryption {{CENC}} with 'cbcs' mode (AES CBC with pattern encryption) is the RECOMMENDED encryption method. 
+The catalog and media object payloads MAY be encrypted. Common Encryption {{CENC}} with 'cbcs' mode (AES CBC with pattern encryption) is the RECOMMENDED encryption method.
 
-ToDo - details of how keys are exchanged and license servers signalled. 
+ToDo - details of how keys are exchanged and license servers signalled.
 
 # Security Considerations
 
@@ -168,7 +168,7 @@ ToDo
 
 # IANA Considerations {#IANA}
 
-This document creates a new entry in the "MoQTransport Media Format" Registry. The type value is 0x001, the name is "WARP Media Format" and the RFC is XXX. 
+This document creates a new entry in the "MoQTransport Media Format" Registry. The type value is 0x001, the name is "WARP Media Format" and the RFC is XXX.
 
 --- back
 
