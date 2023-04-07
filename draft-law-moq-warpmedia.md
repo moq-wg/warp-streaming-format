@@ -68,7 +68,7 @@ This document specifies the WARP Media Format, designed to operate on MoQTranspo
 
 # Introduction
 
-WARP Media Format (WMF) is a media format designed to deliver CMAF {{CMAF}} compliant media content over MoQTransport {{MoQTransport}}. WMF  works by fragmenting the bitstream into objects that can be transmitted independently. WMF leverages a simple prioritization strategy of assigning newer content a higher delivery order, allowing intermediaries to drop older data, and video over audio, in the face of congestion. Either complete Groups of Pictures (GOPS) {{ISOBMFF}} or individual frames are mapped to MoQTransport Objects. WMF is targeted at interactive levels of live latency.
+WARP Media Format (WMF) is a media format designed to deliver CMAF {{CMAF}} compliant media content over MoQTransport {{MoQTransport}}. WMF works by fragmenting the bitstream into objects that can be transmitted independently. WMF leverages a simple prioritization strategy of assigning newer content a higher delivery order, allowing intermediaries to drop older data, and video over audio, in the face of congestion. Either complete Groups of Pictures (GOPS) {{ISOBMFF}} or individual frames are mapped to MoQTransport Objects. WMF is targeted at interactive levels of live latency.
 
 This document describes version 1 of the media format.
 
@@ -78,17 +78,13 @@ This document describes version 1 of the media format.
 
 This document uses the conventions detailed in Section 1.3 of {{!RFC9000}} when describing the binary encoding.
 
-
-
-
-
 # Packaging
 
 Each codec bitstream MUST be packaged in to a sequence of Objects within a separate track.
 
 Media tracks SHOULD be media-time aligned. CMAF {{CMAF}} Aligned Switching Sets meet this requirement. A receiver SHOULD be able to cleanly switch between media tracks at group boundaries.
 
-Each group MUST be independently decodeable. Assigning a new group ID to each CMAF Segment (see {{CMAF}} sect 6.6.4) meets this requirement.
+Each group MUST be independently decodeable. Assigning a new group ID to each CMAF Fragment (see {{CMAF}} sect 6.6.1) meets this requirement.
 
 ## Catalog objects
 
@@ -140,13 +136,13 @@ Object Delivery Order MUST match the Object sequence number.
 The media object payload:
 
 * MUST consist of a Segment Type Box (styp) followed by any number of media fragments. Each media fragment consists of a Movie Fragment Box (moof) followed by a Media Data Box (mdat). The Media Fragment Box (moof) MUST contain a Movie Fragment Header Box (mfhd) and Track Box (trak) with a Track ID (`track_ID`) matching a Track Box in the initialization fragment.
-* MUST contain a single track.
+* MUST contain a single {{ISOBMFF}} track.
 * MUST contain media content encoded in decode order. This implies an increasing DTS.
 * MAY contain any number of frames/samples.
 * MAY have gaps between frames/samples.
 * MAY overlap with other objects. This means timestamps may be interleaved between objects.
 
-Two options are RECOMMENDED for packaging CMAF content in to WMF media objects:
+Two options are RECOMMENDED for packaging CMAF content into WMF media objects:
 * the first is to package a complete CMAF Fragment (see {{CMAF}} sect 6.6.1) into a single object within each group. This results in there being a single GOP (Group of Pictures) in the media object and a single media object per group.
 * The second is to package a CMAF chunk (see {{CMAF}} sect 6.6.5), in which the mdat holds a single frame of video, or sample of audio, into each object and to assign a unique group ID to each fragment. This approach is RECOMMENDED to minimize latency.
 
@@ -168,7 +164,7 @@ ToDo
 
 # IANA Considerations {#IANA}
 
-This document creates a new entry in the "MoQTransport Media Format" Registry. The type value is 0x001, the name is "WARP Media Format" and the RFC is XXX.
+This document creates a new entry in the "MoQTransport Media Format" Registry. The type value is 0x001, the name is "WARP Media" and the RFC is XXX.
 
 --- back
 
