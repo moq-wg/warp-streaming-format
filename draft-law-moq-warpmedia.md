@@ -87,7 +87,7 @@ Each codec bitstream MUST be packaged in to a sequence of Objects within a separ
 
 The catalog object MUST have a track ID of 0.
 
-Each catalog object MUST be independent of other catalog objects and MUST carry a unqiue group sequence number (see {{{{MoQTransport}}, Sect X.X). The first catalog published MUST have a group sequence number of 0. Every catalog object MUST have an object sequence number of 0 and there MUST be only one object per catalog group. A catalog track object SHOULD be published only when the availability of tracks changes. 
+Each catalog object MUST be independent of other catalog objects and MUST carry a unqiue group sequence number (see {{{{MoQTransport}}, Sect X.X). The first catalog published MUST have a group sequence number of 0. Every catalog object MUST have an object sequence number of 0 and there MUST be only one object per catalog group. A catalog track object SHOULD be published only when the availability of tracks changes.
 
 The format of the CATALOG object payload, as defined by {{MoQTransport}} Sect X.X,  is as follows:
 
@@ -106,7 +106,7 @@ CATALOG payload {
 * Version: this MUST be the version of WMF to which the media packaging and catalog serialization conforms.
 
 * Track count:
-The number of tracks described by the catalog. A catalog describing 0 tracks is a signal to the WMF client that the publishing session is complete. 
+The number of tracks described by the catalog. A catalog describing 0 tracks is a signal to the WMF client that the publishing session is complete.
 
 Each track is described by a track descriptor with the format:
 
@@ -120,7 +120,7 @@ Track Descriptor {
 {: #warpmedia-track-descriptor title="Warp Media Format track descriptor"}
 
 * Track ID:
-Within WMF, track IDs are numeric integers. Track IDs SHOULD start at 0 and SHOULD increment by 1 for each additional track. Track IDs MUST never be reused. If a track is published and then unpublished, it must be allocated a new track ID before it is re-published. 
+Within WMF, track IDs are numeric integers. Track IDs SHOULD start at 0 and SHOULD increment by 1 for each additional track. Track IDs MUST never be reused. If a track is published and then unpublished, it must be allocated a new track ID before it is re-published.
 
 * Init payload:
 The init payload in a track descriptor MUST consist of a File Type Box (ftyp) followed by a Movie Box (moov). This Movie Box (moov) consists of Movie Header Boxes (mvhd), Track Header Boxes (tkhd), Track Boxes (trak), followed by a final Movie Extends Box (mvex). These boxes MUST NOT contain any samples and MUST have a duration of zero. A Common Media Application Format Header {{CMAF}} meets all these requirements.
@@ -145,7 +145,7 @@ A Common Media Application Format Segment {{CMAF}} meets all these requirements 
 
 A WMF publisher MUST publish a catalog track object before publishing any media track objects.
 
-At the completion of a session, a publisher should publish a catalog object with track count of 0. This SHOULD be interpreted by receivers that the publish session is complete. 
+At the completion of a session, a publisher should publish a catalog object with track count of 0. This SHOULD be interpreted by receivers that the publish session is complete.
 
 
 # Security Considerations
