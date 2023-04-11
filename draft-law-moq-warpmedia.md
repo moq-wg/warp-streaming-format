@@ -78,8 +78,53 @@ This document describes version 1 of the media format.
 
 This document uses the conventions detailed in Section 1.3 of {{!RFC9000}} when describing the binary encoding.
 
-# Packaging
+# Mapping
+Warp is split into two components:
 
+* A generic transport protocol ({{MoQTransport}})
+* A media transport protocol layered on top.
+
+This section specifies how media is layered on top of the generic transport.
+
+## Tracks
+A media broadcast is broken into media tracks.
+Each track consists of an encoded bitstream, typically compressed using a codec, appended while new media is generated.
+Examples include audio tracks, video tracks, caption tracks, and metadata tracks.
+
+Each media track MUST be sent over a dedicated {{MoqTransport}} track.
+
+## Groups
+A media track is further fragmented into media groups that can be delivered and decoded independently.
+This allows consumers to skip media when joining a broadcast or during congestion.
+
+The encoder is responsible for determing when to create a new group, which may be done on demand or at a configurable interval.
+Depending on the codec, there may be a significant overhead involved with producing a new group (ex. video I-frame).
+The application is responsible for the trade-off between overhead and when media can be skipped.
+
+A media group MAY reference samples from other groups, although it is NOT RECOMMENDED as delivery is not guaranteed.
+However this is necessary when decoding audio, as reinitializing the decoder for each group will cause noticable artifacts.
+
+Each media group MUST be sent over a dedicated {{MoqTransport}} group.
+
+## Objects
+A media group is futher fragmented into media objects, the smallest transport unit.
+Media may be fragmented into smaller parts based on the encoding, but that is opaque to the transport.
+
+To recap, an {{MoqTransport}} object consists of an ordered bitstream.
+The transport will ensure that the contents of object are streamed in order and without gaps.
+Howwever, an object MAY be starved or reset (with an error code) for any reason, typically in response to congestion.
+These properties the same as provided by a QUIC stream.
+
+The encoder is responsible for determining what media to encode in each object.
+The simplest configuration is to deliver each group as a single object, consisting of all samples/frames in dependency order.
+
+More advanced configurations involve splitting the group into multiple objects, fragmenting further to avoid unnecessary head-of-line blocking.
+For example, an object per video frame, or an object per X audio samples.
+Each object MUST be prioritized according to its dependencies, so that the transport will attempt deliver in a decodable order.
+
+The encoder and decoder SHOULD process each object as a stream (instead of buffering) to minimize latency.
+
+# Packaging
 Each codec bitstream MUST be packaged in to a sequence of Objects within a separate track.
 
 Media tracks SHOULD be media-time aligned. CMAF {{CMAF}} Aligned Switching Sets meet this requirement. A receiver SHOULD be able to cleanly switch between media tracks at group boundaries.
