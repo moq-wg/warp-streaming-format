@@ -78,6 +78,29 @@ This document describes version 1 of the media format.
 
 This document uses the conventions detailed in Section 1.3 of {{!RFC9000}} when describing the binary encoding.
 
+# Track Formats {#formats}
+This document creates a registry of track formats.
+The track format indicates how media is broken into groups and how each object is encoded.
+
+DISCUSS What about non-media formats? Should this be in a separate draft?
+
+|--------------|---------------------------------|
+|  Format      |  Name                           |
+|-------------:|:--------------------------------|
+|  0x0         |  Reserved                       |
+|--------------|---------------------------------|
+|  0x1         |  Reserved                       |
+|--------------|---------------------------------|
+|  0xff000000  |  CMAF Catalog {{cmaf-catalog}}  |
+|--------------|---------------------------------|
+|  0xff000001  |  CMAF Payload {{cmaf-payload}}  |
+|--------------|---------------------------------|
+
+This draft defines two track formats, prefixed with 0xff000000.
+The prefix will be removed in the final version of the draft.
+
+DISCUSS Should the track format be on the wire? It would have to be at the start of every group.
+
 # Packaging
 
 Each codec bitstream MUST be packaged in to a sequence of Objects within a separate track.
@@ -86,7 +109,7 @@ Media tracks SHOULD be media-time aligned. CMAF {{CMAF}} Aligned Switching Sets 
 
 Each group MUST be independently decodeable. Assigning a new group ID to each CMAF Fragment (see {{CMAF}} sect 6.6.1) meets this requirement.
 
-## Catalog objects
+## Catalog objects {#cmaf-catalog}
 
 The catalog object MUST have a track ID of 0.
 
@@ -104,7 +127,7 @@ CATALOG payload {
 ~~~
 {: #warpmedia-catalog-body title="WARP Media Format CATALOG body"}
 
-* Media format type: this MUST hold the value 0x001 (see {{IANA}}).
+* Media format type: this MUST hold the value 0xff000000 (see {{formats}}).
 
 * Version: this MUST be the version of WMF to which the media packaging and catalog serialization conforms.
 
@@ -129,7 +152,7 @@ Within WMF, track IDs are numeric integers. Track IDs SHOULD start at 0 and SHOU
 The init payload in a track descriptor MUST consist of a File Type Box (ftyp) followed by a Movie Box (moov). This Movie Box (moov) consists of Movie Header Boxes (mvhd), Track Header Boxes (tkhd), Track Boxes (trak), followed by a final Movie Extends Box (mvex). These boxes MUST NOT contain any samples and MUST have a duration of zero. A Common Media Application Format Header {{CMAF}} meets all these requirements.
 
 
-## Media Objects
+## Media Objects {#cmaf-payload}
 
 Object Delivery Order MUST match the Object sequence number.
 
@@ -165,7 +188,7 @@ ToDo
 
 # IANA Considerations {#IANA}
 
-This document creates a new entry in the "MoQTransport Media Format" Registry. The type value is 0x001, the name is "WARP Media" and the RFC is XXX.
+TODO
 
 --- back
 
