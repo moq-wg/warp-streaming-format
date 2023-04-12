@@ -82,26 +82,21 @@ This document describes version 1 of the media format.
 This document uses the conventions detailed in Section 1.3 of {{!RFC9000}} when describing the binary encoding.
 
 # CMAF
-The Common Media Application Format {{CMAF}} is a MP4 based {{ISOBMFF}} media container used in HLS/DASH.
+The Common Media Application Format {{CMAF}} is a MP4 based {{ISOBMFF}} media container.
 
-* A CMAF Catalog track {{cmaf-catalog}} consists of a CMAF Header.
-* A CMAF Payload track {{cmaf-payload}} consists of CMAF Fragments which consist of CMAF Chunks.
+* A CMAF Catalog track {{cmaf-catalog}} consists of CMAF Headers.
+* A CMAF Payload track {{cmaf-payload}} consists of CMAF Segments (groups), broken into CMAF Fragments (objects).
 
 ## Catalog {#cmaf-catalog}
-A CMAF catalog contains information about multiple track.
+A CMAF catalog contains information about multiple tracks.
+This includes basic information such as the name, codec, profile, resolution, sample rate, language, etc for each track.
 
-The consumer can use this information to determine if it should subscribe to a track.
+The consumer can use this information to determine how and if it should subscribe to a track.
 For example, the consumer may wish to subscribe to an english audio track but not a japanese audio track.
-Additionally, the catalog contains information on how to subscribe to a track.
+However, this format lacks information about the relationship between tracks, for example specifying variants based on bitrate.
 
 A CMAF Catalog MUST consist of a single group and single object, both with sequence 0.
 It is not possible to modify the catalog in the current draft.
-
-The CMAF Header {{CMAF}} contains basic information about the media, such as the codec, profile, resolution, sample rate, language, etc.
-This information is basic and lacks information about the relationship between tracks.
-It is RECOMMENDED to use another catalog format for more advanced functionality (ex. variants).
-Note that the `track_id` field {{ISOBMFF}} is unrelated to the transport track ID {{MoQTransport}}.
-
 
 The object payload contains:
 
@@ -116,7 +111,6 @@ CMAF Catalog {
 * Track count:
 The number of tracks described by the catalog.
 
-
 Each track is described by a track descriptor with the format:
 
 ~~~
@@ -130,17 +124,17 @@ CMAF Track Descriptor {
 
 * Track ID:
 A unique identifier for the track within the track bundle.
-The consumer uses this Track ID to as the parameter to SUBSCRIBE.
+The consumer uses this Track ID to as the parameter to SUBSCRIBE {{MoQTransport}}.
 
 * Track Format:
-This MUST be 0xff000001 in the current draft, although future drafts MAY allow multiple versions.
+This MUST be 0xff000001 in the current draft, although future drafts may allow other versions.
 
 * CMAF Header
 A CMAF Header {{CMAF}}.
 This consists of a File Type Box (ftyp) followed by a Movie Box (moov).
 This Movie Box (moov) consists of Movie Header Boxes (mvhd), Track Header Boxes (tkhd), Track Boxes (trak), followed by a final Movie Extends Box (mvex).
 These boxes MUST NOT contain any samples and MUST have a duration of zero.
-Note that a HLS and DASH init segment meets these requirements.
+Note that the `track_id` field {{ISOBMFF}} is unrelated to the Track ID field.
 
 
 DISCUSS do we allow multiple CMAF tracks within a transport track?
@@ -150,13 +144,13 @@ DISCUSS do tracks need to be fragmented into groups at similar boundaries?
 ## Payload {#cmaf-payload}
 A CMAF Payload contains media samples in an MP4 container {{ISOBMFF}}.
 
-Each transport object {{MoQTransport}} consists of a CMAF Chunk {{CMAF}}.
-A CMAF Chunk consists of a Segment Type Box (styp) followed by any number of media fragments.
-Each fragment consists of a Movie Fragment Box (moof) followed by a Media Data Box (mdat).
-The Media Fragment Box (moof) MUST contain a Movie Fragment Header Box (mfhd) and Track Box (trak) with a Track ID (`track_ID`) matching a Track Box in the track header.
+Each group consists of a CMAF Segment {{CMAF}}.
+A CMAF Segment is independently decodable and consists of one or more CMAF Fragments.
 
-Each transport group {{MoQTransport}} consists of a CMAF Fragment {{CMAF}}.
-A CMAF Fragment is independently decodable and consists of one or more CMAF Chunks, as outlined aboved.
+Each object consists of a CMAF Fragment {{CMAF}}.
+A CMAF Fragment consists of a Segment Type Box (styp) followed by any number of media chunks.
+Each chunk consists of a Movie Fragment Box (moof) followed by a Media Data Box (mdat).
+The Media Fragment Box (moof) MUST contain a Movie Fragment Header Box (mfhd) and Track Box (trak) with a Track ID (`track_ID`) matching a Track Box in the track header.
 
 ## Compatibility
 The primary benefit of CMAF is that it's supported by other streaming protocols like HLS and DASH.
@@ -167,7 +161,7 @@ Here's a mapping between some of the terminology used between different protocol
 |---------------------|----------------|----------------|-----------------|
 | Warp                | Catalog Object | Payload Group  | Payload Object  |
 |--------------------:|:---------------|----------------|-----------------|
-| CMAF {{CMAF}}       | CMAF Header    | CMAF Fragment  | CMAF Chunk      |
+| CMAF {{CMAF}}       | CMAF Header    | CMAF Segment   | CMAF Fragment   |
 |---------------------|----------------|----------------|-----------------|
 | HLS {{HLS}}         | Init Segment   | Media Segment  | N/A             |
 |---------------------|----------------|----------------|-----------------|
