@@ -52,12 +52,15 @@ normative:
   CMAF:
     title: "Information technology -- Multimedia application format (MPEG-A) -- Part 19: Common media application format (CMAF) for segmented media"
     date: 2020-03
-  CENC:
-    title: "International Organization for Standardization - Information technology - MPEG systems technologies - Part 7: Common encryption in ISO base media file format files"
-    date: 2020-12
+
+
 
 informative:
-
+  HLS: RFC8216
+  LL-HLS: I-D.pantos-hls-rfc8216bis-07
+  DASH:
+    title: "Information technology — Dynamic adaptive streaming over HTTP (DASH) — Part 1: Media presentation description and segment formats"
+    date: 2022-08
 
 --- abstract
 
@@ -78,86 +81,103 @@ This document describes version 1 of the media format.
 
 This document uses the conventions detailed in Section 1.3 of {{!RFC9000}} when describing the binary encoding.
 
-# Packaging
+# CMAF
+The Common Media Application Format {{CMAF}} is a MP4 based {{ISOBMFF}} media container used in HLS/DASH.
 
-Each codec bitstream MUST be packaged in to a sequence of Objects within a separate track.
+* A CMAF Catalog track {{cmaf-catalog}} consists of a CMAF Header.
+* A CMAF Payload track {{cmaf-payload}} consists of CMAF Fragments which consist of CMAF Chunks.
 
-Media tracks SHOULD be media-time aligned. CMAF {{CMAF}} Aligned Switching Sets meet this requirement. A receiver SHOULD be able to cleanly switch between media tracks at group boundaries.
+## Catalog {#cmaf-catalog}
+A CMAF catalog contains information about multiple track.
 
-Each group MUST be independently decodeable. Assigning a new group ID to each CMAF Fragment (see {{CMAF}} sect 6.6.1) meets this requirement.
+The consumer can use this information to determine if it should subscribe to a track.
+For example, the consumer may wish to subscribe to an english audio track but not a japanese audio track.
+Additionally, the catalog contains information on how to subscribe to a track.
 
-## Catalog objects
+A CMAF Catalog MUST consist of a single group and single object, both with sequence 0.
+It is not possible to modify the catalog in the current draft.
 
-The catalog object MUST have a track ID of 0.
+The CMAF Header {{CMAF}} contains basic information about the media, such as the codec, profile, resolution, sample rate, language, etc.
+This information is basic and lacks information about the relationship between tracks.
+It is RECOMMENDED to use another catalog format for more advanced functionality (ex. variants).
+Note that the `track_id` field {{ISOBMFF}} is unrelated to the transport track ID {{MoQTransport}}.
 
-Each catalog object MUST be independent of other catalog objects and MUST carry a unqiue group sequence number (see {{MoQTransport}}, Sect X.X). The first catalog published MUST have a group sequence number of 0. Every catalog object MUST have an object sequence number of 0 and there MUST be only one object per catalog group. A catalog track object SHOULD be published only when the availability of tracks changes.
 
-The format of the CATALOG object payload, as defined by {{MoQTransport}} Sect X.X,  is as follows:
+The object payload contains:
 
 ~~~
-CATALOG payload {
-  media format type (i),
-  version (i),
-  track count (i),
-  track descriptors (..)
+CMAF Catalog {
+  CMAF Track Count (i),
+  CMAF Track Descriptors (..)
 }
 ~~~
-{: #warpmedia-catalog-body title="WARP Media Format CATALOG body"}
-
-* Media format type: this MUST hold the value 0x001 (see {{IANA}}).
-
-* Version: this MUST be the version of WMF to which the media packaging and catalog serialization conforms.
+{: #warpmedia-catalog-body title="Warp CMAF Catalog"}
 
 * Track count:
-The number of tracks described by the catalog. A catalog describing 0 tracks is a signal to the WMF client that the publishing session is complete.
+The number of tracks described by the catalog.
+
 
 Each track is described by a track descriptor with the format:
 
 ~~~
-Track Descriptor {
-  track ID (i),
-  init length (i)
-  init payload (..)
+CMAF Track Descriptor {
+  Track ID (i),
+  Track Format (i),
+  CMAF Header (b)
 }
 ~~~
-{: #warpmedia-track-descriptor title="Warp Media Format track descriptor"}
+{: #warp-track-descriptor title="Warp CMAF Track Descriptor"}
 
 * Track ID:
-Within WMF, track IDs are numeric integers. Track IDs SHOULD start at 0 and SHOULD increment by 1 for each additional track. Track IDs MUST never be reused. If a track is published and then unpublished, it must be allocated a new track ID before it is re-published.
+A unique identifier for the track within the track bundle.
+The consumer uses this Track ID to as the parameter to SUBSCRIBE.
 
-* Init payload:
-The init payload in a track descriptor MUST consist of a File Type Box (ftyp) followed by a Movie Box (moov). This Movie Box (moov) consists of Movie Header Boxes (mvhd), Track Header Boxes (tkhd), Track Boxes (trak), followed by a final Movie Extends Box (mvex). These boxes MUST NOT contain any samples and MUST have a duration of zero. A Common Media Application Format Header {{CMAF}} meets all these requirements.
+* Track Format:
+This MUST be 0xff000001 in the current draft, although future drafts MAY allow multiple versions.
+
+* CMAF Header
+A CMAF Header {{CMAF}}.
+This consists of a File Type Box (ftyp) followed by a Movie Box (moov).
+This Movie Box (moov) consists of Movie Header Boxes (mvhd), Track Header Boxes (tkhd), Track Boxes (trak), followed by a final Movie Extends Box (mvex).
+These boxes MUST NOT contain any samples and MUST have a duration of zero.
+Note that a HLS and DASH init segment meets these requirements.
 
 
-## Media Objects
+DISCUSS do we allow multiple CMAF tracks within a transport track?
+DISCUSS do tracks need to be fragmented into groups at similar boundaries?
 
-Object Delivery Order MUST match the Object sequence number.
 
-The media object payload:
+## Payload {#cmaf-payload}
+A CMAF Payload contains media samples in an MP4 container {{ISOBMFF}}.
 
-* MUST consist of a Segment Type Box (styp) followed by any number of media fragments. Each media fragment consists of a Movie Fragment Box (moof) followed by a Media Data Box (mdat). The Media Fragment Box (moof) MUST contain a Movie Fragment Header Box (mfhd) and Track Box (trak) with a Track ID (`track_ID`) matching a Track Box in the initialization fragment.
-* MUST contain a single {{ISOBMFF}} track.
-* MUST contain media content encoded in decode order. This implies an increasing DTS.
-* MAY contain any number of frames/samples.
-* MAY have gaps between frames/samples.
-* MAY overlap with other objects. This means timestamps may be interleaved between objects.
+Each transport object {{MoQTransport}} consists of a CMAF Chunk {{CMAF}}.
+A CMAF Chunk consists of a Segment Type Box (styp) followed by any number of media fragments.
+Each fragment consists of a Movie Fragment Box (moof) followed by a Media Data Box (mdat).
+The Media Fragment Box (moof) MUST contain a Movie Fragment Header Box (mfhd) and Track Box (trak) with a Track ID (`track_ID`) matching a Track Box in the track header.
 
-Two options are RECOMMENDED for packaging CMAF content into WMF media objects:
+Each transport group {{MoQTransport}} consists of a CMAF Fragment {{CMAF}}.
+A CMAF Fragment is independently decodable and consists of one or more CMAF Chunks, as outlined aboved.
 
-* the first is to package a complete CMAF Fragment (see {{CMAF}} sect 6.6.1) into a single object within each group. This results in there being a single GOP (Group of Pictures) in the media object and a single media object per group.
-* The second is to package a CMAF chunk (see {{CMAF}} sect 6.6.5), in which the mdat holds a single frame of video, or sample of audio, into each object and to assign a unique group ID to each fragment. This approach is RECOMMENDED to minimize latency.
+## Compatibility
+The primary benefit of CMAF is that it's supported by other streaming protocols like HLS and DASH.
+In most instances, the segments can be used as the object payload without modification.
 
-# Workflow
+Here's a mapping between some of the terminology used between different protocols:
 
-A WMF publisher MUST publish a catalog track object before publishing any media track objects.
+|---------------------|----------------|----------------|-----------------|
+| Warp                | Catalog Object | Payload Group  | Payload Object  |
+|--------------------:|:---------------|----------------|-----------------|
+| CMAF {{CMAF}}       | CMAF Header    | CMAF Fragment  | CMAF Chunk      |
+|---------------------|----------------|----------------|-----------------|
+| HLS {{HLS}}         | Init Segment   | Media Segment  | N/A             |
+|---------------------|----------------|----------------|-----------------|
+| DASH {{DASH}}       | Init Segment   | Media Segment  | N/A             |
+|---------------------|----------------|----------------|-----------------|
+| LL-HLS {{LL-HLS}}   | Init Segment   | Media Segment  | Partial Segment |
+|---------------------|----------------|----------------|-----------------|
+| LL-DASH {{DASH}}    | Init Segment   | Media Segment  | Media Chunk     |
+|---------------------|----------------|----------------|-----------------|
 
-At the completion of a session, a publisher should publish a catalog object with track count of 0. This SHOULD be interpreted by receivers that the publish session is complete.
-
-# Content proection and encruption
-
-The catalog and media object payloads MAY be encrypted. Common Encryption {{CENC}} with 'cbcs' mode (AES CBC with pattern encryption) is the RECOMMENDED encryption method.
-
-ToDo - details of how keys are exchanged and license servers signalled.
 
 # Security Considerations
 
@@ -165,7 +185,7 @@ ToDo
 
 # IANA Considerations {#IANA}
 
-This document creates a new entry in the "MoQTransport Media Format" Registry. The type value is 0x001, the name is "WARP Media" and the RFC is XXX.
+TODO
 
 --- back
 
