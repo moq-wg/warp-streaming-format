@@ -82,7 +82,7 @@ This document uses the conventions detailed in Section 1.3 of {{!RFC9000}} when 
 This document creates a registry of track formats.
 The track format indicates how media is broken into groups and how each object is encoded.
 
-DISCUSS What about non-media formats? Should this be in a separate draft?
+DISCUSS What about non-media formats? Should this registry be in a separate draft?
 
 |--------------|---------------------------------|
 |  Format      |  Name                           |
@@ -99,7 +99,7 @@ DISCUSS What about non-media formats? Should this be in a separate draft?
 This draft defines two track formats, prefixed with 0xff000000.
 The prefix will be removed in the final version of the draft.
 
-DISCUSS Should the track format be on the wire? It would have to be at the start of every group.
+DISCUSS Should the track format be on the wire?
 
 # Packaging
 
