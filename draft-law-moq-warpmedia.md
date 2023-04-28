@@ -45,7 +45,7 @@ author:
 
 normative:
   MoQTransport: I-D.lcurley-warp
-  QUIC: RFC9000
+  RFC9000: RFC9000
   ISOBMFF:
     title: "Information technology — Coding of audio-visual objects — Part 12: ISO Base Media File Format"
     date: 2015-12
@@ -105,14 +105,14 @@ CATALOG payload {
 ~~~
 {: #warpmedia-catalog-body title="WARP Media Format CATALOG body"}
 
-* Media format type: this MUST hold the value 0x001 (see {{IANA}}). This value MUST NOT be encrypted. 
+* Media format type: this MUST hold the value 0x001 (see {{IANA}}). This value MUST NOT be encrypted.
 
 * Version: this MUST be the version of WMF to which the media packaging and catalog serialization conforms.
 
-* Parent object ID: 0 if this object represents an independent catalog or the parent object ID if this represents a delta update. 
+* Parent object ID: 0 if this object represents an independent catalog or the parent object ID if this represents a delta update.
 
 * Track change count:
-The number of track changes described by the catalog. A catalog update describing 0 tracks, or deleting all existing tracks, SHALL be interpreted by the WMF client to mean that the publishing session is complete. A WMF client SHOULD process all changes before making a subscription selection. 
+The number of track changes described by the catalog. A catalog update describing 0 tracks, or deleting all existing tracks, SHALL be interpreted by the WMF client to mean that the publishing session is complete. A WMF client SHOULD process all changes before making a subscription selection.
 
 Each track change is described by a track change descriptor with the format:
 
@@ -126,8 +126,8 @@ Track Change Descriptor {
 ~~~
 {: #warpmedia-track-descriptor title="Track change descriptor"}
 * Track name length: the length of track name field
-* Track name: the UTF-8 encoded track name. Within {{MoQTransport}} track names are strings. Track names MUST never be reused. If a track is published and then unpublished, it must be allocated a new track name before it is re-published. A catalog MUST NOT reference itself i.e the the track name must not be "catalog". 
-* Operation: a binary flag. 1 if the track is being added and 0 if it is being deleted. A publisher MUST NOT signal deletion of a track that has not been previously added. 
+* Track name: the UTF-8 encoded track name. Within {{MoQTransport}} track names are strings. Track names MUST never be reused. If a track is published and then unpublished, it must be allocated a new track name before it is re-published. A catalog MUST NOT reference itself i.e the the track name must not be "catalog".
+* Operation: a binary flag. 1 if the track is being added and 0 if it is being deleted. A publisher MUST NOT signal deletion of a track that has not been previously added.
 * Change payload:  depends upon the value of the operation flag. If the operation is a 1 (add), then it SHALL hold an Initialization Header. If the operation is 0 (delete), then it SHALL hold a Deletion Header.
 
 ~~~
