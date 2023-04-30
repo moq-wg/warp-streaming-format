@@ -1,0 +1,472 @@
+{
+  "magic": "E!vIA5L86J2I",
+  "timestamp": "2023-04-30T01:34:05.308873+00:00",
+  "repo": "wilaw/MoQ",
+  "labels": [
+    {
+      "name": "bug",
+      "description": "Something isn't working",
+      "color": "d73a4a"
+    },
+    {
+      "name": "documentation",
+      "description": "Improvements or additions to documentation",
+      "color": "0075ca"
+    },
+    {
+      "name": "duplicate",
+      "description": "This issue or pull request already exists",
+      "color": "cfd3d7"
+    },
+    {
+      "name": "enhancement",
+      "description": "New feature or request",
+      "color": "a2eeef"
+    },
+    {
+      "name": "good first issue",
+      "description": "Good for newcomers",
+      "color": "7057ff"
+    },
+    {
+      "name": "help wanted",
+      "description": "Extra attention is needed",
+      "color": "008672"
+    },
+    {
+      "name": "invalid",
+      "description": "This doesn't seem right",
+      "color": "e4e669"
+    },
+    {
+      "name": "question",
+      "description": "Further information is requested",
+      "color": "d876e3"
+    },
+    {
+      "name": "wontfix",
+      "description": "This will not be worked on",
+      "color": "ffffff"
+    }
+  ],
+  "issues": [
+    {
+      "number": 1,
+      "id": "I_kwDOJTN4X85i2syi",
+      "title": "WMF spec should specify track name usage in Subscribe/Publish",
+      "url": "https://github.com/wilaw/MoQ/issues/1",
+      "state": "OPEN",
+      "author": "suhasHere",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "As per consensus at IETF116, subscribes and publishes happens on Track Names that are fully qualified with a prefix and a suffix.\r\nWMF spec should describe how the track name are formed from the catalog to be used in the control messages.",
+      "createdAt": "2023-04-07T08:01:43Z",
+      "updatedAt": "2023-04-07T16:38:26Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "wilaw",
+          "authorAssociation": "OWNER",
+          "body": "Agreed. Once we figure out how the MoQTransport defines its addressing and subscriptions, then we can update this WMF spec so that the two are consistent. ",
+          "createdAt": "2023-04-07T16:38:25Z",
+          "updatedAt": "2023-04-07T16:38:25Z"
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "id": "I_kwDOJTN4X85i2s-u",
+      "title": "Track Description needs to capture media format information",
+      "url": "https://github.com/wilaw/MoQ/issues/2",
+      "state": "OPEN",
+      "author": "suhasHere",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "Not sure if this belong here or in the base catalog spec though",
+      "createdAt": "2023-04-07T08:02:28Z",
+      "updatedAt": "2023-04-07T16:35:09Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "wilaw",
+          "authorAssociation": "OWNER",
+          "body": "The base spec should be agnostic to media, therefore anything media related should be defined in a Media Format.\r\n\r\nThe track description defined for this spec does capture media format information `The init payload in each track descriptor MUST consist of a File Type Box (ftyp) followed by a Movie Box (moov)`. That moov box contains the media format information (resolution, codec, timebase) that the client needs to both select the track and initialize its decoder. \r\n\r\nThe only issue outstanding is perhaps the max bitrate. It's not clear that that is consistently signalled within the moov atom. In that case, we would need to add an explicit field in the Track Descriptor to signal max bitrate?",
+          "createdAt": "2023-04-07T16:35:09Z",
+          "updatedAt": "2023-04-07T16:35:09Z"
+        }
+      ]
+    },
+    {
+      "number": 6,
+      "id": "I_kwDOJTN4X85jPI9e",
+      "title": "Track updates",
+      "url": "https://github.com/wilaw/MoQ/issues/6",
+      "state": "OPEN",
+      "author": "kixelated",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "The current draft allows tracks within a catalog to be updated. This causes a few problems:\r\n\r\n- What happens if a track is changed (ex. new profile)?\r\n- When does this update occur?\r\n- What happens when the catalog update is delayed?\r\n\r\nIf the publisher changes the codec/profile in the middle of a track, the decoder will blow up. There's no way to know when the change will take place.",
+      "createdAt": "2023-04-12T16:54:59Z",
+      "updatedAt": "2023-04-20T22:49:06Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "kixelated",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I don't see how we could easily support tracks being updated.\r\n\r\nAt the very least we would need a group ID when the change occurs, but that won't work in the face of packet loss, because the catalog update could arrive after the starting group. I think the only way to fix this is to put the init information at the start of each group (ex. SPS/PPS) which is not desirable.\r\n\r\nI would prohibit it for now. At the very least, some text to say that the init payload MUST NOT change on subsequent updates. We can only add or remove tracks.",
+          "createdAt": "2023-04-12T16:59:47Z",
+          "updatedAt": "2023-04-12T16:59:47Z"
+        },
+        {
+          "author": "kixelated",
+          "authorAssociation": "COLLABORATOR",
+          "body": "IMO we start with no catalog updates for interop. Then we can build an ADD and REMOVE track message to avoid retransmitting the entire catalog on each update.",
+          "createdAt": "2023-04-12T17:01:04Z",
+          "updatedAt": "2023-04-12T17:01:04Z"
+        },
+        {
+          "author": "wilaw",
+          "authorAssociation": "OWNER",
+          "body": "@kixelated \r\n\r\n> I don't see how we could easily support tracks being updated.\r\n\r\nBy 'update', I agree that we shouldn't allow their media characteristics (anything described in the init segment or the init itself) to change. But we should allow them to be added and deleted . \r\n\r\n> I would prohibit it for now. At the very least, some text to say that the init payload MUST NOT change on subsequent updates. We can only add or remove tracks.\r\n\r\nAgree\r\n\r\n> IMO we start with no catalog updates for interop. Then we can build an ADD and REMOVE track message to avoid retransmitting the entire catalog on each update.\r\n\r\nI think that having no catalog updates in v1 is unnecessarily restrictive and would lead to missed use-cases, rather than better interop. We also don't need to invent ADD and REMOVE track messages if we allow the CATALOG (and its updates) to define the availability of tracks. The whole purpose of the CATALOG track is to do exactly that. This point is up to MOQ base protocl however and we need to resolve it there. And \"avoiding retransmitting the entire catalog on each update\" can be addressed by either ignoring (because catalog updates are small to begin even with their init payloads), or by allowing delta updates on the catalog, which wouldn't be complex and I can mock that up if you'd like to see what it might look like? ",
+          "createdAt": "2023-04-19T21:58:53Z",
+          "updatedAt": "2023-04-19T21:59:12Z"
+        },
+        {
+          "author": "kixelated",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Yeah, the ADD and REMOVE messages would be delta updates. I think we need some timing information about when a track starts and ends, although I'm not sure.",
+          "createdAt": "2023-04-19T22:11:10Z",
+          "updatedAt": "2023-04-19T22:11:10Z"
+        },
+        {
+          "author": "wilaw",
+          "authorAssociation": "OWNER",
+          "body": "Discussion 4/20:\r\nNeed to add a delta update mechanism\r\nSame group, second or subsequent object\r\nEach object is a list of delta updates. Sync'd tracks  should be added in the same object. Some text to instruct player to process all available tracks before performing track selection. ",
+          "createdAt": "2023-04-20T22:43:47Z",
+          "updatedAt": "2023-04-20T22:43:47Z"
+        },
+        {
+          "author": "wilaw",
+          "authorAssociation": "OWNER",
+          "body": "Also, if removing track, publisher should send remove along with a last Group, Object number.  \r\nUpdate with all tracks removed signals EOS. ",
+          "createdAt": "2023-04-20T22:49:06Z",
+          "updatedAt": "2023-04-20T22:49:06Z"
+        }
+      ]
+    },
+    {
+      "number": 7,
+      "id": "I_kwDOJTN4X85jPNvx",
+      "title": "Multiple catalog format/versions",
+      "url": "https://github.com/wilaw/MoQ/issues/7",
+      "state": "OPEN",
+      "author": "kixelated",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "In the current draft, the catalog lives at a well-known path with a single format/version. If the consumer does not support this format/version pair, then playback will not work, unless it knows how to request a different catalog instead.\r\n\r\nThis will make it virtually impossible to deploy new catalog formats and versions. Every consumer MUST support a new format/version before the publisher can use it at the well-known path, otherwise it risks breaking consumers.",
+      "createdAt": "2023-04-12T17:09:05Z",
+      "updatedAt": "2023-04-19T22:19:11Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "kixelated",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I think we need the ability advertise multiple catalogs.\r\n\r\nFor example:\r\n- CMAF/v0\r\n- CMAF/v1\r\n- CUSTOM/v0\r\n\r\nWe do need a way to announce supported formats so the client doesn't blindly request them. This could either be delegated to the application, or we could announce available tracks/formats in the transport itself.",
+          "createdAt": "2023-04-12T17:14:04Z",
+          "updatedAt": "2023-04-12T17:17:01Z"
+        },
+        {
+          "author": "kixelated",
+          "authorAssociation": "COLLABORATOR",
+          "body": "And putting the format/version on the wire is a bit strange. The consumer should support a format/version BEFORE receiving it (either via a SUBSCRIBE or PUBLISH). Otherwise it's wasted bandwidth or a wasted round-trip.",
+          "createdAt": "2023-04-12T17:36:11Z",
+          "updatedAt": "2023-04-12T17:36:11Z"
+        },
+        {
+          "author": "wilaw",
+          "authorAssociation": "OWNER",
+          "body": "> Every consumer MUST support a new format/version before the publisher can use it at the well-known path, otherwise it risks breaking consumers.\r\n\r\nThis is how HLS, DASH, RTMP, SRT, etc work today. The client already knows the format it wants to receive. I'm not sure we need to create a system that advertises multiple formats to a 'blind' client which then chooses one it recognizes. 99.9% of the time the client will already know, and yet we would have carry out this meta-format discovery step with each stream start.\r\n\r\nIf someone really DID want to create a super-set of other formats, they could create a streaming format whose CATALOG simply lists the other available format types and the track names on which they could be requested. The client would then subscribe to the main CATALOG, get the list of streaming formats, subscribe to that sub-catalog track, get the list of track IDs and then start subscribing. ",
+          "createdAt": "2023-04-19T22:19:11Z",
+          "updatedAt": "2023-04-19T22:19:11Z"
+        }
+      ]
+    },
+    {
+      "number": 8,
+      "id": "I_kwDOJTN4X85jPbhh",
+      "title": "Content \"proection\" and \"encruption\"",
+      "url": "https://github.com/wilaw/MoQ/issues/8",
+      "state": "OPEN",
+      "author": "kixelated",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Heh sorry about ragging on the typos.\r\n\r\n> The catalog and media object payloads MAY be encrypted. Common Encryption with 'cbcs' mode (AES CBC with pattern encryption) is the RECOMMENDED encryption method.\r\n\r\nI know many people at IETF will take offense at the \"RECOMMENDED encryption method\". If you're just trying to obfuscate content with DRM (content protection), something like Common Encryption with AES CBC is fine (I believe only the mdat is encrypted). If you're _actually_ trying to protect content against an adversary, then want to encrypt the entire object payload with an AEAD.\r\n\r\nI don't think this section is necessary since we're delegating to CMAF anyway. ",
+      "createdAt": "2023-04-12T17:48:26Z",
+      "updatedAt": "2023-04-19T22:32:16Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "wilaw",
+          "authorAssociation": "OWNER",
+          "body": "> I don't think this section is necessary since we're delegating to CMAF anyway.\r\n\r\nOne of the main interop problems with CMAF is that it supports multiple incompatible CENC options. I was hoping that MoQ could avoid these problems by mandating a single DRM scheme from the start. Is AEAD CMAF compliant? I don't think it is. We would therefore have a dilemma - keep the convenience of CMAF(CENC) , or fork it to add in the newer AEAD?                                                                                                           ",
+          "createdAt": "2023-04-19T22:32:16Z",
+          "updatedAt": "2023-04-19T22:32:16Z"
+        }
+      ]
+    },
+    {
+      "number": 9,
+      "id": "I_kwDOJTN4X85jPhLE",
+      "title": "Publish Race",
+      "url": "https://github.com/wilaw/MoQ/issues/9",
+      "state": "OPEN",
+      "author": "kixelated",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "> A WMF publisher MUST publish a catalog track object before publishing any media track objects.\r\n\r\nThe publisher could write the catalog track first with higher priority than any media tracks, however packet loss could mean the media tracks arrive first. Since this is a MUST, would the consumer terminate the connection with an error if this occurs?\r\n\r\nThe publisher could wait until the catalog track arrives, but how does the publisher implement this? Would it wait for the entire stream to be acknowledged? However, acknowledgements don't guarantee that the stream has been processed (ex. QPACK). We would need an explicit application acknowledgement when the catalog has been processed, which of course incurs a round trip.\r\n\r\nThis explicit application acknowledgement is basically just a SUBSCRIBE. I would actually prohibit publishing any media tracks if that's the behavior we want.\r\n\r\nAlternatively, we could add text that the consumer MAY buffer unknown tracks. If the consumer receives an unknown track, then it can hold onto it until it receives a catalog referencing it. This is an optimization that WebTransport employs but it seems fundamentally required when using PUBLISH.",
+      "createdAt": "2023-04-12T18:05:29Z",
+      "updatedAt": "2023-04-19T22:03:54Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "kixelated",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I'm generally not a fan of the proposed PUBLISH message in Warp transport. It creates these sorts of race conditions and it requires that the publisher knows the consumer's intent. I would like to reduce the RTTs but I think it's premature.",
+          "createdAt": "2023-04-12T19:04:02Z",
+          "updatedAt": "2023-04-12T19:04:47Z"
+        },
+        {
+          "author": "wilaw",
+          "authorAssociation": "OWNER",
+          "body": "IN thinking this through further, if we assume 1) that a publisher only sends track data in response to a subscribe request (which is the model I prefer but I acknowledge we have not agreed to this yet in the MoQ Base Protocl discussions) and 2) that in order to know what to subscribe to a client must first  read the catalog, then we can remove the MUST as written and instead replace it with a requirement that a publisher always make a CATALOG track available if it has any other media track available. This itself may become a requirement of MOQ base protocol, in which case the WMF would inherit it and we can remove this statement completely from the WMF draft.",
+          "createdAt": "2023-04-19T21:44:26Z",
+          "updatedAt": "2023-04-19T21:44:26Z"
+        },
+        {
+          "author": "kixelated",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Yeah, I left a relevant PR review in: https://github.com/kixelated/warp-draft/pull/123\r\n\r\n> Going to -1 this until we talk more about the publish use-case. This feels like PUSH_PROMISE.\r\n>\r\n> The ability to publish is intended to remove a round-trip when the sender already knows the intent of the receiver. There has to be some form of coordination out of the scope of this specification, which automatically rules out generic clients.\r\n>\r\n> If this coordination of intent already exists, then receiver could just SUBSCRIBE immediately. I don't actually think it introduces an RTT because of SETUP currently works, and now is not the time to be nit-picking over startup RTTs anyway.\r\n>\r\n> The cost of PUBLISH is complexity and race conditions. OBJECTs arrive before they were requested, requiring some form of buffering and identification. We also need a way of saying \"pls no\" if the endpoints actually did not coordinate.\r\n\r\nI would propose that the receiver immediately issue a `SUBSCRIBE /catalog` (or another well-known path) to learn about the available tracks if this is not negotiated out-of-band. The SUBSCRIBE could even be sent along with the handshake with my control stream proposal: https://github.com/kixelated/warp-draft/issues/138",
+          "createdAt": "2023-04-19T22:03:54Z",
+          "updatedAt": "2023-04-19T22:03:54Z"
+        }
+      ]
+    },
+    {
+      "number": 10,
+      "id": "I_kwDOJTN4X85jPm6b",
+      "title": "CMAF Mapping",
+      "url": "https://github.com/wilaw/MoQ/issues/10",
+      "state": "OPEN",
+      "author": "kixelated",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "As proposed in #4, I think we can simplify the mapping:\r\n\r\n```\r\n|---------------------|----------------|----------------|-----------------|\r\n| Warp                | Catalog Object | Payload Group  | Payload Object  |\r\n|--------------------:|:---------------|----------------|-----------------|\r\n| CMAF {{CMAF}}       | CMAF Header    | CMAF Segment   | CMAF Fragment   |\r\n|---------------------|----------------|----------------|-----------------|\r\n```\r\n\r\nTo clarify:\r\n\r\n- There are any number of frames in a chunk (moof/mdat pair).\r\n- There are any number of chunks in a fragment (styp and moof/mdat pairs).\r\n- There are any number of fragments in a segment. (concatenated together)\r\n- A fragment* is independently decodable.\r\n\r\nIn order to minimize latency, there should be a chunk per frame, which is the same recommendation as LL-DASH.\r\n\r\nIf the object has a length in the header, then there should be a chunk per fragment too, but I desperately want to avoid that. That way there would be no latency impact for using a single OBJECT for the entire group.",
+      "createdAt": "2023-04-12T18:21:48Z",
+      "updatedAt": "2023-04-19T23:00:04Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "wilaw",
+          "authorAssociation": "OWNER",
+          "body": "The catalog object has to be more than just a CMAF header, since it must described multiple tracks and also communicate their subscription names. \r\n\r\nOn the GROUP and OBJECT mapping, I agree. The core requirement is that a sequence of OBJECTS is independently decodable if the client starts with the first object in a GROUP. This is satisfied with the restriction that a Group marks a fragment boundary, which is also satisfied by saying that the GROUP MUST represent a segment boundary, since each CMAF segment holds one of more fragments. COnsider the case of a 2s GOP at 30fps. The first OBJECT holds an I frame, the rest Ps. It would be compliant to mark a new GROUP every 30 Objects. It would also be compliant to mark a new group every 60 objects, which is the equivalent of transmitting a 4s segment comprising 2x2s fragments. ",
+          "createdAt": "2023-04-19T23:00:04Z",
+          "updatedAt": "2023-04-19T23:00:04Z"
+        }
+      ]
+    }
+  ],
+  "pulls": [
+    {
+      "number": 3,
+      "id": "PR_kwDOJTN4X85OD_jD",
+      "title": "Add a \"mapping\" section.",
+      "url": "https://github.com/wilaw/MoQ/pull/3",
+      "state": "CLOSED",
+      "author": "kixelated",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Indicates the high-level relationship between media and the generic transport. This section will be true regardless of the specific encoding used.\r\n\r\n@suhasHere @fluffy @huitema @vasilvv @afrind",
+      "createdAt": "2023-04-11T21:04:54Z",
+      "updatedAt": "2023-04-20T23:31:51Z",
+      "baseRepository": "wilaw/MoQ",
+      "baseRefName": "main",
+      "baseRefOid": "fd8f93cbd6d788a66c181cfa9aa9df6e16e128fe",
+      "headRepository": "wilaw/MoQ",
+      "headRefName": "mapping",
+      "headRefOid": "aa030fed5d27eb92fc6ef63819b8d656adf0c1d0",
+      "closedAt": "2023-04-20T23:31:51Z",
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJTN4X85TCCIy",
+          "commit": {
+            "abbreviatedOid": "aa030fe"
+          },
+          "author": "wilaw",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-04-20T00:22:44Z",
+          "updatedAt": "2023-04-20T00:22:44Z",
+          "comments": [
+            {
+              "originalPosition": 6,
+              "body": "```suggestion\r\nWarp Media Format is split into two components:\r\n```",
+              "createdAt": "2023-04-20T00:22:44Z",
+              "updatedAt": "2023-04-20T00:22:44Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJTN4X85TCDek",
+          "commit": {
+            "abbreviatedOid": "aa030fe"
+          },
+          "author": "wilaw",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-04-20T00:31:37Z",
+          "updatedAt": "2023-04-20T00:31:37Z",
+          "comments": [
+            {
+              "originalPosition": 29,
+              "body": "Doesn't this contravene the requirement that groups MUST be independently decodable? ",
+              "createdAt": "2023-04-20T00:31:37Z",
+              "updatedAt": "2023-04-20T00:31:37Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJTN4X85TCEA0",
+          "commit": {
+            "abbreviatedOid": "aa030fe"
+          },
+          "author": "wilaw",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-04-20T00:36:06Z",
+          "updatedAt": "2023-04-20T00:36:06Z",
+          "comments": [
+            {
+              "originalPosition": 38,
+              "body": "This 'recap' language is good for a presentation, but we don't need it in a spec. The spec does not need to provide background info. It should be normative, with the minimum informative text to make it understandable. ",
+              "createdAt": "2023-04-20T00:36:06Z",
+              "updatedAt": "2023-04-20T00:36:06Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJTN4X85TCfHJ",
+          "commit": {
+            "abbreviatedOid": "aa030fe"
+          },
+          "author": "wilaw",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-04-20T03:39:30Z",
+          "updatedAt": "2023-04-20T03:39:30Z",
+          "comments": [
+            {
+              "originalPosition": 47,
+              "body": "Should this spec be more deterministic about what these configurations are? Should they be profiles of Warp media? This language is very loose. We should define possible configurations and make them deterministic and interoperable. ",
+              "createdAt": "2023-04-20T03:39:30Z",
+              "updatedAt": "2023-04-20T03:39:30Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "id": "PR_kwDOJTN4X85OJuR8",
+      "title": "Alternate text about CMAF.",
+      "url": "https://github.com/wilaw/MoQ/pull/4",
+      "state": "CLOSED",
+      "author": "kixelated",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "I rewrote this text, but it doesn't mean that it's better. Let me know what you think.",
+      "createdAt": "2023-04-12T16:44:29Z",
+      "updatedAt": "2023-04-20T23:31:45Z",
+      "baseRepository": "wilaw/MoQ",
+      "baseRefName": "main",
+      "baseRefOid": "fd8f93cbd6d788a66c181cfa9aa9df6e16e128fe",
+      "headRepository": "wilaw/MoQ",
+      "headRefName": "cmaf",
+      "headRefOid": "9437f7cea491f674f6676d6ee66baf017a9ba6df",
+      "closedAt": "2023-04-20T23:31:45Z",
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 5,
+      "id": "PR_kwDOJTN4X85OJuaF",
+      "title": "Add a track formats registry.",
+      "url": "https://github.com/wilaw/MoQ/pull/5",
+      "state": "CLOSED",
+      "author": "kixelated",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "The CMAF catalog track includes the format/version on the wire right now. However the CMAF payload track does not include a format/version. It would be nice to reuse the track format, requiring a field in the registry.",
+      "createdAt": "2023-04-12T16:44:58Z",
+      "updatedAt": "2023-04-20T23:31:39Z",
+      "baseRepository": "wilaw/MoQ",
+      "baseRefName": "main",
+      "baseRefOid": "fd8f93cbd6d788a66c181cfa9aa9df6e16e128fe",
+      "headRepository": "wilaw/MoQ",
+      "headRefName": "formats",
+      "headRefOid": "d3c67d98302b6a6ac087c12351d877cc1be9577d",
+      "closedAt": "2023-04-20T23:31:39Z",
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 11,
+      "id": "PR_kwDOJTN4X85PW9mY",
+      "title": "Adding delta catalog updates",
+      "url": "https://github.com/wilaw/MoQ/pull/11",
+      "state": "OPEN",
+      "author": "wilaw",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "Fixes #6",
+      "createdAt": "2023-04-28T07:13:28Z",
+      "updatedAt": "2023-04-28T07:20:28Z",
+      "baseRepository": "wilaw/MoQ",
+      "baseRefName": "main",
+      "baseRefOid": "fd8f93cbd6d788a66c181cfa9aa9df6e16e128fe",
+      "headRepository": "wilaw/MoQ",
+      "headRefName": "wilaw-patch-1",
+      "headRefOid": "c63cbccc0ea7bb4fedcb3c45c5151d7d460d809c",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    }
+  ]
+}
