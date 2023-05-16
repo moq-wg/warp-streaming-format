@@ -45,7 +45,7 @@ author:
 
 normative:
   MoQTransport: I-D.lcurley-warp
-  QUIC: RFC9000
+  RFC9000: RFC9000
   ISOBMFF:
     title: "Information technology — Coding of audio-visual objects — Part 12: ISO Base Media File Format"
     date: 2015-12
@@ -88,45 +88,68 @@ Each group MUST be independently decodeable. Assigning a new group ID to each CM
 
 ## Catalog objects
 
-The catalog object MUST have a track ID of 0.
+Per {{MoQTransport}} sect X.X, the catalog object MUST have a track name of "catalog".
 
-Each catalog object MUST be independent of other catalog objects and MUST carry a unqiue group sequence number (see {{MoQTransport}}, Sect X.X). The first catalog published MUST have a group sequence number of 0. Every catalog object MUST have an object sequence number of 0 and there MUST be only one object per catalog group. A catalog track object SHOULD be published only when the availability of tracks changes.
+A catalog object MAY be independent of other catalog objects or it MAY represent a delta update of a prior catalog object. The first catalog object published within a new group MUST be independent.  A catalog object SHOULD only be published only when the availability of tracks changes.
 
-The format of the CATALOG object payload, as defined by {{MoQTransport}} Sect X.X,  is as follows:
+The format of the CATALOG object payload is as follows:
 
 ~~~
 CATALOG payload {
   media format type (i),
   version (i),
-  track count (i),
-  track descriptors (..)
+  parent object ID (i),
+  track change count (i),
+  track change descriptors (..)
 }
 ~~~
 {: #warpmedia-catalog-body title="WARP Media Format CATALOG body"}
 
-* Media format type: this MUST hold the value 0x001 (see {{IANA}}).
+* Media format type: this MUST hold the value 0x001 (see {{IANA}}). This value MUST NOT be encrypted.
 
 * Version: this MUST be the version of WMF to which the media packaging and catalog serialization conforms.
 
-* Track count:
-The number of tracks described by the catalog. A catalog describing 0 tracks is a signal to the WMF client that the publishing session is complete.
+* Parent object ID: 0 if this object represents an independent catalog or the parent object ID if this represents a delta update.
 
-Each track is described by a track descriptor with the format:
+* Track change count:
+The number of track changes described by the catalog. A catalog update describing 0 tracks, or deleting all existing tracks, SHALL be interpreted by the WMF client to mean that the publishing session is complete. A WMF client SHOULD process all changes before making a subscription selection.
+
+Each track change is described by a track change descriptor with the format:
 
 ~~~
-Track Descriptor {
-  track ID (i),
+Track Change Descriptor {
+  track name length (i),
+  track name (..),
+  operation (1),
+  change payload(..)
+}
+~~~
+{: #warpmedia-track-descriptor title="Track change descriptor"}
+* Track name length: the length of track name field
+* Track name: the UTF-8 encoded track name. Within {{MoQTransport}} track names are strings. Track names MUST never be reused. If a track is published and then unpublished, it must be allocated a new track name before it is re-published. A catalog MUST NOT reference itself i.e the the track name must not be "catalog".
+* Operation: a binary flag. 1 if the track is being added and 0 if it is being deleted. A publisher MUST NOT signal deletion of a track that has not been previously added.
+* Change payload:  depends upon the value of the operation flag. If the operation is a 1 (add), then it SHALL hold an Initialization Header. If the operation is 0 (delete), then it SHALL hold a Deletion Header.
+
+~~~
+Initialization Header {
   init length (i)
   init payload (..)
 }
 ~~~
-{: #warpmedia-track-descriptor title="Warp Media Format track descriptor"}
-
-* Track ID:
-Within WMF, track IDs are numeric integers. Track IDs SHOULD start at 0 and SHOULD increment by 1 for each additional track. Track IDs MUST never be reused. If a track is published and then unpublished, it must be allocated a new track ID before it is re-published.
-
+{: #warpmedia-initialization-header title="Initialization Header"}
+* Init length: the length of the init payload
 * Init payload:
-The init payload in a track descriptor MUST consist of a File Type Box (ftyp) followed by a Movie Box (moov). This Movie Box (moov) consists of Movie Header Boxes (mvhd), Track Header Boxes (tkhd), Track Boxes (trak), followed by a final Movie Extends Box (mvex). These boxes MUST NOT contain any samples and MUST have a duration of zero. A Common Media Application Format Header {{CMAF}} meets all these requirements.
+The init payload MUST consist of a File Type Box (ftyp) followed by a Movie Box (moov). This Movie Box (moov) consists of Movie Header Boxes (mvhd), Track Header Boxes (tkhd), Track Boxes (trak), followed by a final Movie Extends Box (mvex). These boxes MUST NOT contain any samples and MUST have a duration of zero. A Common Media Application Format Header {{CMAF}} meets all these requirements.
+
+~~~
+Deletion Header {
+  Last group: (i),
+  Last object: (i)
+}
+~~~
+{: #warpmedia-deletion-header title="Deletion Header"}
+* Last group: holds the last {{MoQTransport}} Group sequence number published under that track name.
+* Last object: holds the last {{MoQTransport}} Object sequence number published under that track name.
 
 
 ## Media Objects
