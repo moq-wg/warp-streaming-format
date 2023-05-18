@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-04-30T01:34:05.308873+00:00",
+  "timestamp": "2023-05-18T01:24:31.939561+00:00",
   "repo": "wilaw/MoQ",
   "labels": [
     {
@@ -103,15 +103,15 @@
       "id": "I_kwDOJTN4X85jPI9e",
       "title": "Track updates",
       "url": "https://github.com/wilaw/MoQ/issues/6",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "kixelated",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "The current draft allows tracks within a catalog to be updated. This causes a few problems:\r\n\r\n- What happens if a track is changed (ex. new profile)?\r\n- When does this update occur?\r\n- What happens when the catalog update is delayed?\r\n\r\nIf the publisher changes the codec/profile in the middle of a track, the decoder will blow up. There's no way to know when the change will take place.",
       "createdAt": "2023-04-12T16:54:59Z",
-      "updatedAt": "2023-04-20T22:49:06Z",
-      "closedAt": null,
+      "updatedAt": "2023-05-16T17:44:33Z",
+      "closedAt": "2023-05-16T17:44:33Z",
       "comments": [
         {
           "author": "kixelated",
@@ -447,24 +447,26 @@
       "id": "PR_kwDOJTN4X85PW9mY",
       "title": "Adding delta catalog updates",
       "url": "https://github.com/wilaw/MoQ/pull/11",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "wilaw",
       "authorAssociation": "OWNER",
       "assignees": [],
       "labels": [],
       "body": "Fixes #6",
       "createdAt": "2023-04-28T07:13:28Z",
-      "updatedAt": "2023-04-28T07:20:28Z",
+      "updatedAt": "2023-05-16T17:44:38Z",
       "baseRepository": "wilaw/MoQ",
       "baseRefName": "main",
       "baseRefOid": "fd8f93cbd6d788a66c181cfa9aa9df6e16e128fe",
       "headRepository": "wilaw/MoQ",
       "headRefName": "wilaw-patch-1",
       "headRefOid": "c63cbccc0ea7bb4fedcb3c45c5151d7d460d809c",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2023-05-16T17:44:32Z",
+      "mergedAt": "2023-05-16T17:44:32Z",
+      "mergedBy": "wilaw",
+      "mergeCommit": {
+        "oid": "2b753a51d8f9460a96b0a3901179f08812f06444"
+      },
       "comments": [],
       "reviews": []
     }
