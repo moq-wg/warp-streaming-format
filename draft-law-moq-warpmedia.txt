@@ -5,14 +5,14 @@
 Media Over QUIC                                                   W. Law
 Internet-Draft                                                    Akamai
 Intended status: Informational                                 L. Curley
-Expires: 17 November 2023                                         Twitch
+Expires: 25 November 2023                                         Twitch
                                                              V. Vasiliev
                                                                   Google
                                                            S. Nandakumar
                                                                    Cisco
                                                                 K. Pugin
                                                                     Meta
-                                                             16 May 2023
+                                                             24 May 2023
 
 
                            WARP Media Format
@@ -55,7 +55,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 17 November 2023.
+   This Internet-Draft will expire on 25 November 2023.
 
 Copyright Notice
 
@@ -79,7 +79,7 @@ Table of Contents
      3.1.  Catalog objects
      3.2.  Media Objects
    4.  Workflow
-   5.  Content proection and encruption
+   5.  Content protection and encryption
    6.  Security Considerations
    7.  IANA Considerations
    8.  Normative References
@@ -268,7 +268,7 @@ Table of Contents
    object with track count of 0.  This SHOULD be interpreted by
    receivers that the publish session is complete.
 
-5.  Content proection and encruption
+5.  Content protection and encryption
 
    The catalog and media object payloads MAY be encrypted.  Common
    Encryption [CENC] with 'cbcs' mode (AES CBC with pattern encryption)
