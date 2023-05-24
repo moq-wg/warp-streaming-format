@@ -176,7 +176,7 @@ A WMF publisher MUST publish a catalog track object before publishing any media 
 
 At the completion of a session, a publisher should publish a catalog object with track count of 0. This SHOULD be interpreted by receivers that the publish session is complete.
 
-# Content proection and encruption
+# Content protection and encryption
 
 The catalog and media object payloads MAY be encrypted. Common Encryption {{CENC}} with 'cbcs' mode (AES CBC with pattern encryption) is the RECOMMENDED encryption method.
 
