@@ -4,22 +4,23 @@
 <meta charset="utf-8">
 <meta content="Common,Latin" name="scripts">
 <meta content="initial-scale=1.0" name="viewport">
-<title>WARP Media Format</title>
+<title>WARP Streaming Format</title>
 <meta content="Will Law" name="author">
 <meta content="Luke Curley" name="author">
 <meta content="Victor Vasiliev" name="author">
 <meta content="Suhas Nandakumar" name="author">
 <meta content="Kirill Pugin" name="author">
 <meta content="
-       This document specifies the WARP Media Format, designed to operate on MoQTransport. 
+       This document specifies the WARP Streaming Format, designed to operate on Media Over QUIC Transport. 
     " name="description">
 <meta content="xml2rfc 3.17.1" name="generator">
 <meta content="MoQ" name="keyword">
 <meta content="MoQTransport" name="keyword">
+<meta content="WARP" name="keyword">
 <meta content="draft-law-moq-warpmedia-latest" name="ietf.draft">
 <!-- Generator version information:
   xml2rfc 3.17.1
-    Python 3.10.11
+    Python 3.11.3
     appdirs 1.4.4
     ConfigArgParse 1.5.3
     google-i18n-address 2.5.2
@@ -28,8 +29,8 @@
     lxml 4.9.2
     pycountry 22.3.5
     PyYAML 6.0
-    requests 2.28.1
-    setuptools 65.6.0
+    requests 2.30.0
+    setuptools 67.7.2
     six 1.16.0
     wcwidth 0.2.6
 -->
@@ -664,7 +665,8 @@ sub, sup {
 .references dt {
   text-align: right;
   font-weight: bold;
-  min-width: 7em;
+  min-width: 10ch;
+  margin-right: 1.5ch;
 }
 .references dt:target::before {
   content: "⇒";
@@ -672,7 +674,7 @@ sub, sup {
   margin: 0 10px 0 -25px;
 }
 .references dd {
-  margin-left: 8em !important;
+  margin-left: 12ch !important;
   overflow: auto;
 }
 
@@ -1049,12 +1051,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <table class="ears">
 <thead><tr>
 <td class="left">Internet-Draft</td>
-<td class="center">WARP Media Format</td>
-<td class="right">April 2023</td>
+<td class="center">WARP Streaming Format</td>
+<td class="right">June 2023</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Law, et al.</td>
-<td class="center">Expires 30 October 2023</td>
+<td class="center">Expires 4 December 2023</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1067,12 +1069,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-law-moq-warpmedia-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2023-04-28" class="published">28 April 2023</time>
+<time datetime="2023-06-02" class="published">2 June 2023</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2023-10-30">30 October 2023</time></dd>
+<dd class="expires"><time datetime="2023-12-04">4 December 2023</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1098,10 +1100,10 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </dd>
 </dl>
 </div>
-<h1 id="title">WARP Media Format</h1>
+<h1 id="title">WARP Streaming Format</h1>
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
-<p id="section-abstract-1">This document specifies the WARP Media Format, designed to operate on MoQTransport.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+<p id="section-abstract-1">This document specifies the WARP Streaming Format, designed to operate on Media Over QUIC Transport.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </section>
 <section class="note rfcEditorRemove" id="section-note.1">
       <h2 id="name-about-this-document">
@@ -1138,7 +1140,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 30 October 2023.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 4 December 2023.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1188,7 +1190,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
             <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-workflow" class="internal xref">Workflow</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
-            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-content-proection-and-encru" class="internal xref">Content proection and encruption</a></p>
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-content-protection-and-encr" class="internal xref">Content protection and encryption</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
             <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
@@ -1214,8 +1216,8 @@ svg :is([fill="white"], [fill^="#fff"]) {
       <h2 id="name-introduction">
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
-<p id="section-1-1">WARP Media Format (WMF) is a media format designed to deliver CMAF <span>[<a href="#CMAF" class="cite xref">CMAF</a>]</span> compliant media content over MoQTransport <span>[<a href="#MoQTransport" class="cite xref">MoQTransport</a>]</span>. WMF works by fragmenting the bitstream into objects that can be transmitted independently. WMF leverages a simple prioritization strategy of assigning newer content a higher delivery order, allowing intermediaries to drop older data, and video over audio, in the face of congestion. Either complete Groups of Pictures (GOPS) <span>[<a href="#ISOBMFF" class="cite xref">ISOBMFF</a>]</span> or individual frames are mapped to MoQTransport Objects. WMF is targeted at interactive levels of live latency.<a href="#section-1-1" class="pilcrow">¶</a></p>
-<p id="section-1-2">This document describes version 1 of the media format.<a href="#section-1-2" class="pilcrow">¶</a></p>
+<p id="section-1-1">WARP Streaming Format (WARP) is a media format designed to deliver CMAF <span>[<a href="#CMAF" class="cite xref">CMAF</a>]</span> compliant media content over Media Over QUIC Transport (MOQT) <span>[<a href="#MoQTransport" class="cite xref">MoQTransport</a>]</span>. WARP works by fragmenting the bitstream into objects that can be independently transmitted. WARP leverages a simple prioritization strategy of assigning newer content a higher delivery order, allowing intermediaries to drop older data, and video over audio, in the face of congestion. Either complete Groups of Pictures (GOPS) <span>[<a href="#ISOBMFF" class="cite xref">ISOBMFF</a>]</span> or individual frames are mapped to MoQTransport Objects. WARP is targeted at interactive levels of live latency.<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-2">This document describes version 1 of the streaming format.<a href="#section-1-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="conventions-and-definitions">
@@ -1237,41 +1239,41 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
       </h2>
 <p id="section-3-1">Each codec bitstream <span class="bcp14">MUST</span> be packaged in to a sequence of Objects within a separate track.<a href="#section-3-1" class="pilcrow">¶</a></p>
 <p id="section-3-2">Media tracks <span class="bcp14">SHOULD</span> be media-time aligned. CMAF <span>[<a href="#CMAF" class="cite xref">CMAF</a>]</span> Aligned Switching Sets meet this requirement. A receiver <span class="bcp14">SHOULD</span> be able to cleanly switch between media tracks at group boundaries.<a href="#section-3-2" class="pilcrow">¶</a></p>
-<p id="section-3-3">Each group <span class="bcp14">MUST</span> be independently decodeable. Assigning a new group ID to each CMAF Fragment (see <span>[<a href="#CMAF" class="cite xref">CMAF</a>]</span> sect 6.6.1) meets this requirement.<a href="#section-3-3" class="pilcrow">¶</a></p>
+<p id="section-3-3">Each group <span class="bcp14">MUST</span> be independently decodeable. Assigning a new group ID to each CMAF Fragment (see <span>[<a href="#CMAF" class="cite xref">CMAF</a>]</span> Sect 6.6.1) meets this requirement.<a href="#section-3-3" class="pilcrow">¶</a></p>
 <div id="catalog-objects">
 <section id="section-3.1">
         <h3 id="name-catalog-objects">
 <a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-catalog-objects" class="section-name selfRef">Catalog objects</a>
         </h3>
-<p id="section-3.1-1">Per <span>[<a href="#MoQTransport" class="cite xref">MoQTransport</a>]</span> sect X.X, the catalog object <span class="bcp14">MUST</span> have a track name of "catalog".<a href="#section-3.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.1-1">The catalog object <span class="bcp14">MUST</span> have a track name of "catalog".<a href="#section-3.1-1" class="pilcrow">¶</a></p>
 <p id="section-3.1-2">A catalog object <span class="bcp14">MAY</span> be independent of other catalog objects or it <span class="bcp14">MAY</span> represent a delta update of a prior catalog object. The first catalog object published within a new group <span class="bcp14">MUST</span> be independent.  A catalog object <span class="bcp14">SHOULD</span> only be published only when the availability of tracks changes.<a href="#section-3.1-2" class="pilcrow">¶</a></p>
 <p id="section-3.1-3">The format of the CATALOG object payload is as follows:<a href="#section-3.1-3" class="pilcrow">¶</a></p>
-<span id="name-warp-media-format-catalog-b"></span><div id="warpmedia-catalog-body">
+<span id="name-warp-catalog-body"></span><div id="warpmedia-catalog-body">
 <figure id="figure-1">
           <div class="alignLeft art-text artwork" id="section-3.1-4.1">
 <pre>
 CATALOG payload {
   media format type (i),
   version (i),
-  parent object ID (i),
+  parent object sequence (i),
   track change count (i),
   track change descriptors (..)
 }
 </pre>
 </div>
 <figcaption><a href="#figure-1" class="selfRef">Figure 1</a>:
-<a href="#name-warp-media-format-catalog-b" class="selfRef">WARP Media Format CATALOG body</a>
+<a href="#name-warp-catalog-body" class="selfRef">WARP CATALOG body</a>
           </figcaption></figure>
 </div>
 <ul class="normal">
 <li class="normal" id="section-3.1-5.1">Media format type: this <span class="bcp14">MUST</span> hold the value 0x001 (see <a href="#IANA" class="auto internal xref">Section 7</a>). This value <span class="bcp14">MUST NOT</span> be encrypted.<a href="#section-3.1-5.1" class="pilcrow">¶</a>
 </li>
-          <li class="normal" id="section-3.1-5.2">Version: this <span class="bcp14">MUST</span> be the version of WMF to which the media packaging and catalog serialization conforms.<a href="#section-3.1-5.2" class="pilcrow">¶</a>
+          <li class="normal" id="section-3.1-5.2">Version: this <span class="bcp14">MUST</span> be the version of WARP to which the media packaging and catalog serialization conforms.<a href="#section-3.1-5.2" class="pilcrow">¶</a>
 </li>
-          <li class="normal" id="section-3.1-5.3">Parent object ID: 0 if this object represents an independent catalog or the parent object ID if this represents a delta update.<a href="#section-3.1-5.3" class="pilcrow">¶</a>
+          <li class="normal" id="section-3.1-5.3">Parent object sequence: 0 if this object represents an independent catalog or the <span>[<a href="#MoQTransport" class="cite xref">MoQTransport</a>]</span> (Sect 6.2) parent object sequence if this represents a delta update.<a href="#section-3.1-5.3" class="pilcrow">¶</a>
 </li>
           <li class="normal" id="section-3.1-5.4">Track change count:
-The number of track changes described by the catalog. A catalog update describing 0 tracks, or deleting all existing tracks, <span class="bcp14">SHALL</span> be interpreted by the WMF client to mean that the publishing session is complete. A WMF client <span class="bcp14">SHOULD</span> process all changes before making a subscription selection.<a href="#section-3.1-5.4" class="pilcrow">¶</a>
+The number of track changes described by the catalog. A catalog update describing 0 tracks, or deleting all existing tracks, <span class="bcp14">SHALL</span> be interpreted by the WARP client to mean that the publishing session is complete. A WARP client <span class="bcp14">SHOULD</span> process all changes before making a subscription selection.<a href="#section-3.1-5.4" class="pilcrow">¶</a>
 </li>
         </ul>
 <p id="section-3.1-6">Each track change is described by a track change descriptor with the format:<a href="#section-3.1-6" class="pilcrow">¶</a></p>
@@ -1280,8 +1282,8 @@ The number of track changes described by the catalog. A catalog update describin
           <div class="alignLeft art-text artwork" id="section-3.1-7.1">
 <pre>
 Track Change Descriptor {
-  track name length (i),
-  track name (..),
+  full track name length (i),
+  full track name (..),
   operation (1),
   change payload(..)
 }
@@ -1292,9 +1294,9 @@ Track Change Descriptor {
           </figcaption></figure>
 </div>
 <ul class="normal">
-<li class="normal" id="section-3.1-8.1">Track name length: the length of track name field<a href="#section-3.1-8.1" class="pilcrow">¶</a>
+<li class="normal" id="section-3.1-8.1">Full track name length: the length of the full track name field<a href="#section-3.1-8.1" class="pilcrow">¶</a>
 </li>
-          <li class="normal" id="section-3.1-8.2">Track name: the UTF-8 encoded track name. Within <span>[<a href="#MoQTransport" class="cite xref">MoQTransport</a>]</span> track names are strings. Track names <span class="bcp14">MUST</span> never be reused. If a track is published and then unpublished, it must be allocated a new track name before it is re-published. A catalog <span class="bcp14">MUST NOT</span> reference itself i.e the the track name must not be "catalog".<a href="#section-3.1-8.2" class="pilcrow">¶</a>
+          <li class="normal" id="section-3.1-8.2">Full track name: the Full Track Name as defined by <span>[<a href="#MoQTransport" class="cite xref">MoQTransport</a>]</span> (Sect 2.3.1). Track names <span class="bcp14">MUST</span> never be reused. If a track is published and then unpublished, it must be allocated a new track name before it is re-published. A catalog <span class="bcp14">MUST NOT</span> reference itself i.e the the track name must not be "catalog".<a href="#section-3.1-8.2" class="pilcrow">¶</a>
 </li>
           <li class="normal" id="section-3.1-8.3">Operation: a binary flag. 1 if the track is being added and 0 if it is being deleted. A publisher <span class="bcp14">MUST NOT</span> signal deletion of a track that has not been previously added.<a href="#section-3.1-8.3" class="pilcrow">¶</a>
 </li>
@@ -1359,7 +1361,7 @@ Deletion Header {
             <span class="bcp14">MUST</span> contain a single <span>[<a href="#ISOBMFF" class="cite xref">ISOBMFF</a>]</span> track.<a href="#section-3.2-3.2" class="pilcrow">¶</a>
 </li>
           <li class="normal" id="section-3.2-3.3">
-            <span class="bcp14">MUST</span> contain media content encoded in decode order. This implies an increasing DTS.<a href="#section-3.2-3.3" class="pilcrow">¶</a>
+            <span class="bcp14">MUST</span> contain media content encoded in decode order. This implies an increasing decoding time stamp (DTS).<a href="#section-3.2-3.3" class="pilcrow">¶</a>
 </li>
           <li class="normal" id="section-3.2-3.4">
             <span class="bcp14">MAY</span> contain any number of frames/samples.<a href="#section-3.2-3.4" class="pilcrow">¶</a>
@@ -1371,7 +1373,7 @@ Deletion Header {
             <span class="bcp14">MAY</span> overlap with other objects. This means timestamps may be interleaved between objects.<a href="#section-3.2-3.6" class="pilcrow">¶</a>
 </li>
         </ul>
-<p id="section-3.2-4">Two options are <span class="bcp14">RECOMMENDED</span> for packaging CMAF content into WMF media objects:<a href="#section-3.2-4" class="pilcrow">¶</a></p>
+<p id="section-3.2-4">Two options are <span class="bcp14">RECOMMENDED</span> for packaging CMAF content into WARP media objects:<a href="#section-3.2-4" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3.2-5.1">the first is to package a complete CMAF Fragment (see <span>[<a href="#CMAF" class="cite xref">CMAF</a>]</span> sect 6.6.1) into a single object within each group. This results in there being a single GOP (Group of Pictures) in the media object and a single media object per group.<a href="#section-3.2-5.1" class="pilcrow">¶</a>
 </li>
@@ -1387,14 +1389,14 @@ Deletion Header {
       <h2 id="name-workflow">
 <a href="#section-4" class="section-number selfRef">4. </a><a href="#name-workflow" class="section-name selfRef">Workflow</a>
       </h2>
-<p id="section-4-1">A WMF publisher <span class="bcp14">MUST</span> publish a catalog track object before publishing any media track objects.<a href="#section-4-1" class="pilcrow">¶</a></p>
+<p id="section-4-1">A WARP publisher <span class="bcp14">MUST</span> publish a catalog track object before publishing any media track objects.<a href="#section-4-1" class="pilcrow">¶</a></p>
 <p id="section-4-2">At the completion of a session, a publisher should publish a catalog object with track count of 0. This <span class="bcp14">SHOULD</span> be interpreted by receivers that the publish session is complete.<a href="#section-4-2" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="content-proection-and-encruption">
+<div id="content-protection-and-encryption">
 <section id="section-5">
-      <h2 id="name-content-proection-and-encru">
-<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-content-proection-and-encru" class="section-name selfRef">Content proection and encruption</a>
+      <h2 id="name-content-protection-and-encr">
+<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-content-protection-and-encr" class="section-name selfRef">Content protection and encryption</a>
       </h2>
 <p id="section-5-1">The catalog and media object payloads <span class="bcp14">MAY</span> be encrypted. Common Encryption <span>[<a href="#CENC" class="cite xref">CENC</a>]</span> with 'cbcs' mode (AES CBC with pattern encryption) is the <span class="bcp14">RECOMMENDED</span> encryption method.<a href="#section-5-1" class="pilcrow">¶</a></p>
 <p id="section-5-2">ToDo - details of how keys are exchanged and license servers signalled.<a href="#section-5-2" class="pilcrow">¶</a></p>
@@ -1413,7 +1415,7 @@ Deletion Header {
       <h2 id="name-iana-considerations">
 <a href="#section-7" class="section-number selfRef">7. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
       </h2>
-<p id="section-7-1">This document creates a new entry in the "MoQTransport Media Format" Registry. The type value is 0x001, the name is "WARP Media" and the RFC is XXX.<a href="#section-7-1" class="pilcrow">¶</a></p>
+<p id="section-7-1">This document creates a new entry in the "MoQ Streaming Format" Registry (see <span>[<a href="#MoQTransport" class="cite xref">MoQTransport</a>]</span> Sect 8).  The type value is 0x001, the name is "WARP Streaming Format" and the RFC is XXX.<a href="#section-7-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <section id="section-8">
@@ -1435,7 +1437,7 @@ Deletion Header {
 <dd class="break"></dd>
 <dt id="MoQTransport">[MoQTransport]</dt>
       <dd>
-<span class="refAuthor">Curley, L.</span>, <span class="refAuthor">Pugin, K.</span>, <span class="refAuthor">Nandakumar, S.</span>, and <span class="refAuthor">V. Vasiliev</span>, <span class="refTitle">"Warp - Live Media Transport over QUIC"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-lcurley-warp-04</span>, <time datetime="2023-03-13" class="refDate">13 March 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-lcurley-warp-04">https://datatracker.ietf.org/doc/html/draft-lcurley-warp-04</a>&gt;</span>. </dd>
+<span class="refTitle">"*** BROKEN REFERENCE ***"</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC2119">[RFC2119]</dt>
       <dd>
