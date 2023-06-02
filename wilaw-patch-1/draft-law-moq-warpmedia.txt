@@ -303,7 +303,11 @@ Table of Contents
               Part 12: ISO Base Media File Format", December 2015.
 
    [MoQTransport]
-              "*** BROKEN REFERENCE ***".
+              Curley, L., Pugin, K., Nandakumar, S., and V. Vasiliev,
+              "Media over QUIC Transport", Work in Progress, Internet-
+              Draft, draft-lcurley-moq-transport-00, 26 May 2023,
+              <https://datatracker.ietf.org/doc/html/draft-lcurley-moq-
+              transport-00>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
