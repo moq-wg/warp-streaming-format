@@ -5,23 +5,23 @@
 Media Over QUIC                                                   W. Law
 Internet-Draft                                                    Akamai
 Intended status: Informational                                 L. Curley
-Expires: 25 November 2023                                         Twitch
+Expires: 4 December 2023                                          Twitch
                                                              V. Vasiliev
                                                                   Google
                                                            S. Nandakumar
                                                                    Cisco
                                                                 K. Pugin
                                                                     Meta
-                                                             24 May 2023
+                                                             2 June 2023
 
 
-                           WARP Media Format
+                         WARP Streaming Format
                      draft-law-moq-warpmedia-latest
 
 Abstract
 
-   This document specifies the WARP Media Format, designed to operate on
-   MoQTransport.
+   This document specifies the WARP Streaming Format, designed to
+   operate on Media Over QUIC Transport.
 
 About This Document
 
@@ -55,7 +55,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 25 November 2023.
+   This Internet-Draft will expire on 4 December 2023.
 
 Copyright Notice
 
@@ -88,17 +88,18 @@ Table of Contents
 
 1.  Introduction
 
-   WARP Media Format (WMF) is a media format designed to deliver CMAF
-   [CMAF] compliant media content over MoQTransport [MoQTransport].  WMF
-   works by fragmenting the bitstream into objects that can be
-   transmitted independently.  WMF leverages a simple prioritization
-   strategy of assigning newer content a higher delivery order, allowing
-   intermediaries to drop older data, and video over audio, in the face
-   of congestion.  Either complete Groups of Pictures (GOPS) [ISOBMFF]
-   or individual frames are mapped to MoQTransport Objects.  WMF is
-   targeted at interactive levels of live latency.
+   WARP Streaming Format (WARP) is a media format designed to deliver
+   CMAF [CMAF] compliant media content over Media Over QUIC Transport
+   (MOQT) [MoQTransport].  WARP works by fragmenting the bitstream into
+   objects that can be independently transmitted.  WARP leverages a
+   simple prioritization strategy of assigning newer content a higher
+   delivery order, allowing intermediaries to drop older data, and video
+   over audio, in the face of congestion.  Either complete Groups of
+   Pictures (GOPS) [ISOBMFF] or individual frames are mapped to
+   MoQTransport Objects.  WARP is targeted at interactive levels of live
+   latency.
 
-   This document describes version 1 of the media format.
+   This document describes version 1 of the streaming format.
 
 2.  Conventions and Definitions
 
@@ -121,13 +122,12 @@ Table of Contents
    cleanly switch between media tracks at group boundaries.
 
    Each group MUST be independently decodeable.  Assigning a new group
-   ID to each CMAF Fragment (see [CMAF] sect 6.6.1) meets this
+   ID to each CMAF Fragment (see [CMAF] Sect 6.6.1) meets this
    requirement.
 
 3.1.  Catalog objects
 
-   Per [MoQTransport] sect X.X, the catalog object MUST have a track
-   name of "catalog".
+   The catalog object MUST have a track name of "catalog".
 
    A catalog object MAY be independent of other catalog objects or it
    MAY represent a delta update of a prior catalog object.  The first
@@ -140,47 +140,48 @@ Table of Contents
    CATALOG payload {
      media format type (i),
      version (i),
-     parent object ID (i),
+     parent object sequence (i),
      track change count (i),
      track change descriptors (..)
    }
 
-                  Figure 1: WARP Media Format CATALOG body
+                        Figure 1: WARP CATALOG body
 
    *  Media format type: this MUST hold the value 0x001 (see Section 7).
       This value MUST NOT be encrypted.
 
-   *  Version: this MUST be the version of WMF to which the media
+   *  Version: this MUST be the version of WARP to which the media
       packaging and catalog serialization conforms.
 
-   *  Parent object ID: 0 if this object represents an independent
-      catalog or the parent object ID if this represents a delta update.
+   *  Parent object sequence: 0 if this object represents an independent
+      catalog or the [MoQTransport] (Sect 6.2) parent object sequence if
+      this represents a delta update.
 
    *  Track change count: The number of track changes described by the
       catalog.  A catalog update describing 0 tracks, or deleting all
-      existing tracks, SHALL be interpreted by the WMF client to mean
-      that the publishing session is complete.  A WMF client SHOULD
+      existing tracks, SHALL be interpreted by the WARP client to mean
+      that the publishing session is complete.  A WARP client SHOULD
       process all changes before making a subscription selection.
 
    Each track change is described by a track change descriptor with the
    format:
 
    Track Change Descriptor {
-     track name length (i),
-     track name (..),
+     full track name length (i),
+     full track name (..),
      operation (1),
      change payload(..)
    }
 
                      Figure 2: Track change descriptor
 
-   *  Track name length: the length of track name field
+   *  Full track name length: the length of the full track name field
 
-   *  Track name: the UTF-8 encoded track name.  Within [MoQTransport]
-      track names are strings.  Track names MUST never be reused.  If a
-      track is published and then unpublished, it must be allocated a
-      new track name before it is re-published.  A catalog MUST NOT
-      reference itself i.e the the track name must not be "catalog".
+   *  Full track name: the Full Track Name as defined by [MoQTransport]
+      (Sect 2.3.1).  Track names MUST never be reused.  If a track is
+      published and then unpublished, it must be allocated a new track
+      name before it is re-published.  A catalog MUST NOT reference
+      itself i.e the the track name must not be "catalog".
 
    *  Operation: a binary flag. 1 if the track is being added and 0 if
       it is being deleted.  A publisher MUST NOT signal deletion of a
@@ -237,7 +238,7 @@ Table of Contents
    *  MUST contain a single [ISOBMFF] track.
 
    *  MUST contain media content encoded in decode order.  This implies
-      an increasing DTS.
+      an increasing decoding time stamp (DTS).
 
    *  MAY contain any number of frames/samples.
 
@@ -246,8 +247,8 @@ Table of Contents
    *  MAY overlap with other objects.  This means timestamps may be
       interleaved between objects.
 
-   Two options are RECOMMENDED for packaging CMAF content into WMF media
-   objects:
+   Two options are RECOMMENDED for packaging CMAF content into WARP
+   media objects:
 
    *  the first is to package a complete CMAF Fragment (see [CMAF] sect
       6.6.1) into a single object within each group.  This results in
@@ -261,8 +262,8 @@ Table of Contents
 
 4.  Workflow
 
-   A WMF publisher MUST publish a catalog track object before publishing
-   any media track objects.
+   A WARP publisher MUST publish a catalog track object before
+   publishing any media track objects.
 
    At the completion of a session, a publisher should publish a catalog
    object with track count of 0.  This SHOULD be interpreted by
@@ -283,9 +284,9 @@ Table of Contents
 
 7.  IANA Considerations
 
-   This document creates a new entry in the "MoQTransport Media Format"
-   Registry.  The type value is 0x001, the name is "WARP Media" and the
-   RFC is XXX.
+   This document creates a new entry in the "MoQ Streaming Format"
+   Registry (see [MoQTransport] Sect 8).  The type value is 0x001, the
+   name is "WARP Streaming Format" and the RFC is XXX.
 
 8.  Normative References
 
@@ -303,10 +304,10 @@ Table of Contents
 
    [MoQTransport]
               Curley, L., Pugin, K., Nandakumar, S., and V. Vasiliev,
-              "Warp - Live Media Transport over QUIC", Work in Progress,
-              Internet-Draft, draft-lcurley-warp-04, 13 March 2023,
-              <https://datatracker.ietf.org/doc/html/draft-lcurley-warp-
-              04>.
+              "Media over QUIC Transport", Work in Progress, Internet-
+              Draft, draft-lcurley-moq-transport-00, 26 May 2023,
+              <https://datatracker.ietf.org/doc/html/draft-lcurley-moq-
+              transport-00>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
