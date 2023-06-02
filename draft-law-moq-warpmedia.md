@@ -45,7 +45,7 @@ author:
     email: ikir@meta.com
 
 normative:
-  MoQTransport: I-D.curley-moq-transport
+  MoQTransport: I-D.lcurley-moq-transport
   RFC9000: RFC9000
   ISOBMFF:
     title: "Information technology — Coding of audio-visual objects — Part 12: ISO Base Media File Format"
