@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-05-18T01:24:31.939561+00:00",
+  "timestamp": "2023-06-04T02:03:05.995239+00:00",
   "repo": "wilaw/MoQ",
   "labels": [
     {
@@ -224,15 +224,15 @@
       "id": "I_kwDOJTN4X85jPhLE",
       "title": "Publish Race",
       "url": "https://github.com/wilaw/MoQ/issues/9",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "kixelated",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "> A WMF publisher MUST publish a catalog track object before publishing any media track objects.\r\n\r\nThe publisher could write the catalog track first with higher priority than any media tracks, however packet loss could mean the media tracks arrive first. Since this is a MUST, would the consumer terminate the connection with an error if this occurs?\r\n\r\nThe publisher could wait until the catalog track arrives, but how does the publisher implement this? Would it wait for the entire stream to be acknowledged? However, acknowledgements don't guarantee that the stream has been processed (ex. QPACK). We would need an explicit application acknowledgement when the catalog has been processed, which of course incurs a round trip.\r\n\r\nThis explicit application acknowledgement is basically just a SUBSCRIBE. I would actually prohibit publishing any media tracks if that's the behavior we want.\r\n\r\nAlternatively, we could add text that the consumer MAY buffer unknown tracks. If the consumer receives an unknown track, then it can hold onto it until it receives a catalog referencing it. This is an optimization that WebTransport employs but it seems fundamentally required when using PUBLISH.",
       "createdAt": "2023-04-12T18:05:29Z",
-      "updatedAt": "2023-04-19T22:03:54Z",
-      "closedAt": null,
+      "updatedAt": "2023-06-02T20:47:04Z",
+      "closedAt": "2023-06-02T20:47:03Z",
       "comments": [
         {
           "author": "kixelated",
@@ -254,6 +254,13 @@
           "body": "Yeah, I left a relevant PR review in: https://github.com/kixelated/warp-draft/pull/123\r\n\r\n> Going to -1 this until we talk more about the publish use-case. This feels like PUSH_PROMISE.\r\n>\r\n> The ability to publish is intended to remove a round-trip when the sender already knows the intent of the receiver. There has to be some form of coordination out of the scope of this specification, which automatically rules out generic clients.\r\n>\r\n> If this coordination of intent already exists, then receiver could just SUBSCRIBE immediately. I don't actually think it introduces an RTT because of SETUP currently works, and now is not the time to be nit-picking over startup RTTs anyway.\r\n>\r\n> The cost of PUBLISH is complexity and race conditions. OBJECTs arrive before they were requested, requiring some form of buffering and identification. We also need a way of saying \"pls no\" if the endpoints actually did not coordinate.\r\n\r\nI would propose that the receiver immediately issue a `SUBSCRIBE /catalog` (or another well-known path) to learn about the available tracks if this is not negotiated out-of-band. The SUBSCRIBE could even be sent along with the handshake with my control stream proposal: https://github.com/kixelated/warp-draft/issues/138",
           "createdAt": "2023-04-19T22:03:54Z",
           "updatedAt": "2023-04-19T22:03:54Z"
+        },
+        {
+          "author": "wilaw",
+          "authorAssociation": "OWNER",
+          "body": "The ANNOUNCE message of https://datatracker.ietf.org/doc/draft-lcurley-moq-transport/ address this issue. ",
+          "createdAt": "2023-06-02T20:47:03Z",
+          "updatedAt": "2023-06-02T20:47:03Z"
         }
       ]
     },
@@ -278,6 +285,30 @@
           "body": "The catalog object has to be more than just a CMAF header, since it must described multiple tracks and also communicate their subscription names. \r\n\r\nOn the GROUP and OBJECT mapping, I agree. The core requirement is that a sequence of OBJECTS is independently decodable if the client starts with the first object in a GROUP. This is satisfied with the restriction that a Group marks a fragment boundary, which is also satisfied by saying that the GROUP MUST represent a segment boundary, since each CMAF segment holds one of more fragments. COnsider the case of a 2s GOP at 30fps. The first OBJECT holds an I frame, the rest Ps. It would be compliant to mark a new GROUP every 30 Objects. It would also be compliant to mark a new group every 60 objects, which is the equivalent of transmitting a 4s segment comprising 2x2s fragments. ",
           "createdAt": "2023-04-19T23:00:04Z",
           "updatedAt": "2023-04-19T23:00:04Z"
+        }
+      ]
+    },
+    {
+      "number": 13,
+      "id": "I_kwDOJTN4X85npS0s",
+      "title": "Does catalog specification need to be CMAF-specific?",
+      "url": "https://github.com/wilaw/MoQ/issues/13",
+      "state": "OPEN",
+      "author": "vasilvv",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "The document currently specifies both a catalog format, and how to bind CMAF into it.  Do we really need to tie those two?  I can imagine having a catalog that uses CMAF for video, and, say, a lower-overhead format for audio.  I also imagine that the mechanisms for specifying track locations, updating tracks, etc, do not actually depend on the format used, so it may be redundant to group those two.\r\n\r\nBack in the warp-draft04, we had the same catalog format for everything, but each track had its own format.  Would that make more sense?",
+      "createdAt": "2023-06-02T22:13:39Z",
+      "updatedAt": "2023-06-02T23:10:45Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "wilaw",
+          "authorAssociation": "OWNER",
+          "body": "> The document currently specifies both a catalog format, and how to bind CMAF into it. Do we really need to tie those two?\r\n\r\nThe purpose of the draft is to define a Streaming Format that works with MoQ transport. Any workable \"streaming format\" requires a number of characteristics to be defined, such as a catalog format (how to describe what you have ), a media packaging format (for example, use CMAF), rules for streaming (for example, send one GOP per stream and increment the send order), rules for signaling the start and end of streams, authentication schemes etc. I anticipate that there is enough desire for catalog differentiation and format diversity, that trying to coerce every distributor to use a single catalog format is going to result in compromises and overhead. \r\n\r\nThe catalog format I have define in this draft meets the needs of most sports/live event/game broadcasters using low latency HLS or DASH today. I am reasonably sure it does not have the complexity to meet the needs of someone trying to stream VR or AR content, where there are more spatial and temporal constraints on, and relationships between, the tracks being advertised.  We could work to integrate that complexity in to a common catalog format, but then we'd be carrying of lot of overhead that would be unused for the majority of \"simple\" streaming cases. As I envision it, having a small number of streaming formats that are simple to implement and that serve different use-cases in the most efficient way possible, is preferable and more extensible than trying to munge everything in to one single catalog format.\r\n\r\n> I can imagine having a catalog that uses CMAF for video, and, say, a lower-overhead format for audio.\r\n\r\nThe catalog format defined currently leverages the convenience of the CMAF init segment to provide dual utility to the client: a concise description of the selection criteria (resolution, codec, bitrate etc) and the init data it needs to begin decoding the track. Since that is not immediately available with something like Ogg/Opus, we'd need to extend the catalog definition to allow alternate means for specifying the selection criteria and initializing the decoder. I'm not against this at all. The current draft is a direct extension of Luke's work on WARP, which constrained the packaging to CMAF. If there is WG consensus that we want to support alternate packaging formats under the WARP umbrella, then we can easily do that. We can also publish WARP as a CMAF-only streaming format and then create another streaming format that leverages multiple container types. ",
+          "createdAt": "2023-06-02T23:10:45Z",
+          "updatedAt": "2023-06-02T23:10:45Z"
         }
       ]
     }
@@ -466,6 +497,34 @@
       "mergedBy": "wilaw",
       "mergeCommit": {
         "oid": "2b753a51d8f9460a96b0a3901179f08812f06444"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 12,
+      "id": "PR_kwDOJTN4X85SCSay",
+      "title": "Update draft-law-moq-warpmedia.md",
+      "url": "https://github.com/wilaw/MoQ/pull/12",
+      "state": "MERGED",
+      "author": "wilaw",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "Updates to refer to latest version of https://datatracker.ietf.org/doc/draft-lcurley-moq-transport/.\r\nFixes naming references. ",
+      "createdAt": "2023-06-02T20:54:56Z",
+      "updatedAt": "2023-06-02T21:00:26Z",
+      "baseRepository": "wilaw/MoQ",
+      "baseRefName": "main",
+      "baseRefOid": "08f9e0c6010fde10643779fb76538b6612f9c9b0",
+      "headRepository": "wilaw/MoQ",
+      "headRefName": "wilaw-patch-1",
+      "headRefOid": "af8d3549d3736c0d5beaba9a42bb75562ac0d3e5",
+      "closedAt": "2023-06-02T21:00:20Z",
+      "mergedAt": "2023-06-02T21:00:20Z",
+      "mergedBy": "wilaw",
+      "mergeCommit": {
+        "oid": "d43984bfae3b87ac98a7f4e47ede614e5e84e949"
       },
       "comments": [],
       "reviews": []
