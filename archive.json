@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-06-04T02:03:05.995239+00:00",
+  "timestamp": "2023-06-06T01:51:02.758202+00:00",
   "repo": "wilaw/MoQ",
   "labels": [
     {
@@ -309,6 +309,30 @@
           "body": "> The document currently specifies both a catalog format, and how to bind CMAF into it. Do we really need to tie those two?\r\n\r\nThe purpose of the draft is to define a Streaming Format that works with MoQ transport. Any workable \"streaming format\" requires a number of characteristics to be defined, such as a catalog format (how to describe what you have ), a media packaging format (for example, use CMAF), rules for streaming (for example, send one GOP per stream and increment the send order), rules for signaling the start and end of streams, authentication schemes etc. I anticipate that there is enough desire for catalog differentiation and format diversity, that trying to coerce every distributor to use a single catalog format is going to result in compromises and overhead. \r\n\r\nThe catalog format I have define in this draft meets the needs of most sports/live event/game broadcasters using low latency HLS or DASH today. I am reasonably sure it does not have the complexity to meet the needs of someone trying to stream VR or AR content, where there are more spatial and temporal constraints on, and relationships between, the tracks being advertised.  We could work to integrate that complexity in to a common catalog format, but then we'd be carrying of lot of overhead that would be unused for the majority of \"simple\" streaming cases. As I envision it, having a small number of streaming formats that are simple to implement and that serve different use-cases in the most efficient way possible, is preferable and more extensible than trying to munge everything in to one single catalog format.\r\n\r\n> I can imagine having a catalog that uses CMAF for video, and, say, a lower-overhead format for audio.\r\n\r\nThe catalog format defined currently leverages the convenience of the CMAF init segment to provide dual utility to the client: a concise description of the selection criteria (resolution, codec, bitrate etc) and the init data it needs to begin decoding the track. Since that is not immediately available with something like Ogg/Opus, we'd need to extend the catalog definition to allow alternate means for specifying the selection criteria and initializing the decoder. I'm not against this at all. The current draft is a direct extension of Luke's work on WARP, which constrained the packaging to CMAF. If there is WG consensus that we want to support alternate packaging formats under the WARP umbrella, then we can easily do that. We can also publish WARP as a CMAF-only streaming format and then create another streaming format that leverages multiple container types. ",
           "createdAt": "2023-06-02T23:10:45Z",
           "updatedAt": "2023-06-02T23:10:45Z"
+        }
+      ]
+    },
+    {
+      "number": 14,
+      "id": "I_kwDOJTN4X85nyCEo",
+      "title": "What about SVC?",
+      "url": "https://github.com/wilaw/MoQ/issues/14",
+      "state": "OPEN",
+      "author": "VMatrix1900",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "The draft currently says: \"Each group MUST be independently decodeable.\" If an enhanced layer depends on a base layer in SVC, does this **MUST** enforce the enhanced layer and the base layer to be put in the same group? ",
+      "createdAt": "2023-06-05T07:39:29Z",
+      "updatedAt": "2023-06-05T20:22:16Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "wilaw",
+          "authorAssociation": "OWNER",
+          "body": "The current draft, in requiring CMAF packaging, was written assuming non-SVC coding. This should probably be explicitly stated. The decoding requirements there are temporal, and not layered (as with SVC) or spatial (as with OMAF) and it was under those temporal constraints that the MUST was written.\r\n\r\nIt may well be desirable to add SVC support to this streaming format. In that case there are likely many changes that will be required. Should we add those requirements to the core streaming format, or would it be preferred to create a new streaming format that is focused on SVC delivery? My preference is for the latter, but group consensus may differ.",
+          "createdAt": "2023-06-05T20:22:16Z",
+          "updatedAt": "2023-06-05T20:22:16Z"
         }
       ]
     }
