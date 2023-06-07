@@ -48,7 +48,7 @@ normative:
   MoQTransport: I-D.lcurley-moq-transport
   RFC9000: RFC9000
   ISOBMFF:
-    title: "Information technology — Coding of audio-visual objects — Part 12: ISO Base Media File Format"
+    title: "Information technology -- Coding of audio-visual objects -- Part 12: ISO Base Media File Format"
     date: 2015-12
   CMAF:
     title: "Information technology -- Multimedia application format (MPEG-A) -- Part 19: Common media application format (CMAF) for segmented media"
@@ -199,6 +199,7 @@ This document creates a new entry in the "MoQ Streaming Format" Registry (see {{
 - Alan Frindell
 - Ali Begen
 - Charles Krasic
+- Christian Huitema
 - Cullen Jennings
 - Hang Shi
 - James Hurley
