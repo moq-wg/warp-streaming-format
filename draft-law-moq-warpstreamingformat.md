@@ -26,7 +26,7 @@ author:
  -
     fullname: Will Law
     organization: Akamai
-    email: wilaw@akamai.co
+    email: wilaw@akamai.com
  -
     fullname: Luke Curley
     organization: Twitch
