@@ -5,18 +5,18 @@
 Media Over QUIC                                                   W. Law
 Internet-Draft                                                    Akamai
 Intended status: Informational                                 L. Curley
-Expires: 4 December 2023                                          Twitch
+Expires: 9 December 2023                                          Twitch
                                                              V. Vasiliev
                                                                   Google
                                                            S. Nandakumar
                                                                    Cisco
                                                                 K. Pugin
                                                                     Meta
-                                                             2 June 2023
+                                                             7 June 2023
 
 
                          WARP Streaming Format
-                     draft-law-moq-warpmedia-latest
+                draft-law-moq-warpstreamingformat-latest
 
 Abstract
 
@@ -30,7 +30,7 @@ About This Document
    The latest revision of this draft can be found at
    https://wilaw.github.io/MoQ/draft-law-moq-warpmedia.html.  Status
    information for this document may be found at
-   https://datatracker.ietf.org/doc/draft-law-moq-warpmedia/.
+   https://datatracker.ietf.org/doc/draft-law-moq-warpstreamingformat/.
 
    Discussion of this document takes place on the Media Over QUIC
    Working Group mailing list (mailto:moq@ietf.org), which is archived
@@ -55,7 +55,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 4 December 2023.
+   This Internet-Draft will expire on 9 December 2023.
 
 Copyright Notice
 
@@ -299,8 +299,8 @@ Table of Contents
               (MPEG-A) -- Part 19: Common media application format
               (CMAF) for segmented media", March 2020.
 
-   [ISOBMFF]  "Information technology — Coding of audio-visual objects —
-              Part 12: ISO Base Media File Format", December 2015.
+   [ISOBMFF]  "Information technology -- Coding of audio-visual objects
+              -- Part 12: ISO Base Media File Format", December 2015.
 
    [MoQTransport]
               Curley, L., Pugin, K., Nandakumar, S., and V. Vasiliev,
@@ -330,6 +330,8 @@ Acknowledgments
    *  Ali Begen
 
    *  Charles Krasic
+
+   *  Christian Huitema
 
    *  Cullen Jennings
 
