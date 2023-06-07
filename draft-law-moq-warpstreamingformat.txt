@@ -349,7 +349,7 @@ Authors' Addresses
 
    Will Law
    Akamai
-   Email: wilaw@akamai.co
+   Email: wilaw@akamai.com
 
 
    Luke Curley
