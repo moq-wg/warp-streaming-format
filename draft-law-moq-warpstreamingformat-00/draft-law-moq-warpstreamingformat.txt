@@ -5,14 +5,14 @@
 Media Over QUIC                                                   W. Law
 Internet-Draft                                                    Akamai
 Intended status: Informational                                 L. Curley
-Expires: 9 December 2023                                          Twitch
+Expires: 10 December 2023                                         Twitch
                                                              V. Vasiliev
                                                                   Google
                                                            S. Nandakumar
                                                                    Cisco
                                                                 K. Pugin
                                                                     Meta
-                                                             7 June 2023
+                                                             8 June 2023
 
 
                          WARP Streaming Format
@@ -55,7 +55,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 9 December 2023.
+   This Internet-Draft will expire on 10 December 2023.
 
 Copyright Notice
 
@@ -349,7 +349,7 @@ Authors' Addresses
 
    Will Law
    Akamai
-   Email: wilaw@akamai.co
+   Email: wilaw@akamai.com
 
 
    Luke Curley
