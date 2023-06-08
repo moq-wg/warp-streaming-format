@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-06-06T01:51:02.758202+00:00",
+  "timestamp": "2023-06-08T01:50:01.879729+00:00",
   "repo": "wilaw/MoQ",
   "labels": [
     {
@@ -549,6 +549,34 @@
       "mergedBy": "wilaw",
       "mergeCommit": {
         "oid": "d43984bfae3b87ac98a7f4e47ede614e5e84e949"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 15,
+      "id": "PR_kwDOJTN4X85SdrN9",
+      "title": "Update and rename draft-law-moq-warpmedia.md to draft-law-moq-warpstr\u2026",
+      "url": "https://github.com/wilaw/MoQ/pull/15",
+      "state": "MERGED",
+      "author": "wilaw",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "Changing name to draft-law-moq-warpstreamingformat to match consensus at last authors call. ",
+      "createdAt": "2023-06-07T23:38:04Z",
+      "updatedAt": "2023-06-07T23:40:08Z",
+      "baseRepository": "wilaw/MoQ",
+      "baseRefName": "main",
+      "baseRefOid": "6918b1f346a0d9f48f1e8f01e4460e1962da6200",
+      "headRepository": "wilaw/MoQ",
+      "headRefName": "wilaw-patch-1",
+      "headRefOid": "4b16ee30ed6e34f67f8542fa7bb1d6c9ae910349",
+      "closedAt": "2023-06-07T23:40:04Z",
+      "mergedAt": "2023-06-07T23:40:04Z",
+      "mergedBy": "wilaw",
+      "mergeCommit": {
+        "oid": "11f0cccff2dea14c307ba454a598801585343045"
       },
       "comments": [],
       "reviews": []
