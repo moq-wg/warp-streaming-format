@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-06-11T01:56:27.013275+00:00",
+  "timestamp": "2023-07-02T01:59:32.983651+00:00",
   "repo": "moq-wg/warp-streaming-format",
   "labels": [
     {
@@ -300,7 +300,7 @@
       "labels": [],
       "body": "The document currently specifies both a catalog format, and how to bind CMAF into it.  Do we really need to tie those two?  I can imagine having a catalog that uses CMAF for video, and, say, a lower-overhead format for audio.  I also imagine that the mechanisms for specifying track locations, updating tracks, etc, do not actually depend on the format used, so it may be redundant to group those two.\r\n\r\nBack in the warp-draft04, we had the same catalog format for everything, but each track had its own format.  Would that make more sense?",
       "createdAt": "2023-06-02T22:13:39Z",
-      "updatedAt": "2023-06-02T23:10:45Z",
+      "updatedAt": "2023-07-01T00:22:13Z",
       "closedAt": null,
       "comments": [
         {
@@ -309,6 +309,20 @@
           "body": "> The document currently specifies both a catalog format, and how to bind CMAF into it. Do we really need to tie those two?\r\n\r\nThe purpose of the draft is to define a Streaming Format that works with MoQ transport. Any workable \"streaming format\" requires a number of characteristics to be defined, such as a catalog format (how to describe what you have ), a media packaging format (for example, use CMAF), rules for streaming (for example, send one GOP per stream and increment the send order), rules for signaling the start and end of streams, authentication schemes etc. I anticipate that there is enough desire for catalog differentiation and format diversity, that trying to coerce every distributor to use a single catalog format is going to result in compromises and overhead. \r\n\r\nThe catalog format I have define in this draft meets the needs of most sports/live event/game broadcasters using low latency HLS or DASH today. I am reasonably sure it does not have the complexity to meet the needs of someone trying to stream VR or AR content, where there are more spatial and temporal constraints on, and relationships between, the tracks being advertised.  We could work to integrate that complexity in to a common catalog format, but then we'd be carrying of lot of overhead that would be unused for the majority of \"simple\" streaming cases. As I envision it, having a small number of streaming formats that are simple to implement and that serve different use-cases in the most efficient way possible, is preferable and more extensible than trying to munge everything in to one single catalog format.\r\n\r\n> I can imagine having a catalog that uses CMAF for video, and, say, a lower-overhead format for audio.\r\n\r\nThe catalog format defined currently leverages the convenience of the CMAF init segment to provide dual utility to the client: a concise description of the selection criteria (resolution, codec, bitrate etc) and the init data it needs to begin decoding the track. Since that is not immediately available with something like Ogg/Opus, we'd need to extend the catalog definition to allow alternate means for specifying the selection criteria and initializing the decoder. I'm not against this at all. The current draft is a direct extension of Luke's work on WARP, which constrained the packaging to CMAF. If there is WG consensus that we want to support alternate packaging formats under the WARP umbrella, then we can easily do that. We can also publish WARP as a CMAF-only streaming format and then create another streaming format that leverages multiple container types. ",
           "createdAt": "2023-06-02T23:10:45Z",
           "updatedAt": "2023-06-02T23:10:45Z"
+        },
+        {
+          "author": "vasilvv",
+          "authorAssociation": "NONE",
+          "body": "> The catalog format I have define in this draft meets the needs of most sports/live event/game broadcasters using low latency HLS or DASH today. I am reasonably sure it does not have the complexity to meet the needs of someone trying to stream VR or AR content, where there are more spatial and temporal constraints on, and relationships between, the tracks being advertised.\r\n\r\nSure, but I feel like the general problem of \"how do I encode adding or removing tracks\" and \"how do I encode relationship between two tracks\" is general enough that it would make more sense to define a common format for those, and then leave the specifics sufficiently extensible that the other formats can use those to build whatever they need.",
+          "createdAt": "2023-06-30T19:15:46Z",
+          "updatedAt": "2023-06-30T19:15:46Z"
+        },
+        {
+          "author": "wilaw",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> Sure, but I feel like the general problem of \"how do I encode adding or removing tracks\" and \"how do I encode relationship between two tracks\" is general enough that it would make more sense to define a common format for those, and then leave the specifics sufficiently extensible that the other formats can use those to build whatever they need.\r\n\r\nOK, so we could create a core catalog definition which all streaming formats then inherit and extend.  It would have elemental methods of add, delete tracks and some sort of ID to identify the streaming format being used.  The add() and remove() methods would contain streaming-format specific payloads. The relationship and dependencies between tracks could be expressed within those payloads, as well as initialization and selection data. This seems like something that could be added to the core moq-transport spec, if it is to be used consistently by all moq streaming formats?\r\n\r\n",
+          "createdAt": "2023-07-01T00:22:12Z",
+          "updatedAt": "2023-07-01T00:22:12Z"
         }
       ]
     },
