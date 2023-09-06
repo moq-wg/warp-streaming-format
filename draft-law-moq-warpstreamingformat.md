@@ -93,17 +93,17 @@ Each group MUST be independently decodeable. Assigning a new group ID to each CM
 
 # Catalog
 
-WARP uses the Common Catalog Format {[COMMON-CATALOG-FORMAT}} to describe the content being produced by a publisher. 
+WARP uses the Common Catalog Format {[COMMON-CATALOG-FORMAT}} to describe the content being produced by a publisher.
 
 Per Sect 5.1 of {{COMMON-CATALOG-FORMAT}}, WARP registers an entry in the "MoQ Streaming Format Type" table.  The type value is 0x001, the name is "WARP Streaming Format" and the RFC is XXX.
 
 Every WARP catalog MUST declare a streaming format type (See Sect 3.2.1 of {{COMMON-CATALOG-FORMAT}}) value of 1.
 
-Every WARP catalog MUST declare a streaming format version (See Sect 3.2.1 of {{COMMON-CATALOG-FORMAT}}) corresponding to the version of this document. 
+Every WARP catalog MUST declare a streaming format version (See Sect 3.2.1 of {{COMMON-CATALOG-FORMAT}}) corresponding to the version of this document.
 
 The catalog track MUST have a track name of "catalog". A catalog object MAY be independent of other catalog objects or it MAY represent a delta update of a prior catalog object. The first catalog object published within a new group MUST be independent.  A catalog object SHOULD only be published only when the availability of tracks changes.
 
-Each catalog update MUST be mapped to a discreet moq-transport object. 
+Each catalog update MUST be mapped to a discreet moq-transport object.
 
 
 
