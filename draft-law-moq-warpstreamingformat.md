@@ -101,7 +101,7 @@ Table 2
 | chunk-per-object          | {{CMAFpackaging}} 4.2 is active    |  Each CMAF chunk is placed in a MOQT Object and there is one MOQT Group per CMAF Fragment           |
 
 
-## Time-alignment {timealignment}
+## Time-alignment {#timealignment}
 WARP Tracks MAY be time-aligned. Those that are, are subject to the following requirements:
 
 * Time-aligned tracks MUST be advertised in the catalog as belonging to a common render group.
@@ -109,7 +109,7 @@ WARP Tracks MAY be time-aligned. Those that are, are subject to the following re
 
 A consequence of this restriction is that a WARP receiver SHOULD be able to cleanly switch between time-aligned media tracks at group boundaries.
 
-## Content protection and encryption
+## Content protection and encryption {#contentprotection}
 
 The catalog and media object payloads MAY be encrypted. Common Encryption {{CENC}} with 'cbcs' mode (AES CBC with pattern encryption) is the RECOMMENDED encryption method.
 
@@ -182,7 +182,7 @@ Deletion Header {
 
 
 # Media transmission
-The MOQT Groups and MOQT Objects need to be mapped to moq-transport Streams. Irrespective of the {{#packagingmode}} in place, each MOQT Object MUST be mapped to a new moq-transport Stream.
+The MOQT Groups and MOQT Objects need to be mapped to moq-transport Streams. Irrespective of the {{packagingmode}} in place, each MOQT Object MUST be mapped to a new moq-transport Stream.
 
 # Workflow
 
