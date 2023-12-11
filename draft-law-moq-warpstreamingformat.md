@@ -47,6 +47,10 @@ author:
 normative:
   MoQTransport: I-D.lcurley-moq-transport
   RFC9000: RFC9000
+  COMMON-CATALOG-FORMAT:
+    title: "Common Catalog Format for moq-transport"
+    date: September 6, 2023
+    target: https://wilaw.github.io/catalog-format/draft-wilaw-moq-catalogformat.html
   ISOBMFF:
     title: "Information technology -- Coding of audio-visual objects -- Part 12: ISO Base Media File Format"
     date: 2015-12
@@ -87,70 +91,20 @@ Media tracks SHOULD be media-time aligned. CMAF {{CMAF}} Aligned Switching Sets 
 
 Each group MUST be independently decodeable. Assigning a new group ID to each CMAF Fragment (see {{CMAF}} Sect 6.6.1) meets this requirement.
 
-## Catalog objects
+# Catalog
 
-The catalog object MUST have a track name of "catalog".
+WARP uses the Common Catalog Format {[COMMON-CATALOG-FORMAT}} to describe the content being produced by a publisher.
 
-A catalog object MAY be independent of other catalog objects or it MAY represent a delta update of a prior catalog object. The first catalog object published within a new group MUST be independent.  A catalog object SHOULD only be published only when the availability of tracks changes.
+Per Sect 5.1 of {{COMMON-CATALOG-FORMAT}}, WARP registers an entry in the "MoQ Streaming Format Type" table.  The type value is 0x001, the name is "WARP Streaming Format" and the RFC is XXX.
 
-The format of the CATALOG object payload is as follows:
+Every WARP catalog MUST declare a streaming format type (See Sect 3.2.1 of {{COMMON-CATALOG-FORMAT}}) value of 1.
 
-~~~
-CATALOG payload {
-  media format type (i),
-  version (i),
-  parent object sequence (i),
-  track change count (i),
-  track change descriptors (..)
-}
-~~~
-{: #warpmedia-catalog-body title="WARP CATALOG body"}
+Every WARP catalog MUST declare a streaming format version (See Sect 3.2.1 of {{COMMON-CATALOG-FORMAT}}) corresponding to the version of this document.
 
-* Media format type: this MUST hold the value 0x001 (see {{IANA}}). This value MUST NOT be encrypted.
+The catalog track MUST have a track name of "catalog". A catalog object MAY be independent of other catalog objects or it MAY represent a delta update of a prior catalog object. The first catalog object published within a new group MUST be independent.  A catalog object SHOULD only be published only when the availability of tracks changes.
 
-* Version: this MUST be the version of WARP to which the media packaging and catalog serialization conforms.
+Each catalog update MUST be mapped to a discreet moq-transport object.
 
-* Parent object sequence: 0 if this object represents an independent catalog or the {{MoQTransport}} (Sect 6.2) parent object sequence if this represents a delta update.
-
-* Track change count:
-The number of track changes described by the catalog. A catalog update describing 0 tracks, or deleting all existing tracks, SHALL be interpreted by the WARP client to mean that the publishing session is complete. A WARP client SHOULD process all changes before making a subscription selection.
-
-Each track change is described by a track change descriptor with the format:
-
-~~~
-Track Change Descriptor {
-  full track name length (i),
-  full track name (..),
-  operation (1),
-  change payload(..)
-}
-~~~
-{: #warpmedia-track-descriptor title="Track change descriptor"}
-* Full track name length: the length of the full track name field
-* Full track name: the Full Track Name as defined by {{MoQTransport}} (Sect 2.3.1). Track names MUST never be reused. If a track is published and then unpublished, it must be allocated a new track name before it is re-published. A catalog MUST NOT reference itself i.e the the track name must not be "catalog".
-* Operation: a binary flag. 1 if the track is being added and 0 if it is being deleted. A publisher MUST NOT signal deletion of a track that has not been previously added.
-* Change payload:  depends upon the value of the operation flag. If the operation is a 1 (add), then it SHALL hold an Initialization Header. If the operation is 0 (delete), then it SHALL hold a Deletion Header.
-
-~~~
-Initialization Header {
-  init length (i)
-  init payload (..)
-}
-~~~
-{: #warpmedia-initialization-header title="Initialization Header"}
-* Init length: the length of the init payload
-* Init payload:
-The init payload MUST consist of a File Type Box (ftyp) followed by a Movie Box (moov). This Movie Box (moov) consists of Movie Header Boxes (mvhd), Track Header Boxes (tkhd), Track Boxes (trak), followed by a final Movie Extends Box (mvex). These boxes MUST NOT contain any samples and MUST have a duration of zero. A Common Media Application Format Header {{CMAF}} meets all these requirements.
-
-~~~
-Deletion Header {
-  Last group: (i),
-  Last object: (i)
-}
-~~~
-{: #warpmedia-deletion-header title="Deletion Header"}
-* Last group: holds the last {{MoQTransport}} Group sequence number published under that track name.
-* Last object: holds the last {{MoQTransport}} Object sequence number published under that track name.
 
 
 ## Media Objects
