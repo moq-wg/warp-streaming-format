@@ -85,7 +85,6 @@ WARP delivers CMAF-packaged media bitstreams. This specification references {{CM
 
 Both CMAF Object mappings {{CMAFpackaging}} Section 4 are supported and a content producer may use either. To identify to consumers which object mapping mode is being used for a given Track, a new track field is defined as per table 1.
 
-Table 1
 
 | Field                   |  Name                  | Required |  Location |  JSON type |      Definition            |
 |:========================|:=======================|:=========|:==========|:===========|:===========================|
@@ -95,7 +94,6 @@ Table 1
 ## Packaging mode {#packagingmode}
 The packaging mode value is defined by Table 2.
 
-Table 2
 
 | warp-packing field value  |  Condition                         |                                              Explanation                                            |
 |:==========================|:===================================|:====================================================================================================|
