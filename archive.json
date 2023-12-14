@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-12-12T01:17:51.678057+00:00",
+  "timestamp": "2023-12-14T01:16:20.292325+00:00",
   "repo": "moq-wg/warp-streaming-format",
   "labels": [
     {
@@ -228,7 +228,7 @@
       "labels": [],
       "body": "Heh sorry about ragging on the typos.\r\n\r\n> The catalog and media object payloads MAY be encrypted. Common Encryption with 'cbcs' mode (AES CBC with pattern encryption) is the RECOMMENDED encryption method.\r\n\r\nI know many people at IETF will take offense at the \"RECOMMENDED encryption method\". If you're just trying to obfuscate content with DRM (content protection), something like Common Encryption with AES CBC is fine (I believe only the mdat is encrypted). If you're _actually_ trying to protect content against an adversary, then want to encrypt the entire object payload with an AEAD.\r\n\r\nI don't think this section is necessary since we're delegating to CMAF anyway. ",
       "createdAt": "2023-04-12T17:48:26Z",
-      "updatedAt": "2023-07-23T09:36:26Z",
+      "updatedAt": "2023-12-12T01:46:12Z",
       "closedAt": null,
       "comments": [
         {
@@ -237,6 +237,13 @@
           "body": "> I don't think this section is necessary since we're delegating to CMAF anyway.\r\n\r\nOne of the main interop problems with CMAF is that it supports multiple incompatible CENC options. I was hoping that MoQ could avoid these problems by mandating a single DRM scheme from the start. Is AEAD CMAF compliant? I don't think it is. We would therefore have a dilemma - keep the convenience of CMAF(CENC) , or fork it to add in the newer AEAD?                                                                                                           ",
           "createdAt": "2023-04-19T22:32:16Z",
           "updatedAt": "2023-04-19T22:32:16Z"
+        },
+        {
+          "author": "vitaly-castLabs",
+          "authorAssociation": "NONE",
+          "body": "Neither CENC nor mainstream DRM systems use AEAD ciphers since there's no need for media data authentication. The whole industry converged to 128-bit AES CBC as described in the CENC spec (cbcs), so it would make a lot of sense to lock it down to keep straying vendors in check (HW-secure PlayReady on my Windows laptop only supports 'cenc' scheme, go figure).\r\nThe whole section might well be \"Refer to the CMAF spec, but only 'cbcs' is allowed\".\r\n\r\nThe encryption scenario is very different and shouldn't be conflated with DRM. \"Encryption activists\" will definitely want AEAD, 256-bit AES, probably with a variety of ciphers to chose from (GCM, ChaCha20), no CENC-style \"clear ranges\", etc",
+          "createdAt": "2023-12-12T01:46:10Z",
+          "updatedAt": "2023-12-12T01:46:10Z"
         }
       ]
     },
