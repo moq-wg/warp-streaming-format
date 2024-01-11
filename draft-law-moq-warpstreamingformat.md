@@ -46,6 +46,7 @@ author:
 
 normative:
   MoQTransport: I-D.lcurley-moq-transport
+  CMAFpackaging: I-D.draft-wilaw-moq-cmafpackaging
   RFC9000: RFC9000
   COMMON-CATALOG-FORMAT:
     title: "Common Catalog Format for moq-transport"
@@ -83,13 +84,40 @@ This document describes version 1 of the streaming format.
 
 This document uses the conventions detailed in Section 1.3 of {{!RFC9000}} when describing the binary encoding.
 
-# Packaging
+# Media packaging {#mediapackaging}
+WARP delivers CMAF-packaged media bitstreams. This specification references {{CMAFpackaging}} to define how CMAF packaged bitstreams are mapped to {{MoQTransport}} groups and objects.
 
-Each codec bitstream MUST be packaged in to a sequence of Objects within a separate track.
+Both CMAF Object mappings {{CMAFpackaging}} Section 4 are supported and a content producer may use either. To identify to consumers which object mapping mode is being used for a given Track, a new track field is defined as per table 1.
 
-Media tracks SHOULD be media-time aligned. CMAF {{CMAF}} Aligned Switching Sets meet this requirement. A receiver SHOULD be able to cleanly switch between media tracks at group boundaries.
 
-Each group MUST be independently decodeable. Assigning a new group ID to each CMAF Fragment (see {{CMAF}} Sect 6.6.1) meets this requirement.
+| Field                   |  Name                  | Required |  Location |  JSON type |      Definition            |
+|:========================|:=======================|:=========|:==========|:===========|:===========================|
+| WARP packaging mode     | warp-packaging         |  yes     |   RT      |  String    | See {{packagingmode}}      |
+
+
+## Packaging mode {#packagingmode}
+The packaging mode value is defined by Table 2.
+
+
+| warp-packing field value  |  Condition                         |                                              Explanation                                            |
+|:==========================|:===================================|:====================================================================================================|
+| frag-per-group            | {{CMAFpackaging}} 4.1 is active    |  Each CMAF Fragment is placed in a single MOQT Object and there is one MOQT Object per MOQT Group   |
+| chunk-per-object          | {{CMAFpackaging}} 4.2 is active    |  Each CMAF chunk is placed in a MOQT Object and there is one MOQT Group per CMAF Fragment           |
+
+
+## Time-alignment {#timealignment}
+WARP Tracks MAY be time-aligned. Those that are, are subject to the following requirements:
+
+* Time-aligned tracks MUST be advertised in the catalog as belonging to a common render group.
+* The presentation time of the first media sample contained within the first MOQT Object of each equally numbered MOQT Group MUST be identical.
+
+A consequence of this restriction is that a WARP receiver SHOULD be able to cleanly switch between time-aligned media tracks at group boundaries.
+
+## Content protection and encryption {#contentprotection}
+
+The catalog and media object payloads MAY be encrypted. Common Encryption {{CENC}} with 'cbcs' mode (AES CBC with pattern encryption) is the RECOMMENDED encryption method.
+
+ToDo - details of how keys are exchanged and license servers signaled. May be best to extend catalog spec to allow the specification of content protection schema, along with any pssh or protection initialization data.
 
 # Catalog
 
@@ -107,35 +135,16 @@ Each catalog update MUST be mapped to a discreet moq-transport object.
 
 
 
-## Media Objects
-
-Object Delivery Order MUST match the Object sequence number.
-
-The media object payload:
-
-* MUST consist of a Segment Type Box (styp) followed by any number of media fragments. Each media fragment consists of a Movie Fragment Box (moof) followed by a Media Data Box (mdat). The Media Fragment Box (moof) MUST contain a Movie Fragment Header Box (mfhd) and Track Box (trak) with a Track ID (`track_ID`) matching a Track Box in the initialization fragment.
-* MUST contain a single {{ISOBMFF}} track.
-* MUST contain media content encoded in decode order. This implies an increasing decoding time stamp (DTS).
-* MAY contain any number of frames/samples.
-* MAY have gaps between frames/samples.
-* MAY overlap with other objects. This means timestamps may be interleaved between objects.
-
-Two options are RECOMMENDED for packaging CMAF content into WARP media objects:
-
-* the first is to package a complete CMAF Fragment (see {{CMAF}} sect 6.6.1) into a single object within each group. This results in there being a single GOP (Group of Pictures) in the media object and a single media object per group.
-* The second is to package a CMAF chunk (see {{CMAF}} sect 6.6.5), in which the mdat holds a single frame of video, or sample of audio, into each object and to assign a unique group ID to each fragment. This approach is RECOMMENDED to minimize latency.
+# Media transmission
+The MOQT Groups and MOQT Objects need to be mapped to moq-transport Streams. Irrespective of the {{packagingmode}} in place, each MOQT Object MUST be mapped to a new moq-transport Stream.
 
 # Workflow
 
 A WARP publisher MUST publish a catalog track object before publishing any media track objects.
 
-At the completion of a session, a publisher should publish a catalog object with track count of 0. This SHOULD be interpreted by receivers that the publish session is complete.
+At the completion of a session, a publisher MUST publish a catalog update that removes all currently active tracks.  This action SHOULD be interpreted by receivers to mean that the publish session is complete.
 
-# Content protection and encryption
 
-The catalog and media object payloads MAY be encrypted. Common Encryption {{CENC}} with 'cbcs' mode (AES CBC with pattern encryption) is the RECOMMENDED encryption method.
-
-ToDo - details of how keys are exchanged and license servers signalled.
 
 # Security Considerations
 
