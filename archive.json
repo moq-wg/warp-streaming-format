@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-01-11T01:18:09.481313+00:00",
+  "timestamp": "2024-01-14T01:23:21.196694+00:00",
   "repo": "moq-wg/warp-streaming-format",
   "labels": [
     {
@@ -297,15 +297,15 @@
       "id": "I_kwDOJTN4X85jPm6b",
       "title": "CMAF Mapping",
       "url": "https://github.com/moq-wg/warp-streaming-format/issues/10",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "kixelated",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "As proposed in #4, I think we can simplify the mapping:\r\n\r\n```\r\n|---------------------|----------------|----------------|-----------------|\r\n| Warp                | Catalog Object | Payload Group  | Payload Object  |\r\n|--------------------:|:---------------|----------------|-----------------|\r\n| CMAF {{CMAF}}       | CMAF Header    | CMAF Segment   | CMAF Fragment   |\r\n|---------------------|----------------|----------------|-----------------|\r\n```\r\n\r\nTo clarify:\r\n\r\n- There are any number of frames in a chunk (moof/mdat pair).\r\n- There are any number of chunks in a fragment (styp and moof/mdat pairs).\r\n- There are any number of fragments in a segment. (concatenated together)\r\n- A fragment* is independently decodable.\r\n\r\nIn order to minimize latency, there should be a chunk per frame, which is the same recommendation as LL-DASH.\r\n\r\nIf the object has a length in the header, then there should be a chunk per fragment too, but I desperately want to avoid that. That way there would be no latency impact for using a single OBJECT for the entire group.",
       "createdAt": "2023-04-12T18:21:48Z",
-      "updatedAt": "2023-10-02T17:55:59Z",
-      "closedAt": null,
+      "updatedAt": "2024-01-11T10:24:47Z",
+      "closedAt": "2024-01-11T10:24:46Z",
       "comments": [
         {
           "author": "wilaw",
@@ -859,24 +859,26 @@
       "id": "PR_kwDOJTN4X85bsmX3",
       "title": "Modifies document to reference external CMAF packaging draft.",
       "url": "https://github.com/moq-wg/warp-streaming-format/pull/20",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "wilaw",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Modifies document to reference external CMAF packaging draft.  Fixes #10 .",
       "createdAt": "2023-10-02T17:57:51Z",
-      "updatedAt": "2023-12-11T15:13:41Z",
+      "updatedAt": "2024-01-11T10:24:51Z",
       "baseRepository": "moq-wg/warp-streaming-format",
       "baseRefName": "main",
       "baseRefOid": "3cbcd5592e7f96d24b69cf8635af2f6c4b036e79",
       "headRepository": "moq-wg/warp-streaming-format",
       "headRefName": "wilaw-patch-3",
       "headRefOid": "b7cb439fecadefc69807062b39ec521070dbbf64",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2024-01-11T10:24:46Z",
+      "mergedAt": "2024-01-11T10:24:45Z",
+      "mergedBy": "wilaw",
+      "mergeCommit": {
+        "oid": "1584d6e5860a37b4f7e43b716d947797132248af"
+      },
       "comments": [],
       "reviews": [
         {
@@ -916,6 +918,26 @@
               "body": "I'm not sure what is confusing about `Each CMAF Fragment is placed in a single MOQT Object and there is one MOQT Object per MOQT Group`? CMAF Fragments, MOQT Objects and MOQT Groups are all defined entities. Can you propose some language you consider less confusing? ",
               "createdAt": "2023-12-11T13:12:14Z",
               "updatedAt": "2023-12-11T13:12:40Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJTN4X85sMafw",
+          "commit": {
+            "abbreviatedOid": "63ad9ef"
+          },
+          "author": "wilaw",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-01-11T10:24:33Z",
+          "updatedAt": "2024-01-11T10:24:33Z",
+          "comments": [
+            {
+              "originalPosition": 34,
+              "body": "Received comment from Suhas via Webex \"the above PR looks good Will .. i re-read once more and you are right\". Will merge. ",
+              "createdAt": "2024-01-11T10:24:33Z",
+              "updatedAt": "2024-01-11T10:24:33Z"
             }
           ]
         }
