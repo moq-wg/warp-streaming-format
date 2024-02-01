@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-01-30T01:12:09.346335+00:00",
+  "timestamp": "2024-02-01T01:16:12.723413+00:00",
   "repo": "moq-wg/warp-streaming-format",
   "labels": [
     {
@@ -93,7 +93,7 @@
       "labels": [],
       "body": "Not sure if this belong here or in the base catalog spec though",
       "createdAt": "2023-04-07T08:02:28Z",
-      "updatedAt": "2023-10-02T18:38:12Z",
+      "updatedAt": "2024-01-30T22:21:48Z",
       "closedAt": null,
       "comments": [
         {
@@ -109,6 +109,13 @@
           "body": "The base catalog spec at https://datatracker.ietf.org/doc/draft-wilaw-moq-catalogformat/ now defines multiple \"content selection parameters\", including\r\n\r\nDependencies\r\nCertain tracks may depend on other tracks for decoding. Dependencies holds an array of track names Section 3.2.10 on which the current track is dependent. \r\n\r\nTemporal ID\r\nA number identifying the temporal layer/sub-layer encoding of the track, starting with 0 for the base layer, and increasing with higher temporal fidelity.\r\n\r\nSpatial ID\r\nA number identifying the spatial layer encoding of the track, starting with 0 for the base layer, and increasing with higher fidelity.\r\n\r\nCodec\r\nA string defining the codec used to encode the track. For LOC packaged content, the string codec registrations are defined in Sect 3 and Section 4 of [WEBCODECS-CODEC-REGISTRY]. For CMAF packaged content, the string codec registrations are defined in XXX.\r\n\r\nMimetype\r\nA string defining the mime type [MIME] of the track. This parameter is typically supplied with CMAF packaged content.\r\n\r\nFramerate\r\nA number defining the framerate of the track, expressed as frames per second.\r\n\r\nBitrate\r\nA number defining the bitrate of track, expressed in bits second.\r\n\r\nWidth\r\nA number expressing the encoded width of the track content in pixels.\r\n\r\nHeight\r\nA number expressing the encoded height of the video frames in pixels.\r\n\r\nAudio sample rate\r\nThe number of audio frame samples per second. This property SHOULD only accompany audio codecs.\r\n\r\nChannel configuration\r\nA string specifying the audio channel configuration. This property SHOULD only accompany audio codecs. A string is used in order to provide the flexibility to describe complex channel configurations for multi-channel and Next Generation Audio schemas.\r\n\r\nDisplay width\r\nA number expressing the intended display width of the track content in pixels.\r\n\r\nDisplay height\r\nA number expressing the intended display height of the track content in pixels.\r\n\r\nLanguage\r\n",
           "createdAt": "2023-10-02T18:38:12Z",
           "updatedAt": "2023-10-02T18:38:12Z"
+        },
+        {
+          "author": "wilaw",
+          "authorAssociation": "COLLABORATOR",
+          "body": "@suhasHere  - can this issue be closed given the content selection parameters defined above?",
+          "createdAt": "2024-01-30T22:21:47Z",
+          "updatedAt": "2024-01-30T22:21:47Z"
         }
       ]
     },
@@ -335,7 +342,7 @@
       "labels": [],
       "body": "The document currently specifies both a catalog format, and how to bind CMAF into it.  Do we really need to tie those two?  I can imagine having a catalog that uses CMAF for video, and, say, a lower-overhead format for audio.  I also imagine that the mechanisms for specifying track locations, updating tracks, etc, do not actually depend on the format used, so it may be redundant to group those two.\r\n\r\nBack in the warp-draft04, we had the same catalog format for everything, but each track had its own format.  Would that make more sense?",
       "createdAt": "2023-06-02T22:13:39Z",
-      "updatedAt": "2023-08-01T19:01:00Z",
+      "updatedAt": "2024-01-30T22:20:50Z",
       "closedAt": null,
       "comments": [
         {
@@ -379,6 +386,13 @@
           "body": "please be careful with your @-mentions",
           "createdAt": "2023-08-01T19:01:00Z",
           "updatedAt": "2023-08-01T19:01:00Z"
+        },
+        {
+          "author": "wilaw",
+          "authorAssociation": "COLLABORATOR",
+          "body": "A [catalog draft ](https://datatracker.ietf.org/doc/draft-wilaw-moq-catalogformat/ )has been developed , which is packaging agnostic. It has code points for CMAF and LOC but could support any number of packaging formats. \r\n\r\nCMAF specific packaging has been broken out in to its own [draft.](https://datatracker.ietf.org/doc/draft-wilaw-moq-cmafpackaging/)\r\n\r\nPR#[19](https://github.com/moq-wg/warp-streaming-format/pull/19)  updated  WARP Streaming Format to reference an external catalog definition\r\n\r\nPR[#20](https://github.com/moq-wg/warp-streaming-format/pull/20) Modifies document to reference external CMAF packaging draft\r\n\r\nThese actions address the OP.\r\n\r\n@vasilvv  - can this issue be closed as fixed? ",
+          "createdAt": "2024-01-30T22:20:48Z",
+          "updatedAt": "2024-01-30T22:20:48Z"
         }
       ]
     },
