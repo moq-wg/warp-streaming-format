@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-03-05T01:11:14.607668+00:00",
+  "timestamp": "2024-03-07T00:59:24.821223+00:00",
   "repo": "moq-wg/warp-streaming-format",
   "labels": [
     {
@@ -86,15 +86,15 @@
       "id": "I_kwDOJTN4X85i2s-u",
       "title": "Track Description needs to capture media format information",
       "url": "https://github.com/moq-wg/warp-streaming-format/issues/2",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "suhasHere",
       "authorAssociation": "NONE",
       "assignees": [],
       "labels": [],
       "body": "Not sure if this belong here or in the base catalog spec though",
       "createdAt": "2023-04-07T08:02:28Z",
-      "updatedAt": "2024-01-30T22:21:48Z",
-      "closedAt": null,
+      "updatedAt": "2024-03-06T11:37:59Z",
+      "closedAt": "2024-03-06T11:37:59Z",
       "comments": [
         {
           "author": "wilaw",
@@ -116,6 +116,13 @@
           "body": "@suhasHere  - can this issue be closed given the content selection parameters defined above?",
           "createdAt": "2024-01-30T22:21:47Z",
           "updatedAt": "2024-01-30T22:21:47Z"
+        },
+        {
+          "author": "wilaw",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Closing as fixed by selection properties fields of the Common Catalog Format. ",
+          "createdAt": "2024-03-06T11:37:59Z",
+          "updatedAt": "2024-03-06T11:37:59Z"
         }
       ]
     },
@@ -183,15 +190,15 @@
       "id": "I_kwDOJTN4X85jPNvx",
       "title": "Multiple catalog format/versions",
       "url": "https://github.com/moq-wg/warp-streaming-format/issues/7",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "kixelated",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "In the current draft, the catalog lives at a well-known path with a single format/version. If the consumer does not support this format/version pair, then playback will not work, unless it knows how to request a different catalog instead.\r\n\r\nThis will make it virtually impossible to deploy new catalog formats and versions. Every consumer MUST support a new format/version before the publisher can use it at the well-known path, otherwise it risks breaking consumers.",
       "createdAt": "2023-04-12T17:09:05Z",
-      "updatedAt": "2023-10-02T18:32:15Z",
-      "closedAt": null,
+      "updatedAt": "2024-03-06T11:44:13Z",
+      "closedAt": "2024-03-06T11:44:12Z",
       "comments": [
         {
           "author": "kixelated",
@@ -220,6 +227,13 @@
           "body": "A common catalog format is now available at https://datatracker.ietf.org/doc/draft-wilaw-moq-catalogformat/ \r\n \r\n",
           "createdAt": "2023-10-02T18:32:15Z",
           "updatedAt": "2023-10-02T18:32:15Z"
+        },
+        {
+          "author": "wilaw",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Closing as fixed by Common Catalog Format. [Example 3.4.11](https://moq-wg.github.io/catalog-format/draft-wilaw-moq-catalogformat.html#name-a-catalog-referencing-catal) \r\n\r\n```\r\n{\r\n  \"version\": 1,\r\n  \"sequence\": 0,\r\n  \"catalogs\": [\r\n    {\r\n      \"name\": \"catalog-for-format-one\",\r\n      \"namespace\": \"sports.example.com/games/08-08-23/live\",\r\n      \"streamingFormat\":1,\r\n      \"streamingFormatVersion\": \"0.2\"\r\n    },\r\n    {\r\n      \"name\": \"catalog-for-format-five\",\r\n      \"namespace\": \"chat.example.com/games/08-08-23/chat\",\r\n      \"streamingFormat\":5,\r\n      \"streamingFormatVersion\": \"1.6.2\"\r\n    }\r\n  ]\r\n}\r\n```",
+          "createdAt": "2024-03-06T11:44:12Z",
+          "updatedAt": "2024-03-06T11:44:12Z"
         }
       ]
     },
@@ -335,15 +349,15 @@
       "id": "I_kwDOJTN4X85npS0s",
       "title": "Does catalog specification need to be CMAF-specific?",
       "url": "https://github.com/moq-wg/warp-streaming-format/issues/13",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "vasilvv",
       "authorAssociation": "NONE",
       "assignees": [],
       "labels": [],
       "body": "The document currently specifies both a catalog format, and how to bind CMAF into it.  Do we really need to tie those two?  I can imagine having a catalog that uses CMAF for video, and, say, a lower-overhead format for audio.  I also imagine that the mechanisms for specifying track locations, updating tracks, etc, do not actually depend on the format used, so it may be redundant to group those two.\r\n\r\nBack in the warp-draft04, we had the same catalog format for everything, but each track had its own format.  Would that make more sense?",
       "createdAt": "2023-06-02T22:13:39Z",
-      "updatedAt": "2024-01-30T22:20:50Z",
-      "closedAt": null,
+      "updatedAt": "2024-03-06T11:36:25Z",
+      "closedAt": "2024-03-06T11:36:25Z",
       "comments": [
         {
           "author": "wilaw",
