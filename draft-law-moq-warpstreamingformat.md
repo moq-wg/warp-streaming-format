@@ -47,6 +47,7 @@ author:
 normative:
   MoQTransport: I-D.lcurley-moq-transport
   CMAFpackaging: I-D.draft-wilaw-moq-cmafpackaging
+  LOC: I-D.draft-mzanaty-moq-loc-03
   RFC9000: RFC9000
   COMMON-CATALOG-FORMAT:
     title: "Common Catalog Format for moq-transport"
@@ -74,7 +75,7 @@ This document specifies the WARP Streaming Format, designed to operate on Media 
 
 # Introduction
 
-WARP Streaming Format (WARP) is a media format designed to deliver CMAF {{CMAF}} compliant media content over Media Over QUIC Transport (MOQT) {{MoQTransport}}. WARP works by fragmenting the bitstream into objects that can be independently transmitted. WARP leverages a simple prioritization strategy of assigning newer content a higher delivery order, allowing intermediaries to drop older data, and video over audio, in the face of congestion. Either complete Groups of Pictures (GOPS) {{ISOBMFF}} or individual frames are mapped to MoQTransport Objects. WARP is targeted at interactive levels of live latency.
+WARP Streaming Format (WARP) is a media format designed to deliver CMAF {{CMAF}} and LOC {{LOC}} compliant media content over Media Over QUIC Transport (MOQT) {{MoQTransport}}. WARP works by fragmenting the bitstream into objects that can be independently transmitted. WARP leverages the Common Catalog Format {{COMMON-CATALOG-FORMAT}} to describe the output of the original publisher. WARP specifies how content should be packaged and signaled, defines how the catalog communicates the content, specifies prioritization strategies for real-time and workflows for beginning and terminating broadcasts. WARP also details how end-subscribers may perform adaptive bitrate switching. WARP is targeted at real-time and interactive levels of live latency.
 
 This document describes version 1 of the streaming format.
 
