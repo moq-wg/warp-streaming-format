@@ -1,0 +1,991 @@
+{
+  "magic": "E!vIA5L86J2I",
+  "timestamp": "2024-07-09T01:23:30.624526+00:00",
+  "repo": "moq-wg/warp-streaming-format",
+  "labels": [
+    {
+      "name": "bug",
+      "description": "Something isn't working",
+      "color": "d73a4a"
+    },
+    {
+      "name": "documentation",
+      "description": "Improvements or additions to documentation",
+      "color": "0075ca"
+    },
+    {
+      "name": "duplicate",
+      "description": "This issue or pull request already exists",
+      "color": "cfd3d7"
+    },
+    {
+      "name": "enhancement",
+      "description": "New feature or request",
+      "color": "a2eeef"
+    },
+    {
+      "name": "good first issue",
+      "description": "Good for newcomers",
+      "color": "7057ff"
+    },
+    {
+      "name": "help wanted",
+      "description": "Extra attention is needed",
+      "color": "008672"
+    },
+    {
+      "name": "invalid",
+      "description": "This doesn't seem right",
+      "color": "e4e669"
+    },
+    {
+      "name": "question",
+      "description": "Further information is requested",
+      "color": "d876e3"
+    },
+    {
+      "name": "wontfix",
+      "description": "This will not be worked on",
+      "color": "ffffff"
+    }
+  ],
+  "issues": [
+    {
+      "number": 1,
+      "id": "I_kwDOJTN4X85i2syi",
+      "title": "WMF spec should specify track name usage in Subscribe/Publish",
+      "url": "https://github.com/moq-wg/warp-streaming-format/issues/1",
+      "state": "CLOSED",
+      "author": "suhasHere",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "As per consensus at IETF116, subscribes and publishes happens on Track Names that are fully qualified with a prefix and a suffix.\r\nWMF spec should describe how the track name are formed from the catalog to be used in the control messages.",
+      "createdAt": "2023-04-07T08:01:43Z",
+      "updatedAt": "2023-07-23T09:57:43Z",
+      "closedAt": "2023-07-23T09:57:43Z",
+      "comments": [
+        {
+          "author": "wilaw",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Agreed. Once we figure out how the MoQTransport defines its addressing and subscriptions, then we can update this WMF spec so that the two are consistent. ",
+          "createdAt": "2023-04-07T16:38:25Z",
+          "updatedAt": "2023-04-07T16:38:25Z"
+        },
+        {
+          "author": "wilaw",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Closing since track naming has been resolved in moq-transport and this draft was updated with #12 ",
+          "createdAt": "2023-07-23T09:57:43Z",
+          "updatedAt": "2023-07-23T09:57:43Z"
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "id": "I_kwDOJTN4X85i2s-u",
+      "title": "Track Description needs to capture media format information",
+      "url": "https://github.com/moq-wg/warp-streaming-format/issues/2",
+      "state": "CLOSED",
+      "author": "suhasHere",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "Not sure if this belong here or in the base catalog spec though",
+      "createdAt": "2023-04-07T08:02:28Z",
+      "updatedAt": "2024-03-06T11:37:59Z",
+      "closedAt": "2024-03-06T11:37:59Z",
+      "comments": [
+        {
+          "author": "wilaw",
+          "authorAssociation": "COLLABORATOR",
+          "body": "The base spec should be agnostic to media, therefore anything media related should be defined in a Media Format.\r\n\r\nThe track description defined for this spec does capture media format information `The init payload in each track descriptor MUST consist of a File Type Box (ftyp) followed by a Movie Box (moov)`. That moov box contains the media format information (resolution, codec, timebase) that the client needs to both select the track and initialize its decoder. \r\n\r\nThe only issue outstanding is perhaps the max bitrate. It's not clear that that is consistently signalled within the moov atom. In that case, we would need to add an explicit field in the Track Descriptor to signal max bitrate?",
+          "createdAt": "2023-04-07T16:35:09Z",
+          "updatedAt": "2023-04-07T16:35:09Z"
+        },
+        {
+          "author": "wilaw",
+          "authorAssociation": "COLLABORATOR",
+          "body": "The base catalog spec at https://datatracker.ietf.org/doc/draft-wilaw-moq-catalogformat/ now defines multiple \"content selection parameters\", including\r\n\r\nDependencies\r\nCertain tracks may depend on other tracks for decoding. Dependencies holds an array of track names Section 3.2.10 on which the current track is dependent. \r\n\r\nTemporal ID\r\nA number identifying the temporal layer/sub-layer encoding of the track, starting with 0 for the base layer, and increasing with higher temporal fidelity.\r\n\r\nSpatial ID\r\nA number identifying the spatial layer encoding of the track, starting with 0 for the base layer, and increasing with higher fidelity.\r\n\r\nCodec\r\nA string defining the codec used to encode the track. For LOC packaged content, the string codec registrations are defined in Sect 3 and Section 4 of [WEBCODECS-CODEC-REGISTRY]. For CMAF packaged content, the string codec registrations are defined in XXX.\r\n\r\nMimetype\r\nA string defining the mime type [MIME] of the track. This parameter is typically supplied with CMAF packaged content.\r\n\r\nFramerate\r\nA number defining the framerate of the track, expressed as frames per second.\r\n\r\nBitrate\r\nA number defining the bitrate of track, expressed in bits second.\r\n\r\nWidth\r\nA number expressing the encoded width of the track content in pixels.\r\n\r\nHeight\r\nA number expressing the encoded height of the video frames in pixels.\r\n\r\nAudio sample rate\r\nThe number of audio frame samples per second. This property SHOULD only accompany audio codecs.\r\n\r\nChannel configuration\r\nA string specifying the audio channel configuration. This property SHOULD only accompany audio codecs. A string is used in order to provide the flexibility to describe complex channel configurations for multi-channel and Next Generation Audio schemas.\r\n\r\nDisplay width\r\nA number expressing the intended display width of the track content in pixels.\r\n\r\nDisplay height\r\nA number expressing the intended display height of the track content in pixels.\r\n\r\nLanguage\r\n",
+          "createdAt": "2023-10-02T18:38:12Z",
+          "updatedAt": "2023-10-02T18:38:12Z"
+        },
+        {
+          "author": "wilaw",
+          "authorAssociation": "COLLABORATOR",
+          "body": "@suhasHere  - can this issue be closed given the content selection parameters defined above?",
+          "createdAt": "2024-01-30T22:21:47Z",
+          "updatedAt": "2024-01-30T22:21:47Z"
+        },
+        {
+          "author": "wilaw",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Closing as fixed by selection properties fields of the Common Catalog Format. ",
+          "createdAt": "2024-03-06T11:37:59Z",
+          "updatedAt": "2024-03-06T11:37:59Z"
+        }
+      ]
+    },
+    {
+      "number": 6,
+      "id": "I_kwDOJTN4X85jPI9e",
+      "title": "Track updates",
+      "url": "https://github.com/moq-wg/warp-streaming-format/issues/6",
+      "state": "CLOSED",
+      "author": "kixelated",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "The current draft allows tracks within a catalog to be updated. This causes a few problems:\r\n\r\n- What happens if a track is changed (ex. new profile)?\r\n- When does this update occur?\r\n- What happens when the catalog update is delayed?\r\n\r\nIf the publisher changes the codec/profile in the middle of a track, the decoder will blow up. There's no way to know when the change will take place.",
+      "createdAt": "2023-04-12T16:54:59Z",
+      "updatedAt": "2023-05-16T17:44:33Z",
+      "closedAt": "2023-05-16T17:44:33Z",
+      "comments": [
+        {
+          "author": "kixelated",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I don't see how we could easily support tracks being updated.\r\n\r\nAt the very least we would need a group ID when the change occurs, but that won't work in the face of packet loss, because the catalog update could arrive after the starting group. I think the only way to fix this is to put the init information at the start of each group (ex. SPS/PPS) which is not desirable.\r\n\r\nI would prohibit it for now. At the very least, some text to say that the init payload MUST NOT change on subsequent updates. We can only add or remove tracks.",
+          "createdAt": "2023-04-12T16:59:47Z",
+          "updatedAt": "2023-04-12T16:59:47Z"
+        },
+        {
+          "author": "kixelated",
+          "authorAssociation": "COLLABORATOR",
+          "body": "IMO we start with no catalog updates for interop. Then we can build an ADD and REMOVE track message to avoid retransmitting the entire catalog on each update.",
+          "createdAt": "2023-04-12T17:01:04Z",
+          "updatedAt": "2023-04-12T17:01:04Z"
+        },
+        {
+          "author": "wilaw",
+          "authorAssociation": "COLLABORATOR",
+          "body": "@kixelated \r\n\r\n> I don't see how we could easily support tracks being updated.\r\n\r\nBy 'update', I agree that we shouldn't allow their media characteristics (anything described in the init segment or the init itself) to change. But we should allow them to be added and deleted . \r\n\r\n> I would prohibit it for now. At the very least, some text to say that the init payload MUST NOT change on subsequent updates. We can only add or remove tracks.\r\n\r\nAgree\r\n\r\n> IMO we start with no catalog updates for interop. Then we can build an ADD and REMOVE track message to avoid retransmitting the entire catalog on each update.\r\n\r\nI think that having no catalog updates in v1 is unnecessarily restrictive and would lead to missed use-cases, rather than better interop. We also don't need to invent ADD and REMOVE track messages if we allow the CATALOG (and its updates) to define the availability of tracks. The whole purpose of the CATALOG track is to do exactly that. This point is up to MOQ base protocl however and we need to resolve it there. And \"avoiding retransmitting the entire catalog on each update\" can be addressed by either ignoring (because catalog updates are small to begin even with their init payloads), or by allowing delta updates on the catalog, which wouldn't be complex and I can mock that up if you'd like to see what it might look like? ",
+          "createdAt": "2023-04-19T21:58:53Z",
+          "updatedAt": "2023-04-19T21:59:12Z"
+        },
+        {
+          "author": "kixelated",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Yeah, the ADD and REMOVE messages would be delta updates. I think we need some timing information about when a track starts and ends, although I'm not sure.",
+          "createdAt": "2023-04-19T22:11:10Z",
+          "updatedAt": "2023-04-19T22:11:10Z"
+        },
+        {
+          "author": "wilaw",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Discussion 4/20:\r\nNeed to add a delta update mechanism\r\nSame group, second or subsequent object\r\nEach object is a list of delta updates. Sync'd tracks  should be added in the same object. Some text to instruct player to process all available tracks before performing track selection. ",
+          "createdAt": "2023-04-20T22:43:47Z",
+          "updatedAt": "2023-04-20T22:43:47Z"
+        },
+        {
+          "author": "wilaw",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Also, if removing track, publisher should send remove along with a last Group, Object number.  \r\nUpdate with all tracks removed signals EOS. ",
+          "createdAt": "2023-04-20T22:49:06Z",
+          "updatedAt": "2023-04-20T22:49:06Z"
+        }
+      ]
+    },
+    {
+      "number": 7,
+      "id": "I_kwDOJTN4X85jPNvx",
+      "title": "Multiple catalog format/versions",
+      "url": "https://github.com/moq-wg/warp-streaming-format/issues/7",
+      "state": "CLOSED",
+      "author": "kixelated",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "In the current draft, the catalog lives at a well-known path with a single format/version. If the consumer does not support this format/version pair, then playback will not work, unless it knows how to request a different catalog instead.\r\n\r\nThis will make it virtually impossible to deploy new catalog formats and versions. Every consumer MUST support a new format/version before the publisher can use it at the well-known path, otherwise it risks breaking consumers.",
+      "createdAt": "2023-04-12T17:09:05Z",
+      "updatedAt": "2024-03-06T11:44:13Z",
+      "closedAt": "2024-03-06T11:44:12Z",
+      "comments": [
+        {
+          "author": "kixelated",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I think we need the ability advertise multiple catalogs.\r\n\r\nFor example:\r\n- CMAF/v0\r\n- CMAF/v1\r\n- CUSTOM/v0\r\n\r\nWe do need a way to announce supported formats so the client doesn't blindly request them. This could either be delegated to the application, or we could announce available tracks/formats in the transport itself.",
+          "createdAt": "2023-04-12T17:14:04Z",
+          "updatedAt": "2023-04-12T17:17:01Z"
+        },
+        {
+          "author": "kixelated",
+          "authorAssociation": "COLLABORATOR",
+          "body": "And putting the format/version on the wire is a bit strange. The consumer should support a format/version BEFORE receiving it (either via a SUBSCRIBE or PUBLISH). Otherwise it's wasted bandwidth or a wasted round-trip.",
+          "createdAt": "2023-04-12T17:36:11Z",
+          "updatedAt": "2023-04-12T17:36:11Z"
+        },
+        {
+          "author": "wilaw",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> Every consumer MUST support a new format/version before the publisher can use it at the well-known path, otherwise it risks breaking consumers.\r\n\r\nThis is how HLS, DASH, RTMP, SRT, etc work today. The client already knows the format it wants to receive. I'm not sure we need to create a system that advertises multiple formats to a 'blind' client which then chooses one it recognizes. 99.9% of the time the client will already know, and yet we would have carry out this meta-format discovery step with each stream start.\r\n\r\nIf someone really DID want to create a super-set of other formats, they could create a streaming format whose CATALOG simply lists the other available format types and the track names on which they could be requested. The client would then subscribe to the main CATALOG, get the list of streaming formats, subscribe to that sub-catalog track, get the list of track IDs and then start subscribing. ",
+          "createdAt": "2023-04-19T22:19:11Z",
+          "updatedAt": "2023-04-19T22:19:11Z"
+        },
+        {
+          "author": "wilaw",
+          "authorAssociation": "COLLABORATOR",
+          "body": "A common catalog format is now available at https://datatracker.ietf.org/doc/draft-wilaw-moq-catalogformat/ \r\n \r\n",
+          "createdAt": "2023-10-02T18:32:15Z",
+          "updatedAt": "2023-10-02T18:32:15Z"
+        },
+        {
+          "author": "wilaw",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Closing as fixed by Common Catalog Format. [Example 3.4.11](https://moq-wg.github.io/catalog-format/draft-wilaw-moq-catalogformat.html#name-a-catalog-referencing-catal) \r\n\r\n```\r\n{\r\n  \"version\": 1,\r\n  \"sequence\": 0,\r\n  \"catalogs\": [\r\n    {\r\n      \"name\": \"catalog-for-format-one\",\r\n      \"namespace\": \"sports.example.com/games/08-08-23/live\",\r\n      \"streamingFormat\":1,\r\n      \"streamingFormatVersion\": \"0.2\"\r\n    },\r\n    {\r\n      \"name\": \"catalog-for-format-five\",\r\n      \"namespace\": \"chat.example.com/games/08-08-23/chat\",\r\n      \"streamingFormat\":5,\r\n      \"streamingFormatVersion\": \"1.6.2\"\r\n    }\r\n  ]\r\n}\r\n```",
+          "createdAt": "2024-03-06T11:44:12Z",
+          "updatedAt": "2024-03-06T11:44:12Z"
+        }
+      ]
+    },
+    {
+      "number": 8,
+      "id": "I_kwDOJTN4X85jPbhh",
+      "title": "Content \"protection\" and \"encryption\"",
+      "url": "https://github.com/moq-wg/warp-streaming-format/issues/8",
+      "state": "OPEN",
+      "author": "kixelated",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Heh sorry about ragging on the typos.\r\n\r\n> The catalog and media object payloads MAY be encrypted. Common Encryption with 'cbcs' mode (AES CBC with pattern encryption) is the RECOMMENDED encryption method.\r\n\r\nI know many people at IETF will take offense at the \"RECOMMENDED encryption method\". If you're just trying to obfuscate content with DRM (content protection), something like Common Encryption with AES CBC is fine (I believe only the mdat is encrypted). If you're _actually_ trying to protect content against an adversary, then want to encrypt the entire object payload with an AEAD.\r\n\r\nI don't think this section is necessary since we're delegating to CMAF anyway. ",
+      "createdAt": "2023-04-12T17:48:26Z",
+      "updatedAt": "2023-12-12T01:46:12Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "wilaw",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> I don't think this section is necessary since we're delegating to CMAF anyway.\r\n\r\nOne of the main interop problems with CMAF is that it supports multiple incompatible CENC options. I was hoping that MoQ could avoid these problems by mandating a single DRM scheme from the start. Is AEAD CMAF compliant? I don't think it is. We would therefore have a dilemma - keep the convenience of CMAF(CENC) , or fork it to add in the newer AEAD?                                                                                                           ",
+          "createdAt": "2023-04-19T22:32:16Z",
+          "updatedAt": "2023-04-19T22:32:16Z"
+        },
+        {
+          "author": "vitaly-castLabs",
+          "authorAssociation": "NONE",
+          "body": "Neither CENC nor mainstream DRM systems use AEAD ciphers since there's no need for media data authentication. The whole industry converged to 128-bit AES CBC as described in the CENC spec (cbcs), so it would make a lot of sense to lock it down to keep straying vendors in check (HW-secure PlayReady on my Windows laptop only supports 'cenc' scheme, go figure).\r\nThe whole section might well be \"Refer to the CMAF spec, but only 'cbcs' is allowed\".\r\n\r\nThe encryption scenario is very different and shouldn't be conflated with DRM. \"Encryption activists\" will definitely want AEAD, 256-bit AES, probably with a variety of ciphers to chose from (GCM, ChaCha20), no CENC-style \"clear ranges\", etc",
+          "createdAt": "2023-12-12T01:46:10Z",
+          "updatedAt": "2023-12-12T01:46:10Z"
+        }
+      ]
+    },
+    {
+      "number": 9,
+      "id": "I_kwDOJTN4X85jPhLE",
+      "title": "Publish Race",
+      "url": "https://github.com/moq-wg/warp-streaming-format/issues/9",
+      "state": "CLOSED",
+      "author": "kixelated",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "> A WMF publisher MUST publish a catalog track object before publishing any media track objects.\r\n\r\nThe publisher could write the catalog track first with higher priority than any media tracks, however packet loss could mean the media tracks arrive first. Since this is a MUST, would the consumer terminate the connection with an error if this occurs?\r\n\r\nThe publisher could wait until the catalog track arrives, but how does the publisher implement this? Would it wait for the entire stream to be acknowledged? However, acknowledgements don't guarantee that the stream has been processed (ex. QPACK). We would need an explicit application acknowledgement when the catalog has been processed, which of course incurs a round trip.\r\n\r\nThis explicit application acknowledgement is basically just a SUBSCRIBE. I would actually prohibit publishing any media tracks if that's the behavior we want.\r\n\r\nAlternatively, we could add text that the consumer MAY buffer unknown tracks. If the consumer receives an unknown track, then it can hold onto it until it receives a catalog referencing it. This is an optimization that WebTransport employs but it seems fundamentally required when using PUBLISH.",
+      "createdAt": "2023-04-12T18:05:29Z",
+      "updatedAt": "2023-06-02T20:47:04Z",
+      "closedAt": "2023-06-02T20:47:03Z",
+      "comments": [
+        {
+          "author": "kixelated",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I'm generally not a fan of the proposed PUBLISH message in Warp transport. It creates these sorts of race conditions and it requires that the publisher knows the consumer's intent. I would like to reduce the RTTs but I think it's premature.",
+          "createdAt": "2023-04-12T19:04:02Z",
+          "updatedAt": "2023-04-12T19:04:47Z"
+        },
+        {
+          "author": "wilaw",
+          "authorAssociation": "COLLABORATOR",
+          "body": "IN thinking this through further, if we assume 1) that a publisher only sends track data in response to a subscribe request (which is the model I prefer but I acknowledge we have not agreed to this yet in the MoQ Base Protocl discussions) and 2) that in order to know what to subscribe to a client must first  read the catalog, then we can remove the MUST as written and instead replace it with a requirement that a publisher always make a CATALOG track available if it has any other media track available. This itself may become a requirement of MOQ base protocol, in which case the WMF would inherit it and we can remove this statement completely from the WMF draft.",
+          "createdAt": "2023-04-19T21:44:26Z",
+          "updatedAt": "2023-04-19T21:44:26Z"
+        },
+        {
+          "author": "kixelated",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Yeah, I left a relevant PR review in: https://github.com/kixelated/warp-draft/pull/123\r\n\r\n> Going to -1 this until we talk more about the publish use-case. This feels like PUSH_PROMISE.\r\n>\r\n> The ability to publish is intended to remove a round-trip when the sender already knows the intent of the receiver. There has to be some form of coordination out of the scope of this specification, which automatically rules out generic clients.\r\n>\r\n> If this coordination of intent already exists, then receiver could just SUBSCRIBE immediately. I don't actually think it introduces an RTT because of SETUP currently works, and now is not the time to be nit-picking over startup RTTs anyway.\r\n>\r\n> The cost of PUBLISH is complexity and race conditions. OBJECTs arrive before they were requested, requiring some form of buffering and identification. We also need a way of saying \"pls no\" if the endpoints actually did not coordinate.\r\n\r\nI would propose that the receiver immediately issue a `SUBSCRIBE /catalog` (or another well-known path) to learn about the available tracks if this is not negotiated out-of-band. The SUBSCRIBE could even be sent along with the handshake with my control stream proposal: https://github.com/kixelated/warp-draft/issues/138",
+          "createdAt": "2023-04-19T22:03:54Z",
+          "updatedAt": "2023-04-19T22:03:54Z"
+        },
+        {
+          "author": "wilaw",
+          "authorAssociation": "COLLABORATOR",
+          "body": "The ANNOUNCE message of https://datatracker.ietf.org/doc/draft-lcurley-moq-transport/ address this issue. ",
+          "createdAt": "2023-06-02T20:47:03Z",
+          "updatedAt": "2023-06-02T20:47:03Z"
+        }
+      ]
+    },
+    {
+      "number": 10,
+      "id": "I_kwDOJTN4X85jPm6b",
+      "title": "CMAF Mapping",
+      "url": "https://github.com/moq-wg/warp-streaming-format/issues/10",
+      "state": "CLOSED",
+      "author": "kixelated",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "As proposed in #4, I think we can simplify the mapping:\r\n\r\n```\r\n|---------------------|----------------|----------------|-----------------|\r\n| Warp                | Catalog Object | Payload Group  | Payload Object  |\r\n|--------------------:|:---------------|----------------|-----------------|\r\n| CMAF {{CMAF}}       | CMAF Header    | CMAF Segment   | CMAF Fragment   |\r\n|---------------------|----------------|----------------|-----------------|\r\n```\r\n\r\nTo clarify:\r\n\r\n- There are any number of frames in a chunk (moof/mdat pair).\r\n- There are any number of chunks in a fragment (styp and moof/mdat pairs).\r\n- There are any number of fragments in a segment. (concatenated together)\r\n- A fragment* is independently decodable.\r\n\r\nIn order to minimize latency, there should be a chunk per frame, which is the same recommendation as LL-DASH.\r\n\r\nIf the object has a length in the header, then there should be a chunk per fragment too, but I desperately want to avoid that. That way there would be no latency impact for using a single OBJECT for the entire group.",
+      "createdAt": "2023-04-12T18:21:48Z",
+      "updatedAt": "2024-01-11T10:24:47Z",
+      "closedAt": "2024-01-11T10:24:46Z",
+      "comments": [
+        {
+          "author": "wilaw",
+          "authorAssociation": "COLLABORATOR",
+          "body": "The catalog object has to be more than just a CMAF header, since it must described multiple tracks and also communicate their subscription names. \r\n\r\nOn the GROUP and OBJECT mapping, I agree. The core requirement is that a sequence of OBJECTS is independently decodable if the client starts with the first object in a GROUP. This is satisfied with the restriction that a Group marks a fragment boundary, which is also satisfied by saying that the GROUP MUST represent a segment boundary, since each CMAF segment holds one of more fragments. COnsider the case of a 2s GOP at 30fps. The first OBJECT holds an I frame, the rest Ps. It would be compliant to mark a new GROUP every 30 Objects. It would also be compliant to mark a new group every 60 objects, which is the equivalent of transmitting a 4s segment comprising 2x2s fragments. ",
+          "createdAt": "2023-04-19T23:00:04Z",
+          "updatedAt": "2023-04-19T23:00:04Z"
+        },
+        {
+          "author": "wilaw",
+          "authorAssociation": "COLLABORATOR",
+          "body": "As an outcome of the discussions at ETF 117,  I wrote an ID to describe how CMAF packaged content can be utilized with moq-transport. This ID is available here https://datatracker.ietf.org/doc/draft-wilaw-moq-cmafpackaging/ \r\n\r\nThe WARP draft needs to be updated to reference this CMAF packaging draft. ",
+          "createdAt": "2023-10-02T17:55:59Z",
+          "updatedAt": "2023-10-02T17:55:59Z"
+        }
+      ]
+    },
+    {
+      "number": 13,
+      "id": "I_kwDOJTN4X85npS0s",
+      "title": "Does catalog specification need to be CMAF-specific?",
+      "url": "https://github.com/moq-wg/warp-streaming-format/issues/13",
+      "state": "CLOSED",
+      "author": "vasilvv",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "The document currently specifies both a catalog format, and how to bind CMAF into it.  Do we really need to tie those two?  I can imagine having a catalog that uses CMAF for video, and, say, a lower-overhead format for audio.  I also imagine that the mechanisms for specifying track locations, updating tracks, etc, do not actually depend on the format used, so it may be redundant to group those two.\r\n\r\nBack in the warp-draft04, we had the same catalog format for everything, but each track had its own format.  Would that make more sense?",
+      "createdAt": "2023-06-02T22:13:39Z",
+      "updatedAt": "2024-03-06T11:36:25Z",
+      "closedAt": "2024-03-06T11:36:25Z",
+      "comments": [
+        {
+          "author": "wilaw",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> The document currently specifies both a catalog format, and how to bind CMAF into it. Do we really need to tie those two?\r\n\r\nThe purpose of the draft is to define a Streaming Format that works with MoQ transport. Any workable \"streaming format\" requires a number of characteristics to be defined, such as a catalog format (how to describe what you have ), a media packaging format (for example, use CMAF), rules for streaming (for example, send one GOP per stream and increment the send order), rules for signaling the start and end of streams, authentication schemes etc. I anticipate that there is enough desire for catalog differentiation and format diversity, that trying to coerce every distributor to use a single catalog format is going to result in compromises and overhead. \r\n\r\nThe catalog format I have define in this draft meets the needs of most sports/live event/game broadcasters using low latency HLS or DASH today. I am reasonably sure it does not have the complexity to meet the needs of someone trying to stream VR or AR content, where there are more spatial and temporal constraints on, and relationships between, the tracks being advertised.  We could work to integrate that complexity in to a common catalog format, but then we'd be carrying of lot of overhead that would be unused for the majority of \"simple\" streaming cases. As I envision it, having a small number of streaming formats that are simple to implement and that serve different use-cases in the most efficient way possible, is preferable and more extensible than trying to munge everything in to one single catalog format.\r\n\r\n> I can imagine having a catalog that uses CMAF for video, and, say, a lower-overhead format for audio.\r\n\r\nThe catalog format defined currently leverages the convenience of the CMAF init segment to provide dual utility to the client: a concise description of the selection criteria (resolution, codec, bitrate etc) and the init data it needs to begin decoding the track. Since that is not immediately available with something like Ogg/Opus, we'd need to extend the catalog definition to allow alternate means for specifying the selection criteria and initializing the decoder. I'm not against this at all. The current draft is a direct extension of Luke's work on WARP, which constrained the packaging to CMAF. If there is WG consensus that we want to support alternate packaging formats under the WARP umbrella, then we can easily do that. We can also publish WARP as a CMAF-only streaming format and then create another streaming format that leverages multiple container types. ",
+          "createdAt": "2023-06-02T23:10:45Z",
+          "updatedAt": "2023-06-02T23:10:45Z"
+        },
+        {
+          "author": "vasilvv",
+          "authorAssociation": "NONE",
+          "body": "> The catalog format I have define in this draft meets the needs of most sports/live event/game broadcasters using low latency HLS or DASH today. I am reasonably sure it does not have the complexity to meet the needs of someone trying to stream VR or AR content, where there are more spatial and temporal constraints on, and relationships between, the tracks being advertised.\r\n\r\nSure, but I feel like the general problem of \"how do I encode adding or removing tracks\" and \"how do I encode relationship between two tracks\" is general enough that it would make more sense to define a common format for those, and then leave the specifics sufficiently extensible that the other formats can use those to build whatever they need.",
+          "createdAt": "2023-06-30T19:15:46Z",
+          "updatedAt": "2023-06-30T19:15:46Z"
+        },
+        {
+          "author": "wilaw",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> Sure, but I feel like the general problem of \"how do I encode adding or removing tracks\" and \"how do I encode relationship between two tracks\" is general enough that it would make more sense to define a common format for those, and then leave the specifics sufficiently extensible that the other formats can use those to build whatever they need.\r\n\r\nOK, so we could create a core catalog definition which all streaming formats then inherit and extend.  It would have elemental methods of add, delete tracks and some sort of ID to identify the streaming format being used.  The add() and remove() methods would contain streaming-format specific payloads. The relationship and dependencies between tracks could be expressed within those payloads, as well as initialization and selection data. This seems like something that could be added to the core moq-transport spec, if it is to be used consistently by all moq streaming formats?\r\n\r\n",
+          "createdAt": "2023-07-01T00:22:12Z",
+          "updatedAt": "2023-07-01T00:22:12Z"
+        },
+        {
+          "author": "vasilvv",
+          "authorAssociation": "NONE",
+          "body": "> This seems like something that could be added to the core moq-transport spec, if it is to be used consistently by all moq streaming formats?\r\n\r\nI think we've agreed before that moq-transport is for things that intermediaries might need to know about, so that probably does not belong there.  I'd start by moving catalog and CMAF bindings on top of it into a different sections, and then possibly discuss whether those need to be separate drafts.  Should I try writing a PR to see how this would look?",
+          "createdAt": "2023-07-18T00:04:49Z",
+          "updatedAt": "2023-07-18T00:04:49Z"
+        },
+        {
+          "author": "wilaw",
+          "authorAssociation": "COLLABORATOR",
+          "body": "@Victor - yes, please go ahead with a PR. In parallel, I am preparing a proposal for a new catalog format that would be a harmonized catalog between WARP and LOC. It will have the following attributes\r\n1. Common catalog structure with versioning and extensibility\r\n2. External reference to a packaging draft. -so CMAF and LOC can be used interchangeably.\r\n3. The add/remove track features of WARP\r\n4. Inheritance, for compactness\r\n5. Track relations from LOC\r\n6. Catalog delta updates from WARP",
+          "createdAt": "2023-07-20T10:22:30Z",
+          "updatedAt": "2023-07-20T11:12:19Z"
+        },
+        {
+          "author": "victor",
+          "authorAssociation": "NONE",
+          "body": "please be careful with your @-mentions",
+          "createdAt": "2023-08-01T19:01:00Z",
+          "updatedAt": "2023-08-01T19:01:00Z"
+        },
+        {
+          "author": "wilaw",
+          "authorAssociation": "COLLABORATOR",
+          "body": "A [catalog draft ](https://datatracker.ietf.org/doc/draft-wilaw-moq-catalogformat/ )has been developed , which is packaging agnostic. It has code points for CMAF and LOC but could support any number of packaging formats. \r\n\r\nCMAF specific packaging has been broken out in to its own [draft.](https://datatracker.ietf.org/doc/draft-wilaw-moq-cmafpackaging/)\r\n\r\nPR#[19](https://github.com/moq-wg/warp-streaming-format/pull/19)  updated  WARP Streaming Format to reference an external catalog definition\r\n\r\nPR[#20](https://github.com/moq-wg/warp-streaming-format/pull/20) Modifies document to reference external CMAF packaging draft\r\n\r\nThese actions address the OP.\r\n\r\n@vasilvv  - can this issue be closed as fixed? ",
+          "createdAt": "2024-01-30T22:20:48Z",
+          "updatedAt": "2024-01-30T22:20:48Z"
+        }
+      ]
+    },
+    {
+      "number": 14,
+      "id": "I_kwDOJTN4X85nyCEo",
+      "title": "What about SVC?",
+      "url": "https://github.com/moq-wg/warp-streaming-format/issues/14",
+      "state": "OPEN",
+      "author": "VMatrix1900",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "The draft currently says: \"Each group MUST be independently decodeable.\" If an enhanced layer depends on a base layer in SVC, does this **MUST** enforce the enhanced layer and the base layer to be put in the same group? ",
+      "createdAt": "2023-06-05T07:39:29Z",
+      "updatedAt": "2023-06-05T20:22:16Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "wilaw",
+          "authorAssociation": "COLLABORATOR",
+          "body": "The current draft, in requiring CMAF packaging, was written assuming non-SVC coding. This should probably be explicitly stated. The decoding requirements there are temporal, and not layered (as with SVC) or spatial (as with OMAF) and it was under those temporal constraints that the MUST was written.\r\n\r\nIt may well be desirable to add SVC support to this streaming format. In that case there are likely many changes that will be required. Should we add those requirements to the core streaming format, or would it be preferred to create a new streaming format that is focused on SVC delivery? My preference is for the latter, but group consensus may differ.",
+          "createdAt": "2023-06-05T20:22:16Z",
+          "updatedAt": "2023-06-05T20:22:16Z"
+        }
+      ]
+    },
+    {
+      "number": 16,
+      "id": "I_kwDOJTN4X85srHR0",
+      "title": "Support synchronization between unconnected clients",
+      "url": "https://github.com/moq-wg/warp-streaming-format/issues/16",
+      "state": "OPEN",
+      "author": "wilaw",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "A useful property of media players is for them to be synchronized in their playback of a live stream. By synchronized we mean that they render a media timestamp at that same (or within an allowed threshold of a given) wall-clock time. This avoids the social and commercial problems of sports events being heard at different times depending on their distribution channel, as well as legal problems for channels involving betting/gambling, which in some locations have a mandated maximum latency. ",
+      "createdAt": "2023-07-26T21:55:41Z",
+      "updatedAt": "2023-07-26T21:55:41Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 18,
+      "id": "I_kwDOJTN4X85sygwl",
+      "title": "Refactor catalog out of the Warp streaming format",
+      "url": "https://github.com/moq-wg/warp-streaming-format/issues/18",
+      "state": "CLOSED",
+      "author": "suhasHere",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "Creating this issue to track the discussions from IETF117 to remove the catalog section.",
+      "createdAt": "2023-07-27T20:38:46Z",
+      "updatedAt": "2023-12-11T18:25:55Z",
+      "closedAt": "2023-12-11T18:25:55Z",
+      "comments": []
+    },
+    {
+      "number": 22,
+      "id": "I_kwDOJTN4X851FRjW",
+      "title": "How does the client learn about group numbers and their relationship to media time and wallclock time?",
+      "url": "https://github.com/moq-wg/warp-streaming-format/issues/22",
+      "state": "OPEN",
+      "author": "wilaw",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "The subscription hints allow a client to seek to an absolute group number. How would a WARP player discover absolute group numbers that it had not received?\r\n\r\nOne suggestion has been the addition of a timeline track. This track would supply an array of offsets of group number to media time and wallclock time. Group boundaries could supply the complete history and delta updates would supply relative changes. Payload would be binary. This schema allows for variable group durations. \r\n\r\n```\r\n// Group number, wall-clock time, media PTS\r\n[\r\n{0,1698351160362,0}\r\n{1,1698353162,2002}\r\n{2,1698355164,4004}\r\n...\r\n{3745,1705848650,7497490}\r\n]\r\n```\r\n\r\nAs a refinement we could consider two timeline tracks. \r\n- A \"complete\" timeline track contains all groups since the track and updates as described above. \r\n- A \"live edge\" timeline contains a single object per group and only contains the latest group data. \r\n\r\nA player could start playback by subscribing to the \"live edge\" timeline and only subscribe to the complete timeline if it needed to build a scrub bar or seek. ",
+      "createdAt": "2023-10-26T20:24:28Z",
+      "updatedAt": "2023-10-26T20:24:28Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 23,
+      "id": "I_kwDOJTN4X854M5pJ",
+      "title": "Encryption/DRM info for CMAF ",
+      "url": "https://github.com/moq-wg/warp-streaming-format/issues/23",
+      "state": "OPEN",
+      "author": "acbegen",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "Any plans for providing this info for CMAF selectionParams ?",
+      "createdAt": "2023-09-30T10:49:09Z",
+      "updatedAt": "2023-11-29T13:53:33Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "suhasHere",
+          "authorAssociation": "NONE",
+          "body": "I think this should go in the WARP spec",
+          "createdAt": "2023-10-11T14:20:35Z",
+          "updatedAt": "2023-10-11T14:20:35Z"
+        },
+        {
+          "author": "wilaw",
+          "authorAssociation": "COLLABORATOR",
+          "body": "The streaming format spec can define what parameters to place, however the catalog should still provide a harmonized location to hold DRM info. \r\n\r\nA DASH manifest snippet is shown below. We would need to hold similar information if the catalog is to adequately describe CENC-protected content. We should also be concerned with conciseness, as DRM info can be large compared to the rest of the catalog and we don't want to repeat it for each track if it is common. \r\n\r\n```\r\n<ContentProtection value=\"cenc\" schemeIdUri=\"urn:mpeg:dash:mp4protection:2011\"  cenc:default_KID=\"80399bf5-8a21-4014-8053-e27e748e98c0\" />\r\n<ContentProtection value=\"MSPR 2.0\" schemeIdUri=\"urn:uuid:9a04f079-9840-4286-ab92-e65be0885f95\">\r\n\t<cenc:pssh>AAAB...</cenc:pssh>\r\n        <pro xmlns=\"urn:microsoft:playready\">xAEA...</pro>\r\n</ContentProtection>\r\n<ContentProtection value=\"Widevine\" schemeIdUri=\"urn:uuid:edef8ba9-79d6-4ace-a3c8-27dcd51d21ed\">\r\n\t<cenc:pssh>AAAA...</cenc:pssh>\r\n</ContentProtection>\r\n```\r\nI propose the following new catalog elements\r\n\r\n\r\n\r\nField | Name | Required | Location | JSON type | Definition\r\n| ------| -----| ---------| ---------|------------|------------|\r\n|Content Protection  | contentProtection | opt | R | Array| Holds a series of content protection objects|\r\n|Content Protection scheme | cpScheme | opt | CP | String| Defines the content protection scheme|\r\n|Content Protection value | cpValue | opt | CP | String| Defines the content protection scheme value|\r\n|Default key ID | defaultKID | opt | CP | String| Defines the default key ID for CENC protected content|\r\n|Protection System Specific Header  | pssh| opt | CP | String| Defines the base64 encoded contents of the pssh box |\r\n|PlayReady Object | pro | opt | CP | String| Defines the base64 encoded contents of the Playready Object |\r\n|Content protection reference ID| cpID | R | CP | String| Provides a reference ID to the content protection object |\r\n|Content protection IDs | contentProtectionID | opt | RT | Array | Holds an array of Content protection reference IDs |\r\n\r\nA resultant catalog might look like this for CMAF content in which all tracks are protected with Playready and Widevine via CENC, but the 4K track is only offered in Playready. \r\n\r\n```\r\n{\r\n  \"version\": 1,\r\n  \"sequence\": 0,\r\n  \"streamingFormat\": 1,\r\n  \"streamingFormatVersion\": \"0.2\",\r\n  \"namespace\": \"sports.example.com/games/08-08-23/12345\",\r\n  \"packaging\": \"cmaf\",\r\n  \"renderGroup\":1,\r\n  \"contentProtection\": [\r\n      { \"cpID\":\"1\",\r\n        \"value\":\"cenc\",\r\n        \"schemeID\":\"urn:mpeg:dash:mp4protection:2011\",\r\n        \"defaultKID\":\"80399bf5-8a21-4014-8053-e27e748e98c0\"\r\n      },\r\n      { \"cpID\":\"2\",\r\n        \"value\":\"MSPR 2.0\",\r\n        \"schemeID\":\"urn:uuid:9a04f079-9840-4286-ab92-e65be0885f95\",\r\n        \"pssh\":\"AAAB..\",\r\n        \"pro\":\"xAEA...\"\r\n      },\r\n      { \"cpID\":\"3\",\r\n        \"value\":\"Widevine\",\r\n        \"schemeID\":\"urn:uuid:edef8ba9-79d6-4ace-a3c8-27dcd51d21ed\",\r\n        \"pssh\":\"AAAA..\"\r\n      }\r\n  ],\r\n  \"contentProtectionID\": [\"1\",\"2\",\"3\"],\r\n  \"tracks\": [\r\n    {\r\n      \"name\": \"video_4k\",\r\n      \"selectionParams\":{\"codec\":\"avc1.640033\",\"mimeType\":\"video/mp4\",\"width\":3840,\"height\":2160,\"framerate\":30,\"bitrate\":14931538},\r\n      \"initTrack\":\"init_video_4k\",\r\n      \"altGroup\": 1,\r\n      \"contentProtectionID\": [\"1\",\"2\"]\r\n    },\r\n    {\r\n      \"altGroup\": \"video_1080\",\r\n      \"selectionParams\":{\"codec\":\"avc1.640028\",\"mimeType\":\"video/mp4\",\"width\":1920,\"height\":1080,\"framerate\":30,\"bitrate\":9914554},\r\n      \"initTrack\":\"init_video_1080\",\r\n      \"altGroup\": 1\r\n    },\r\n    {\r\n      \"altGroup\": \"video_720\",\r\n      \"selectionParams\":{\"codec\":\"avc1.64001f\",\"mimeType\":\"video/mp4\",\"width\":1280,\"height\":720,\"framerate\":30,\"bitrate\":4952892},\r\n      \"initTrack\":\"init_video_720\",\r\n      \"altGroup\": 1\r\n    },\r\n    {\r\n      \"altGroup\": \"audio_aac\",\r\n      \"selectionParams\":{\"codec\":\"mp4a.40.5\",\"mimeType\":\"audio/mp4\",\"samplerate\":48000,\"channelConfig\":\"2\",\"bitrate\":67071},\r\n      \"initTrack\":\"init_audio_aac\",\r\n      \"altGroup\": 2\r\n    },\r\n    {\r\n      \"name\": \"audio_ec3\",\r\n      \"selectionParms\":{\"codec\":\"ec-3\",\"mimeType\":\"audio/mp4\",\"samplerate\":48000,\"channelConfig\":\"F801\",\"bitrate\":256000},\r\n      \"initTrack\":\"init_audio_ec3\",\r\n      \"altGroup\": 2\r\n    }\r\n   ]\r\n}\r\n```\r\n\r\n\r\n\r\n\r\n",
+          "createdAt": "2023-11-03T11:28:47Z",
+          "updatedAt": "2023-11-03T11:28:47Z"
+        },
+        {
+          "author": "acbegen",
+          "authorAssociation": "NONE",
+          "body": "This is fine and is actually a good example why these fields should be registered/maintained by the IANA (we might be missing something today and want to add it quickly in the future).",
+          "createdAt": "2023-11-03T17:50:38Z",
+          "updatedAt": "2023-11-03T17:50:38Z"
+        },
+        {
+          "author": "wilaw",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Based on discussion at [IETF 118](https://notes.ietf.org/notes-ietf-118-moq), feedback was that catalog itself should not have these CMAF specific fields, but rather that it should be extensible and then the streaming format(s) which wanted to use DRM would define custom extensions to hold that information. ",
+          "createdAt": "2023-11-29T13:52:10Z",
+          "updatedAt": "2023-11-29T13:52:10Z"
+        }
+      ]
+    },
+    {
+      "number": 24,
+      "id": "I_kwDOJTN4X86HvTRy",
+      "title": "Add in support for LOC packaging",
+      "url": "https://github.com/moq-wg/warp-streaming-format/issues/24",
+      "state": "OPEN",
+      "author": "wilaw",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "The current version of WARP only references CMAF packaging and does not make it clear that WARP is also intended to support LOC (Low Overhaded Container) packaging.\r\n\r\nLOC is defined by https://www.ietf.org/archive/id/draft-mzanaty-moq-loc-03.html. \r\n\r\nCurrently the LOC spec defines both a streaming format and a packaging format. Reference for packaging will therefore need to be made to specific subsections of that draft. In the future if LOC packaging is separated from LOC streaming format, then the WARP references can be updated. ",
+      "createdAt": "2024-05-03T09:51:36Z",
+      "updatedAt": "2024-05-03T09:51:37Z",
+      "closedAt": null,
+      "comments": []
+    }
+  ],
+  "pulls": [
+    {
+      "number": 3,
+      "id": "PR_kwDOJTN4X85OD_jD",
+      "title": "Add a \"mapping\" section.",
+      "url": "https://github.com/moq-wg/warp-streaming-format/pull/3",
+      "state": "CLOSED",
+      "author": "kixelated",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Indicates the high-level relationship between media and the generic transport. This section will be true regardless of the specific encoding used.\r\n\r\n@suhasHere @fluffy @huitema @vasilvv @afrind",
+      "createdAt": "2023-04-11T21:04:54Z",
+      "updatedAt": "2023-04-20T23:31:51Z",
+      "baseRepository": "moq-wg/warp-streaming-format",
+      "baseRefName": "main",
+      "baseRefOid": "fd8f93cbd6d788a66c181cfa9aa9df6e16e128fe",
+      "headRepository": "moq-wg/warp-streaming-format",
+      "headRefName": "mapping",
+      "headRefOid": "aa030fed5d27eb92fc6ef63819b8d656adf0c1d0",
+      "closedAt": "2023-04-20T23:31:51Z",
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJTN4X85TCCIy",
+          "commit": {
+            "abbreviatedOid": "aa030fe"
+          },
+          "author": "wilaw",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-04-20T00:22:44Z",
+          "updatedAt": "2023-04-20T00:22:44Z",
+          "comments": [
+            {
+              "originalPosition": 6,
+              "body": "```suggestion\r\nWarp Media Format is split into two components:\r\n```",
+              "createdAt": "2023-04-20T00:22:44Z",
+              "updatedAt": "2023-04-20T00:22:44Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJTN4X85TCDek",
+          "commit": {
+            "abbreviatedOid": "aa030fe"
+          },
+          "author": "wilaw",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-04-20T00:31:37Z",
+          "updatedAt": "2023-04-20T00:31:37Z",
+          "comments": [
+            {
+              "originalPosition": 29,
+              "body": "Doesn't this contravene the requirement that groups MUST be independently decodable? ",
+              "createdAt": "2023-04-20T00:31:37Z",
+              "updatedAt": "2023-04-20T00:31:37Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJTN4X85TCEA0",
+          "commit": {
+            "abbreviatedOid": "aa030fe"
+          },
+          "author": "wilaw",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-04-20T00:36:06Z",
+          "updatedAt": "2023-04-20T00:36:06Z",
+          "comments": [
+            {
+              "originalPosition": 38,
+              "body": "This 'recap' language is good for a presentation, but we don't need it in a spec. The spec does not need to provide background info. It should be normative, with the minimum informative text to make it understandable. ",
+              "createdAt": "2023-04-20T00:36:06Z",
+              "updatedAt": "2023-04-20T00:36:06Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJTN4X85TCfHJ",
+          "commit": {
+            "abbreviatedOid": "aa030fe"
+          },
+          "author": "wilaw",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-04-20T03:39:30Z",
+          "updatedAt": "2023-04-20T03:39:30Z",
+          "comments": [
+            {
+              "originalPosition": 47,
+              "body": "Should this spec be more deterministic about what these configurations are? Should they be profiles of Warp media? This language is very loose. We should define possible configurations and make them deterministic and interoperable. ",
+              "createdAt": "2023-04-20T03:39:30Z",
+              "updatedAt": "2023-04-20T03:39:30Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "id": "PR_kwDOJTN4X85OJuR8",
+      "title": "Alternate text about CMAF.",
+      "url": "https://github.com/moq-wg/warp-streaming-format/pull/4",
+      "state": "CLOSED",
+      "author": "kixelated",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "I rewrote this text, but it doesn't mean that it's better. Let me know what you think.",
+      "createdAt": "2023-04-12T16:44:29Z",
+      "updatedAt": "2023-04-20T23:31:45Z",
+      "baseRepository": "moq-wg/warp-streaming-format",
+      "baseRefName": "main",
+      "baseRefOid": "fd8f93cbd6d788a66c181cfa9aa9df6e16e128fe",
+      "headRepository": "moq-wg/warp-streaming-format",
+      "headRefName": "cmaf",
+      "headRefOid": "9437f7cea491f674f6676d6ee66baf017a9ba6df",
+      "closedAt": "2023-04-20T23:31:45Z",
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 5,
+      "id": "PR_kwDOJTN4X85OJuaF",
+      "title": "Add a track formats registry.",
+      "url": "https://github.com/moq-wg/warp-streaming-format/pull/5",
+      "state": "CLOSED",
+      "author": "kixelated",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "The CMAF catalog track includes the format/version on the wire right now. However the CMAF payload track does not include a format/version. It would be nice to reuse the track format, requiring a field in the registry.",
+      "createdAt": "2023-04-12T16:44:58Z",
+      "updatedAt": "2023-04-20T23:31:39Z",
+      "baseRepository": "moq-wg/warp-streaming-format",
+      "baseRefName": "main",
+      "baseRefOid": "fd8f93cbd6d788a66c181cfa9aa9df6e16e128fe",
+      "headRepository": "moq-wg/warp-streaming-format",
+      "headRefName": "formats",
+      "headRefOid": "d3c67d98302b6a6ac087c12351d877cc1be9577d",
+      "closedAt": "2023-04-20T23:31:39Z",
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 11,
+      "id": "PR_kwDOJTN4X85PW9mY",
+      "title": "Adding delta catalog updates",
+      "url": "https://github.com/moq-wg/warp-streaming-format/pull/11",
+      "state": "MERGED",
+      "author": "wilaw",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Fixes #6",
+      "createdAt": "2023-04-28T07:13:28Z",
+      "updatedAt": "2023-05-16T17:44:38Z",
+      "baseRepository": "moq-wg/warp-streaming-format",
+      "baseRefName": "main",
+      "baseRefOid": "fd8f93cbd6d788a66c181cfa9aa9df6e16e128fe",
+      "headRepository": "moq-wg/warp-streaming-format",
+      "headRefName": "wilaw-patch-1",
+      "headRefOid": "c63cbccc0ea7bb4fedcb3c45c5151d7d460d809c",
+      "closedAt": "2023-05-16T17:44:32Z",
+      "mergedAt": "2023-05-16T17:44:32Z",
+      "mergedBy": "wilaw",
+      "mergeCommit": {
+        "oid": "2b753a51d8f9460a96b0a3901179f08812f06444"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 12,
+      "id": "PR_kwDOJTN4X85SCSay",
+      "title": "Update draft-law-moq-warpmedia.md",
+      "url": "https://github.com/moq-wg/warp-streaming-format/pull/12",
+      "state": "MERGED",
+      "author": "wilaw",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Updates to refer to latest version of https://datatracker.ietf.org/doc/draft-lcurley-moq-transport/.\r\nFixes naming references. ",
+      "createdAt": "2023-06-02T20:54:56Z",
+      "updatedAt": "2023-06-02T21:00:26Z",
+      "baseRepository": "moq-wg/warp-streaming-format",
+      "baseRefName": "main",
+      "baseRefOid": "08f9e0c6010fde10643779fb76538b6612f9c9b0",
+      "headRepository": "moq-wg/warp-streaming-format",
+      "headRefName": "wilaw-patch-1",
+      "headRefOid": "af8d3549d3736c0d5beaba9a42bb75562ac0d3e5",
+      "closedAt": "2023-06-02T21:00:20Z",
+      "mergedAt": "2023-06-02T21:00:20Z",
+      "mergedBy": "wilaw",
+      "mergeCommit": {
+        "oid": "d43984bfae3b87ac98a7f4e47ede614e5e84e949"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 15,
+      "id": "PR_kwDOJTN4X85SdrN9",
+      "title": "Update and rename draft-law-moq-warpmedia.md to draft-law-moq-warpstr\u2026",
+      "url": "https://github.com/moq-wg/warp-streaming-format/pull/15",
+      "state": "MERGED",
+      "author": "wilaw",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Changing name to draft-law-moq-warpstreamingformat to match consensus at last authors call. ",
+      "createdAt": "2023-06-07T23:38:04Z",
+      "updatedAt": "2023-06-07T23:40:08Z",
+      "baseRepository": "moq-wg/warp-streaming-format",
+      "baseRefName": "main",
+      "baseRefOid": "6918b1f346a0d9f48f1e8f01e4460e1962da6200",
+      "headRepository": "moq-wg/warp-streaming-format",
+      "headRefName": "wilaw-patch-1",
+      "headRefOid": "4b16ee30ed6e34f67f8542fa7bb1d6c9ae910349",
+      "closedAt": "2023-06-07T23:40:04Z",
+      "mergedAt": "2023-06-07T23:40:04Z",
+      "mergedBy": "wilaw",
+      "mergeCommit": {
+        "oid": "11f0cccff2dea14c307ba454a598801585343045"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 17,
+      "id": "PR_kwDOJTN4X85WfSw6",
+      "title": "Update README.md",
+      "url": "https://github.com/moq-wg/warp-streaming-format/pull/17",
+      "state": "MERGED",
+      "author": "wilaw",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Fixing link to editors draft",
+      "createdAt": "2023-07-26T22:24:25Z",
+      "updatedAt": "2024-07-08T15:01:52Z",
+      "baseRepository": "moq-wg/warp-streaming-format",
+      "baseRefName": "main",
+      "baseRefOid": "1f5d46686d4d014babce06463a66c52d0c103981",
+      "headRepository": "moq-wg/warp-streaming-format",
+      "headRefName": "wilaw-patch-1",
+      "headRefOid": "5477104a78caf26ae2b43b495e6942f82d460508",
+      "closedAt": "2023-07-26T22:24:40Z",
+      "mergedAt": "2023-07-26T22:24:40Z",
+      "mergedBy": "wilaw",
+      "mergeCommit": {
+        "oid": "3cbcd5592e7f96d24b69cf8635af2f6c4b036e79"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 19,
+      "id": "PR_kwDOJTN4X85Zr7CQ",
+      "title": "Update WARP Streaming Format to reference an external catalog definition",
+      "url": "https://github.com/moq-wg/warp-streaming-format/pull/19",
+      "state": "MERGED",
+      "author": "wilaw",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Fixes #18",
+      "createdAt": "2023-09-06T13:55:19Z",
+      "updatedAt": "2023-12-11T18:25:58Z",
+      "baseRepository": "moq-wg/warp-streaming-format",
+      "baseRefName": "main",
+      "baseRefOid": "3cbcd5592e7f96d24b69cf8635af2f6c4b036e79",
+      "headRepository": "moq-wg/warp-streaming-format",
+      "headRefName": "wilaw-patch-2",
+      "headRefOid": "8a97ccbfaad10e045f43fdf57f428ecd32fb5dc6",
+      "closedAt": "2023-12-11T18:25:54Z",
+      "mergedAt": "2023-12-11T18:25:54Z",
+      "mergedBy": "wilaw",
+      "mergeCommit": {
+        "oid": "6989b811149ac000c2e6ead14ffbcb849f880854"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJTN4X85i19uy",
+          "commit": {
+            "abbreviatedOid": "8a97ccb"
+          },
+          "author": "suhasHere",
+          "authorAssociation": "NONE",
+          "state": "CHANGES_REQUESTED",
+          "body": "",
+          "createdAt": "2023-10-04T19:10:26Z",
+          "updatedAt": "2023-10-04T19:10:34Z",
+          "comments": [
+            {
+              "originalPosition": 92,
+              "body": "we should also add at group boundaries the catalog object MUST BE non-delta update.",
+              "createdAt": "2023-10-04T19:10:26Z",
+              "updatedAt": "2023-10-04T19:10:34Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJTN4X85pW_bI",
+          "commit": {
+            "abbreviatedOid": "8a97ccb"
+          },
+          "author": "wilaw",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-12-06T13:55:41Z",
+          "updatedAt": "2023-12-06T13:55:42Z",
+          "comments": [
+            {
+              "originalPosition": 92,
+              "body": "The existing language \"The first catalog object published within a new group MUST be independent\" already adds this requirement. ",
+              "createdAt": "2023-12-06T13:55:41Z",
+              "updatedAt": "2023-12-06T13:55:42Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJTN4X85p2Lnu",
+          "commit": {
+            "abbreviatedOid": "8a97ccb"
+          },
+          "author": "suhasHere",
+          "authorAssociation": "NONE",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-12-11T17:54:47Z",
+          "updatedAt": "2023-12-11T17:54:47Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 20,
+      "id": "PR_kwDOJTN4X85bsmX3",
+      "title": "Modifies document to reference external CMAF packaging draft.",
+      "url": "https://github.com/moq-wg/warp-streaming-format/pull/20",
+      "state": "MERGED",
+      "author": "wilaw",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Modifies document to reference external CMAF packaging draft.  Fixes #10 .",
+      "createdAt": "2023-10-02T17:57:51Z",
+      "updatedAt": "2024-01-11T10:24:51Z",
+      "baseRepository": "moq-wg/warp-streaming-format",
+      "baseRefName": "main",
+      "baseRefOid": "3cbcd5592e7f96d24b69cf8635af2f6c4b036e79",
+      "headRepository": "moq-wg/warp-streaming-format",
+      "headRefName": "wilaw-patch-3",
+      "headRefOid": "b7cb439fecadefc69807062b39ec521070dbbf64",
+      "closedAt": "2024-01-11T10:24:46Z",
+      "mergedAt": "2024-01-11T10:24:45Z",
+      "mergedBy": "wilaw",
+      "mergeCommit": {
+        "oid": "1584d6e5860a37b4f7e43b716d947797132248af"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJTN4X85i2DGb",
+          "commit": {
+            "abbreviatedOid": "63ad9ef"
+          },
+          "author": "suhasHere",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-04T19:25:33Z",
+          "updatedAt": "2023-10-04T19:25:33Z",
+          "comments": [
+            {
+              "originalPosition": 34,
+              "body": "I feel the wording is confusing here.",
+              "createdAt": "2023-10-04T19:25:33Z",
+              "updatedAt": "2023-10-04T19:25:33Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJTN4X85pzgta",
+          "commit": {
+            "abbreviatedOid": "63ad9ef"
+          },
+          "author": "wilaw",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-12-11T13:12:14Z",
+          "updatedAt": "2023-12-11T13:12:14Z",
+          "comments": [
+            {
+              "originalPosition": 34,
+              "body": "I'm not sure what is confusing about `Each CMAF Fragment is placed in a single MOQT Object and there is one MOQT Object per MOQT Group`? CMAF Fragments, MOQT Objects and MOQT Groups are all defined entities. Can you propose some language you consider less confusing? ",
+              "createdAt": "2023-12-11T13:12:14Z",
+              "updatedAt": "2023-12-11T13:12:40Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJTN4X85sMafw",
+          "commit": {
+            "abbreviatedOid": "63ad9ef"
+          },
+          "author": "wilaw",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-01-11T10:24:33Z",
+          "updatedAt": "2024-01-11T10:24:33Z",
+          "comments": [
+            {
+              "originalPosition": 34,
+              "body": "Received comment from Suhas via Webex \"the above PR looks good Will .. i re-read once more and you are right\". Will merge. ",
+              "createdAt": "2024-01-11T10:24:33Z",
+              "updatedAt": "2024-01-11T10:24:33Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
