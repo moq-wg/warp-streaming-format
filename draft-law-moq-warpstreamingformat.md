@@ -48,6 +48,7 @@ normative:
   MoQTransport: I-D.lcurley-moq-transport
   CMAFpackaging: I-D.draft-wilaw-moq-cmafpackaging
   RFC9000: RFC9000
+  RFC4180: RFC4180
   COMMON-CATALOG-FORMAT:
     title: "Common Catalog Format for moq-transport"
     date: September 6, 2023
@@ -134,9 +135,32 @@ The catalog track MUST have a track name of "catalog". A catalog object MAY be i
 Each catalog update MUST be mapped to a discreet moq-transport object.
 
 
-
 # Media transmission
 The MOQT Groups and MOQT Objects need to be mapped to moq-transport Streams. Irrespective of the {{packagingmode}} in place, each MOQT Object MUST be mapped to a new moq-transport Stream.
+
+# Timeline track
+
+The timeline track provides data about the previously published groups and their relationship to wallclock time, media time and associated timed-metadata. Timeline tracks allow players to seek to precise points behind the live head in a live broadcast, or for random access in a VOD asset. A timeline track may also be used to insert events at media times which do not correlate with Object boundaries. Timeline tracks are optional. Multiple timeline tracks MAY exist inside a catalog.
+
+## Timeline track payload
+
+The payload of a timeline track is a UTF-8 encoded CSV text file. This payload is formatted according to RFC8140 "Common Format and MIME Type for Comma-Separated Values (CSV)" Files {{RFC8140}}. The separator is a comma and each line is separated by a carriage return. The mime-type of a timeline track MUST be specified as "text/csv" in the catalog.
+
+Each timeline track begins with a header row of MEDIA_PTS,GROUP_ID,OBJECT_ID,WALLCLOCK,METADATA. This row defines the 5 columns of data within each record.
+
+* MEDIA_PTS: a media timestamp rounded to the nearest millisecond. This entry MUST not be empty. If the Object ID entry is present, then this value MUST match the media presentation timestamp of the first media sample in the referenced Object.
+* GROUP_ID: the MOQT Group ID. This entry MAY be empty.
+* OBJECT_ID: the MOQT Object ID. This entry MAY be empty.
+* WALLCLOCK: the wallclock time at which the media was encoded, expressed as the number of milliseconds that have elapsed since January 1, 1970 (midnight UTC/GMT). For VOD assets, or if the wallclock time is not known, the value SHOULD be 0.
+* METADATA: a flexible field holding arbitrary string metadata. This field may be empty. If not empty, it MUST be enclosed in double quotes. A double-quote appearing inside this field MUST be escaped by preceding it with another double quote.
+
+## Timeline Catalog requirements
+A timeline track MUST carry a 'type' identifier in the Catalog with a value of "timeline".
+A timeline track MUST carry a 'dependencies' attribute which contains an array of all track names to which the timeline track applies.
+
+## Timeline track updating.
+The publisher MUST publish a complete timeline in the first MOQT Object of each MOQT Group.
+The publisher MAY publish incremental updates in the second and subsequent Objects within each GROUP. Incremental updates only contain timeline events since the last timeline Object. Group duration SHOULD not exceed 30 seconds.
 
 # Workflow
 
