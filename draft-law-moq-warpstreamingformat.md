@@ -144,7 +144,7 @@ The timeline track provides data about the previously published groups and their
 
 ## Timeline track payload
 
-The payload of a timeline track is a UTF-8 encoded CSV text file. This payload is formatted according to RFC8140 "Common Format and MIME Type for Comma-Separated Values (CSV)" Files {{RFC8140}}. The separator is a comma and each line is separated by a carriage return. The mime-type of a timeline track MUST be specified as "text/csv" in the catalog.
+The payload of a timeline track is a UTF-8 encoded CSV text file. This payload is formatted according to RFC4180 "Common Format and MIME Type for Comma-Separated Values (CSV)" Files {{RFC4180}}. The separator is a comma and each line is separated by a carriage return. The mime-type of a timeline track MUST be specified as "text/csv" in the catalog.
 
 Each timeline track begins with a header row of MEDIA_PTS,GROUP_ID,OBJECT_ID,WALLCLOCK,METADATA. This row defines the 5 columns of data within each record.
 
