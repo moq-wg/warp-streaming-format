@@ -1034,7 +1034,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Law, et al.</td>
-<td class="center">Expires 9 January 2025</td>
+<td class="center">Expires 24 January 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1047,12 +1047,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-law-moq-warpstreamingformat-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-07-08" class="published">8 July 2024</time>
+<time datetime="2024-07-23" class="published">23 July 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-01-09">9 January 2025</time></dd>
+<dd class="expires"><time datetime="2025-01-24">24 January 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1118,7 +1118,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 9 January 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 24 January 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1157,13 +1157,16 @@ svg :is([fill="white"], [fill^="#fff"]) {
             <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-media-packaging" class="internal xref">Media packaging</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1">
-                <p id="section-toc.1-1.3.2.1.1" class="keepWithNext"><a href="#section-3.1" class="auto internal xref">3.1</a>.  <a href="#name-packaging-mode" class="internal xref">Packaging mode</a></p>
+                <p id="section-toc.1-1.3.2.1.1" class="keepWithNext"><a href="#section-3.1" class="auto internal xref">3.1</a>.  <a href="#name-cmaf-packaging" class="internal xref">CMAF packaging</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2">
-                <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="auto internal xref">3.2</a>.  <a href="#name-time-alignment" class="internal xref">Time-alignment</a></p>
+                <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="auto internal xref">3.2</a>.  <a href="#name-loc-packaging" class="internal xref">LOC packaging</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3">
-                <p id="section-toc.1-1.3.2.3.1"><a href="#section-3.3" class="auto internal xref">3.3</a>.  <a href="#name-content-protection-and-encr" class="internal xref">Content protection and encryption</a></p>
+                <p id="section-toc.1-1.3.2.3.1"><a href="#section-3.3" class="auto internal xref">3.3</a>.  <a href="#name-time-alignment" class="internal xref">Time-alignment</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.4">
+                <p id="section-toc.1-1.3.2.4.1"><a href="#section-3.4" class="auto internal xref">3.4</a>.  <a href="#name-content-protection-and-encr" class="internal xref">Content protection and encryption</a></p>
 </li>
             </ul>
 </li>
@@ -1221,56 +1224,33 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
       <h2 id="name-media-packaging">
 <a href="#section-3" class="section-number selfRef">3. </a><a href="#name-media-packaging" class="section-name selfRef">Media packaging</a>
       </h2>
-<p id="section-3-1">WARP delivers CMAF-packaged media bitstreams. This specification references <span>[<a href="#CMAFpackaging" class="cite xref">CMAFpackaging</a>]</span> to define how CMAF packaged bitstreams are mapped to <span>[<a href="#MoQTransport" class="cite xref">MoQTransport</a>]</span> groups and objects.<a href="#section-3-1" class="pilcrow">¶</a></p>
-<p id="section-3-2">Both CMAF Object mappings <span>[<a href="#CMAFpackaging" class="cite xref">CMAFpackaging</a>]</span> Section 4 are supported and a content producer may use either. To identify to consumers which object mapping mode is being used for a given Track, a new track field is defined as per table 1.<a href="#section-3-2" class="pilcrow">¶</a></p>
-<table class="center" id="table-1">
-        <caption><a href="#table-1" class="selfRef">Table 1</a></caption>
-<thead>
-          <tr>
-            <th class="text-left" rowspan="1" colspan="1">Field</th>
-            <th class="text-left" rowspan="1" colspan="1">Name</th>
-            <th class="text-left" rowspan="1" colspan="1">Required</th>
-            <th class="text-left" rowspan="1" colspan="1">Location</th>
-            <th class="text-left" rowspan="1" colspan="1">JSON type</th>
-            <th class="text-left" rowspan="1" colspan="1">Definition</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="text-left" rowspan="1" colspan="1">WARP packaging mode</td>
-            <td class="text-left" rowspan="1" colspan="1">warp-packaging</td>
-            <td class="text-left" rowspan="1" colspan="1">yes</td>
-            <td class="text-left" rowspan="1" colspan="1">RT</td>
-            <td class="text-left" rowspan="1" colspan="1">String</td>
-            <td class="text-left" rowspan="1" colspan="1">See <a href="#packagingmode" class="auto internal xref">Section 3.1</a>
-</td>
-          </tr>
-        </tbody>
-      </table>
-<div id="packagingmode">
+<p id="section-3-1">WARP delivers CMAF <span>[<a href="#CMAF" class="cite xref">CMAF</a>]</span> and LOC <span>[<a href="#LOC" class="cite xref">LOC</a>]</span> packaged media bitstreams. Either format may be used in a broadcast, or they may be intermixed between tracks. The packaging format of a track, once declared, <span class="bcp14">MUST</span> remain constant.<a href="#section-3-1" class="pilcrow">¶</a></p>
+<div id="cmaf-packaging">
 <section id="section-3.1">
-        <h3 id="name-packaging-mode">
-<a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-packaging-mode" class="section-name selfRef">Packaging mode</a>
+        <h3 id="name-cmaf-packaging">
+<a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-cmaf-packaging" class="section-name selfRef">CMAF packaging</a>
         </h3>
-<p id="section-3.1-1">The packaging mode value is defined by Table 2.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
-<table class="center" id="table-2">
-          <caption><a href="#table-2" class="selfRef">Table 2</a></caption>
+<p id="section-3.1-1">This specification references <span>[<a href="#CMAFpackaging" class="cite xref">CMAFpackaging</a>]</span> to define how CMAF packaged bitstreams are mapped to <span>[<a href="#MoQTransport" class="cite xref">MoQTransport</a>]</span> groups and objects.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.1-2">Both CMAF Object mappings <span>[<a href="#CMAFpackaging" class="cite xref">CMAFpackaging</a>]</span> Section 4 are supported and a content producer may use either. To identify to clients which object mapping mode is being used for a given Track, the catalog "packaging" field <span class="bcp14">MUST</span> use one of the values defined in Table 1. The values are case-sensitive.<a href="#section-3.1-2" class="pilcrow">¶</a></p>
+<p id="section-3.1-3">Table 1 provides values for the catalog "packaging" field with CMAF packaging.<a href="#section-3.1-3" class="pilcrow">¶</a></p>
+<table class="center" id="table-1">
+          <caption><a href="#table-1" class="selfRef">Table 1</a></caption>
 <thead>
             <tr>
-              <th class="text-left" rowspan="1" colspan="1">warp-packing field value</th>
+              <th class="text-left" rowspan="1" colspan="1">Packaging field value</th>
               <th class="text-left" rowspan="1" colspan="1">Condition</th>
               <th class="text-left" rowspan="1" colspan="1">Explanation</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td class="text-left" rowspan="1" colspan="1">frag-per-group</td>
+              <td class="text-left" rowspan="1" colspan="1">cmaf-frag-per-group</td>
               <td class="text-left" rowspan="1" colspan="1">
                 <span>[<a href="#CMAFpackaging" class="cite xref">CMAFpackaging</a>]</span> 4.1 is active</td>
               <td class="text-left" rowspan="1" colspan="1">Each CMAF Fragment is placed in a single MOQT Object and there is one MOQT Object per MOQT Group</td>
             </tr>
             <tr>
-              <td class="text-left" rowspan="1" colspan="1">chunk-per-object</td>
+              <td class="text-left" rowspan="1" colspan="1">cmaf-chunk-per-object</td>
               <td class="text-left" rowspan="1" colspan="1">
                 <span>[<a href="#CMAFpackaging" class="cite xref">CMAFpackaging</a>]</span> 4.2 is active</td>
               <td class="text-left" rowspan="1" colspan="1">Each CMAF chunk is placed in a MOQT Object and there is one MOQT Group per CMAF Fragment</td>
@@ -1279,30 +1259,58 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
         </table>
 </section>
 </div>
-<div id="timealignment">
+<div id="loc-packaging">
 <section id="section-3.2">
-        <h3 id="name-time-alignment">
-<a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-time-alignment" class="section-name selfRef">Time-alignment</a>
+        <h3 id="name-loc-packaging">
+<a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-loc-packaging" class="section-name selfRef">LOC packaging</a>
         </h3>
-<p id="section-3.2-1">WARP Tracks <span class="bcp14">MAY</span> be time-aligned. Those that are, are subject to the following requirements:<a href="#section-3.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.2-1">This specification references Low Overhead Container (LOC) <span>[<a href="#LOC" class="cite xref">LOC</a>]</span> to define how audio and video content is packaged. With this packaging mode, each EncodedAudioChunk or EncodedVideoChunk sample is placed in a separate MOQT Object. Samples that belong to the same Group of Pictures (GOP) <span class="bcp14">MUST</span> be placed within the same MOQT Group.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.2-2">Table 2 provides values for the catalog "packaging" field with LOC packaging.<a href="#section-3.2-2" class="pilcrow">¶</a></p>
+<table class="center" id="table-2">
+          <caption><a href="#table-2" class="selfRef">Table 2</a></caption>
+<thead>
+            <tr>
+              <th class="text-left" rowspan="1" colspan="1">Packaging field value</th>
+              <th class="text-left" rowspan="1" colspan="1">Condition</th>
+              <th class="text-left" rowspan="1" colspan="1">Explanation</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">loc</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <span>[<a href="#LOC" class="cite xref">LOC</a>]</span> packagin is active</td>
+              <td class="text-left" rowspan="1" colspan="1">Each EncodedAudioChunk or EncodedVideoChunk sample is placed in a separate MOQT Object</td>
+            </tr>
+          </tbody>
+        </table>
+</section>
+</div>
+<div id="timealignment">
+<section id="section-3.3">
+        <h3 id="name-time-alignment">
+<a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-time-alignment" class="section-name selfRef">Time-alignment</a>
+        </h3>
+<p id="section-3.3-1">WARP Tracks <span class="bcp14">MAY</span> be time-aligned. Those that are, are subject to the following requirements:<a href="#section-3.3-1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3.2-2.1">
-            <p id="section-3.2-2.1.1">Time-aligned tracks <span class="bcp14">MUST</span> be advertised in the catalog as belonging to a common render group.<a href="#section-3.2-2.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-3.3-2.1">
+            <p id="section-3.3-2.1.1">Time-aligned tracks <span class="bcp14">MUST</span> be advertised in the catalog as belonging to a common render group.<a href="#section-3.3-2.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.2-2.2">
-            <p id="section-3.2-2.2.1">The presentation time of the first media sample contained within the first MOQT Object of each equally numbered MOQT Group <span class="bcp14">MUST</span> be identical.<a href="#section-3.2-2.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-3.3-2.2">
+            <p id="section-3.3-2.2.1">The presentation time of the first media sample contained within the first MOQT Object of each equally numbered MOQT Group <span class="bcp14">MUST</span> be identical.<a href="#section-3.3-2.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-3.2-3">A consequence of this restriction is that a WARP receiver <span class="bcp14">SHOULD</span> be able to cleanly switch between time-aligned media tracks at group boundaries.<a href="#section-3.2-3" class="pilcrow">¶</a></p>
+<p id="section-3.3-3">A consequence of this restriction is that a WARP receiver <span class="bcp14">SHOULD</span> be able to cleanly switch between time-aligned media tracks at group boundaries.<a href="#section-3.3-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="contentprotection">
-<section id="section-3.3">
+<section id="section-3.4">
         <h3 id="name-content-protection-and-encr">
-<a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-content-protection-and-encr" class="section-name selfRef">Content protection and encryption</a>
+<a href="#section-3.4" class="section-number selfRef">3.4. </a><a href="#name-content-protection-and-encr" class="section-name selfRef">Content protection and encryption</a>
         </h3>
-<p id="section-3.3-1">The catalog and media object payloads <span class="bcp14">MAY</span> be encrypted. Common Encryption <span>[<a href="#CENC" class="cite xref">CENC</a>]</span> with 'cbcs' mode (AES CBC with pattern encryption) is the <span class="bcp14">RECOMMENDED</span> encryption method.<a href="#section-3.3-1" class="pilcrow">¶</a></p>
-<p id="section-3.3-2">ToDo - details of how keys are exchanged and license servers signaled. May be best to extend catalog spec to allow the specification of content protection schema, along with any pssh or protection initialization data.<a href="#section-3.3-2" class="pilcrow">¶</a></p>
+<p id="section-3.4-1">The catalog and media object payloads <span class="bcp14">MAY</span> be encrypted. Common Encryption <span>[<a href="#CENC" class="cite xref">CENC</a>]</span> with 'cbcs' mode (AES CBC with pattern encryption) is the <span class="bcp14">RECOMMENDED</span> encryption method for CMAF packaged content.<a href="#section-3.4-1" class="pilcrow">¶</a></p>
+<p id="section-3.4-2">ToDo - details of how keys are exchanged and license servers signaled. May be best to extend catalog spec to allow the specification of content protection schema, along with any pssh or protection initialization data.<a href="#section-3.4-2" class="pilcrow">¶</a></p>
+<p id="section-3.4-3">ToDo - content protection for LOC-packaged content.<a href="#section-3.4-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1317,7 +1325,7 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
 <p id="section-4-3">Every WARP catalog <span class="bcp14">MUST</span> declare a streaming format type (See Sect 3.2.1 of <span>[<a href="#COMMON-CATALOG-FORMAT" class="cite xref">COMMON-CATALOG-FORMAT</a>]</span>) value of 1.<a href="#section-4-3" class="pilcrow">¶</a></p>
 <p id="section-4-4">Every WARP catalog <span class="bcp14">MUST</span> declare a streaming format version (See Sect 3.2.1 of <span>[<a href="#COMMON-CATALOG-FORMAT" class="cite xref">COMMON-CATALOG-FORMAT</a>]</span>) corresponding to the version of this document.<a href="#section-4-4" class="pilcrow">¶</a></p>
 <p id="section-4-5">The catalog track <span class="bcp14">MUST</span> have a track name of "catalog". A catalog object <span class="bcp14">MAY</span> be independent of other catalog objects or it <span class="bcp14">MAY</span> represent a delta update of a prior catalog object. The first catalog object published within a new group <span class="bcp14">MUST</span> be independent.  A catalog object <span class="bcp14">SHOULD</span> only be published only when the availability of tracks changes.<a href="#section-4-5" class="pilcrow">¶</a></p>
-<p id="section-4-6">Each catalog update <span class="bcp14">MUST</span> be mapped to a discreet moq-transport object.<a href="#section-4-6" class="pilcrow">¶</a></p>
+<p id="section-4-6">Each catalog update <span class="bcp14">MUST</span> be mapped to a discreet MOQT Object.<a href="#section-4-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="media-transmission">
@@ -1325,7 +1333,7 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
       <h2 id="name-media-transmission">
 <a href="#section-5" class="section-number selfRef">5. </a><a href="#name-media-transmission" class="section-name selfRef">Media transmission</a>
       </h2>
-<p id="section-5-1">The MOQT Groups and MOQT Objects need to be mapped to moq-transport Streams. Irrespective of the <a href="#packagingmode" class="auto internal xref">Section 3.1</a> in place, each MOQT Object <span class="bcp14">MUST</span> be mapped to a new moq-transport Stream.<a href="#section-5-1" class="pilcrow">¶</a></p>
+<p id="section-5-1">The MOQT Groups and MOQT Objects need to be mapped to MOQT Streams. Irrespective of the <a href="#mediapackaging" class="auto internal xref">Section 3</a> in place, each MOQT Object <span class="bcp14">MUST</span> be mapped to a new MOQT Stream.<a href="#section-5-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="workflow">
@@ -1369,11 +1377,11 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
 <dd class="break"></dd>
 <dt id="CMAFpackaging">[CMAFpackaging]</dt>
       <dd>
-<span class="refAuthor">Law, W.</span> and <span class="refAuthor">L. Curley</span>, <span class="refTitle">"CMAF Packaging for moq-transport"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-wilaw-moq-cmafpackaging-00</span>, <time datetime="2023-10-02" class="refDate">2 October 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-wilaw-moq-cmafpackaging-00">https://datatracker.ietf.org/doc/html/draft-wilaw-moq-cmafpackaging-00</a>&gt;</span>. </dd>
+<span class="refAuthor">Law, W.</span> and <span class="refAuthor">L. Curley</span>, <span class="refTitle">"CMAF Packaging for moq-transport"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-wilaw-moq-cmafpackaging-01</span>, <time datetime="2024-07-21" class="refDate">21 July 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-wilaw-moq-cmafpackaging-01">https://datatracker.ietf.org/doc/html/draft-wilaw-moq-cmafpackaging-01</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="COMMON-CATALOG-FORMAT">[COMMON-CATALOG-FORMAT]</dt>
       <dd>
-<span class="refTitle">"Common Catalog Format for moq-transport"</span>, <time datetime="2023-09" class="refDate">September 2023</time>, <span>&lt;<a href="https://wilaw.github.io/catalog-format/draft-wilaw-moq-catalogformat.html">https://wilaw.github.io/catalog-format/draft-wilaw-moq-catalogformat.html</a>&gt;</span>. </dd>
+<span class="refAuthor">Nandakumar, S.</span>, <span class="refAuthor">Law, W.</span>, and <span class="refAuthor">M. Zanaty</span>, <span class="refTitle">"Common Catalog Format for moq-transport"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-moq-catalogformat-01</span>, <time datetime="2024-07-08" class="refDate">8 July 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-moq-catalogformat-01">https://datatracker.ietf.org/doc/html/draft-ietf-moq-catalogformat-01</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="ISOBMFF">[ISOBMFF]</dt>
       <dd>
@@ -1385,7 +1393,7 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
 <dd class="break"></dd>
 <dt id="MoQTransport">[MoQTransport]</dt>
       <dd>
-<span class="refAuthor">Curley, L.</span>, <span class="refAuthor">Pugin, K.</span>, <span class="refAuthor">Nandakumar, S.</span>, and <span class="refAuthor">V. Vasiliev</span>, <span class="refTitle">"Media over QUIC Transport"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-lcurley-moq-transport-00</span>, <time datetime="2023-05-26" class="refDate">26 May 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-lcurley-moq-transport-00">https://datatracker.ietf.org/doc/html/draft-lcurley-moq-transport-00</a>&gt;</span>. </dd>
+<span class="refAuthor">Curley, L.</span>, <span class="refAuthor">Pugin, K.</span>, <span class="refAuthor">Nandakumar, S.</span>, <span class="refAuthor">Vasiliev, V.</span>, and <span class="refAuthor">I. Swett</span>, <span class="refTitle">"Media over QUIC Transport"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-moq-transport-05</span>, <time datetime="2024-07-08" class="refDate">8 July 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-moq-transport-05">https://datatracker.ietf.org/doc/html/draft-ietf-moq-transport-05</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC2119">[RFC2119]</dt>
       <dd>
