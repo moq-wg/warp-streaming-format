@@ -138,7 +138,7 @@ The catalog track MUST have a track name of "catalog". A catalog object MAY be i
 Each catalog update MUST be mapped to a discreet MOQT Object.
 
 # Media transmission
-The MOQT Groups and MOQT Objects need to be mapped to MOQT Streams. Irrespective of the {{packagingmode}} in place, each MOQT Object MUST be mapped to a new MOQT Stream.
+The MOQT Groups and MOQT Objects need to be mapped to MOQT Streams. Irrespective of the {{mediapackaging}} in place, each MOQT Object MUST be mapped to a new MOQT Stream.
 
 # Workflow
 
