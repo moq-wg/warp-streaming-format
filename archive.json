@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-07-23T01:24:17.873856+00:00",
+  "timestamp": "2024-07-25T01:24:10.281375+00:00",
   "repo": "moq-wg/warp-streaming-format",
   "labels": [
     {
@@ -1002,6 +1002,58 @@
           ]
         }
       ]
+    },
+    {
+      "number": 26,
+      "id": "PR_kwDOJTN4X852M1WM",
+      "title": "Adding timeline track",
+      "url": "https://github.com/moq-wg/warp-streaming-format/pull/26",
+      "state": "OPEN",
+      "author": "wilaw",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "This PR adds a definition for a timeline track format, along with details about how to identify timeline tracks in the catalog and how to update timeline tracks. \r\n\r\nFixes #25 ",
+      "createdAt": "2024-07-23T11:05:46Z",
+      "updatedAt": "2024-07-23T11:45:00Z",
+      "baseRepository": "moq-wg/warp-streaming-format",
+      "baseRefName": "main",
+      "baseRefOid": "1584d6e5860a37b4f7e43b716d947797132248af",
+      "headRepository": "moq-wg/warp-streaming-format",
+      "headRefName": "wilaw-patch-2",
+      "headRefOid": "84a620b1a375f77ec9b6d140e92f0dd5b92c3872",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 27,
+      "id": "PR_kwDOJTN4X852OE45",
+      "title": "Adding LOC packaging.",
+      "url": "https://github.com/moq-wg/warp-streaming-format/pull/27",
+      "state": "OPEN",
+      "author": "wilaw",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Fixes #24 ",
+      "createdAt": "2024-07-23T13:52:26Z",
+      "updatedAt": "2024-07-23T14:00:14Z",
+      "baseRepository": "moq-wg/warp-streaming-format",
+      "baseRefName": "main",
+      "baseRefOid": "1584d6e5860a37b4f7e43b716d947797132248af",
+      "headRepository": "moq-wg/warp-streaming-format",
+      "headRefName": "wilaw-patch-1",
+      "headRefOid": "af6a21ae3dd17f6739b01fb5b1080047927b6211",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }
