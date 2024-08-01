@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-07-30T01:24:40.040285+00:00",
+  "timestamp": "2024-08-01T01:38:06.293337+00:00",
   "repo": "moq-wg/warp-streaming-format",
   "labels": [
     {
@@ -555,9 +555,17 @@
       "labels": [],
       "body": "A special \u2018timeline\u2019 track is produced which describes the availability of groups and objects with respect to media time and wallclock time. May also carry media time events which can be used by the player in constructing a UI, for example  \u201cGoal\u201d, \u201cPenalty\u201d.  This track can be used by the player for seeking to request specific portions of a DVR window in a live stream, or to any portion of a VOD asset. This may be used for advertising insertion at a later date. \r\n\r\nIn the proposed structure below, the metadata field may be empty. If present, it must be enclosed inside double quotes and may hold any string data. In this example, JSON and XML metadata entires are shown. \r\n\r\n```\r\nGROUP_ID,OBJECT_ID,WALLCLOCK,MEDIA_PTS,METADATA\r\n0,0,1698351160362,0,\r\n1,0,1698353162,2002,\r\n2,0,1698355164,4004,\"{\"\"score\":{\"\"England\"\":0,\"\"Spain\"\":0}}\"\r\n2,8,1698355232,4072,\"<Event id='6' presentationTime='4072'><scte35:signal><scte35:binary>/DBhAAAAAAAA///wBQb+qM1E7QBLAhdDVUVJSAAArX+fCAgAAAAALLLXnTUCAAIXQ1VFSUgAACZ/nwgIAAAAACyy150RAAACF0NVRUlIAAAnf58ICAAAAAAsstezEAAAihiGnw==</scte35:binary></scte35:signal></Event>\"\r\n\r\n\r\n```",
       "createdAt": "2024-07-17T10:54:32Z",
-      "updatedAt": "2024-07-17T12:07:14Z",
+      "updatedAt": "2024-07-31T09:06:09Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "gwendalsimon",
+          "authorAssociation": "NONE",
+          "body": "I like the idea.\r\nNote that some have advocated for KLV as the support for timed metadata for live video. Here is a Demuxed talk about it a couple of years ago https://www.youtube.com/watch?v=-tpLOEjohmw&ab_channel=Demuxed ",
+          "createdAt": "2024-07-31T09:06:08Z",
+          "updatedAt": "2024-07-31T09:06:08Z"
+        }
+      ]
     }
   ],
   "pulls": [
@@ -1015,7 +1023,7 @@
       "labels": [],
       "body": "This PR adds a definition for a timeline track format, along with details about how to identify timeline tracks in the catalog and how to update timeline tracks. \r\n\r\nFixes #25 ",
       "createdAt": "2024-07-23T11:05:46Z",
-      "updatedAt": "2024-07-23T11:45:00Z",
+      "updatedAt": "2024-07-31T08:00:00Z",
       "baseRepository": "moq-wg/warp-streaming-format",
       "baseRefName": "main",
       "baseRefOid": "1584d6e5860a37b4f7e43b716d947797132248af",
@@ -1026,7 +1034,15 @@
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
-      "comments": [],
+      "comments": [
+        {
+          "author": "gwendalsimon",
+          "authorAssociation": "NONE",
+          "body": "I like it!\r\n\r\nRegarding \"The publisher MUST publish a complete timeline in the first MOQT Object of each MOQT Group.\" it means that the first object of the group strictly inflates with time. For an open range track (for example a 24/7 video channel), it may become excessively long. We may allow summarization of old times in the timeline csv. ",
+          "createdAt": "2024-07-31T07:59:59Z",
+          "updatedAt": "2024-07-31T07:59:59Z"
+        }
+      ],
       "reviews": []
     },
     {
