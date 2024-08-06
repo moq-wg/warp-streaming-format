@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-08-04T01:36:46.158301+00:00",
+  "timestamp": "2024-08-06T01:25:02.252002+00:00",
   "repo": "moq-wg/warp-streaming-format",
   "labels": [
     {
@@ -564,6 +564,193 @@
           "body": "I like the idea.\r\nNote that some have advocated for KLV as the support for timed metadata for live video. Here is a Demuxed talk about it a couple of years ago https://www.youtube.com/watch?v=-tpLOEjohmw&ab_channel=Demuxed ",
           "createdAt": "2024-07-31T09:06:08Z",
           "updatedAt": "2024-07-31T09:06:08Z"
+        }
+      ]
+    },
+    {
+      "number": 28,
+      "id": "I_kwDOJTN4X86R_H1m",
+      "title": "Client side bandwidth estimation is difficult with app-limited traffic",
+      "url": "https://github.com/moq-wg/warp-streaming-format/issues/28",
+      "state": "OPEN",
+      "author": "ianswett",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "Client side bandwidth estimation is a challenge when the client doesn't know when the sender was app-limited and when it was congestion control limited.\r\n\r\nOne solution is to add a TIMESTAMP frame that has a relative timestamp of when the packet was serialized/sent.  It could also be useful to have a bool to indicate whether the sender was app-limited prior to the packet being sent.\r\n\r\nChristian has a draft (https://www.ietf.org/archive/id/draft-huitema-quic-ts-08.html) that could be used for this purpose.  The draft was written with the idea that it would be bundled with an ACK to allow removal of latency variability on the reverse path, but it seems like it could be bundled with some or all MOQ packets to improve client bandwidth estimation.",
+      "createdAt": "2024-02-08T18:50:36Z",
+      "updatedAt": "2024-08-05T18:45:21Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "ianswett",
+          "authorAssociation": "NONE",
+          "body": "After more consideration, I tend to think this is not an moqt issue, but it is one worth addressing in WARP.  I'm happy to help with text if that's useful.\r\n\r\nKeeping it open because I think it could end up being critical to client side ABR.",
+          "createdAt": "2024-02-11T02:43:15Z",
+          "updatedAt": "2024-02-11T02:43:15Z"
+        }
+      ]
+    },
+    {
+      "number": 29,
+      "id": "I_kwDOJTN4X86R_cO0",
+      "title": "Streaming format negotiation",
+      "url": "https://github.com/moq-wg/warp-streaming-format/issues/29",
+      "state": "OPEN",
+      "author": "fiestajetsam",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "At June interim Wil Law presented the [WARP streaming format](https://datatracker.ietf.org/doc/slides-interim-2023-moq-08-sessa-warp-streaming-format/), which identifies itself within the payload using the first varint bytes. This is a concern as it implies:\r\n* All formats must at least start with a varint, and does not permit other formats to use different structures\r\n* It could impede negotiation for catalogue formats as it happens after at least one format is sent\r\n\r\nDiscussion in the chat suggested to provide the format in the transport as part of an ANNOUNCE, but instead of having it as part of the name, if it makes sense to use a varint include it as a separate field.",
+      "createdAt": "2023-06-07T16:42:27Z",
+      "updatedAt": "2024-08-05T19:33:49Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "kixelated",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I think it's strange to include the catalog format/version inside the catalog itself. It means a subscriber has to request the catalog before it knows if it can parse it. \r\n\r\nHere's my proposal for \"track format\" as part of the ANNOUNCE (#150). It basically moves the track format/version varint to the ANNOUNCE message, allowing it to behave like a catalog of catalogs.\r\n\r\nAn alternative I kind of like is something @vasilvv has mentioned. We can use the track name to identify the catalog format, much like how an extension is used to identify a file format. For example, `ANNOUNCE catalog.moov catalog.m3u8` would advertise two possible catalog tracks.",
+          "createdAt": "2023-06-09T04:43:41Z",
+          "updatedAt": "2023-06-09T04:43:41Z"
+        },
+        {
+          "author": "fiestajetsam",
+          "authorAssociation": "NONE",
+          "body": "@kixelated I don't think using \"file extensions\" like Victor suggested would be good for implementations - all the other data is part of a structure of some kind, but to separate catalog name from format you have to `split('.')` seems a kludge. I think ANNOUNCE might need a bit more thought on its structure and both sender/receiver behaviours - in particular being descriptive of what happens when a format is unsupported. I'm happy to make a PR.",
+          "createdAt": "2023-06-09T08:05:57Z",
+          "updatedAt": "2023-06-09T08:05:57Z"
+        },
+        {
+          "author": "vasilvv",
+          "authorAssociation": "NONE",
+          "body": "To clarify, my proposal was roughly:\r\n\r\n1. Every format has an associated catalog name (`/warp`, `/loc`, or, if we unify the catalog format, `/catalog_v1` or something).\r\n2. The client knows the names of the catalogs corresponding to formats that it supports, so it just sends something like `SUBSCRIBE /warp OR /loc OR /someotherformat`, and it will result in being subscribed to the first format that exists.\r\n\r\nNote that this does require a SUBSCRIBE message that allows requesting a list of multiple alternative tracks, but it keeps the ANNOUNCE message as-is.  An alternative would be having a list of available catalogs in ANNOUNCE, and only subscribing to one of those.\r\n\r\n> all the other data is part of a structure of some kind, but to separate catalog name from format you have to split('.') seems a kludge\r\n\r\nYou don't have to separate those, those are fixed strings.",
+          "createdAt": "2023-06-09T09:03:46Z",
+          "updatedAt": "2023-06-09T09:03:46Z"
+        },
+        {
+          "author": "kixelated",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Sorry @vasilvv, I didn't meant to misrepresent your proposal. Let me try to summarize the options proposed so far.\r\n\r\n**How does the receiver learn about available catalog tracks?**\r\n  1. There's a fixed catalog track.\r\n  2. There's a fixed catalog track per format, and the receiver blindly subscribes to all supported formats.\r\n  3. The ANNOUNCE messages contains a list of tracks.\r\n\r\n**How is the track format encoded?**\r\n  1. The first few bytes of the track\r\n  2. The full name of the track.\r\n  3. The track name prefix/suffix.\r\n  4. A separate field in ANNOUNCE.\r\n\r\nAll of the proposal need some sort of track format registry.",
+          "createdAt": "2023-06-09T17:46:21Z",
+          "updatedAt": "2023-06-09T17:46:21Z"
+        },
+        {
+          "author": "kixelated",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I personally like making ANNOUNCE mandatory, sent immediately after SETUP when ROLE=publisher. At a minimum, the ANNOUNCE contains a list of catalog tracks and some way to identify the format.\r\n\r\nThat way receiver knows that a track both exists and is supported _prior_ to subscribing to it.",
+          "createdAt": "2023-06-09T17:56:30Z",
+          "updatedAt": "2023-06-09T17:56:30Z"
+        },
+        {
+          "author": "wilaw",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I like Victor's proposal of each streaming format defining a unique name for its catalog. We can ensure uniqueness by having the catalog name being one of the registered attributes in the IANA table for MOQT Streaming Formats. \r\n\r\nSince a catalog is just a track, the ANNOUNCE does not have to specify the type of streaming format, it simply announces the name of the track, since the the name would then infers the type. \r\n\r\nFurther, if we enforce the convention that track names are relative to the catalog (or conversely that track names carry the catalog full track name as a prefix), then we have a concise mechanism for announcing multi-format content. Consider the case of a producer emitting two sets of content, one packaged for /warp and the other for /loc. \r\n\r\nThe total tracks it is producing would be:\r\nexample.com/alice/12345/warp\r\nexample.com/alice/12345/warp/video\r\nexample.com/alice/12345/warp/audio\r\nexample.com/alice/12345/loc\r\nexample.com/alice/12345/loc/abc/front\r\nexample.com/alice/12345/loc/abc/back\r\nexample.com/alice/12345/loc/abc/audio\r\n\r\nThe ANNOUNCE could then simply advertise the catalogs\r\n{\r\nexample.com/alice/12345/warp;\r\nexample.com/alice/12345/loc\r\n}\r\n\r\nIn fact, since relays don't need to understand catalog formats, the ANNOUNCE could just advertise the minimum common path for the all the content that client is publishing, which would be\r\n{\r\nexample.com/alice/12345/\r\n}\r\n\r\n\r\n\r\n",
+          "createdAt": "2023-06-22T23:34:23Z",
+          "updatedAt": "2023-06-22T23:34:23Z"
+        },
+        {
+          "author": "alvestrand",
+          "authorAssociation": "NONE",
+          "body": "Note that reusing the \"track\" namespace for a set of standardized names now means that you have both a controlled namespace (the standard names) and an uncontrollled namespace (server chosen names) in the same protocol field.\r\n\r\nIf you want to do that, good practice is to reserve some prefix for one of the usages, so that they can never collide.\r\n",
+          "createdAt": "2023-07-24T23:25:10Z",
+          "updatedAt": "2023-07-24T23:25:10Z"
+        }
+      ]
+    },
+    {
+      "number": 30,
+      "id": "I_kwDOJTN4X86R_cyG",
+      "title": "Supporting a publisher outputting multiple media formats simultaneously",
+      "url": "https://github.com/moq-wg/warp-streaming-format/issues/30",
+      "state": "OPEN",
+      "author": "wilaw",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "In the current workflow, the client requests a catalog using a reserved name and that catalog specifies which media format it represents using an IANA registered ID. There can only be one catalog, and hence one media format, for a given content bundle. \r\n\r\nWhat happens if the publisher wants to publish content via two different media formats simultaneously? Should we allow this and if so, how can we enable the identification of the formats that are available? \r\n\r\nDoes the client need to be able to ask which formats are available for a given resource before requesting the catalog for that format? \r\n\r\n",
+      "createdAt": "2023-04-21T05:05:17Z",
+      "updatedAt": "2024-08-05T19:35:16Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "suhasHere",
+          "authorAssociation": "NONE",
+          "body": "this issue made me think that we need to define following terms in the transport spec\r\n- media format\r\n- media container format\r\n- catalog format\r\n\r\nI wonder if `meida format` is too generic a term ?",
+          "createdAt": "2023-04-21T06:17:50Z",
+          "updatedAt": "2023-04-21T06:17:50Z"
+        },
+        {
+          "author": "wilaw",
+          "authorAssociation": "COLLABORATOR",
+          "body": "In discussing this with @kixelated we came up with several different solutions\r\n\r\n1. We continue what works for HLS and DASH today, which is that the client knows what format it expects before it begins playback. The connection URL to the publisher dictates what format is used by the catalog and only one catalog. IN a world where we have MoQ formats also called HLS and DASH (for simplicity), this would look like:\r\n\r\nClient connects to `https://cdn.example.com/hls/some/path`\r\nA 'catalog' subscription returns a catalog in hls format\r\n\r\nClient connects to `https://cdn.example.com/dash/some/path`\r\nA 'catalog' subscription returns a catalog in dash format\r\n\r\n\r\n2. We create reserved catalog names for each media format. They can specify these names as part of their IANA reservation. \r\n\r\nClient connects to `https://cdn.example.com/some/path`\r\nA subscription to \"catalog-hls' returns a catalog in hls format\r\nA subscription to \"catalog-dash' returns a catalog in the dash format\r\n\r\n3. The publisher returns a master catalog that lists all the media formats and their tracks that it is producing. \r\nClient connects to `https://cdn.example.com/some/path`\r\nA subscription to 'catalog' returns a catalog with the following pseudo-structure\r\n\r\n```\r\nCatalog {\r\n    Formats [\r\n        { hls : tracks [ ..] }\r\n        { dash : tracks [ ..] }\r\n    ]\r\n}\r\n```\r\n\r\n\r\n\r\n",
+          "createdAt": "2023-04-21T15:42:47Z",
+          "updatedAt": "2023-04-21T15:42:47Z"
+        },
+        {
+          "author": "hardie",
+          "authorAssociation": "NONE",
+          "body": "On Fri, Apr 21, 2023 at 4:42\u202fPM Will Law ***@***.***> wrote:\n\n> In discussing this with @kixelated <https://github.com/kixelated> we came\n> up with several different solutions\n>\n>    1. We continue what works for HLS and DASH today, which is that the\n>    client knows what format it expects before it begins playback. The\n>    connection URL to the publisher dictates what format is used by the catalog\n>    and only one catalog. IN a world where we have MoQ formats also called HLS\n>    and DASH (for simplicity), this would look like:\n>\n> Client connects to https://cdn.example.com/hls/some/path\n> A 'catalog' subscription returns a catalog in hls format\n>\n> Client connects to https://cdn.example.com/dash/some/path\n> A 'catalog' subscription returns a catalog in dash format\n>\n(personal hat)\n\nBoth BCP 56 and BCP 190 strongly urge protocol designers not to assume that\nyou can define path elements as specific to a particular usage of HTTP\n(Section 3.2 of BCP 56 and BCP 190 Section 2.3).  Other than .well-known,\nthis approach has to be a hint or it's probably a non-starter.\n\nregards,\n\nTed\n\n\n>    1. We create reserved catalog names for each media format. They can\n>    specify these names as part of their IANA reservation.\n>\n> Client connects to https://cdn.example.com/some/path\n> A subscription to \"catalog-hls' returns a catalog in hls format\n> A subscription to \"catalog-dash' returns a catalog in the dash format\n>\n>    1. The publisher returns a master catalog that lists all the media\n>    formats and their tracks that it is producing.\n>    Client connects to https://cdn.example.com/some/path\n>    A subscription to 'catalog' returns a catalog with the following\n>    pseudo-structure\n>\n> Catalog {\n>     Formats [\n>         { hls : tracks [ ..] }\n>         { dash : tracks [ ..] }\n>     ]\n> }\n>\n> \u2014\n> Reply to this email directly, view it on GitHub\n> <https://github.com/kixelated/warp-draft/issues/140#issuecomment-1518017619>,\n> or unsubscribe\n> <https://github.com/notifications/unsubscribe-auth/AAKVXZGCKFOWGO3GTXH6DXTXCKTIFANCNFSM6AAAAAAXGMCBNQ>\n> .\n> You are receiving this because you are subscribed to this thread.Message\n> ID: ***@***.***>\n>\n",
+          "createdAt": "2023-04-21T16:55:43Z",
+          "updatedAt": "2023-04-21T16:55:43Z"
+        },
+        {
+          "author": "suhasHere",
+          "authorAssociation": "NONE",
+          "body": "Why can't we either specify in SETUP message or add as Track Request Parameter to identify the format needed ?",
+          "createdAt": "2023-04-22T00:14:06Z",
+          "updatedAt": "2023-04-22T00:14:06Z"
+        },
+        {
+          "author": "fluffy",
+          "authorAssociation": "NONE",
+          "body": "wow - I wish we called this something different than media format. I thought this bug was going to be about if I could output AV1 and AV2 and the same time. We absolutely need to be about have a client that supports AV1 and AV2 be able to do both or we have no way to transitions from AV1 to AV2 before all clients support AV2. \r\n\r\nI suspect we have the same issues here, if a system is trying to move from an old format say DASH  to something new like QuicDASH, you will want publishes to be able to publish both during the transition and the old clients to subscribe to the old and clients that support both to subscribe to the new. ",
+          "createdAt": "2023-04-22T14:16:11Z",
+          "updatedAt": "2023-04-22T14:16:11Z"
+        }
+      ]
+    },
+    {
+      "number": 31,
+      "id": "I_kwDOJTN4X86R_eVS",
+      "title": "Generic clients connect via single URL ",
+      "url": "https://github.com/moq-wg/warp-streaming-format/issues/31",
+      "state": "OPEN",
+      "author": "kixelated",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "This is more of a requirement. \n\nWe need the ability for generic clients to publish and/or view a broadcast via a single URL. Examples of generic clients include OBS, ffmpeg, ExoPlayer, moq.js (TBD), and any other implementations.\n\nCurrently, Twitch broadcasters publish broadcasts via a `rtmp://` URL and viewers can consume via a HTTP HLS URL. We would want something similar for MoQ.\n\nIf there's a good reason we can require more than just a URL, but it has to be simple enough and explicitly part of the specification. No punting responsibility to the application because it hurts interoperability. An example is WebRTC, which did not specify how to exchange the SDP offer, and was only recently fixed by introducing WHIP and WHEP.",
+      "createdAt": "2023-01-29T04:01:30Z",
+      "updatedAt": "2024-08-05T19:39:04Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "afrind",
+          "authorAssociation": "NONE",
+          "body": "Based on how the current draft reads, I think you could construct a URL like:\r\n\r\nhttps://example.org/webtransport-endpoint?full-track-name=X&auth=token\r\n\r\n[or similar for raw QUIC, but using the moq:// scheme]\r\n\r\nThis would establish a QUIC/H3 connection to example.org, a session to /webtransport-endpoint (WT CONNECT or SETUP PATH) and a SUBSCRIBE to full-track-name, with the associated auth (see moq-wg/moq-transport#159 for example flow).\r\n\r\nThere are of course other ways to spell this.  Should this draft explain how to go from a full URL through connection/session establishment + sequence of messages?\r\n\r\n@kixelated ",
+          "createdAt": "2023-05-26T23:41:09Z",
+          "updatedAt": "2023-05-26T23:41:09Z"
+        },
+        {
+          "author": "fluffy",
+          "authorAssociation": "NONE",
+          "body": "I think this should be in it's own draft, not part of the transport draft. It need to point at the appropriate catalog, transport etc.  I think it should also specify what media codecs are MTI and what are optional.  To have interoperable, it needs to be that if I give the player the URL, I know that if can be played.  Similarly, if the URL is publish, a client that is implements whatever the spec that de",
+          "createdAt": "2023-10-05T11:35:10Z",
+          "updatedAt": "2023-10-05T11:35:10Z"
+        },
+        {
+          "author": "kixelated",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Yeah, this would be part of the Warp draft, not the transport draft.",
+          "createdAt": "2023-10-05T11:36:42Z",
+          "updatedAt": "2023-10-05T11:36:42Z"
+        },
+        {
+          "author": "afrind",
+          "authorAssociation": "NONE",
+          "body": "What is the relationship of this issue to moq-wg/moq-transport#268?  Can one be closed?",
+          "createdAt": "2023-11-10T12:18:33Z",
+          "updatedAt": "2023-11-10T12:18:33Z"
         }
       ]
     }
