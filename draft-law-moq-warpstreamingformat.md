@@ -45,14 +45,12 @@ author:
     email: ikir@meta.com
 
 normative:
-  MoQTransport: I-D.lcurley-moq-transport
-  CMAFpackaging: I-D.draft-wilaw-moq-cmafpackaging
+  MoQTransport: I-D.draft-ietf-moq-transport-05
+  CMAFpackaging: I-D.draft-wilaw-moq-cmafpackaging-01
+  LOC: I-D.draft-mzanaty-moq-loc-03
+  COMMON-CATALOG-FORMAT: I-D.draft-ietf-moq-catalogformat-01
   RFC9000: RFC9000
   RFC4180: RFC4180
-  COMMON-CATALOG-FORMAT:
-    title: "Common Catalog Format for moq-transport"
-    date: September 6, 2023
-    target: https://wilaw.github.io/catalog-format/draft-wilaw-moq-catalogformat.html
   ISOBMFF:
     title: "Information technology -- Coding of audio-visual objects -- Part 12: ISO Base Media File Format"
     date: 2015-12
@@ -75,7 +73,7 @@ This document specifies the WARP Streaming Format, designed to operate on Media 
 
 # Introduction
 
-WARP Streaming Format (WARP) is a media format designed to deliver CMAF {{CMAF}} compliant media content over Media Over QUIC Transport (MOQT) {{MoQTransport}}. WARP works by fragmenting the bitstream into objects that can be independently transmitted. WARP leverages a simple prioritization strategy of assigning newer content a higher delivery order, allowing intermediaries to drop older data, and video over audio, in the face of congestion. Either complete Groups of Pictures (GOPS) {{ISOBMFF}} or individual frames are mapped to MoQTransport Objects. WARP is targeted at interactive levels of live latency.
+WARP Streaming Format (WARP) is a media format designed to deliver CMAF {{CMAF}} and LOC {{LOC}} compliant media content over Media Over QUIC Transport (MOQT) {{MoQTransport}}. WARP works by fragmenting the bitstream into objects that can be independently transmitted. WARP leverages the Common Catalog Format {{COMMON-CATALOG-FORMAT}} to describe the output of the original publisher. WARP specifies how content should be packaged and signaled, defines how the catalog communicates the content, specifies prioritization strategies for real-time and workflows for beginning and terminating broadcasts. WARP also details how end-subscribers may perform adaptive bitrate switching. WARP is targeted at real-time and interactive levels of live latency.
 
 This document describes version 1 of the streaming format.
 
@@ -86,24 +84,28 @@ This document describes version 1 of the streaming format.
 This document uses the conventions detailed in Section 1.3 of {{!RFC9000}} when describing the binary encoding.
 
 # Media packaging {#mediapackaging}
-WARP delivers CMAF-packaged media bitstreams. This specification references {{CMAFpackaging}} to define how CMAF packaged bitstreams are mapped to {{MoQTransport}} groups and objects.
+WARP delivers CMAF {{CMAF}} and LOC {{LOC}} packaged media bitstreams. Either format may be used in a broadcast, or they may be intermixed between tracks. The packaging format of a track, once declared, MUST remain constant.
 
-Both CMAF Object mappings {{CMAFpackaging}} Section 4 are supported and a content producer may use either. To identify to consumers which object mapping mode is being used for a given Track, a new track field is defined as per table 1.
+## CMAF packaging
+This specification references {{CMAFpackaging}} to define how CMAF packaged bitstreams are mapped to {{MoQTransport}} groups and objects.
 
+Both CMAF Object mappings {{CMAFpackaging}} Section 4 are supported and a content producer may use either. To identify to clients which object mapping mode is being used for a given Track, the catalog "packaging" field MUST use one of the values defined in Table 1. The values are case-sensitive.
 
-| Field                   |  Name                  | Required |  Location |  JSON type |      Definition            |
-|:========================|:=======================|:=========|:==========|:===========|:===========================|
-| WARP packaging mode     | warp-packaging         |  yes     |   RT      |  String    | See {{packagingmode}}      |
+Table 1 provides values for the catalog "packaging" field with CMAF packaging.
 
-
-## Packaging mode {#packagingmode}
-The packaging mode value is defined by Table 2.
-
-
-| warp-packing field value  |  Condition                         |                                              Explanation                                            |
+| Packaging field value     |  Condition                         |                                              Explanation                                            |
 |:==========================|:===================================|:====================================================================================================|
-| frag-per-group            | {{CMAFpackaging}} 4.1 is active    |  Each CMAF Fragment is placed in a single MOQT Object and there is one MOQT Object per MOQT Group   |
-| chunk-per-object          | {{CMAFpackaging}} 4.2 is active    |  Each CMAF chunk is placed in a MOQT Object and there is one MOQT Group per CMAF Fragment           |
+| cmaf-frag-per-group       | {{CMAFpackaging}} 4.1 is active    |  Each CMAF Fragment is placed in a single MOQT Object and there is one MOQT Object per MOQT Group   |
+| cmaf-chunk-per-object     | {{CMAFpackaging}} 4.2 is active    |  Each CMAF chunk is placed in a MOQT Object and there is one MOQT Group per CMAF Fragment           |
+
+## LOC packaging
+This specification references Low Overhead Container (LOC) {{LOC}} to define how audio and video content is packaged. With this packaging mode, each EncodedAudioChunk or EncodedVideoChunk sample is placed in a separate MOQT Object. Samples that belong to the same Group of Pictures (GOP) MUST be placed within the same MOQT Group.
+
+Table 2 provides values for the catalog "packaging" field with LOC packaging.
+
+| Packaging field value     |  Condition                    |                                              Explanation                                    |
+|:==========================|:==============================|:============================================================================================|
+| loc                       | {{LOC}} packagin is active    |  Each EncodedAudioChunk or EncodedVideoChunk sample is placed in a separate MOQT Object     |
 
 
 ## Time-alignment {#timealignment}
@@ -116,9 +118,11 @@ A consequence of this restriction is that a WARP receiver SHOULD be able to clea
 
 ## Content protection and encryption {#contentprotection}
 
-The catalog and media object payloads MAY be encrypted. Common Encryption {{CENC}} with 'cbcs' mode (AES CBC with pattern encryption) is the RECOMMENDED encryption method.
+The catalog and media object payloads MAY be encrypted. Common Encryption {{CENC}} with 'cbcs' mode (AES CBC with pattern encryption) is the RECOMMENDED encryption method for CMAF packaged content.
 
 ToDo - details of how keys are exchanged and license servers signaled. May be best to extend catalog spec to allow the specification of content protection schema, along with any pssh or protection initialization data.
+
+ToDo - content protection for LOC-packaged content.
 
 # Catalog
 
@@ -132,11 +136,10 @@ Every WARP catalog MUST declare a streaming format version (See Sect 3.2.1 of {{
 
 The catalog track MUST have a track name of "catalog". A catalog object MAY be independent of other catalog objects or it MAY represent a delta update of a prior catalog object. The first catalog object published within a new group MUST be independent.  A catalog object SHOULD only be published only when the availability of tracks changes.
 
-Each catalog update MUST be mapped to a discreet moq-transport object.
-
+Each catalog update MUST be mapped to a discreet MOQT Object.
 
 # Media transmission
-The MOQT Groups and MOQT Objects need to be mapped to moq-transport Streams. Irrespective of the {{packagingmode}} in place, each MOQT Object MUST be mapped to a new moq-transport Stream.
+The MOQT Groups and MOQT Objects need to be mapped to MOQT Streams. Irrespective of the {{mediapackaging}} in place, each MOQT Object MUST be mapped to a new MOQT Stream.
 
 # Timeline track
 
@@ -167,7 +170,6 @@ The publisher MAY publish incremental updates in the second and subsequent Objec
 A WARP publisher MUST publish a catalog track object before publishing any media track objects.
 
 At the completion of a session, a publisher MUST publish a catalog update that removes all currently active tracks.  This action SHOULD be interpreted by receivers to mean that the publish session is complete.
-
 
 
 # Security Considerations
