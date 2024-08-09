@@ -82,10 +82,14 @@ Table of Contents
      3.4.  Content protection and encryption
    4.  Catalog
    5.  Media transmission
-   6.  Workflow
-   7.  Security Considerations
-   8.  IANA Considerations
-   9.  Normative References
+   6.  Timeline track
+     6.1.  Timeline track payload
+     6.2.  Timeline Catalog requirements
+     6.3.  Timeline track updating.
+   7.  Workflow
+   8.  Security Considerations
+   9.  IANA Considerations
+   10. Normative References
    Acknowledgments
    Authors' Addresses
 
@@ -238,7 +242,65 @@ Table of Contents
    Irrespective of the Section 3 in place, each MOQT Object MUST be
    mapped to a new MOQT Stream.
 
-6.  Workflow
+6.  Timeline track
+
+   The timeline track provides data about the previously published
+   groups and their relationship to wallclock time, media time and
+   associated timed-metadata.  Timeline tracks allow players to seek to
+   precise points behind the live head in a live broadcast, or for
+   random access in a VOD asset.  A timeline track may also be used to
+   insert events at media times which do not correlate with Object
+   boundaries.  Timeline tracks are optional.  Multiple timeline tracks
+   MAY exist inside a catalog.
+
+6.1.  Timeline track payload
+
+   The payload of a timeline track is a UTF-8 encoded CSV text file.
+   This payload is formatted according to RFC4180 "Common Format and
+   MIME Type for Comma-Separated Values (CSV)" Files [RFC4180].  The
+   separator is a comma and each line is separated by a carriage return.
+   The mime-type of a timeline track MUST be specified as "text/csv" in
+   the catalog.
+
+   Each timeline track begins with a header row of
+   MEDIA_PTS,GROUP_ID,OBJECT_ID,WALLCLOCK,METADATA.  This row defines
+   the 5 columns of data within each record.
+
+   *  MEDIA_PTS: a media timestamp rounded to the nearest millisecond.
+      This entry MUST not be empty.  If the Object ID entry is present,
+      then this value MUST match the media presentation timestamp of the
+      first media sample in the referenced Object.
+
+   *  GROUP_ID: the MOQT Group ID.  This entry MAY be empty.
+
+   *  OBJECT_ID: the MOQT Object ID.  This entry MAY be empty.
+
+   *  WALLCLOCK: the wallclock time at which the media was encoded,
+      expressed as the number of milliseconds that have elapsed since
+      January 1, 1970 (midnight UTC/GMT).  For VOD assets, or if the
+      wallclock time is not known, the value SHOULD be 0.
+
+   *  METADATA: a flexible field holding arbitrary string metadata.
+      This field may be empty.  If not empty, it MUST be enclosed in
+      double quotes.  A double-quote appearing inside this field MUST be
+      escaped by preceding it with another double quote.
+
+6.2.  Timeline Catalog requirements
+
+   A timeline track MUST carry a 'type' identifier in the Catalog with a
+   value of "timeline".  A timeline track MUST carry a 'dependencies'
+   attribute which contains an array of all track names to which the
+   timeline track applies.
+
+6.3.  Timeline track updating.
+
+   The publisher MUST publish a complete timeline in the first MOQT
+   Object of each MOQT Group.  The publisher MAY publish incremental
+   updates in the second and subsequent Objects within each GROUP.
+   Incremental updates only contain timeline events since the last
+   timeline Object.  Group duration SHOULD not exceed 30 seconds.
+
+7.  Workflow
 
    A WARP publisher MUST publish a catalog track object before
    publishing any media track objects.
@@ -248,17 +310,17 @@ Table of Contents
    be interpreted by receivers to mean that the publish session is
    complete.
 
-7.  Security Considerations
+8.  Security Considerations
 
    ToDo
 
-8.  IANA Considerations
+9.  IANA Considerations
 
    This document creates a new entry in the "MoQ Streaming Format"
    Registry (see [MoQTransport] Sect 8).  The type value is 0x001, the
    name is "WARP Streaming Format" and the RFC is XXX.
 
-9.  Normative References
+10.  Normative References
 
    [CENC]     "International Organization for Standardization -
               Information technology - MPEG systems technologies - Part
@@ -303,6 +365,11 @@ Table of Contents
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/rfc/rfc2119>.
+
+   [RFC4180]  Shafranovich, Y., "Common Format and MIME Type for Comma-
+              Separated Values (CSV) Files", RFC 4180,
+              DOI 10.17487/RFC4180, October 2005,
+              <https://www.rfc-editor.org/rfc/rfc4180>.
 
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
