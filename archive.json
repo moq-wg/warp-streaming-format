@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-10-06T01:48:17.351780+00:00",
+  "timestamp": "2024-10-08T01:42:21.917351+00:00",
   "repo": "moq-wg/warp-streaming-format",
   "labels": [
     {
@@ -753,6 +753,90 @@
           "updatedAt": "2023-11-10T12:18:33Z"
         }
       ]
+    },
+    {
+      "number": 32,
+      "id": "I_kwDOJTN4X86ZHIzU",
+      "title": "Remove CMAF packaging",
+      "url": "https://github.com/moq-wg/warp-streaming-format/issues/32",
+      "state": "OPEN",
+      "author": "suhasHere",
+      "authorAssociation": "NONE",
+      "assignees": [
+        "suhasHere"
+      ],
+      "labels": [],
+      "body": "",
+      "createdAt": "2024-10-06T17:33:41Z",
+      "updatedAt": "2024-10-06T17:33:44Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 33,
+      "id": "I_kwDOJTN4X86ZHI2n",
+      "title": "Bring in catalog section into WARP spec",
+      "url": "https://github.com/moq-wg/warp-streaming-format/issues/33",
+      "state": "OPEN",
+      "author": "suhasHere",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2024-10-06T17:34:02Z",
+      "updatedAt": "2024-10-06T17:34:02Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 34,
+      "id": "I_kwDOJTN4X86ZHI6D",
+      "title": "Refactor the sections on mandatory vs optional extensions (like timeline tracks)",
+      "url": "https://github.com/moq-wg/warp-streaming-format/issues/34",
+      "state": "OPEN",
+      "author": "suhasHere",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2024-10-06T17:34:32Z",
+      "updatedAt": "2024-10-06T17:34:32Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 35,
+      "id": "I_kwDOJTN4X86ZHI8g",
+      "title": "Explain how encryption works with SecureObjects",
+      "url": "https://github.com/moq-wg/warp-streaming-format/issues/35",
+      "state": "OPEN",
+      "author": "suhasHere",
+      "authorAssociation": "NONE",
+      "assignees": [
+        "suhasHere"
+      ],
+      "labels": [],
+      "body": "",
+      "createdAt": "2024-10-06T17:34:59Z",
+      "updatedAt": "2024-10-06T17:34:59Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 36,
+      "id": "I_kwDOJTN4X86ZHJCY",
+      "title": "Add scope/requirements section to capture the purpose of WARP clearly",
+      "url": "https://github.com/moq-wg/warp-streaming-format/issues/36",
+      "state": "OPEN",
+      "author": "suhasHere",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2024-10-06T17:36:01Z",
+      "updatedAt": "2024-10-06T17:36:01Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
