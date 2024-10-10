@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-10-08T01:42:21.917351+00:00",
+  "timestamp": "2024-10-10T01:41:51.103793+00:00",
   "repo": "moq-wg/warp-streaming-format",
   "labels": [
     {
@@ -1343,6 +1343,32 @@
       "mergeCommit": {
         "oid": "8c5da13b3b3d4b81b58492257309ecee3bb138fc"
       },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 37,
+      "id": "PR_kwDOJTN4X859_DuA",
+      "title": "remove cmaf",
+      "url": "https://github.com/moq-wg/warp-streaming-format/pull/37",
+      "state": "OPEN",
+      "author": "suhasHere",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "Fixes #32",
+      "createdAt": "2024-10-08T18:30:43Z",
+      "updatedAt": "2024-10-08T18:30:43Z",
+      "baseRepository": "moq-wg/warp-streaming-format",
+      "baseRefName": "main",
+      "baseRefOid": "050cfdc68cac54f9d59e83a6f4811f8a75d01b1c",
+      "headRepository": "moq-wg/warp-streaming-format",
+      "headRefName": "remove-cmaf",
+      "headRefOid": "2ecb9cb190b4fe92d510df46fd68aaec1a404fc3",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
       "comments": [],
       "reviews": []
     }
