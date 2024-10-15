@@ -48,7 +48,12 @@ normative:
   MoQTransport: I-D.draft-ietf-moq-transport-05
   CMAFpackaging: I-D.draft-wilaw-moq-cmafpackaging-01
   LOC: I-D.draft-mzanaty-moq-loc-03
-  COMMON-CATALOG-FORMAT: I-D.draft-ietf-moq-catalogformat-01
+  BASE64: RFC4648
+  JSON: RFC8259
+  LANG: RFC5646
+  MIME: RFC6838
+  JSON-PATCH: RFC6902
+  RFC5226: RFC5226
   RFC9000: RFC9000
   RFC4180: RFC4180
   ISOBMFF:
