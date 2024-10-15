@@ -151,7 +151,7 @@ Each catalog update MUST be mapped to a discreet MOQT Object.
 
 ## Catalog Fields
 
-A catalog is a JSON [JSON] document, comprised of a series of mandatory and
+A catalog is a JSON {{JSON}} document, comprised of a series of mandatory and
 optional fields. At a minimum, a catalog MUST provide all mandatory fields and
 a 'tracks' field. A producer MAY add additional fields to the ones described in
 this draft. Custom field names MUST NOT collide with field names described in
@@ -280,7 +280,7 @@ alternate bitrates.
 ### Initialization data {#initdata}
 Location: TF    Required: Optional   Json Type: String
 
-A string holding Base64 [BASE64] encoded initialization data for the track.
+A string holding Base64 {{BASE64}} encoded initialization data for the track.
 
 ### Dependencies {#dependencies}
 Location: T    Required: Optional   Json Type: Array
@@ -313,7 +313,7 @@ and Section 4 of {{WEBCODECS-CODEC-REGISTRY}}.
 ### Mimetype {#mimetype}
 Location: T    Required: Optional   Json Type: String
 
-A string defining the mime type [MIME] of the track.
+A string defining the mime type {{MIME}} of the track.
 
 ### Framerate {#framerate}
 Location: T    Required: Optional   Json Type: Number
@@ -365,21 +365,21 @@ A number expressing the intended display height of the track content in pixels.
 Location: T    Required: Optional   Json Type: String
 
 A string defining the dominant language of the track. The string MUST be one of
-the standard Tags for Identifying Languages as defined by [LANG].
+the standard Tags for Identifying Languages as defined by {{LANG}}.
 
 ## Catalog Patch {#patch}
 A catalog update might contain incremental changes. This is a useful property if
 many tracks may be initially declared but then there are small changes to a
 subset of tracks. The producer can issue a patch to describe these small
 changes. Changes are described incrementally, meaning that a patch can itself
-modify a prior patch. Patching leverages JSON PATCH [JSON-PATCH] to modify the
+modify a prior patch. Patching leverages JSON PATCH {{JSON-PATCH}} to modify the
 catalog.   JSON Patch is a format for expressing a sequence of operations to
 apply to a target JSON document.
 
 The following rules MUST be followed in processing patches:
 
 * The target JSON to be modified is the JSON document described by the preceding
-[MOQTransport] Object in the Catalog track, post any patching that may have
+{{MOQTransport}} Object in the Catalog track, post any patching that may have
 been applied to that Object.
 * A Catalog Patch is identified by having a single array at the root level,
 holding a series of JSON objects, each object representing a single operation
