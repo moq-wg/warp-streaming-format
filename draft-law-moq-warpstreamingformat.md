@@ -126,7 +126,7 @@ ToDo - content protection for LOC-packaged content.
 
 # Catalog {#catalog}
 
-A Catalog is a MOQT Track that provides information about the other tracks being 
+A Catalog is a MOQT Track that provides information about the other tracks being
 produced by a WARP publisher. A Catalog is used by WARP publishers for advertising
 their output and for subscribers in consuming that output. The payload of the
 Catalog object is opaque to Relays and can be end-to-end encrypted. The Catalog
@@ -134,7 +134,7 @@ provides the names and namespaces of the tracks being produced, along with the
 relationship between tracks, properties of the tracks that consumers may use for
 selection and any relevant initialization data.
 
-The catalog track MUST have a case-sensitive Track Name of "catalog". 
+The catalog track MUST have a case-sensitive Track Name of "catalog".
 
 A catalog object MAY be independent of other catalog objects or it MAY represent a
 delta update of a prior catalog object. The first catalog object published within
@@ -214,7 +214,7 @@ false.
 ### Tracks {#tracks}
 Location: R    Required: Yes    Json Type: Array
 
-An array of track objects {{trackobject}}. 
+An array of track objects {{trackobject}}.
 
 ### Tracks object {#trackobject}
 A track object is a collection of fields whose location is specified 'T' in
@@ -303,12 +303,12 @@ Location: T    Required: Optional   Json Type: String
 
 A string defining the codec used to encode the track.
 For LOC packaged content, the string codec registrations are defined in Sect 3
-and Section 4 of {{WEBCODECS-CODEC-REGISTRY}}. 
+and Section 4 of {{WEBCODECS-CODEC-REGISTRY}}.
 
 ### Mimetype {#mimetype}
 Location: T    Required: Optional   Json Type: String
 
-A string defining the mime type [MIME] of the track. 
+A string defining the mime type [MIME] of the track.
 
 ### Framerate {#framerate}
 Location: T    Required: Optional   Json Type: Number
