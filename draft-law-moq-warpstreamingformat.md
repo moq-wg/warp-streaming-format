@@ -56,6 +56,10 @@ normative:
   RFC5226: RFC5226
   RFC9000: RFC9000
   RFC4180: RFC4180
+  WEBCODECS-CODEC-REGISTRY:
+    title: "WebCodecs Codec Registry"
+    date: September 2024
+    target: https://www.w3.org/TR/webcodecs-codec-registry/
   ISOBMFF:
     title: "Information technology -- Coding of audio-visual objects -- Part 12: ISO Base Media File Format"
     date: 2015-12
@@ -78,7 +82,7 @@ This document specifies the WARP Streaming Format, designed to operate on Media 
 
 # Introduction
 
-WARP Streaming Format (WARP) is a media format designed to deliver CMAF {{CMAF}} and LOC {{LOC}} compliant media content over Media Over QUIC Transport (MOQT) {{MoQTransport}}. WARP works by fragmenting the bitstream into objects that can be independently transmitted. WARP leverages the Common Catalog Format {{COMMON-CATALOG-FORMAT}} to describe the output of the original publisher. WARP specifies how content should be packaged and signaled, defines how the catalog communicates the content, specifies prioritization strategies for real-time and workflows for beginning and terminating broadcasts. WARP also details how end-subscribers may perform adaptive bitrate switching. WARP is targeted at real-time and interactive levels of live latency.
+WARP Streaming Format (WARP) is a media format designed to deliver LOC {{LOC}} compliant media content over Media Over QUIC Transport (MOQT) {{MoQTransport}}. WARP works by fragmenting the bitstream into objects that can be independently transmitted. WARP leverages a catalog format to describe the output of the original publisher. WARP specifies how content should be packaged and signaled, defines how the catalog communicates the content, specifies prioritization strategies for real-time and workflows for beginning and terminating broadcasts. WARP also details how end-subscribers may perform adaptive bitrate switching. WARP is targeted at real-time and interactive levels of live latency.
 
 This document describes version 1 of the streaming format.
 
@@ -86,7 +90,7 @@ This document describes version 1 of the streaming format.
 
 {::boilerplate bcp14-tagged}
 
-This document uses the conventions detailed in Section 1.3 of {{!RFC9000}} when describing the binary encoding.
+This document uses the conventions detailed in Section 1.3 of {{RFC9000}} when describing the binary encoding.
 
 # Media packaging {#mediapackaging}
 WARP delivers CMAF {{CMAF}} and LOC {{LOC}} packaged media bitstreams. Either format may be used in a broadcast, or they may be intermixed between tracks. The packaging format of a track, once declared, MUST remain constant.
@@ -198,7 +202,7 @@ Table 2 defines the allowed locations for these fields within the document
 
 
 ## WARP version {#warpversion}
-Location: R    Required: Yes    Json Type: Number
+Location: R    Required: Yes    JSON Type: Number
 
 Specifies the version of WARP referenced by this catalog. There is no guarantee
 that future catalog versions are backwards compatible and field definitions and
@@ -207,7 +211,7 @@ parse a catalog version which it does not understand.
 
 
 ### Supports delta updates {#supportsdeltaupdates}
-Location: R    Required: Optional    Json Type: Boolean
+Location: R    Required: Optional    JSON Type: Boolean
 
 A boolean that if true indicates that the publisher MAY issue incremental
 (delta) updates - see {{patch}}. If false or absent, then the publisher
@@ -217,7 +221,7 @@ field MUST be present if its value is true, but may be omitted if the value is
 false.
 
 ### Tracks {#tracks}
-Location: R    Required: Yes    Json Type: Array
+Location: R    Required: Yes    JSON Type: Array
 
 An array of track objects {{trackobject}}.
 
@@ -226,7 +230,7 @@ A track object is a collection of fields whose location is specified 'T' in
 Table 2.
 
 ### Track namespace {#tracknamespace}
-Location: TFC    Required: Optional    Json Type: String
+Location: TFC    Required: Optional    JSON Type: String
 
 The name space under which the track name is defined. See section 2.3 of
 {{MoQTransport}}. The track namespace is optional. If it is not declared within
@@ -234,13 +238,13 @@ a track, then each track MUST inherit the namespace of the catalog track. A
 namespace declared in a track object overwrites any inherited name space.
 
 ### Track name {#trackname}
-Location: T    Required: Yes   Json Type: String
+Location: T    Required: Yes   JSON Type: String
 
 A string defining the name of the track. See section 2.3 of {{MoQTransport}}.
 Within the catalog, track names MUST be unique per namespace.
 
 ### Packaging {#packaging}
-Location: T    Required: Yes   Json Type: String
+Location: T    Required: Yes   JSON Type: String
 
 A string defining the type of payload encapsulation. Allowed values are strings
 as defined in Table 3.
@@ -252,14 +256,14 @@ Table 3: Allowed packaging values
 | LOC             | "loc"     | See RFC XXXX     |
 
 ### Track label {#tracklabel}
-Location: TF    Required: Optional   Json Type: String
+Location: TF    Required: Optional   JSON Type: String
 
 A string defining a human-readable label for the track. Examples might be
 "Overhead camera view" or "Deutscher Kommentar". Note that the {{JSON}} spec
 requires UTF-8 support by decoders.
 
 ### Render group {#rendergroup}
-Location: TF    Required: Optional   Json Type: Number
+Location: TF    Required: Optional   JSON Type: Number
 
 An integer specifying a group of tracks which are designed to be rendered
 together. Tracks with the same group number SHOULD be rendered simultaneously,
@@ -267,7 +271,7 @@ are usually time-aligned and are designed to accompany one another. A common
 example would be tying together audio and video tracks.
 
 ### Alternate group {#altgroup}
-Location: TF    Required: Optional   Json Type: Number
+Location: TF    Required: Optional   JSON Type: Number
 
 An integer specifying a group of tracks which are alternate versions of
 one-another. Alternate tracks represent the same media content, but differ in
@@ -278,12 +282,12 @@ common example would be a set video tracks of the same content offered in
 alternate bitrates.
 
 ### Initialization data {#initdata}
-Location: TF    Required: Optional   Json Type: String
+Location: TF    Required: Optional   JSON Type: String
 
 A string holding Base64 {{BASE64}} encoded initialization data for the track.
 
 ### Dependencies {#dependencies}
-Location: T    Required: Optional   Json Type: Array
+Location: T    Required: Optional   JSON Type: Array
 
 Certain tracks may depend on other tracks for decoding. Dependencies holds an
 array of track names {{trackname}} on which the current track is dependent.
@@ -291,59 +295,59 @@ Since only the track name is signaled, the namespace of the dependencies is
 assumed to match that of the track declaring the dependencies.
 
 ### Temporal ID {#temporalid}
-Location: T    Required: Optional   Json Type: Number
+Location: T    Required: Optional   JSON Type: Number
 
 A number identifying the temporal layer/sub-layer encoding of the track,
 starting with 0 for the base layer, and increasing with higher temporal
 fidelity.
 
 ### Spatial ID {#spatialid}
-Location: T    Required: Optional   Json Type: Number
+Location: T    Required: Optional   JSON Type: Number
 
 A number identifying the spatial layer encoding of the track, starting with 0
 for the base layer, and increasing with higher fidelity.
 
 ### Codec {#codec}
-Location: T    Required: Optional   Json Type: String
+Location: T    Required: Optional   JSON Type: String
 
 A string defining the codec used to encode the track.
 For LOC packaged content, the string codec registrations are defined in Sect 3
 and Section 4 of {{WEBCODECS-CODEC-REGISTRY}}.
 
 ### Mimetype {#mimetype}
-Location: T    Required: Optional   Json Type: String
+Location: T    Required: Optional   JSON Type: String
 
 A string defining the mime type {{MIME}} of the track.
 
 ### Framerate {#framerate}
-Location: T    Required: Optional   Json Type: Number
+Location: T    Required: Optional   JSON Type: Number
 
 A number defining the video framerate of the track, expressed as frames per
 second.
 
 ### Bitrate {#bitrate}
-Location: T    Required: Optional   Json Type: Number
+Location: T    Required: Optional   JSON Type: Number
 
 A number defining the bitrate of track, expressed in bits per second.
 
 ### Width {#width}
-Location: T    Required: Optional   Json Type: Number
+Location: T    Required: Optional   JSON Type: Number
 
 A number expressing the encoded width of the video frames in pixels.
 
 ### Height {#height}
-Location: T    Required: Optional   Json Type: Number
+Location: T    Required: Optional   JSON Type: Number
 
 A number expressing the encoded height of the video frames in pixels.
 
 ### Audio sample rate {#audiosamplerate}
-Location: T    Required: Optional   Json Type: Number
+Location: T    Required: Optional   JSON Type: Number
 
 The number of audio frame samples per second. This property SHOULD only
 accompany audio codecs.
 
 ### Channel configuration {#channelconfiguration}
-Location: T    Required: Optional   Json Type: String
+Location: T    Required: Optional   JSON Type: String
 
 A string specifying the audio channel configuration. This property SHOULD only
 accompany audio codecs. A string is used in order to provide the flexibility to
@@ -352,17 +356,17 @@ Audio schemas.
 
 
 ### Display width {#displaywidth}
-Location: T    Required: Optional   Json Type: Number
+Location: T    Required: Optional   JSON Type: Number
 
 A number expressing the intended display width of the track content in pixels.
 
 ### Display height {#displayheight}
-Location: T    Required: Optional   Json Type: Number
+Location: T    Required: Optional   JSON Type: Number
 
 A number expressing the intended display height of the track content in pixels.
 
 ### Language {#language}
-Location: T    Required: Optional   Json Type: String
+Location: T    Required: Optional   JSON Type: String
 
 A string defining the dominant language of the track. The string MUST be one of
 the standard Tags for Identifying Languages as defined by {{LANG}}.
@@ -379,7 +383,7 @@ apply to a target JSON document.
 The following rules MUST be followed in processing patches:
 
 * The target JSON to be modified is the JSON document described by the preceding
-{{MOQTransport}} Object in the Catalog track, post any patching that may have
+{{MoQTransport}} Object in the Catalog track, post any patching that may have
 been applied to that Object.
 * A Catalog Patch is identified by having a single array at the root level,
 holding a series of JSON objects, each object representing a single operation
