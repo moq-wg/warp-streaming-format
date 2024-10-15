@@ -124,19 +124,570 @@ ToDo - details of how keys are exchanged and license servers signaled. May be be
 
 ToDo - content protection for LOC-packaged content.
 
-# Catalog
+# Catalog {#catalog}
 
-WARP uses the Common Catalog Format {[COMMON-CATALOG-FORMAT}} to describe the content being produced by a publisher.
+A Catalog is a MOQT Track that provides information about the other tracks being 
+produced by a WARP publisher. A Catalog is used by WARP publishers for advertising
+their output and for subscribers in consuming that output. The payload of the
+Catalog object is opaque to Relays and can be end-to-end encrypted. The Catalog
+provides the names and namespaces of the tracks being produced, along with the
+relationship between tracks, properties of the tracks that consumers may use for
+selection and any relevant initialization data.
 
-Per Sect 5.1 of {{COMMON-CATALOG-FORMAT}}, WARP registers an entry in the "MoQ Streaming Format Type" table.  The type value is 0x001, the name is "WARP Streaming Format" and the RFC is XXX.
+The catalog track MUST have a case-sensitive Track Name of "catalog". 
 
-Every WARP catalog MUST declare a streaming format type (See Sect 3.2.1 of {{COMMON-CATALOG-FORMAT}}) value of 1.
-
-Every WARP catalog MUST declare a streaming format version (See Sect 3.2.1 of {{COMMON-CATALOG-FORMAT}}) corresponding to the version of this document.
-
-The catalog track MUST have a track name of "catalog". A catalog object MAY be independent of other catalog objects or it MAY represent a delta update of a prior catalog object. The first catalog object published within a new group MUST be independent.  A catalog object SHOULD only be published only when the availability of tracks changes.
+A catalog object MAY be independent of other catalog objects or it MAY represent a
+delta update of a prior catalog object. The first catalog object published within
+a new group MUST be independent.  A catalog object SHOULD only be published only
+when the availability of tracks changes.
 
 Each catalog update MUST be mapped to a discreet MOQT Object.
+
+
+## Catalog Fields
+
+A catalog is a JSON [JSON] document, comprised of a series of mandatory and
+optional fields. At a minimum, a catalog MUST provide all mandatory fields and
+a 'tracks' field. A producer MAY add additional fields to the ones described in
+this draft. Custom field names MUST NOT collide with field names described in
+this draft. The order of field names within the JSON document is not important.
+
+A parser MUST ignore fields it does not understand.
+
+Table 1 provides an overview of all fields defined by this document.
+
+| Field                   |  Name                  |           Definition      |
+|:========================|:=======================|:==========================|
+| WARP version            | version                | {{warpversion}}           |
+| Supports delta updates  | supportsDeltaUpdates   | {{supportsdeltaupdates}}  |
+| Tracks                  | tracks                 | {{tracks}}                |
+| Track namespace         | namespace              | {{tracknamespace}}        |
+| Track name              | name                   | {{trackname}}             |
+| Packaging               | packaging              | {{packaging}}             |
+| Track label             | label                  | {{tracklabel}}            |
+| Render group            | renderGroup            | {{rendergroup}}           |
+| Alternate group         | altGroup               | {{altgroup}}              |
+| Initialization data     | initData               | {{initdata}}              |
+| Dependencies            | depends                | {{dependencies}}          |
+| Temporal ID             | temporalId             | {{temporalid}}            |
+| Spatial ID              | spatialId              | {{spatialid}}             |
+| Codec                   | codec                  | {{codec}}                 |
+| Mime type               | mimeType               | {{mimetype}}              |
+| Framerate               | framerate              | {{framerate}}             |
+| Bitrate                 | bitrate                | {{bitrate}}               |
+| Width                   | width                  | {{width}}                 |
+| Height                  | height                 | {{height}}                |
+| Audio sample rate       | samplerate             | {{audiosamplerate}}       |
+| Channel configuration   | channelConfig          | {{channelconfiguration}}  |
+| Display width           | displayWidth           | {{displaywidth}}          |
+| Display height          | displayHeight          | {{displayheight}}         |
+| Language                | lang                   | {{language}}              |
+
+
+Table 2 defines the allowed locations for these fields within the document
+
+| Location |                Allowed locations for the field                |
+|:=========|:==============================================================|
+| R        | The Root of the JSON object                                   |
+| T        | Track object                                                  |
+
+
+## WARP version {#warpversion}
+Location: R    Required: Yes    Json Type: Number
+
+Specifies the version of WARP referenced by this catalog. There is no guarantee
+that future catalog versions are backwards compatible and field definitions and
+interpretation may change between versions. A subscriber MUST NOT attempt to
+parse a catalog version which it does not understand.
+
+
+### Supports delta updates {#supportsdeltaupdates}
+Location: R    Required: Optional    Json Type: Boolean
+
+A boolean that if true indicates that the publisher MAY issue incremental
+(delta) updates - see {{patch}}. If false or absent, then the publisher
+gaurantees that they will NOT issue any incremental updates and that any future
+updates to the catalog will be independent. The default value is false. This
+field MUST be present if its value is true, but may be omitted if the value is
+false.
+
+### Tracks {#tracks}
+Location: R    Required: Yes    Json Type: Array
+
+An array of track objects {{trackobject}}. 
+
+### Tracks object {#trackobject}
+A track object is a collection of fields whose location is specified 'T' in
+Table 2.
+
+### Track namespace {#tracknamespace}
+Location: TFC    Required: Optional    Json Type: String
+
+The name space under which the track name is defined. See section 2.3 of
+{{MoQTransport}}. The track namespace is optional. If it is not declared within
+a track, then each track MUST inherit the namespace of the catalog track. A
+namespace declared in a track object overwrites any inherited name space.
+
+### Track name {#trackname}
+Location: T    Required: Yes   Json Type: String
+
+A string defining the name of the track. See section 2.3 of {{MoQTransport}}.
+Within the catalog, track names MUST be unique per namespace.
+
+### Packaging {#packaging}
+Location: T    Required: Yes   Json Type: String
+
+A string defining the type of payload encapsulation. Allowed values are strings
+as defined in Table 3.
+
+Table 3: Allowed packaging values
+
+| Name            |   Value   |      Draft       |
+|:================|:==========|:=================|
+| LOC             | "loc"     | See RFC XXXX     |
+
+### Track label {#tracklabel}
+Location: TF    Required: Optional   Json Type: String
+
+A string defining a human-readable label for the track. Examples might be
+"Overhead camera view" or "Deutscher Kommentar". Note that the {{JSON}} spec
+requires UTF-8 support by decoders.
+
+### Render group {#rendergroup}
+Location: TF    Required: Optional   Json Type: Number
+
+An integer specifying a group of tracks which are designed to be rendered
+together. Tracks with the same group number SHOULD be rendered simultaneously,
+are usually time-aligned and are designed to accompany one another. A common
+example would be tying together audio and video tracks.
+
+### Alternate group {#altgroup}
+Location: TF    Required: Optional   Json Type: Number
+
+An integer specifying a group of tracks which are alternate versions of
+one-another. Alternate tracks represent the same media content, but differ in
+their selection properties. Alternate tracks SHOULD have matching framerate
+{{framerate}} and media time sequences. A subscriber typically subscribes to
+one track from a set of tracks specifying the same alternate group number. A
+common example would be a set video tracks of the same content offered in
+alternate bitrates.
+
+### Initialization data {#initdata}
+Location: TF    Required: Optional   Json Type: String
+
+A string holding Base64 [BASE64] encoded initialization data for the track.
+
+### Dependencies {#dependencies}
+Location: T    Required: Optional   Json Type: Array
+
+Certain tracks may depend on other tracks for decoding. Dependencies holds an
+array of track names {{trackname}} on which the current track is dependent.
+Since only the track name is signaled, the namespace of the dependencies is
+assumed to match that of the track declaring the dependencies.
+
+### Temporal ID {#temporalid}
+Location: T    Required: Optional   Json Type: Number
+
+A number identifying the temporal layer/sub-layer encoding of the track,
+starting with 0 for the base layer, and increasing with higher temporal
+fidelity.
+
+### Spatial ID {#spatialid}
+Location: T    Required: Optional   Json Type: Number
+
+A number identifying the spatial layer encoding of the track, starting with 0
+for the base layer, and increasing with higher fidelity.
+
+### Codec {#codec}
+Location: T    Required: Optional   Json Type: String
+
+A string defining the codec used to encode the track.
+For LOC packaged content, the string codec registrations are defined in Sect 3
+and Section 4 of {{WEBCODECS-CODEC-REGISTRY}}. 
+
+### Mimetype {#mimetype}
+Location: T    Required: Optional   Json Type: String
+
+A string defining the mime type [MIME] of the track. 
+
+### Framerate {#framerate}
+Location: T    Required: Optional   Json Type: Number
+
+A number defining the video framerate of the track, expressed as frames per
+second.
+
+### Bitrate {#bitrate}
+Location: T    Required: Optional   Json Type: Number
+
+A number defining the bitrate of track, expressed in bits per second.
+
+### Width {#width}
+Location: T    Required: Optional   Json Type: Number
+
+A number expressing the encoded width of the video frames in pixels.
+
+### Height {#height}
+Location: T    Required: Optional   Json Type: Number
+
+A number expressing the encoded height of the video frames in pixels.
+
+### Audio sample rate {#audiosamplerate}
+Location: T    Required: Optional   Json Type: Number
+
+The number of audio frame samples per second. This property SHOULD only
+accompany audio codecs.
+
+### Channel configuration {#channelconfiguration}
+Location: T    Required: Optional   Json Type: String
+
+A string specifying the audio channel configuration. This property SHOULD only
+accompany audio codecs. A string is used in order to provide the flexibility to
+describe complex channel configurations for multi-channel and Next Generation
+Audio schemas.
+
+
+### Display width {#displaywidth}
+Location: T    Required: Optional   Json Type: Number
+
+A number expressing the intended display width of the track content in pixels.
+
+### Display height {#displayheight}
+Location: T    Required: Optional   Json Type: Number
+
+A number expressing the intended display height of the track content in pixels.
+
+### Language {#language}
+Location: T    Required: Optional   Json Type: String
+
+A string defining the dominant language of the track. The string MUST be one of
+the standard Tags for Identifying Languages as defined by [LANG].
+
+## Catalog Patch {#patch}
+A catalog update might contain incremental changes. This is a useful property if
+many tracks may be initially declared but then there are small changes to a
+subset of tracks. The producer can issue a patch to describe these small
+changes. Changes are described incrementally, meaning that a patch can itself
+modify a prior patch. Patching leverages JSON PATCH [JSON-PATCH] to modify the
+catalog.   JSON Patch is a format for expressing a sequence of operations to
+apply to a target JSON document.
+
+The following rules MUST be followed in processing patches:
+
+* The target JSON to be modified is the JSON document described by the preceding
+[MOQTransport] Object in the Catalog track, post any patching that may have
+been applied to that Object.
+* A Catalog Patch is identified by having a single array at the root level,
+holding a series of JSON objects, each object representing a single operation
+to be applied to the target JSON document.
+* Operations are applied sequentially in the order they appear in the array.
+Each operation in the sequence is applied to the target document; the
+resulting document becomes the target of the next operation.  Evaluation
+continues until all operations are successfully applied or until an error
+condition is encountered.
+* Track namespaces and track names may not be changed across patch updates
+To change either namespace or name, remove the track and then add a new track
+with matching properties and the new namespace and name.
+* Contents of the track selection properties object may not be varied across
+updates. To adjust a track selection property, the track must first be removed
+and then added with the new selection properties and a different name.
+
+## Catalog Examples
+
+The following section provides non-normative JSON examples of various catalogs
+compliant with this draft.
+
+
+### Time-aligned Audio/Video Tracks with single quality
+
+This example shows catalog for a media producer capable of sending LOC packaged,
+time-aligned audio and video tracks.
+
+~~~json
+{
+  "version": 1,
+  "tracks": [
+    {
+      "name": "video",
+      "namespace": "conference.example.com/conference123/alice",
+      "packaging": "loc",
+      "renderGroup": 1,
+      "codec":"av01.0.08M.10.0.110.09",
+      "width":1920,
+      "height":1080,
+      "framerate":30,
+      "bitrate":1500000
+    },
+    {
+      "name": "audio",
+      "namespace": "conference.example.com/conference123/alice",
+      "packaging": "loc",
+      "renderGroup": 1,
+      "codec":"opus",
+      "samplerate":48000,
+      "channelConfig":"2",
+      "bitrate":32000
+    }
+   ]
+}
+
+~~~
+
+
+
+### Simulcast video tracks - 3 alternate qualities along with audio
+
+This example shows catalog for a media producer capable
+of sending 3 time-aligned video tracks for high definition, low definition and
+medium definition video qualities, along with an audio track. In this example
+the namespace is absent, which infers that each track must inherit the namespace
+of the catalog. Additionally this example shows the presence of the
+supportsDeltaUpdates flag.
+
+
+~~~json
+{
+  "version": 1,
+  "supportsDeltaUpdates": true,
+  "tracks":[
+    {
+      "name": "hd",
+      "renderGroup": 1,
+      "packaging": "loc",
+      "codec":"av01",
+      "width":1920,
+      "height":1080,
+      "bitrate":5000000,
+      "framerate":30,
+      "altGroup":1
+    },
+    {
+      "name": "md",
+      "renderGroup": 1,
+      "packaging": "loc",
+      "codec":"av01",
+      "width":720,
+      "height":640,
+      "bitrate":3000000,
+      "framerate":30,
+      "altGroup":1
+    },
+    {
+      "name": "sd",
+      "renderGroup": 1,
+      "packaging": "loc",
+      "codec":"av01",
+      "width":192,
+      "height":144,
+      "bitrate":500000,
+      "framerate":30,
+      "altGroup":1
+    },
+    {
+      "name": "audio",
+      "renderGroup": 1,
+      "packaging": "loc",
+      "codec":"opus",
+      "samplerate":48000,
+      "channelConfig":"2",
+      "bitrate":32000
+    }
+   ]
+}
+~~~
+
+
+### SVC video tracks with 2 spatial and 2 temporal qualities
+
+
+This example shows catalog for a media producer capable
+of sending scalable video codec with 2 spatial and 2 temporal
+layers with a dependency relation as shown below:
+
+~~~ascii-figure
+
+                  +----------+
+     +----------->|  S1T1    |
+     |            | 1080p30  |
+     |            +----------+
+     |                  ^
+     |                  |
++----------+            |
+|  S1TO    |            |
+| 1080p15  |            |
++----------+      +-----+----+
+      ^           |  SOT1    |
+      |           | 480p30   |
+      |           +----------+
+      |               ^
++----------+          |
+|  SOTO     |         |
+| 480p15    |---------+
++----------+
+~~~
+
+
+
+The corresponding catalog uses "depends" attribute to
+express the track relationships.
+
+~~~json
+{
+  "version": 1,
+  "supportsDeltaUpdates": true,
+  "tracks":[
+    {
+      "name": "480p15",
+      "namespace": "conference.example.com/conference123/alice",
+      "renderGroup": 1,
+      "packaging": "loc",
+      "codec":"av01.0.01M.10.0.110.09",
+      "width":640,
+      "height":480,
+      "bitrate":3000000,
+      "framerate":15
+    },
+    {
+      "name": "480p30",
+      "namespace": "conference.example.com/conference123/alice",
+      "renderGroup": 1,
+      "packaging": "loc",
+      "codec":"av01.0.04M.10.0.110.09",
+      "width":640,
+      "height":480,
+      "bitrate":3000000,
+      "framerate":30,
+      "depends": ["480p15"]
+    },
+    {
+      "name": "1080p15",
+      "namespace": "conference.example.com/conference123/alice",
+      "renderGroup": 1,
+      "packaging": "loc",
+      "codec":"av01.0.05M.10.0.110.09",
+      "width":1920,
+      "height":1080,
+      "bitrate":3000000,
+      "framerate":15,
+      "depends":["480p15"]
+    },
+
+    {
+      "name": "1080p30",
+      "namespace": "conference.example.com/conference123/alice",
+      "renderGroup": 1,
+      "packaging": "loc",
+      "codec":"av01.0.08M.10.0.110.09",
+      "width":1920,
+      "height":1080,
+      "bitrate":5000000,
+      "framerate":30,
+      "depends": ["480p30", "1080p15"]
+    },
+    {
+      "name": "audio",
+      "namespace": "conference.example.com/conference123/alice",
+      "renderGroup": 1,
+      "packaging": "loc",
+      "codec":"opus",
+      "samplerate":48000,
+      "channelConfig":"2",
+      "bitrate":32000
+    }
+   ]
+}
+~~~
+
+### Patch update adding a track
+
+This example shows catalog for the media producer adding a slide track to an
+established video conference.
+
+~~~json
+[
+    {
+        "op": "add",
+        "path": "/tracks/-",
+        "value": {
+            "name": "slides",
+            "codec": "av01.0.08M.10.0.110.09",
+            "width": 1920,
+            "height": 1080,
+            "framerate": 15,
+            "bitrate": 750000,
+            "renderGroup": 1
+        }
+    }
+]
+
+
+~~~
+
+### Patch update removing a track
+
+This example shows patch catalog update for a media producer removing the track
+from an established video conference.
+
+~~~json
+[
+  { "op": "remove", "path": "/tracks/2"}
+]
+~~~
+
+### Patch update removing all tracks and terminating the broadcast
+
+This example shows a patch catalog update for a media producer removing all
+tracks and terminating the broadcast.
+
+~~~json
+[
+  { "op": "remove", "path": "/tracks/2"},
+  { "op": "remove", "path": "/tracks/1"},
+  { "op": "remove", "path": "/tracks/0"},
+]
+
+~~~
+
+
+### Time-aligned Audio/Video Tracks with custom field values
+
+This example shows catalog for a media producer capable of sending LOC packaged,
+time-aligned audio and video tracks along with custom fields in each track
+description.
+
+~~~json
+{
+  "version": 1,
+  "tracks": [
+    {
+      "name": "video",
+      "namespace": "conference.example.com/conference123/alice",
+      "packaging": "loc",
+      "renderGroup": 1,
+      "codec":"av01.0.08M.10.0.110.09",
+      "width":1920,
+      "height":1080,
+      "framerate":30,
+      "bitrate":1500000,
+      "com.example-billing-code": 3201,
+      "com.example-tier": "premium",
+      "com.example-debug": "h349835bfkjfg82394d945034jsdfn349fns"
+    },
+    {
+      "name": "audio",
+      "namespace": "conference.example.com/conference123/alice",
+      "packaging": "loc",
+      "renderGroup": 1,
+      "codec":"opus",
+      "samplerate":48000,
+      "channelConfig":"2",
+      "bitrate":32000
+    }
+   ]
+}
+
+~~~
+
+
 
 # Media transmission
 The MOQT Groups and MOQT Objects need to be mapped to MOQT Streams. Irrespective of the {{mediapackaging}} in place, each MOQT Object MUST be mapped to a new MOQT Stream.
@@ -185,13 +736,4 @@ This document creates a new entry in the "MoQ Streaming Format" Registry (see {{
 # Acknowledgments
 {:numbered="false"}
 
-- Alan Frindell
-- Ali Begen
-- Charles Krasic
-- Christian Huitema
-- Cullen Jennings
-- Hang Shi
-- James Hurley
-- Jordi Cenzano
-- Mike English
 - the MoQ Workgroup and mailing lists.
