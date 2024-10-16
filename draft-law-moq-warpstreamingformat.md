@@ -60,15 +60,6 @@ normative:
     title: "WebCodecs Codec Registry"
     date: September 2024
     target: https://www.w3.org/TR/webcodecs-codec-registry/
-  ISOBMFF:
-    title: "Information technology -- Coding of audio-visual objects -- Part 12: ISO Base Media File Format"
-    date: 2015-12
-  CMAF:
-    title: "Information technology -- Multimedia application format (MPEG-A) -- Part 19: Common media application format (CMAF) for segmented media"
-    date: 2020-03
-  CENC:
-    title: "International Organization for Standardization - Information technology - MPEG systems technologies - Part 7: Common encryption in ISO base media file format files"
-    date: 2020-12
 
 informative:
 
@@ -93,19 +84,7 @@ This document describes version 1 of the streaming format.
 This document uses the conventions detailed in Section 1.3 of {{RFC9000}} when describing the binary encoding.
 
 # Media packaging {#mediapackaging}
-WARP delivers CMAF {{CMAF}} and LOC {{LOC}} packaged media bitstreams. Either format may be used in a broadcast, or they may be intermixed between tracks. The packaging format of a track, once declared, MUST remain constant.
-
-## CMAF packaging
-This specification references {{CMAFpackaging}} to define how CMAF packaged bitstreams are mapped to {{MoQTransport}} groups and objects.
-
-Both CMAF Object mappings {{CMAFpackaging}} Section 4 are supported and a content producer may use either. To identify to clients which object mapping mode is being used for a given Track, the catalog "packaging" field MUST use one of the values defined in Table 1. The values are case-sensitive.
-
-Table 1 provides values for the catalog "packaging" field with CMAF packaging.
-
-| Packaging field value     |  Condition                         |                                              Explanation                                            |
-|:==========================|:===================================|:====================================================================================================|
-| cmaf-frag-per-group       | {{CMAFpackaging}} 4.1 is active    |  Each CMAF Fragment is placed in a single MOQT Object and there is one MOQT Object per MOQT Group   |
-| cmaf-chunk-per-object     | {{CMAFpackaging}} 4.2 is active    |  Each CMAF chunk is placed in a MOQT Object and there is one MOQT Group per CMAF Fragment           |
+WARP delivers LOC {{LOC}} packaged media bitstreams.
 
 ## LOC packaging
 This specification references Low Overhead Container (LOC) {{LOC}} to define how audio and video content is packaged. With this packaging mode, each EncodedAudioChunk or EncodedVideoChunk sample is placed in a separate MOQT Object. Samples that belong to the same Group of Pictures (GOP) MUST be placed within the same MOQT Group.
@@ -126,10 +105,6 @@ WARP Tracks MAY be time-aligned. Those that are, are subject to the following re
 A consequence of this restriction is that a WARP receiver SHOULD be able to cleanly switch between time-aligned media tracks at group boundaries.
 
 ## Content protection and encryption {#contentprotection}
-
-The catalog and media object payloads MAY be encrypted. Common Encryption {{CENC}} with 'cbcs' mode (AES CBC with pattern encryption) is the RECOMMENDED encryption method for CMAF packaged content.
-
-ToDo - details of how keys are exchanged and license servers signaled. May be best to extend catalog spec to allow the specification of content protection schema, along with any pssh or protection initialization data.
 
 ToDo - content protection for LOC-packaged content.
 
