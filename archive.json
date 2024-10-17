@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-10-15T01:43:30.752260+00:00",
+  "timestamp": "2024-10-17T01:42:27.960802+00:00",
   "repo": "moq-wg/warp-streaming-format",
   "labels": [
     {
@@ -57,7 +57,7 @@
       "url": "https://github.com/moq-wg/warp-streaming-format/issues/1",
       "state": "CLOSED",
       "author": "suhasHere",
-      "authorAssociation": "NONE",
+      "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "As per consensus at IETF116, subscribes and publishes happens on Track Names that are fully qualified with a prefix and a suffix.\r\nWMF spec should describe how the track name are formed from the catalog to be used in the control messages.",
@@ -88,7 +88,7 @@
       "url": "https://github.com/moq-wg/warp-streaming-format/issues/2",
       "state": "CLOSED",
       "author": "suhasHere",
-      "authorAssociation": "NONE",
+      "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "Not sure if this belong here or in the base catalog spec though",
@@ -457,7 +457,7 @@
       "url": "https://github.com/moq-wg/warp-streaming-format/issues/18",
       "state": "CLOSED",
       "author": "suhasHere",
-      "authorAssociation": "NONE",
+      "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "Creating this issue to track the discussions from IETF117 to remove the catalog section.",
@@ -499,7 +499,7 @@
       "comments": [
         {
           "author": "suhasHere",
-          "authorAssociation": "NONE",
+          "authorAssociation": "CONTRIBUTOR",
           "body": "I think this should go in the WARP spec",
           "createdAt": "2023-10-11T14:20:35Z",
           "updatedAt": "2023-10-11T14:20:35Z"
@@ -674,7 +674,7 @@
       "comments": [
         {
           "author": "suhasHere",
-          "authorAssociation": "NONE",
+          "authorAssociation": "CONTRIBUTOR",
           "body": "this issue made me think that we need to define following terms in the transport spec\r\n- media format\r\n- media container format\r\n- catalog format\r\n\r\nI wonder if `meida format` is too generic a term ?",
           "createdAt": "2023-04-21T06:17:50Z",
           "updatedAt": "2023-04-21T06:17:50Z"
@@ -695,7 +695,7 @@
         },
         {
           "author": "suhasHere",
-          "authorAssociation": "NONE",
+          "authorAssociation": "CONTRIBUTOR",
           "body": "Why can't we either specify in SETUP message or add as Track Request Parameter to identify the format needed ?",
           "createdAt": "2023-04-22T00:14:06Z",
           "updatedAt": "2023-04-22T00:14:06Z"
@@ -759,17 +759,17 @@
       "id": "I_kwDOJTN4X86ZHIzU",
       "title": "Remove CMAF packaging",
       "url": "https://github.com/moq-wg/warp-streaming-format/issues/32",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "suhasHere",
-      "authorAssociation": "NONE",
+      "authorAssociation": "CONTRIBUTOR",
       "assignees": [
         "suhasHere"
       ],
       "labels": [],
       "body": "",
       "createdAt": "2024-10-06T17:33:41Z",
-      "updatedAt": "2024-10-06T17:33:44Z",
-      "closedAt": null,
+      "updatedAt": "2024-10-16T04:24:50Z",
+      "closedAt": "2024-10-16T04:24:50Z",
       "comments": []
     },
     {
@@ -777,16 +777,24 @@
       "id": "I_kwDOJTN4X86ZHI2n",
       "title": "Bring in catalog section into WARP spec",
       "url": "https://github.com/moq-wg/warp-streaming-format/issues/33",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "suhasHere",
-      "authorAssociation": "NONE",
+      "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "",
       "createdAt": "2024-10-06T17:34:02Z",
-      "updatedAt": "2024-10-06T17:34:02Z",
-      "closedAt": null,
-      "comments": []
+      "updatedAt": "2024-10-16T04:25:23Z",
+      "closedAt": "2024-10-16T04:25:23Z",
+      "comments": [
+        {
+          "author": "wilaw",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Fixed by #38 ",
+          "createdAt": "2024-10-16T04:25:23Z",
+          "updatedAt": "2024-10-16T04:25:23Z"
+        }
+      ]
     },
     {
       "number": 34,
@@ -795,7 +803,7 @@
       "url": "https://github.com/moq-wg/warp-streaming-format/issues/34",
       "state": "OPEN",
       "author": "suhasHere",
-      "authorAssociation": "NONE",
+      "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "",
@@ -811,7 +819,7 @@
       "url": "https://github.com/moq-wg/warp-streaming-format/issues/35",
       "state": "OPEN",
       "author": "suhasHere",
-      "authorAssociation": "NONE",
+      "authorAssociation": "CONTRIBUTOR",
       "assignees": [
         "suhasHere"
       ],
@@ -829,7 +837,7 @@
       "url": "https://github.com/moq-wg/warp-streaming-format/issues/36",
       "state": "OPEN",
       "author": "suhasHere",
-      "authorAssociation": "NONE",
+      "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "",
@@ -1144,7 +1152,7 @@
             "abbreviatedOid": "8a97ccb"
           },
           "author": "suhasHere",
-          "authorAssociation": "NONE",
+          "authorAssociation": "CONTRIBUTOR",
           "state": "CHANGES_REQUESTED",
           "body": "",
           "createdAt": "2023-10-04T19:10:26Z",
@@ -1184,7 +1192,7 @@
             "abbreviatedOid": "8a97ccb"
           },
           "author": "suhasHere",
-          "authorAssociation": "NONE",
+          "authorAssociation": "CONTRIBUTOR",
           "state": "APPROVED",
           "body": "",
           "createdAt": "2023-12-11T17:54:47Z",
@@ -1226,7 +1234,7 @@
             "abbreviatedOid": "63ad9ef"
           },
           "author": "suhasHere",
-          "authorAssociation": "NONE",
+          "authorAssociation": "CONTRIBUTOR",
           "state": "COMMENTED",
           "body": "",
           "createdAt": "2023-10-04T19:25:33Z",
@@ -1351,26 +1359,91 @@
       "id": "PR_kwDOJTN4X859_DuA",
       "title": "remove cmaf",
       "url": "https://github.com/moq-wg/warp-streaming-format/pull/37",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "suhasHere",
-      "authorAssociation": "NONE",
+      "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "Fixes #32",
       "createdAt": "2024-10-08T18:30:43Z",
-      "updatedAt": "2024-10-08T18:30:43Z",
+      "updatedAt": "2024-10-16T04:24:54Z",
+      "baseRepository": "moq-wg/warp-streaming-format",
+      "baseRefName": "main",
+      "baseRefOid": "39dfd72b47daafe7706c8053938b71166c4bc088",
+      "headRepository": "moq-wg/warp-streaming-format",
+      "headRefName": "remove-cmaf",
+      "headRefOid": "f856add3be544a1e4b2fe2687a840b5551d6a166",
+      "closedAt": "2024-10-16T04:24:49Z",
+      "mergedAt": "2024-10-16T04:24:49Z",
+      "mergedBy": "wilaw",
+      "mergeCommit": {
+        "oid": "f9ddf106e9aa7cbe880d763c42c7b614caf662fd"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJTN4X86NVIzz",
+          "commit": {
+            "abbreviatedOid": "2ecb9cb"
+          },
+          "author": "wilaw",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-10-16T03:51:53Z",
+          "updatedAt": "2024-10-16T03:52:11Z",
+          "comments": [
+            {
+              "originalPosition": 21,
+              "body": "I already update this section with my PR to remove the CMCAF and Common Cataklog Format references, so we could omit this part as it is redundant if we re-base. ",
+              "createdAt": "2024-10-16T03:51:53Z",
+              "updatedAt": "2024-10-16T03:52:11Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 38,
+      "id": "PR_kwDOJTN4X85-nfvq",
+      "title": "Add catalog definition to WARP",
+      "url": "https://github.com/moq-wg/warp-streaming-format/pull/38",
+      "state": "MERGED",
+      "author": "wilaw",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Adds Catalog definition to WARP",
+      "createdAt": "2024-10-15T04:00:29Z",
+      "updatedAt": "2024-10-16T03:49:55Z",
       "baseRepository": "moq-wg/warp-streaming-format",
       "baseRefName": "main",
       "baseRefOid": "050cfdc68cac54f9d59e83a6f4811f8a75d01b1c",
       "headRepository": "moq-wg/warp-streaming-format",
-      "headRefName": "remove-cmaf",
-      "headRefOid": "2ecb9cb190b4fe92d510df46fd68aaec1a404fc3",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefName": "wilaw-patch-1",
+      "headRefOid": "3c1c1ea23c139d3073c0f06be648919068b81f81",
+      "closedAt": "2024-10-16T03:49:51Z",
+      "mergedAt": "2024-10-16T03:49:51Z",
+      "mergedBy": "wilaw",
+      "mergeCommit": {
+        "oid": "39dfd72b47daafe7706c8053938b71166c4bc088"
+      },
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOJTN4X86NVFYe",
+          "commit": {
+            "abbreviatedOid": "3c1c1ea"
+          },
+          "author": "suhasHere",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-10-16T03:42:05Z",
+          "updatedAt": "2024-10-16T03:42:05Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
