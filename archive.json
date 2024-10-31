@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-10-29T01:44:54.068086+00:00",
+  "timestamp": "2024-10-31T01:44:45.686926+00:00",
   "repo": "moq-wg/warp-streaming-format",
   "labels": [
     {
@@ -843,6 +843,22 @@
       "body": "",
       "createdAt": "2024-10-06T17:36:01Z",
       "updatedAt": "2024-10-06T17:36:01Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 39,
+      "id": "I_kwDOJTN4X86ccgU0",
+      "title": "Issues with time alignment requirement between tracks",
+      "url": "https://github.com/moq-wg/warp-streaming-format/issues/39",
+      "state": "OPEN",
+      "author": "gloinul",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "Section 3.2:\r\n\r\n`The presentation time of the first media sample contained within the first MOQT Object of each equally numbered MOQT Group MUST be identical.`\r\n\r\nThis can actually be hard to ensure. If video are 30 FPS and audio object represent 20, 10 or 5 ms as is common, they will not algin perfectly even when new groups are periodically started to enable joins for example. \r\n\r\nI think it is better to require that the first media objects render duration after decoding needs to have overlapping presentation time. That way an audio frame that have a duration of 20ms can overlap with the presentation time of the first video frame. \r\n\r\nI will also note that media types like sub-titles may have to be repeated at group boundaries due to their extended presentation time of many seconds. \r\n\r\n",
+      "createdAt": "2024-10-30T16:50:47Z",
+      "updatedAt": "2024-10-30T16:50:47Z",
       "closedAt": null,
       "comments": []
     }
