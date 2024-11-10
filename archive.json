@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-11-07T01:40:49.541429+00:00",
+  "timestamp": "2024-11-10T01:46:01.877039+00:00",
   "repo": "moq-wg/warp-streaming-format",
   "labels": [
     {
@@ -597,7 +597,7 @@
       "title": "Streaming format negotiation",
       "url": "https://github.com/moq-wg/warp-streaming-format/issues/29",
       "state": "OPEN",
-      "author": "fiestajetsam",
+      "author": null,
       "authorAssociation": "NONE",
       "assignees": [],
       "labels": [],
@@ -614,7 +614,7 @@
           "updatedAt": "2023-06-09T04:43:41Z"
         },
         {
-          "author": "fiestajetsam",
+          "author": null,
           "authorAssociation": "NONE",
           "body": "@kixelated I don't think using \"file extensions\" like Victor suggested would be good for implementations - all the other data is part of a structure of some kind, but to separate catalog name from format you have to `split('.')` seems a kludge. I think ANNOUNCE might need a bit more thought on its structure and both sender/receiver behaviours - in particular being descriptive of what happens when a format is unsupported. I'm happy to make a PR.",
           "createdAt": "2023-06-09T08:05:57Z",
