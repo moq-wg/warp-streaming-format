@@ -46,7 +46,6 @@ author:
 
 normative:
   MoQTransport: I-D.draft-ietf-moq-transport-05
-  CMAFpackaging: I-D.draft-wilaw-moq-cmafpackaging-01
   LOC: I-D.draft-mzanaty-moq-loc-03
   BASE64: RFC4648
   JSON: RFC8259
