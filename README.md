@@ -2,7 +2,7 @@
 
 This is the working area for the individual Internet-Draft, "WARP Streaming Format".
 
-* [Editor's Copy](https://moq-wg.github.io/warp-streaming-format/#go.draft-law-moq-warpstreamingformat.html)
+* [Editor's Copy](https://moq-wg.github.io/warp-streaming-format)
 * [Datatracker Page](https://datatracker.ietf.org/doc/draft-law-moq-warpstreamingformat)
 * [Individual Draft](https://datatracker.ietf.org/doc/html/draft-law-moq-warpstreamingformat)
 * [Compare Editor's Copy to Individual Draft](https://moq-wg.github.io/warp-streaming-format/#go.draft-law-moq-warpstreamingformat.diff)
