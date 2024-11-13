@@ -73,7 +73,15 @@ This document specifies the WARP Streaming Format, designed to operate on Media 
 
 # Introduction
 
-WARP Streaming Format (WARP) is a media format designed to deliver LOC {{LOC}} compliant media content over Media Over QUIC Transport (MOQT) {{MoQTransport}}. WARP works by fragmenting the bitstream into objects that can be independently transmitted. WARP leverages a catalog format to describe the output of the original publisher. WARP specifies how content should be packaged and signaled, defines how the catalog communicates the content, specifies prioritization strategies for real-time and workflows for beginning and terminating broadcasts. WARP also details how end-subscribers may perform adaptive bitrate switching. WARP is targeted at real-time and interactive levels of live latency.
+WARP Streaming Format (WARP) is a media format designed to deliver LOC {{LOC}}
+compliant media content over Media Over QUIC Transport (MOQT) {{MoQTransport}}.
+WARP works by fragmenting the bitstream into objects that can be independently
+transmitted. WARP leverages a catalog format to describe the output of the
+original publisher. WARP specifies how content should be packaged and signaled,
+defines how the catalog communicates the content, specifies prioritization
+strategies for real-time and workflows for beginning and terminating broadcasts.
+WARP also details how end-subscribers may perform adaptive bitrate switching.
+WARP is targeted at real-time and interactive levels of live latency.
 
 This document describes version 1 of the streaming format.
 
@@ -81,49 +89,53 @@ This document describes version 1 of the streaming format.
 
 {::boilerplate bcp14-tagged}
 
-This document uses the conventions detailed in Section 1.3 of {{RFC9000}} when describing the binary encoding.
+This document uses the conventions detailed in Section 1.3 of {{RFC9000}} when
+describing the binary encoding.
 
 # Media packaging {#mediapackaging}
 WARP delivers LOC {{LOC}} packaged media bitstreams.
 
 ## LOC packaging
-This specification references Low Overhead Container (LOC) {{LOC}} to define how audio and video content is packaged. With this packaging mode, each EncodedAudioChunk or EncodedVideoChunk sample is placed in a separate MOQT Object. Samples that belong to the same Group of Pictures (GOP) MUST be placed within the same MOQT Group.
+This specification references Low Overhead Container (LOC) {{LOC}} to define how
+audio and video content is packaged. With this packaging mode, each
+EncodedAudioChunk or EncodedVideoChunk sample is placed in a separate MOQT
+Object. Samples that belong to the same Group of Pictures (GOP) MUST be placed
+within the same MOQT Group.
 
-Table 2 provides values for the catalog "packaging" field with LOC packaging.
-
-| Packaging field value     |  Condition                    |                                              Explanation                                    |
-|:==========================|:==============================|:============================================================================================|
-| loc                       | {{LOC}} packagin is active    |  Each EncodedAudioChunk or EncodedVideoChunk sample is placed in a separate MOQT Object     |
-
+When LOC packaging is used for a track, the catalog packaging attribute
+({{packaging}}) MUST be present and it MUST be populated with a value of "loc".
 
 ## Time-alignment {#timealignment}
-WARP Tracks MAY be time-aligned. Those that are, are subject to the following requirements:
+WARP Tracks MAY be time-aligned. Those that are, are subject to the following
+requirements:
 
-* Time-aligned tracks MUST be advertised in the catalog as belonging to a common render group.
-* The presentation time of the first media sample contained within the first MOQT Object of each equally numbered MOQT Group MUST be identical.
+* Time-aligned tracks MUST be advertised in the catalog as belonging to a common
+  render group.
+* The presentation time of the first media sample contained within the first
+  MOQT Object of each equally numbered MOQT Group MUST be identical.
 
-A consequence of this restriction is that a WARP receiver SHOULD be able to cleanly switch between time-aligned media tracks at group boundaries.
+A consequence of this restriction is that a WARP receiver SHOULD be able to
+cleanly switch between time-aligned media tracks at group boundaries.
 
 ## Content protection and encryption {#contentprotection}
 
 ToDo - content protection for LOC-packaged content.
 
 # Catalog {#catalog}
-
 A Catalog is a MOQT Track that provides information about the other tracks being
-produced by a WARP publisher. A Catalog is used by WARP publishers for advertising
-their output and for subscribers in consuming that output. The payload of the
-Catalog object is opaque to Relays and can be end-to-end encrypted. The Catalog
-provides the names and namespaces of the tracks being produced, along with the
-relationship between tracks, properties of the tracks that consumers may use for
-selection and any relevant initialization data.
+produced by a WARP publisher. A Catalog is used by WARP publishers for
+advertising their output and for subscribers in consuming that output. The
+payload of the Catalog object is opaque to Relays and can be end-to-end
+encrypted. The Catalog provides the names and namespaces of the tracks being
+produced, along with therelationship between tracks, properties of the tracks
+that consumers may use for selection and any relevant initialization data.
 
 The catalog track MUST have a case-sensitive Track Name of "catalog".
 
-A catalog object MAY be independent of other catalog objects or it MAY represent a
-delta update of a prior catalog object. The first catalog object published within
-a new group MUST be independent.  A catalog object SHOULD only be published only
-when the availability of tracks changes.
+A catalog object MAY be independent of other catalog objects or it MAY represent
+a delta update of a prior catalog object. The first catalog object published
+within a new group MUST be independent.  A catalog object SHOULD only be
+published only when the availability of tracks changes.
 
 Each catalog update MUST be mapped to a discreet MOQT Object.
 
@@ -188,12 +200,12 @@ parse a catalog version which it does not understand.
 ### Supports delta updates {#supportsdeltaupdates}
 Location: R    Required: Optional    JSON Type: Boolean
 
-A boolean that if true indicates that the publisher MAY issue incremental
+A Boolean that if true indicates that the publisher MAY issue incremental
 (delta) updates - see {{patch}}. If false or absent, then the publisher
-gaurantees that they will NOT issue any incremental updates and that any future
-updates to the catalog will be independent. The default value is false. This
-field MUST be present if its value is true, but may be omitted if the value is
-false.
+guarantees that they will NOT issue any incremental updates and that any
+future updates to the catalog will be independent. The default value is
+false. This field MUST be present if its value is true, but may be omitted
+if the value is false.
 
 ### Tracks {#tracks}
 Location: R    Required: Yes    JSON Type: Array
@@ -420,10 +432,10 @@ time-aligned audio and video tracks.
 
 ### Simulcast video tracks - 3 alternate qualities along with audio
 
-This example shows catalog for a media producer capable
-of sending 3 time-aligned video tracks for high definition, low definition and
-medium definition video qualities, along with an audio track. In this example
-the namespace is absent, which infers that each track must inherit the namespace
+This example shows catalog for a media producer capable of sending 3
+time-aligned video tracks for high definition, low definition and medium
+definition video qualities, along with an audio track. In this example the
+namespace is absent, which infers that each track must inherit the namespace
 of the catalog. Additionally this example shows the presence of the
 supportsDeltaUpdates flag.
 
@@ -674,37 +686,64 @@ description.
 
 
 # Media transmission
-The MOQT Groups and MOQT Objects need to be mapped to MOQT Streams. Irrespective of the {{mediapackaging}} in place, each MOQT Object MUST be mapped to a new MOQT Stream.
+The MOQT Groups and MOQT Objects need to be mapped to MOQT Streams. Irrespective
+of the {{mediapackaging}} in place, each MOQT Object MUST be mapped to a new
+MOQT Stream.
 
 # Timeline track
-
-The timeline track provides data about the previously published groups and their relationship to wallclock time, media time and associated timed-metadata. Timeline tracks allow players to seek to precise points behind the live head in a live broadcast, or for random access in a VOD asset. A timeline track may also be used to insert events at media times which do not correlate with Object boundaries. Timeline tracks are optional. Multiple timeline tracks MAY exist inside a catalog.
+The timeline track provides data about the previously published groups and their
+relationship to wallclock time, media time and associated timed-metadata.
+Timeline tracks allow players to seek to precise points behind the live head in
+a live broadcast, or for random access in a VOD asset. A timeline track may also
+be used to insert events at media times which do not correlate with Object
+boundaries. Timeline tracks are optional. Multiple timeline tracks MAY exist
+inside a catalog.
 
 ## Timeline track payload
+The payload of a timeline track is a UTF-8 encoded CSV text file. This payload
+is formatted according to RFC4180 "Common Format and MIME Type for
+Comma-Separated Values (CSV)" Files {{RFC4180}}. The separator is a comma and
+each line is separated by a carriage return. The mime-type of a timeline track
+MUST be specified as "text/csv" in the catalog.
 
-The payload of a timeline track is a UTF-8 encoded CSV text file. This payload is formatted according to RFC4180 "Common Format and MIME Type for Comma-Separated Values (CSV)" Files {{RFC4180}}. The separator is a comma and each line is separated by a carriage return. The mime-type of a timeline track MUST be specified as "text/csv" in the catalog.
+Each timeline track begins with a header row of MEDIA_PTS,GROUP_ID,OBJECT_ID,
+WALLCLOCK,METADATA. This row defines the 5 columns of data within each record.
 
-Each timeline track begins with a header row of MEDIA_PTS,GROUP_ID,OBJECT_ID,WALLCLOCK,METADATA. This row defines the 5 columns of data within each record.
-
-* MEDIA_PTS: a media timestamp rounded to the nearest millisecond. This entry MUST not be empty. If the Object ID entry is present, then this value MUST match the media presentation timestamp of the first media sample in the referenced Object.
+* MEDIA_PTS: a media timestamp rounded to the nearest millisecond. This entry
+  MUST not be empty. If the Object ID entry is present, then this value MUST
+  match the media presentation timestamp of the first media sample in the
+  referenced Object.
 * GROUP_ID: the MOQT Group ID. This entry MAY be empty.
 * OBJECT_ID: the MOQT Object ID. This entry MAY be empty.
-* WALLCLOCK: the wallclock time at which the media was encoded, expressed as the number of milliseconds that have elapsed since January 1, 1970 (midnight UTC/GMT). For VOD assets, or if the wallclock time is not known, the value SHOULD be 0.
-* METADATA: a flexible field holding arbitrary string metadata. This field may be empty. If not empty, it MUST be enclosed in double quotes. A double-quote appearing inside this field MUST be escaped by preceding it with another double quote.
+* WALLCLOCK: the wallclock time at which the media was encoded, expressed as
+  the number of milliseconds that have elapsed since January 1, 1970
+  (midnight UTC/GMT). For VOD assets, or if the wallclock time is not known,
+  the value SHOULD be 0.
+* METADATA: a flexible field holding arbitrary string metadata. This field may
+  be empty. If not empty, it MUST be enclosed in double quotes. A double-quote
+  appearing inside this field MUST be escaped by preceding it with another
+  double quote.
 
 ## Timeline Catalog requirements
-A timeline track MUST carry a 'type' identifier in the Catalog with a value of "timeline".
-A timeline track MUST carry a 'dependencies' attribute which contains an array of all track names to which the timeline track applies.
+A timeline track MUST carry a 'type' identifier in the Catalog with a value of
+"timeline". A timeline track MUST carry a 'dependencies' attribute which
+contains an array of all track names to which the timeline track applies.
 
 ## Timeline track updating.
-The publisher MUST publish a complete timeline in the first MOQT Object of each MOQT Group.
-The publisher MAY publish incremental updates in the second and subsequent Objects within each GROUP. Incremental updates only contain timeline events since the last timeline Object. Group duration SHOULD not exceed 30 seconds.
+The publisher MUST publish a complete timeline in the first MOQT Object of each
+MOQT Group. The publisher MAY publish incremental updates in the second and
+subsequent Objects within each GROUP. Incremental updates only contain timeline
+events since the last timeline Object. Group duration SHOULD not exceed 30
+seconds.
 
 # Workflow
 
-A WARP publisher MUST publish a catalog track object before publishing any media track objects.
+A WARP publisher MUST publish a catalog track object before publishing any media
+track objects.
 
-At the completion of a session, a publisher MUST publish a catalog update that removes all currently active tracks.  This action SHOULD be interpreted by receivers to mean that the publish session is complete.
+At the completion of a session, a publisher MUST publish a catalog update that
+removes all currently active tracks.  This action SHOULD be interpreted by
+receivers to mean that the publish session is complete.
 
 
 # Security Considerations
@@ -713,7 +752,9 @@ ToDo
 
 # IANA Considerations {#IANA}
 
-This document creates a new entry in the "MoQ Streaming Format" Registry (see {{MoQTransport}} Sect 8).  The type value is 0x001, the name is "WARP Streaming Format" and the RFC is XXX.
+This document creates a new entry in the "MoQ Streaming Format" Registry
+(see {{MoQTransport}} Sect 8).  The type value is 0x001, the name is
+"WARP Streaming Format" and the RFC is XXX.
 
 --- back
 
