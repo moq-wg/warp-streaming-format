@@ -170,19 +170,9 @@ Table of Contents
    a separate MOQT Object.  Samples that belong to the same Group of
    Pictures (GOP) MUST be placed within the same MOQT Group.
 
-   Table 2 provides values for the catalog "packaging" field with LOC
-   packaging.
-
-    +=============+================+==================================+
-    | Packaging   | Condition      | Explanation                      |
-    | field value |                |                                  |
-    +=============+================+==================================+
-    | loc         | [LOC] packagin | Each EncodedAudioChunk or        |
-    |             | is active      | EncodedVideoChunk sample is      |
-    |             |                | placed in a separate MOQT Object |
-    +-------------+----------------+----------------------------------+
-
-                                  Table 1
+   When LOC packaging is used for a track, the catalog packaging
+   attribute (Section 4.2.6) MUST be present and it MUST be populated
+   with a value of "loc".
 
 3.2.  Time-alignment
 
@@ -211,9 +201,9 @@ Table of Contents
    publishers for advertising their output and for subscribers in
    consuming that output.  The payload of the Catalog object is opaque
    to Relays and can be end-to-end encrypted.  The Catalog provides the
-   names and namespaces of the tracks being produced, along with the
-   relationship between tracks, properties of the tracks that consumers
-   may use for selection and any relevant initialization data.
+   names and namespaces of the tracks being produced, along with
+   therelationship between tracks, properties of the tracks that
+   consumers may use for selection and any relevant initialization data.
 
    The catalog track MUST have a case-sensitive Track Name of "catalog".
 
@@ -290,7 +280,7 @@ Table of Contents
     | Language               | lang                 | Section 4.2.24 |
     +------------------------+----------------------+----------------+
 
-                                 Table 2
+                                 Table 1
 
    Table 2 defines the allowed locations for these fields within the
    document
@@ -303,7 +293,7 @@ Table of Contents
               | T        | Track object                    |
               +----------+---------------------------------+
 
-                                 Table 3
+                                 Table 2
 
 4.2.  WARP version
 
@@ -319,9 +309,9 @@ Table of Contents
 
    Location: R Required: Optional JSON Type: Boolean
 
-   A boolean that if true indicates that the publisher MAY issue
+   A Boolean that if true indicates that the publisher MAY issue
    incremental (delta) updates - see Section 4.3.  If false or absent,
-   then the publisher gaurantees that they will NOT issue any
+   then the publisher guarantees that they will NOT issue any
    incremental updates and that any future updates to the catalog will
    be independent.  The default value is false.  This field MUST be
    present if its value is true, but may be omitted if the value is
@@ -371,7 +361,7 @@ Table of Contents
                       | LOC  | "loc" | See RFC XXXX |
                       +------+-------+--------------+
 
-                                  Table 4
+                                  Table 3
 
 4.2.7.  Track label
 
@@ -843,7 +833,7 @@ Table of Contents
    the catalog.
 
    Each timeline track begins with a header row of
-   MEDIA_PTS,GROUP_ID,OBJECT_ID,WALLCLOCK,METADATA.  This row defines
+   MEDIA_PTS,GROUP_ID,OBJECT_ID, WALLCLOCK,METADATA.  This row defines
    the 5 columns of data within each record.
 
    *  MEDIA_PTS: a media timestamp rounded to the nearest millisecond.

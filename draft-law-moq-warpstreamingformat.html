@@ -1378,7 +1378,15 @@ svg :is([fill="white"], [fill^="#fff"]) {
       <h2 id="name-introduction">
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
-<p id="section-1-1">WARP Streaming Format (WARP) is a media format designed to deliver LOC <span>[<a href="#LOC" class="cite xref">LOC</a>]</span> compliant media content over Media Over QUIC Transport (MOQT) <span>[<a href="#MoQTransport" class="cite xref">MoQTransport</a>]</span>. WARP works by fragmenting the bitstream into objects that can be independently transmitted. WARP leverages a catalog format to describe the output of the original publisher. WARP specifies how content should be packaged and signaled, defines how the catalog communicates the content, specifies prioritization strategies for real-time and workflows for beginning and terminating broadcasts. WARP also details how end-subscribers may perform adaptive bitrate switching. WARP is targeted at real-time and interactive levels of live latency.<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-1">WARP Streaming Format (WARP) is a media format designed to deliver LOC <span>[<a href="#LOC" class="cite xref">LOC</a>]</span>
+compliant media content over Media Over QUIC Transport (MOQT) <span>[<a href="#MoQTransport" class="cite xref">MoQTransport</a>]</span>.
+WARP works by fragmenting the bitstream into objects that can be independently
+transmitted. WARP leverages a catalog format to describe the output of the
+original publisher. WARP specifies how content should be packaged and signaled,
+defines how the catalog communicates the content, specifies prioritization
+strategies for real-time and workflows for beginning and terminating broadcasts.
+WARP also details how end-subscribers may perform adaptive bitrate switching.
+WARP is targeted at real-time and interactive levels of live latency.<a href="#section-1-1" class="pilcrow">¶</a></p>
 <p id="section-1-2">This document describes version 1 of the streaming format.<a href="#section-1-2" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -1391,7 +1399,8 @@ svg :is([fill="white"], [fill^="#fff"]) {
 "<span class="bcp14">MAY</span>", and "<span class="bcp14">OPTIONAL</span>" in this document are to be interpreted as
 described in BCP 14 <span>[<a href="#RFC2119" class="cite xref">RFC2119</a>]</span> <span>[<a href="#RFC8174" class="cite xref">RFC8174</a>]</span> when, and only when, they
 appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶</a></p>
-<p id="section-2-2">This document uses the conventions detailed in Section 1.3 of <span>[<a href="#RFC9000" class="cite xref">RFC9000</a>]</span> when describing the binary encoding.<a href="#section-2-2" class="pilcrow">¶</a></p>
+<p id="section-2-2">This document uses the conventions detailed in Section 1.3 of <span>[<a href="#RFC9000" class="cite xref">RFC9000</a>]</span> when
+describing the binary encoding.<a href="#section-2-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="mediapackaging">
@@ -1405,26 +1414,13 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
         <h3 id="name-loc-packaging">
 <a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-loc-packaging" class="section-name selfRef">LOC packaging</a>
         </h3>
-<p id="section-3.1-1">This specification references Low Overhead Container (LOC) <span>[<a href="#LOC" class="cite xref">LOC</a>]</span> to define how audio and video content is packaged. With this packaging mode, each EncodedAudioChunk or EncodedVideoChunk sample is placed in a separate MOQT Object. Samples that belong to the same Group of Pictures (GOP) <span class="bcp14">MUST</span> be placed within the same MOQT Group.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
-<p id="section-3.1-2">Table 2 provides values for the catalog "packaging" field with LOC packaging.<a href="#section-3.1-2" class="pilcrow">¶</a></p>
-<table class="center" id="table-1">
-          <caption><a href="#table-1" class="selfRef">Table 1</a></caption>
-<thead>
-            <tr>
-              <th class="text-left" rowspan="1" colspan="1">Packaging field value</th>
-              <th class="text-left" rowspan="1" colspan="1">Condition</th>
-              <th class="text-left" rowspan="1" colspan="1">Explanation</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">loc</td>
-              <td class="text-left" rowspan="1" colspan="1">
-                <span>[<a href="#LOC" class="cite xref">LOC</a>]</span> packagin is active</td>
-              <td class="text-left" rowspan="1" colspan="1">Each EncodedAudioChunk or EncodedVideoChunk sample is placed in a separate MOQT Object</td>
-            </tr>
-          </tbody>
-        </table>
+<p id="section-3.1-1">This specification references Low Overhead Container (LOC) <span>[<a href="#LOC" class="cite xref">LOC</a>]</span> to define how
+audio and video content is packaged. With this packaging mode, each
+EncodedAudioChunk or EncodedVideoChunk sample is placed in a separate MOQT
+Object. Samples that belong to the same Group of Pictures (GOP) <span class="bcp14">MUST</span> be placed
+within the same MOQT Group.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.1-2">When LOC packaging is used for a track, the catalog packaging attribute
+(<a href="#packaging" class="auto internal xref">Section 4.2.6</a>) <span class="bcp14">MUST</span> be present and it <span class="bcp14">MUST</span> be populated with a value of "loc".<a href="#section-3.1-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="timealignment">
@@ -1432,16 +1428,20 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
         <h3 id="name-time-alignment">
 <a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-time-alignment" class="section-name selfRef">Time-alignment</a>
         </h3>
-<p id="section-3.2-1">WARP Tracks <span class="bcp14">MAY</span> be time-aligned. Those that are, are subject to the following requirements:<a href="#section-3.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.2-1">WARP Tracks <span class="bcp14">MAY</span> be time-aligned. Those that are, are subject to the following
+requirements:<a href="#section-3.2-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3.2-2.1">
-            <p id="section-3.2-2.1.1">Time-aligned tracks <span class="bcp14">MUST</span> be advertised in the catalog as belonging to a common render group.<a href="#section-3.2-2.1.1" class="pilcrow">¶</a></p>
+            <p id="section-3.2-2.1.1">Time-aligned tracks <span class="bcp14">MUST</span> be advertised in the catalog as belonging to a common
+render group.<a href="#section-3.2-2.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.2-2.2">
-            <p id="section-3.2-2.2.1">The presentation time of the first media sample contained within the first MOQT Object of each equally numbered MOQT Group <span class="bcp14">MUST</span> be identical.<a href="#section-3.2-2.2.1" class="pilcrow">¶</a></p>
+            <p id="section-3.2-2.2.1">The presentation time of the first media sample contained within the first
+MOQT Object of each equally numbered MOQT Group <span class="bcp14">MUST</span> be identical.<a href="#section-3.2-2.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-3.2-3">A consequence of this restriction is that a WARP receiver <span class="bcp14">SHOULD</span> be able to cleanly switch between time-aligned media tracks at group boundaries.<a href="#section-3.2-3" class="pilcrow">¶</a></p>
+<p id="section-3.2-3">A consequence of this restriction is that a WARP receiver <span class="bcp14">SHOULD</span> be able to
+cleanly switch between time-aligned media tracks at group boundaries.<a href="#section-3.2-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="contentprotection">
@@ -1460,17 +1460,17 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
 <a href="#section-4" class="section-number selfRef">4. </a><a href="#name-catalog" class="section-name selfRef">Catalog</a>
       </h2>
 <p id="section-4-1">A Catalog is a MOQT Track that provides information about the other tracks being
-produced by a WARP publisher. A Catalog is used by WARP publishers for advertising
-their output and for subscribers in consuming that output. The payload of the
-Catalog object is opaque to Relays and can be end-to-end encrypted. The Catalog
-provides the names and namespaces of the tracks being produced, along with the
-relationship between tracks, properties of the tracks that consumers may use for
-selection and any relevant initialization data.<a href="#section-4-1" class="pilcrow">¶</a></p>
+produced by a WARP publisher. A Catalog is used by WARP publishers for
+advertising their output and for subscribers in consuming that output. The
+payload of the Catalog object is opaque to Relays and can be end-to-end
+encrypted. The Catalog provides the names and namespaces of the tracks being
+produced, along with therelationship between tracks, properties of the tracks
+that consumers may use for selection and any relevant initialization data.<a href="#section-4-1" class="pilcrow">¶</a></p>
 <p id="section-4-2">The catalog track <span class="bcp14">MUST</span> have a case-sensitive Track Name of "catalog".<a href="#section-4-2" class="pilcrow">¶</a></p>
-<p id="section-4-3">A catalog object <span class="bcp14">MAY</span> be independent of other catalog objects or it <span class="bcp14">MAY</span> represent a
-delta update of a prior catalog object. The first catalog object published within
-a new group <span class="bcp14">MUST</span> be independent.  A catalog object <span class="bcp14">SHOULD</span> only be published only
-when the availability of tracks changes.<a href="#section-4-3" class="pilcrow">¶</a></p>
+<p id="section-4-3">A catalog object <span class="bcp14">MAY</span> be independent of other catalog objects or it <span class="bcp14">MAY</span> represent
+a delta update of a prior catalog object. The first catalog object published
+within a new group <span class="bcp14">MUST</span> be independent.  A catalog object <span class="bcp14">SHOULD</span> only be
+published only when the availability of tracks changes.<a href="#section-4-3" class="pilcrow">¶</a></p>
 <p id="section-4-4">Each catalog update <span class="bcp14">MUST</span> be mapped to a discreet MOQT Object.<a href="#section-4-4" class="pilcrow">¶</a></p>
 <div id="catalog-fields">
 <section id="section-4.1">
@@ -1484,8 +1484,8 @@ this draft. Custom field names <span class="bcp14">MUST NOT</span> collide with 
 this draft. The order of field names within the JSON document is not important.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
 <p id="section-4.1-2">A parser <span class="bcp14">MUST</span> ignore fields it does not understand.<a href="#section-4.1-2" class="pilcrow">¶</a></p>
 <p id="section-4.1-3">Table 1 provides an overview of all fields defined by this document.<a href="#section-4.1-3" class="pilcrow">¶</a></p>
-<table class="center" id="table-2">
-          <caption><a href="#table-2" class="selfRef">Table 2</a></caption>
+<table class="center" id="table-1">
+          <caption><a href="#table-1" class="selfRef">Table 1</a></caption>
 <thead>
             <tr>
               <th class="text-left" rowspan="1" colspan="1">Field</th>
@@ -1665,8 +1665,8 @@ this draft. The order of field names within the JSON document is not important.<
           </tbody>
         </table>
 <p id="section-4.1-5">Table 2 defines the allowed locations for these fields within the document<a href="#section-4.1-5" class="pilcrow">¶</a></p>
-<table class="center" id="table-3">
-          <caption><a href="#table-3" class="selfRef">Table 3</a></caption>
+<table class="center" id="table-2">
+          <caption><a href="#table-2" class="selfRef">Table 2</a></caption>
 <thead>
             <tr>
               <th class="text-left" rowspan="1" colspan="1">Location</th>
@@ -1702,12 +1702,12 @@ parse a catalog version which it does not understand.<a href="#section-4.2-2" cl
 <a href="#section-4.2.1" class="section-number selfRef">4.2.1. </a><a href="#name-supports-delta-updates" class="section-name selfRef">Supports delta updates</a>
           </h4>
 <p id="section-4.2.1-1">Location: R    Required: Optional    JSON Type: Boolean<a href="#section-4.2.1-1" class="pilcrow">¶</a></p>
-<p id="section-4.2.1-2">A boolean that if true indicates that the publisher <span class="bcp14">MAY</span> issue incremental
+<p id="section-4.2.1-2">A Boolean that if true indicates that the publisher <span class="bcp14">MAY</span> issue incremental
 (delta) updates - see <a href="#patch" class="auto internal xref">Section 4.3</a>. If false or absent, then the publisher
-gaurantees that they will NOT issue any incremental updates and that any future
-updates to the catalog will be independent. The default value is false. This
-field <span class="bcp14">MUST</span> be present if its value is true, but may be omitted if the value is
-false.<a href="#section-4.2.1-2" class="pilcrow">¶</a></p>
+guarantees that they will NOT issue any incremental updates and that any
+future updates to the catalog will be independent. The default value is
+false. This field <span class="bcp14">MUST</span> be present if its value is true, but may be omitted
+if the value is false.<a href="#section-4.2.1-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="tracks">
@@ -1759,8 +1759,8 @@ Within the catalog, track names <span class="bcp14">MUST</span> be unique per na
 <p id="section-4.2.6-2">A string defining the type of payload encapsulation. Allowed values are strings
 as defined in Table 3.<a href="#section-4.2.6-2" class="pilcrow">¶</a></p>
 <p id="section-4.2.6-3">Table 3: Allowed packaging values<a href="#section-4.2.6-3" class="pilcrow">¶</a></p>
-<table class="center" id="table-4">
-            <caption><a href="#table-4" class="selfRef">Table 4</a></caption>
+<table class="center" id="table-3">
+            <caption><a href="#table-3" class="selfRef">Table 3</a></caption>
 <thead>
               <tr>
                 <th class="text-left" rowspan="1" colspan="1">Name</th>
@@ -2063,10 +2063,10 @@ time-aligned audio and video tracks.<a href="#section-4.4.1-1" class="pilcrow">�
           <h4 id="name-simulcast-video-tracks-3-al">
 <a href="#section-4.4.2" class="section-number selfRef">4.4.2. </a><a href="#name-simulcast-video-tracks-3-al" class="section-name selfRef">Simulcast video tracks - 3 alternate qualities along with audio</a>
           </h4>
-<p id="section-4.4.2-1">This example shows catalog for a media producer capable
-of sending 3 time-aligned video tracks for high definition, low definition and
-medium definition video qualities, along with an audio track. In this example
-the namespace is absent, which infers that each track must inherit the namespace
+<p id="section-4.4.2-1">This example shows catalog for a media producer capable of sending 3
+time-aligned video tracks for high definition, low definition and medium
+definition video qualities, along with an audio track. In this example the
+namespace is absent, which infers that each track must inherit the namespace
 of the catalog. Additionally this example shows the presence of the
 supportsDeltaUpdates flag.<a href="#section-4.4.2-1" class="pilcrow">¶</a></p>
 <div class="lang-json sourcecode" id="section-4.4.2-2">
@@ -2343,7 +2343,9 @@ description.<a href="#section-4.4.7-1" class="pilcrow">¶</a></p>
       <h2 id="name-media-transmission">
 <a href="#section-5" class="section-number selfRef">5. </a><a href="#name-media-transmission" class="section-name selfRef">Media transmission</a>
       </h2>
-<p id="section-5-1">The MOQT Groups and MOQT Objects need to be mapped to MOQT Streams. Irrespective of the <a href="#mediapackaging" class="auto internal xref">Section 3</a> in place, each MOQT Object <span class="bcp14">MUST</span> be mapped to a new MOQT Stream.<a href="#section-5-1" class="pilcrow">¶</a></p>
+<p id="section-5-1">The MOQT Groups and MOQT Objects need to be mapped to MOQT Streams. Irrespective
+of the <a href="#mediapackaging" class="auto internal xref">Section 3</a> in place, each MOQT Object <span class="bcp14">MUST</span> be mapped to a new
+MOQT Stream.<a href="#section-5-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="timeline-track">
@@ -2351,17 +2353,31 @@ description.<a href="#section-4.4.7-1" class="pilcrow">¶</a></p>
       <h2 id="name-timeline-track">
 <a href="#section-6" class="section-number selfRef">6. </a><a href="#name-timeline-track" class="section-name selfRef">Timeline track</a>
       </h2>
-<p id="section-6-1">The timeline track provides data about the previously published groups and their relationship to wallclock time, media time and associated timed-metadata. Timeline tracks allow players to seek to precise points behind the live head in a live broadcast, or for random access in a VOD asset. A timeline track may also be used to insert events at media times which do not correlate with Object boundaries. Timeline tracks are optional. Multiple timeline tracks <span class="bcp14">MAY</span> exist inside a catalog.<a href="#section-6-1" class="pilcrow">¶</a></p>
+<p id="section-6-1">The timeline track provides data about the previously published groups and their
+relationship to wallclock time, media time and associated timed-metadata.
+Timeline tracks allow players to seek to precise points behind the live head in
+a live broadcast, or for random access in a VOD asset. A timeline track may also
+be used to insert events at media times which do not correlate with Object
+boundaries. Timeline tracks are optional. Multiple timeline tracks <span class="bcp14">MAY</span> exist
+inside a catalog.<a href="#section-6-1" class="pilcrow">¶</a></p>
 <div id="timeline-track-payload">
 <section id="section-6.1">
         <h3 id="name-timeline-track-payload">
 <a href="#section-6.1" class="section-number selfRef">6.1. </a><a href="#name-timeline-track-payload" class="section-name selfRef">Timeline track payload</a>
         </h3>
-<p id="section-6.1-1">The payload of a timeline track is a UTF-8 encoded CSV text file. This payload is formatted according to RFC4180 "Common Format and MIME Type for Comma-Separated Values (CSV)" Files <span>[<a href="#RFC4180" class="cite xref">RFC4180</a>]</span>. The separator is a comma and each line is separated by a carriage return. The mime-type of a timeline track <span class="bcp14">MUST</span> be specified as "text/csv" in the catalog.<a href="#section-6.1-1" class="pilcrow">¶</a></p>
-<p id="section-6.1-2">Each timeline track begins with a header row of MEDIA_PTS,GROUP_ID,OBJECT_ID,WALLCLOCK,METADATA. This row defines the 5 columns of data within each record.<a href="#section-6.1-2" class="pilcrow">¶</a></p>
+<p id="section-6.1-1">The payload of a timeline track is a UTF-8 encoded CSV text file. This payload
+is formatted according to RFC4180 "Common Format and MIME Type for
+Comma-Separated Values (CSV)" Files <span>[<a href="#RFC4180" class="cite xref">RFC4180</a>]</span>. The separator is a comma and
+each line is separated by a carriage return. The mime-type of a timeline track
+<span class="bcp14">MUST</span> be specified as "text/csv" in the catalog.<a href="#section-6.1-1" class="pilcrow">¶</a></p>
+<p id="section-6.1-2">Each timeline track begins with a header row of MEDIA_PTS,GROUP_ID,OBJECT_ID,
+WALLCLOCK,METADATA. This row defines the 5 columns of data within each record.<a href="#section-6.1-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-6.1-3.1">
-            <p id="section-6.1-3.1.1">MEDIA_PTS: a media timestamp rounded to the nearest millisecond. This entry <span class="bcp14">MUST</span> not be empty. If the Object ID entry is present, then this value <span class="bcp14">MUST</span> match the media presentation timestamp of the first media sample in the referenced Object.<a href="#section-6.1-3.1.1" class="pilcrow">¶</a></p>
+            <p id="section-6.1-3.1.1">MEDIA_PTS: a media timestamp rounded to the nearest millisecond. This entry
+<span class="bcp14">MUST</span> not be empty. If the Object ID entry is present, then this value <span class="bcp14">MUST</span>
+match the media presentation timestamp of the first media sample in the
+referenced Object.<a href="#section-6.1-3.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-6.1-3.2">
             <p id="section-6.1-3.2.1">GROUP_ID: the MOQT Group ID. This entry <span class="bcp14">MAY</span> be empty.<a href="#section-6.1-3.2.1" class="pilcrow">¶</a></p>
@@ -2370,10 +2386,16 @@ description.<a href="#section-4.4.7-1" class="pilcrow">¶</a></p>
             <p id="section-6.1-3.3.1">OBJECT_ID: the MOQT Object ID. This entry <span class="bcp14">MAY</span> be empty.<a href="#section-6.1-3.3.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-6.1-3.4">
-            <p id="section-6.1-3.4.1">WALLCLOCK: the wallclock time at which the media was encoded, expressed as the number of milliseconds that have elapsed since January 1, 1970 (midnight UTC/GMT). For VOD assets, or if the wallclock time is not known, the value <span class="bcp14">SHOULD</span> be 0.<a href="#section-6.1-3.4.1" class="pilcrow">¶</a></p>
+            <p id="section-6.1-3.4.1">WALLCLOCK: the wallclock time at which the media was encoded, expressed as
+the number of milliseconds that have elapsed since January 1, 1970
+(midnight UTC/GMT). For VOD assets, or if the wallclock time is not known,
+the value <span class="bcp14">SHOULD</span> be 0.<a href="#section-6.1-3.4.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-6.1-3.5">
-            <p id="section-6.1-3.5.1">METADATA: a flexible field holding arbitrary string metadata. This field may be empty. If not empty, it <span class="bcp14">MUST</span> be enclosed in double quotes. A double-quote appearing inside this field <span class="bcp14">MUST</span> be escaped by preceding it with another double quote.<a href="#section-6.1-3.5.1" class="pilcrow">¶</a></p>
+            <p id="section-6.1-3.5.1">METADATA: a flexible field holding arbitrary string metadata. This field may
+be empty. If not empty, it <span class="bcp14">MUST</span> be enclosed in double quotes. A double-quote
+appearing inside this field <span class="bcp14">MUST</span> be escaped by preceding it with another
+double quote.<a href="#section-6.1-3.5.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
@@ -2383,8 +2405,9 @@ description.<a href="#section-4.4.7-1" class="pilcrow">¶</a></p>
         <h3 id="name-timeline-catalog-requiremen">
 <a href="#section-6.2" class="section-number selfRef">6.2. </a><a href="#name-timeline-catalog-requiremen" class="section-name selfRef">Timeline Catalog requirements</a>
         </h3>
-<p id="section-6.2-1">A timeline track <span class="bcp14">MUST</span> carry a 'type' identifier in the Catalog with a value of "timeline".
-A timeline track <span class="bcp14">MUST</span> carry a 'dependencies' attribute which contains an array of all track names to which the timeline track applies.<a href="#section-6.2-1" class="pilcrow">¶</a></p>
+<p id="section-6.2-1">A timeline track <span class="bcp14">MUST</span> carry a 'type' identifier in the Catalog with a value of
+"timeline". A timeline track <span class="bcp14">MUST</span> carry a 'dependencies' attribute which
+contains an array of all track names to which the timeline track applies.<a href="#section-6.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="timeline-track-updating">
@@ -2392,8 +2415,11 @@ A timeline track <span class="bcp14">MUST</span> carry a 'dependencies' attribut
         <h3 id="name-timeline-track-updating">
 <a href="#section-6.3" class="section-number selfRef">6.3. </a><a href="#name-timeline-track-updating" class="section-name selfRef">Timeline track updating.</a>
         </h3>
-<p id="section-6.3-1">The publisher <span class="bcp14">MUST</span> publish a complete timeline in the first MOQT Object of each MOQT Group.
-The publisher <span class="bcp14">MAY</span> publish incremental updates in the second and subsequent Objects within each GROUP. Incremental updates only contain timeline events since the last timeline Object. Group duration <span class="bcp14">SHOULD</span> not exceed 30 seconds.<a href="#section-6.3-1" class="pilcrow">¶</a></p>
+<p id="section-6.3-1">The publisher <span class="bcp14">MUST</span> publish a complete timeline in the first MOQT Object of each
+MOQT Group. The publisher <span class="bcp14">MAY</span> publish incremental updates in the second and
+subsequent Objects within each GROUP. Incremental updates only contain timeline
+events since the last timeline Object. Group duration <span class="bcp14">SHOULD</span> not exceed 30
+seconds.<a href="#section-6.3-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -2403,8 +2429,11 @@ The publisher <span class="bcp14">MAY</span> publish incremental updates in the 
       <h2 id="name-workflow">
 <a href="#section-7" class="section-number selfRef">7. </a><a href="#name-workflow" class="section-name selfRef">Workflow</a>
       </h2>
-<p id="section-7-1">A WARP publisher <span class="bcp14">MUST</span> publish a catalog track object before publishing any media track objects.<a href="#section-7-1" class="pilcrow">¶</a></p>
-<p id="section-7-2">At the completion of a session, a publisher <span class="bcp14">MUST</span> publish a catalog update that removes all currently active tracks.  This action <span class="bcp14">SHOULD</span> be interpreted by receivers to mean that the publish session is complete.<a href="#section-7-2" class="pilcrow">¶</a></p>
+<p id="section-7-1">A WARP publisher <span class="bcp14">MUST</span> publish a catalog track object before publishing any media
+track objects.<a href="#section-7-1" class="pilcrow">¶</a></p>
+<p id="section-7-2">At the completion of a session, a publisher <span class="bcp14">MUST</span> publish a catalog update that
+removes all currently active tracks.  This action <span class="bcp14">SHOULD</span> be interpreted by
+receivers to mean that the publish session is complete.<a href="#section-7-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="security-considerations">
@@ -2420,7 +2449,9 @@ The publisher <span class="bcp14">MAY</span> publish incremental updates in the 
       <h2 id="name-iana-considerations">
 <a href="#section-9" class="section-number selfRef">9. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
       </h2>
-<p id="section-9-1">This document creates a new entry in the "MoQ Streaming Format" Registry (see <span>[<a href="#MoQTransport" class="cite xref">MoQTransport</a>]</span> Sect 8).  The type value is 0x001, the name is "WARP Streaming Format" and the RFC is XXX.<a href="#section-9-1" class="pilcrow">¶</a></p>
+<p id="section-9-1">This document creates a new entry in the "MoQ Streaming Format" Registry
+(see <span>[<a href="#MoQTransport" class="cite xref">MoQTransport</a>]</span> Sect 8).  The type value is 0x001, the name is
+"WARP Streaming Format" and the RFC is XXX.<a href="#section-9-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="sec-normative-references">
