@@ -110,8 +110,8 @@ requirements:
 
 * Time-aligned tracks MUST be advertised in the catalog as belonging to a common
   render group.
-* The presentation time of the first media sample contained within the first
-  MOQT Object of each equally numbered MOQT Group MUST be identical.
+* The render duration of the first media object of each equally numbered MOQT
+  Group, after decoding, MUST have overlapping presentation time.
 
 A consequence of this restriction is that a WARP receiver SHOULD be able to
 cleanly switch between time-aligned media tracks at group boundaries.
