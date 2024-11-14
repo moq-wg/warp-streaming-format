@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-11-12T01:39:51.794396+00:00",
+  "timestamp": "2024-11-14T01:42:06.641759+00:00",
   "repo": "moq-wg/warp-streaming-format",
   "labels": [
     {
@@ -47,6 +47,11 @@
       "name": "wontfix",
       "description": "This will not be worked on",
       "color": "ffffff"
+    },
+    {
+      "name": "editorial",
+      "description": "",
+      "color": "f9d0c4"
     }
   ],
   "issues": [
@@ -351,7 +356,7 @@
       "url": "https://github.com/moq-wg/warp-streaming-format/issues/13",
       "state": "CLOSED",
       "author": "vasilvv",
-      "authorAssociation": "NONE",
+      "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "The document currently specifies both a catalog format, and how to bind CMAF into it.  Do we really need to tie those two?  I can imagine having a catalog that uses CMAF for video, and, say, a lower-overhead format for audio.  I also imagine that the mechanisms for specifying track locations, updating tracks, etc, do not actually depend on the format used, so it may be redundant to group those two.\r\n\r\nBack in the warp-draft04, we had the same catalog format for everything, but each track had its own format.  Would that make more sense?",
@@ -368,7 +373,7 @@
         },
         {
           "author": "vasilvv",
-          "authorAssociation": "NONE",
+          "authorAssociation": "CONTRIBUTOR",
           "body": "> The catalog format I have define in this draft meets the needs of most sports/live event/game broadcasters using low latency HLS or DASH today. I am reasonably sure it does not have the complexity to meet the needs of someone trying to stream VR or AR content, where there are more spatial and temporal constraints on, and relationships between, the tracks being advertised.\r\n\r\nSure, but I feel like the general problem of \"how do I encode adding or removing tracks\" and \"how do I encode relationship between two tracks\" is general enough that it would make more sense to define a common format for those, and then leave the specifics sufficiently extensible that the other formats can use those to build whatever they need.",
           "createdAt": "2023-06-30T19:15:46Z",
           "updatedAt": "2023-06-30T19:15:46Z"
@@ -382,7 +387,7 @@
         },
         {
           "author": "vasilvv",
-          "authorAssociation": "NONE",
+          "authorAssociation": "CONTRIBUTOR",
           "body": "> This seems like something that could be added to the core moq-transport spec, if it is to be used consistently by all moq streaming formats?\r\n\r\nI think we've agreed before that moq-transport is for things that intermediaries might need to know about, so that probably does not belong there.  I'd start by moving catalog and CMAF bindings on top of it into a different sections, and then possibly discuss whether those need to be separate drafts.  Should I try writing a PR to see how this would look?",
           "createdAt": "2023-07-18T00:04:49Z",
           "updatedAt": "2023-07-18T00:04:49Z"
@@ -622,7 +627,7 @@
         },
         {
           "author": "vasilvv",
-          "authorAssociation": "NONE",
+          "authorAssociation": "CONTRIBUTOR",
           "body": "To clarify, my proposal was roughly:\r\n\r\n1. Every format has an associated catalog name (`/warp`, `/loc`, or, if we unify the catalog format, `/catalog_v1` or something).\r\n2. The client knows the names of the catalogs corresponding to formats that it supports, so it just sends something like `SUBSCRIBE /warp OR /loc OR /someotherformat`, and it will result in being subscribed to the first format that exists.\r\n\r\nNote that this does require a SUBSCRIBE message that allows requesting a list of multiple alternative tracks, but it keeps the ANNOUNCE message as-is.  An alternative would be having a list of available catalogs in ANNOUNCE, and only subscribing to one of those.\r\n\r\n> all the other data is part of a structure of some kind, but to separate catalog name from format you have to split('.') seems a kludge\r\n\r\nYou don't have to separate those, those are fixed strings.",
           "createdAt": "2023-06-09T09:03:46Z",
           "updatedAt": "2023-06-09T09:03:46Z"
@@ -860,6 +865,24 @@
       "createdAt": "2024-10-30T16:50:47Z",
       "updatedAt": "2024-10-30T16:50:47Z",
       "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 41,
+      "id": "I_kwDOJTN4X86ePw_P",
+      "title": "Table numbers and references are mismatched after latest PRs",
+      "url": "https://github.com/moq-wg/warp-streaming-format/issues/41",
+      "state": "CLOSED",
+      "author": "wilaw",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [
+        "wilaw"
+      ],
+      "labels": [],
+      "body": "Table 2 is declared twice, as is Table 3. ",
+      "createdAt": "2024-11-13T10:09:24Z",
+      "updatedAt": "2024-11-13T11:09:53Z",
+      "closedAt": "2024-11-13T11:09:53Z",
       "comments": []
     }
   ],
@@ -1460,6 +1483,108 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 40,
+      "id": "PR_kwDOJTN4X86BrCnp",
+      "title": "Remove leftover CMAF reference",
+      "url": "https://github.com/moq-wg/warp-streaming-format/pull/40",
+      "state": "MERGED",
+      "author": "vasilvv",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2024-11-12T18:53:50Z",
+      "updatedAt": "2024-11-13T10:52:57Z",
+      "baseRepository": "moq-wg/warp-streaming-format",
+      "baseRefName": "main",
+      "baseRefOid": "f9ddf106e9aa7cbe880d763c42c7b614caf662fd",
+      "headRepository": "vasilvv/warp-streaming-format",
+      "headRefName": "nocmaf",
+      "headRefOid": "454bef1bbf5c1282e54978f5f78d1d41a8f7c057",
+      "closedAt": "2024-11-13T10:52:56Z",
+      "mergedAt": "2024-11-13T10:52:56Z",
+      "mergedBy": "wilaw",
+      "mergeCommit": {
+        "oid": "abd5c2721c661a233a521f448566c918597a66fd"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJTN4X86Q_Q1c",
+          "commit": {
+            "abbreviatedOid": "454bef1"
+          },
+          "author": "wilaw",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "LGTM - thanks for catching that. ",
+          "createdAt": "2024-11-13T09:56:18Z",
+          "updatedAt": "2024-11-13T09:56:18Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 42,
+      "id": "PR_kwDOJTN4X86Bwmqu",
+      "title": "Fixing table references and reformatting to 80 chars line width.",
+      "url": "https://github.com/moq-wg/warp-streaming-format/pull/42",
+      "state": "MERGED",
+      "author": "wilaw",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [
+        "editorial"
+      ],
+      "body": "Fixing table references and reformatting certain sections to 80 chars line width.\r\n\r\nFixes #41 ",
+      "createdAt": "2024-11-13T10:38:08Z",
+      "updatedAt": "2024-11-13T11:09:56Z",
+      "baseRepository": "moq-wg/warp-streaming-format",
+      "baseRefName": "main",
+      "baseRefOid": "f9ddf106e9aa7cbe880d763c42c7b614caf662fd",
+      "headRepository": "moq-wg/warp-streaming-format",
+      "headRefName": "wilaw-patch-1",
+      "headRefOid": "a1af26968810f34946e1403ace962dd9873825ab",
+      "closedAt": "2024-11-13T11:09:52Z",
+      "mergedAt": "2024-11-13T11:09:52Z",
+      "mergedBy": "wilaw",
+      "mergeCommit": {
+        "oid": "437fbb177b378b4721d9b34dc76a07f0eea9eac3"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 43,
+      "id": "PR_kwDOJTN4X86Bwuuc",
+      "title": "Adjusting README.md to allow branch builds to be viewed",
+      "url": "https://github.com/moq-wg/warp-streaming-format/pull/43",
+      "state": "MERGED",
+      "author": "wilaw",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [
+        "editorial"
+      ],
+      "body": "Stopping Editor's copy link automatically loading the main branch. This allows branch builds to be viewed.",
+      "createdAt": "2024-11-13T10:51:34Z",
+      "updatedAt": "2024-11-13T10:52:01Z",
+      "baseRepository": "moq-wg/warp-streaming-format",
+      "baseRefName": "main",
+      "baseRefOid": "f9ddf106e9aa7cbe880d763c42c7b614caf662fd",
+      "headRepository": "moq-wg/warp-streaming-format",
+      "headRefName": "wilaw-patch-2",
+      "headRefOid": "0a2b4d4521f73b1760f2157efd0bfe1948538892",
+      "closedAt": "2024-11-13T10:51:58Z",
+      "mergedAt": "2024-11-13T10:51:58Z",
+      "mergedBy": "wilaw",
+      "mergeCommit": {
+        "oid": "f176e1e413613fd7502ce681e84d336428cea29c"
+      },
+      "comments": [],
+      "reviews": []
     }
   ]
 }
