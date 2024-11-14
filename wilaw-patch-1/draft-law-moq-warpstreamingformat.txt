@@ -5,14 +5,14 @@
 Media Over QUIC                                                   W. Law
 Internet-Draft                                                    Akamai
 Intended status: Informational                                 L. Curley
-Expires: 17 May 2025                                              Twitch
+Expires: 18 May 2025                                              Twitch
                                                              V. Vasiliev
                                                                   Google
                                                            S. Nandakumar
                                                                    Cisco
                                                                 K. Pugin
                                                                     Meta
-                                                        13 November 2024
+                                                        14 November 2024
 
 
                          WARP Streaming Format
@@ -55,7 +55,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 17 May 2025.
+   This Internet-Draft will expire on 18 May 2025.
 
 Copyright Notice
 
@@ -182,9 +182,9 @@ Table of Contents
    *  Time-aligned tracks MUST be advertised in the catalog as belonging
       to a common render group.
 
-   *  The presentation time of the first media sample contained within
-      the first MOQT Object of each equally numbered MOQT Group MUST be
-      identical.
+   *  The render duration of the first media object of each equally
+      numbered MOQT Group, after decoding, MUST have overlapping
+      presentation time.
 
    A consequence of this restriction is that a WARP receiver SHOULD be
    able to cleanly switch between time-aligned media tracks at group
@@ -895,13 +895,6 @@ Table of Contents
    [BASE64]   Josefsson, S., "The Base16, Base32, and Base64 Data
               Encodings", RFC 4648, DOI 10.17487/RFC4648, October 2006,
               <https://www.rfc-editor.org/rfc/rfc4648>.
-
-   [CMAFpackaging]
-              Law, W. and L. Curley, "CMAF Packaging for moq-transport",
-              Work in Progress, Internet-Draft, draft-wilaw-moq-
-              cmafpackaging-01, 21 July 2024,
-              <https://datatracker.ietf.org/doc/html/draft-wilaw-moq-
-              cmafpackaging-01>.
 
    [JSON]     Bray, T., Ed., "The JavaScript Object Notation (JSON) Data
               Interchange Format", STD 90, RFC 8259,
