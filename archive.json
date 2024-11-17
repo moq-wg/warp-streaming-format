@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-11-14T01:42:06.641759+00:00",
+  "timestamp": "2024-11-17T01:52:36.645675+00:00",
   "repo": "moq-wg/warp-streaming-format",
   "labels": [
     {
@@ -1583,6 +1583,32 @@
       "mergeCommit": {
         "oid": "f176e1e413613fd7502ce681e84d336428cea29c"
       },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 44,
+      "id": "PR_kwDOJTN4X86B6Kz-",
+      "title": "Update draft-law-moq-warpstreamingformat.md",
+      "url": "https://github.com/moq-wg/warp-streaming-format/pull/44",
+      "state": "OPEN",
+      "author": "wilaw",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Adjusting  definition of time alignment.\r\n\r\nFixes #39 ",
+      "createdAt": "2024-11-14T11:32:22Z",
+      "updatedAt": "2024-11-14T11:32:53Z",
+      "baseRepository": "moq-wg/warp-streaming-format",
+      "baseRefName": "main",
+      "baseRefOid": "437fbb177b378b4721d9b34dc76a07f0eea9eac3",
+      "headRepository": "moq-wg/warp-streaming-format",
+      "headRefName": "wilaw-patch-1",
+      "headRefOid": "df5c37250207aa4d82e254cb77ceeed733dcb3e3",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
       "comments": [],
       "reviews": []
     }
