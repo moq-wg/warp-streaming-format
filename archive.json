@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-11-19T01:48:01.426262+00:00",
+  "timestamp": "2024-11-21T01:46:44.946610+00:00",
   "repo": "moq-wg/warp-streaming-format",
   "labels": [
     {
@@ -584,7 +584,7 @@
       "labels": [],
       "body": "Client side bandwidth estimation is a challenge when the client doesn't know when the sender was app-limited and when it was congestion control limited.\r\n\r\nOne solution is to add a TIMESTAMP frame that has a relative timestamp of when the packet was serialized/sent.  It could also be useful to have a bool to indicate whether the sender was app-limited prior to the packet being sent.\r\n\r\nChristian has a draft (https://www.ietf.org/archive/id/draft-huitema-quic-ts-08.html) that could be used for this purpose.  The draft was written with the idea that it would be bundled with an ACK to allow removal of latency variability on the reverse path, but it seems like it could be bundled with some or all MOQ packets to improve client bandwidth estimation.",
       "createdAt": "2024-02-08T18:50:36Z",
-      "updatedAt": "2024-08-05T18:45:21Z",
+      "updatedAt": "2024-11-19T12:52:06Z",
       "closedAt": null,
       "comments": [
         {
@@ -593,6 +593,13 @@
           "body": "After more consideration, I tend to think this is not an moqt issue, but it is one worth addressing in WARP.  I'm happy to help with text if that's useful.\r\n\r\nKeeping it open because I think it could end up being critical to client side ABR.",
           "createdAt": "2024-02-11T02:43:15Z",
           "updatedAt": "2024-02-11T02:43:15Z"
+        },
+        {
+          "author": "wilaw",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Two thoughts on this:\r\n\r\n1. WARP currently references [LOC](https://datatracker.ietf.org/doc/html/draft-mzanaty-moq-loc-03) as the packaging format. LOC specifies Common Header Data which includes a timestamp defined as\r\n\r\n> Capture Timestamp in Microseconds: Captures the wall-clock time of the encoded media frame in a 64-bit unsigned integer.\r\n\r\nThis differs from Christian's proposal in that it is a payload level versus QUIC-level timestamp. Additionally, it indicates when the Object was captured , not when it entered the sendQueue, although for real-time media these typically collapse to a similar time point. \r\n\r\n2. In media applications, do we necessarily need a timestamp to infer app-limited? A client will usually know the encoded bitrate of the content it is receiving. WARP catalog has specific fields to convey this information. If the client times the arrival of data over a wall clock interval and the resulting throughput estimate is equal to the encoded bitrate, then we know that the estimate is likely app-limited. \r\n\r\n",
+          "createdAt": "2024-11-19T12:52:05Z",
+          "updatedAt": "2024-11-19T12:52:05Z"
         }
       ]
     },
@@ -1589,7 +1596,7 @@
     {
       "number": 44,
       "id": "PR_kwDOJTN4X86B6Kz-",
-      "title": "Update draft-law-moq-warpstreamingformat.md",
+      "title": "Adjusting definition of time alignment",
       "url": "https://github.com/moq-wg/warp-streaming-format/pull/44",
       "state": "OPEN",
       "author": "wilaw",
@@ -1598,7 +1605,7 @@
       "labels": [],
       "body": "Adjusting  definition of time alignment.\r\n\r\nFixes #39 ",
       "createdAt": "2024-11-14T11:32:22Z",
-      "updatedAt": "2024-11-14T11:32:53Z",
+      "updatedAt": "2024-11-19T11:00:27Z",
       "baseRepository": "moq-wg/warp-streaming-format",
       "baseRefName": "main",
       "baseRefOid": "437fbb177b378b4721d9b34dc76a07f0eea9eac3",
