@@ -59,14 +59,14 @@ normative:
     title: "WebCodecs Codec Registry"
     date: September 2024
     target: https://www.w3.org/TR/webcodecs-codec-registry/
-   WEBVTT:
-     title: "World Wide Web Consortium (W3C), WebVTT: The Web Video Text Tracks Format"
-     date: April 2019
-     target: "https://www.w3.org/TR/webvtt1/"
-   IMSC1:
-     title: "W3C, TTML Profiles for Internet Media Subtitles and Captions 1.0 (IMSC1)"
-     date: April 2016
-     target: "https://www.w3.org/TR/ttml-imsc1/"
+  WEBVTT:
+    title: "World Wide Web Consortium (W3C), WebVTT: The Web Video Text Tracks Format"
+    date: April 2019
+    target: https://www.w3.org/TR/webvtt1/
+  IMSC1:
+    title: "W3C, TTML Profiles for Internet Media Subtitles and Captions 1.0 (IMSC1)"
+    date: April 2016
+    target: https://www.w3.org/TR/ttml-imsc1/
 
 informative:
 
