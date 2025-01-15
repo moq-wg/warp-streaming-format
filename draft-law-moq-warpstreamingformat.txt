@@ -5,14 +5,14 @@
 Media Over QUIC                                                   W. Law
 Internet-Draft                                                    Akamai
 Intended status: Informational                                 L. Curley
-Expires: 17 May 2025                                              Twitch
+Expires: 19 July 2025                                             Twitch
                                                              V. Vasiliev
                                                                   Google
                                                            S. Nandakumar
                                                                    Cisco
                                                                 K. Pugin
                                                                     Meta
-                                                        13 November 2024
+                                                         15 January 2025
 
 
                          WARP Streaming Format
@@ -55,11 +55,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 17 May 2025.
+   This Internet-Draft will expire on 19 July 2025.
 
 Copyright Notice
 
-   Copyright (c) 2024 IETF Trust and the persons identified as the
+   Copyright (c) 2025 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -182,9 +182,9 @@ Table of Contents
    *  Time-aligned tracks MUST be advertised in the catalog as belonging
       to a common render group.
 
-   *  The presentation time of the first media sample contained within
-      the first MOQT Object of each equally numbered MOQT Group MUST be
-      identical.
+   *  The render duration of the first media object of each equally
+      numbered MOQT Group, after decoding, MUST have overlapping
+      presentation time.
 
    A consequence of this restriction is that a WARP receiver SHOULD be
    able to cleanly switch between time-aligned media tracks at group
