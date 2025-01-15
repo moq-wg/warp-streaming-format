@@ -138,7 +138,7 @@ that end, the following features are within scope:
   fconditions of throughput variability.
 * Capable of delivering interstitial advertising
 
-Initial verisons of WARP will prioritize basic features necessary to exercise 
+Initial verisons of WARP will prioritize basic features necessary to exercise
 interoperability across delivery systems. Later versions will add commercially
 necessary features.
 
