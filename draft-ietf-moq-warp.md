@@ -181,7 +181,6 @@ Table 1 provides an overview of all fields defined by this document.
 | Language                | lang                   | {{language}}              |
 | Parent name             | parentName             | {{parentname}}            |
 
-
 Table 2 defines the allowed locations for these fields within the document
 
 | Location |                Allowed locations for the field                |
@@ -233,6 +232,7 @@ Location: R    Required: Yes    JSON Type: Array
 An array of track objects {{trackobject}}.
 
 ### Tracks object {#trackobject}
+
 A track object is JSON Object containing a collection of fields whose location
 is specified 'T' in Table 2.
 
@@ -414,6 +414,7 @@ The following rules are to be followed in constructing and processing delta upda
   which MUST NOT be modified after being declared. To modify any attribute, a new
   track with a different Namespace|Name tuple is created by Adding or Cloning and then
   the old track is removed.
+
 
 ## Catalog Examples
 
