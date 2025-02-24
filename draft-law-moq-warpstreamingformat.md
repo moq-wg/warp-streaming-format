@@ -407,8 +407,8 @@ The following rules are to be followed in constructing and processing delta upda
   are declared in the document. Each operation in the sequence is applied to the
   target document; the resulting document becomes the target of the next operation.
   Evaluation continues until all operations are successfully applied.
-* A Cloned track inherits all the attributes of the track defined by the Parent Track
-  {{parenttrack}}, except the Track Name which MUST be new. Attributes redefined
+* A Cloned track inherits all the attributes of the track defined by the Parent Name
+  {{parentname}}, except the Track Name which MUST be new. Attributes redefined
   in the cloning Object overwrite inherited values.
 * The tuple of Track Namespace and Track Name defines a fixed set of Track attributes
   which MUST NOT be modified after being declared. To modify any attribute, a new
