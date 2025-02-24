@@ -59,6 +59,14 @@ normative:
     title: "WebCodecs Codec Registry"
     date: September 2024
     target: https://www.w3.org/TR/webcodecs-codec-registry/
+  WEBVTT:
+    title: "World Wide Web Consortium (W3C), WebVTT: The Web Video Text Tracks Format"
+    date: April 2019
+    target: https://www.w3.org/TR/webvtt1/
+  IMSC1:
+    title: "W3C, TTML Profiles for Internet Media Subtitles and Captions 1.0 (IMSC1)"
+    date: April 2016
+    target: https://www.w3.org/TR/ttml-imsc1/
 
 informative:
 
@@ -90,6 +98,49 @@ This document describes version 1 of the streaming format.
 
 This document uses the conventions detailed in Section 1.3 of {{RFC9000}} when
 describing the binary encoding.
+
+# Scope
+
+The purpose of WARP is to provide an interoperable media streaming format
+operating over {{MoQTransport}}. Interoperability implies that:
+
+* An original publisher can package incoming media content into tracks, prepare
+  a catalog and annouce the availability of the content to a MOQT relay. Media
+  content refers to audio and video data, as well as ancillary data such as
+  captions, subtitles, accessibility and other timed-text data.
+* A MOQT relay can process the annoucement as well as cache and propagate the
+  tracks, both to other relays or to the final subscriber.
+* A final subscriber can parse the catalog, request tracks, decode and render
+  the received media data.
+
+WARP is intended to provide a format for delivering commercial media content. To
+that end, the following features are within scope:
+
+* Video codecs - all codecs supported by {{LOC}}
+* Audio codecs  - all audio codecs supported by {{LOC}}
+* Catalog track - describes the availability and characteristics of content
+  produced by the original publisher.
+* Timeline track - describes the relationship between MOQT Group and Object IDs
+  to media time.
+* Token-based authorization and access control
+* Captions + Subtitles - support for {{WEBVTT}} and {{IMSC1}} transmission
+* Latency support across multiple regimes (thresholds are informative only and
+  describe the delay between the original publisher placing the content on the
+  wire and the final subscriber rendering it)
+ * Real-time - less than 500ms
+ * Interactive - between 500ms and 2500ms
+ * Standard  - above 2500ms
+ * VOD latency - content that was previously produced, is no longer live and is
+   available indefinitely.
+* Content encryption
+* ABR between time-synced tracks - subscribers may switch between between tracks
+  at different quality levels in order to maximize visual or audio quality under
+  fconditions of throughput variability.
+* Capable of delivering interstitial advertising
+
+Initial verisons of WARP will prioritize basic features necessary to exercise
+interoperability across delivery systems. Later versions will add commercially
+necessary features.
 
 # Media packaging {#mediapackaging}
 WARP delivers LOC {{LOC}} packaged media bitstreams.
@@ -394,8 +445,8 @@ compliant with this draft.
 
 ### Time-aligned Audio/Video Tracks with single quality
 
-This example shows catalog for a media producer capable of sending LOC packaged,
-time-aligned audio and video tracks.
+This example shows a catalog for a media producer capable of sending LOC
+packaged, time-aligned audio and video tracks.
 
 ~~~json
 {
