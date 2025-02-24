@@ -402,7 +402,7 @@ The following rules are to be followed in constructing and processing delta upda
 * A delta update catalog MUST contain at least one instance of Add tracks
   {{addtracks}}, Remove tracks {{removetracks}} or Clone Tracks {{clonetracks}}
   fields and MAY contain more. It MUST NOT contain an instance of a Tracks
-  {{tracks}} field or a WARP version {{version}} field.
+  {{tracks}} field or a WARP version {{warpversion}} field.
 * The Add, Delete and Clone operations are applied sequentially in the order they
   are declared in the document. Each operation in the sequence is applied to the
   target document; the resulting document becomes the target of the next operation.
