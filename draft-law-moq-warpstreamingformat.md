@@ -382,7 +382,7 @@ the standard Tags for Identifying Languages as defined by {{LANG}}.
 Location: T    Required: Optional   JSON Type: String
 
 A string defining the parent track name {{trackname}} to be cloned. This field
-MUST only be included inside a Clone tracks {{clonetracks}} object. 
+MUST only be included inside a Clone tracks {{clonetracks}} object.
 
 ## Delta updates {#deltaupdates}
 A catalog update might contain incremental changes. This is a useful property if
@@ -639,7 +639,7 @@ the other is cloned from a previous track.
    ],
    "cloneTracks": [
       {
-        "parentName": "video-1080",  
+        "parentName": "video-1080",
         "name": "video-720",
         "width":1280,
         "height":720,
