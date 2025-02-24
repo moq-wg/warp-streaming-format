@@ -51,7 +51,6 @@ normative:
   JSON: RFC8259
   LANG: RFC5646
   MIME: RFC6838
-  JSON-PATCH: RFC6902
   RFC5226: RFC5226
   RFC9000: RFC9000
   RFC4180: RFC4180
@@ -142,10 +141,10 @@ Each catalog update MUST be mapped to a discreet MOQT Object.
 ## Catalog Fields
 
 A catalog is a JSON {{JSON}} document, comprised of a series of mandatory and
-optional fields. At a minimum, a catalog MUST provide all mandatory fields and
-a 'tracks' field. A producer MAY add additional fields to the ones described in
-this draft. Custom field names MUST NOT collide with field names described in
-this draft. The order of field names within the JSON document is not important.
+optional fields. At a minimum, a catalog MUST provide all mandatory fields. A
+producer MAY add additional fields to the ones described in this draft. Custom
+field names MUST NOT collide with field names described in this draft. The order
+of field names within the JSON document is not important.
 
 A parser MUST ignore fields it does not understand.
 
@@ -154,7 +153,10 @@ Table 1 provides an overview of all fields defined by this document.
 | Field                   |  Name                  |           Definition      |
 |:========================|:=======================|:==========================|
 | WARP version            | version                | {{warpversion}}           |
-| Supports delta updates  | supportsDeltaUpdates   | {{supportsdeltaupdates}}  |
+| Delta update            | deltaUpdate            | {{deltaupdate}}           |
+| Add tracks              | addTracks              | {{addTracks}}             |
+| Remove tracks           | removeTracks           | {{removeTracks}}          |
+| Clone tracks            | cloneTracks            | {{cloneTracks}}           |
 | Tracks                  | tracks                 | {{tracks}}                |
 | Track namespace         | namespace              | {{tracknamespace}}        |
 | Track name              | name                   | {{trackname}}             |
@@ -177,6 +179,7 @@ Table 1 provides an overview of all fields defined by this document.
 | Display width           | displayWidth           | {{displaywidth}}          |
 | Display height          | displayHeight          | {{displayheight}}         |
 | Language                | lang                   | {{language}}              |
+| Parent name             | parentName             | {{parentname}}            |
 
 
 Table 2 defines the allowed locations for these fields within the document
@@ -195,16 +198,34 @@ that future catalog versions are backwards compatible and field definitions and
 interpretation may change between versions. A subscriber MUST NOT attempt to
 parse a catalog version which it does not understand.
 
-
-### Supports delta updates {#supportsdeltaupdates}
+### Delta update {#deltaupdate}
 Location: R    Required: Optional    JSON Type: Boolean
 
-A Boolean that if true indicates that the publisher MAY issue incremental
-(delta) updates - see {{patch}}. If false or absent, then the publisher
-guarantees that they will NOT issue any incremental updates and that any
-future updates to the catalog will be independent. The default value is
-false. This field MUST be present if its value is true, but may be omitted
-if the value is false.
+A Boolean that if true indicates that this catalog object represents a delta
+(or partial) update. A delta update has a restricted set of fields and special
+processing rules - see {{deltaupdates}}. This value SHOULD NOT be added to a
+catalog if it is false.
+
+### Add tracks {#addtracks}
+Location: R    Required: Optional    JSON Type: Array
+
+Indicates a delta processing instruction to add new tracks. The value of this
+field is an Array of track objects {{trackobject}}.
+
+### Remove tracks {#removetracks}
+Location: R    Required: Optional    JSON Type: Array
+
+Indicates a delta processing instruction to remove new tracks. The value of this
+field is an Array of track objects {{trackobject}}. Each track object MUST include
+a Track Name {{trackname}} field, MAY include a Track Namespace {{tracknamespace}}
+field and MUST NOT hold any other fields.
+
+### Clone tracks {#clonetracks}
+Location: R    Required: Optional    JSON Type: Array
+
+Indicates a delta processing instruction to clone new tracks from previously declared
+tracks. The value of this field is an Array of track objects {{trackobject}}. Each
+track object MUST include a Parent Name {{parentname}} field.
 
 ### Tracks {#tracks}
 Location: R    Required: Yes    JSON Type: Array
@@ -212,8 +233,8 @@ Location: R    Required: Yes    JSON Type: Array
 An array of track objects {{trackobject}}.
 
 ### Tracks object {#trackobject}
-A track object is a collection of fields whose location is specified 'T' in
-Table 2.
+A track object is JSON Object containing a collection of fields whose location
+is specified 'T' in Table 2.
 
 ### Track namespace {#tracknamespace}
 Location: TFC    Required: Optional    JSON Type: String
@@ -357,34 +378,42 @@ Location: T    Required: Optional   JSON Type: String
 A string defining the dominant language of the track. The string MUST be one of
 the standard Tags for Identifying Languages as defined by {{LANG}}.
 
-## Catalog Patch {#patch}
+### Parent name {#parentname}
+Location: T    Required: Optional   JSON Type: String
+
+A string defining the parent track name {{trackname}} to be cloned. This field
+MUST only be included inside a Clone tracks {{clonetracks}} object. 
+
+## Delta updates {#deltaupdates}
 A catalog update might contain incremental changes. This is a useful property if
 many tracks may be initially declared but then there are small changes to a
-subset of tracks. The producer can issue a patch to describe these small
-changes. Changes are described incrementally, meaning that a patch can itself
-modify a prior patch. Patching leverages JSON PATCH {{JSON-PATCH}} to modify the
-catalog.   JSON Patch is a format for expressing a sequence of operations to
-apply to a target JSON document.
+subset of tracks. The producer can issue a delta update to describe these changes.
+Changes are described incrementally, meaning that a delta update can itself modify
+a prior delta update.
 
-The following rules MUST be followed in processing patches:
+A restricted set of operations are allowed with each delta update:
+* Add a new track that has not previously been declared.
+* Add a new track by cloning a previously declared track.
+* Remove a track that has been previously declared.
 
-* The target JSON to be modified is the JSON document described by the preceding
-{{MoQTransport}} Object in the Catalog track, post any patching that may have
-been applied to that Object.
-* A Catalog Patch is identified by having a single array at the root level,
-holding a series of JSON objects, each object representing a single operation
-to be applied to the target JSON document.
-* Operations are applied sequentially in the order they appear in the array.
-Each operation in the sequence is applied to the target document; the
-resulting document becomes the target of the next operation.  Evaluation
-continues until all operations are successfully applied or until an error
-condition is encountered.
-* Track namespaces and track names may not be changed across patch updates
-To change either namespace or name, remove the track and then add a new track
-with matching properties and the new namespace and name.
-* Contents of the track selection properties object may not be varied across
-updates. To adjust a track selection property, the track must first be removed
-and then added with the new selection properties and a different name.
+The following rules are to be followed in constructing and processing delta updates:
+
+* A delta update MUST include the Delta Update {{deltaupdate}} field set to true.
+* A delta update catalog MUST contain at least one instance of Add tracks
+  {{addtracks}}, Remove tracks {{removetracks}} or Clone Tracks {{clonetracks}}
+  fields and MAY contain more. It MUST NOT contain an instance of a Tracks
+  {{tracks}} field or a WARP version {{version}} field.
+* The Add, Delete and Clone operations are applied sequentially in the order they
+  are declared in the document. Each operation in the sequence is applied to the
+  target document; the resulting document becomes the target of the next operation.
+  Evaluation continues until all operations are successfully applied.
+* A Cloned track inherits all the attributes of the track defined by the Parent Track
+  {{parenttrack}}, except the Track Name which MUST be new. Attributes redefined
+  in the cloning Object overwrite inherited values.
+* The tuple of Track Namespace and Track Name defines a fixed set of Track attributes
+  which MUST NOT be modified after being declared. To modify any attribute, a new
+  track with a different Namespace|Name tuple is created by Adding or Cloning and then
+  the old track is removed.
 
 ## Catalog Examples
 
@@ -435,14 +464,11 @@ This example shows catalog for a media producer capable of sending 3
 time-aligned video tracks for high definition, low definition and medium
 definition video qualities, along with an audio track. In this example the
 namespace is absent, which infers that each track must inherit the namespace
-of the catalog. Additionally this example shows the presence of the
-supportsDeltaUpdates flag.
-
+of the catalog.
 
 ~~~json
 {
   "version": 1,
-  "supportsDeltaUpdates": true,
   "tracks":[
     {
       "name": "hd",
@@ -528,7 +554,6 @@ express the track relationships.
 ~~~json
 {
   "version": 1,
-  "supportsDeltaUpdates": true,
   "tracks":[
     {
       "name": "480p15",
@@ -592,54 +617,48 @@ express the track relationships.
 }
 ~~~
 
-### Patch update adding a track
+### Delta update  - adding two tracks
 
-This example shows catalog for the media producer adding a slide track to an
-established video conference.
+This example shows the catalog delta update for a media producer adding
+two tracks to an established video conference. One track is newly declared,
+the other is cloned from a previous track.
 
 ~~~json
-[
-    {
-        "op": "add",
-        "path": "/tracks/-",
-        "value": {
-            "name": "slides",
-            "codec": "av01.0.08M.10.0.110.09",
-            "width": 1920,
-            "height": 1080,
-            "framerate": 15,
-            "bitrate": 750000,
-            "renderGroup": 1
-        }
-    }
-]
-
-
+{
+  "deltaUpdate": true,
+  "addTracks": [
+      {
+        "name": "slides",
+        "codec": "av01.0.08M.10.0.110.09",
+        "width": 1920,
+        "height": 1080,
+        "framerate": 15,
+        "bitrate": 750000,
+        "renderGroup": 1
+      }
+   ],
+   "cloneTracks": [
+      {
+        "parentName": "video-1080",  
+        "name": "video-720",
+        "width":1280,
+        "height":720,
+        "bitrate":600000
+      }
+   ]
+}
 ~~~
 
-### Patch update removing a track
+### Delta update removing tracks
 
-This example shows patch catalog update for a media producer removing the track
+This example shows a delta update for a media producer removing two tracks
 from an established video conference.
 
 ~~~json
-[
-  { "op": "remove", "path": "/tracks/2"}
-]
-~~~
-
-### Patch update removing all tracks and terminating the broadcast
-
-This example shows a patch catalog update for a media producer removing all
-tracks and terminating the broadcast.
-
-~~~json
-[
-  { "op": "remove", "path": "/tracks/2"},
-  { "op": "remove", "path": "/tracks/1"},
-  { "op": "remove", "path": "/tracks/0"},
-]
-
+{
+  "deltaUpdate": true,
+  "removeTracks": [{"name": "video"},{"name": "slides"}]
+}
 ~~~
 
 
