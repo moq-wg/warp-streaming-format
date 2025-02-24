@@ -154,9 +154,9 @@ Table 1 provides an overview of all fields defined by this document.
 |:========================|:=======================|:==========================|
 | WARP version            | version                | {{warpversion}}           |
 | Delta update            | deltaUpdate            | {{deltaupdate}}           |
-| Add tracks              | addTracks              | {{addTracks}}             |
-| Remove tracks           | removeTracks           | {{removeTracks}}          |
-| Clone tracks            | cloneTracks            | {{cloneTracks}}           |
+| Add tracks              | addTracks              | {{addtracks}}             |
+| Remove tracks           | removeTracks           | {{removetracks}}          |
+| Clone tracks            | cloneTracks            | {{clonetracks}}           |
 | Tracks                  | tracks                 | {{tracks}}                |
 | Track namespace         | namespace              | {{tracknamespace}}        |
 | Track name              | name                   | {{trackname}}             |
