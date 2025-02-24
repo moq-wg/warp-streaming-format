@@ -2,7 +2,7 @@
 title: "WARP Streaming Format"
 category: info
 
-docname: draft-law-moq-warpstreamingformat-latest
+docname: draft-ietf-moq-warp-latest
 submissiontype: IETF  # also: "independent", "IAB", or "IRTF"
 number:
 date:
