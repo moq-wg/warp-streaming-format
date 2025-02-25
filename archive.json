@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-01-30T01:38:39.157770+00:00",
+  "timestamp": "2025-02-25T01:45:39.976175+00:00",
   "repo": "moq-wg/warp-streaming-format",
   "labels": [
     {
@@ -451,9 +451,17 @@
       "labels": [],
       "body": "A useful property of media players is for them to be synchronized in their playback of a live stream. By synchronized we mean that they render a media timestamp at that same (or within an allowed threshold of a given) wall-clock time. This avoids the social and commercial problems of sports events being heard at different times depending on their distribution channel, as well as legal problems for channels involving betting/gambling, which in some locations have a mandated maximum latency. ",
       "createdAt": "2023-07-26T21:55:41Z",
-      "updatedAt": "2023-07-26T21:55:41Z",
+      "updatedAt": "2025-02-24T04:17:54Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "wilaw",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Media formats can provide a relationship between wallclock time and media time. By specifying a common latency target, media clients can play at a fixed latency and hence become synchronized.\n\nSince client clocks differ, we need a way for clients to estimate the correct wallclock time. \n\n1. Client sends a control message to server asking for a time check at T1\n2. Server receives this at T2 and sends a response back with its wallclock time T3 and also T2\n3. Client receives this response at T4\n\n```\nRTT estimate = (T4 - T1) - (T3- T2)\nClient time offset = T3 \u2212 (T1 + RTT/2)\n```\n\nFor this MOQT should add a new control message TIME_CHECK",
+          "createdAt": "2025-02-24T04:17:53Z",
+          "updatedAt": "2025-02-24T04:17:53Z"
+        }
+      ]
     },
     {
       "number": 18,
@@ -899,6 +907,37 @@
       "updatedAt": "2024-11-13T11:09:53Z",
       "closedAt": "2024-11-13T11:09:53Z",
       "comments": []
+    },
+    {
+      "number": 46,
+      "id": "I_kwDOJTN4X86oEvPn",
+      "title": "JSON patch may be too flexible for catalog updates",
+      "url": "https://github.com/moq-wg/warp-streaming-format/issues/46",
+      "state": "OPEN",
+      "author": "vasilvv",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "We define catalog updates as arbitrary modifications via JSON patch.  The question I have is: does this actually make sense, or should we constrain the space of potential updates?  There are some updates that generally make sense, e.g. adding a new track, or changing the resolution on a video track.  But what if the publisher does something that typically does not make sense, e.g. patches a video track to be an audio track?  I feel like it would be easier for the client implementers if we limited the space of potential changes to a well-defined list.",
+      "createdAt": "2025-01-30T03:28:55Z",
+      "updatedAt": "2025-01-30T12:23:00Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "englishm",
+          "authorAssociation": "NONE",
+          "body": "I originally proposed the use of JSON patch to reduce the need for custom business logic for processing deltas given that some library implementations of JSON patch already exist. That said, constraining the set of permitted updates in some way does seem wise and if dropping JSON patch for a protocol-defined set of allowed operations is the best way to do that, I wouldn't be wholly opposed.",
+          "createdAt": "2025-01-30T04:02:20Z",
+          "updatedAt": "2025-01-30T04:02:20Z"
+        },
+        {
+          "author": "wilaw",
+          "authorAssociation": "COLLABORATOR",
+          "body": ">  I feel like it would be easier for the client implementers if we limited the space of potential changes to a well-defined list.\n\nThis makes sense. To deal with the complexity of specifying a rule tree about which aspects of audio and video tracks can be modified, we could instead opt for simplicity and apply the restriction that an update can only add or delete atomic tracks, but not change any of their internal elements. So if you want to change the bitate of a track, you remove it and add it back with a different name and updated bitrate, but all other characteristics the same\n\nIf we accept restrictions of this type, then the next question is do we need the flexibility of JSON patch which can update any element of the JSON doc? That flexibility is a lot for a client to encode, especially if they don't have access to a ready-made library. We could consider our original approach which was to have a simple syntax in which the catalog identifies itself as a patch update and then can add or delete tracks. Given the initial catalog of \n\n```\n{\n  \"version\": 1,\n  \"tracks\": [\n    {\n      \"name\": \"video-1080\",\n      \"namespace\": \"conference.example.com/conference123/alice\",\n      \"packaging\": \"loc\",\n      \"renderGroup\": 1,\n      \"codec\":\"av01.0.08M.10.0.110.09\",\n      \"width\":1920,\n      \"height\":1080,\n      \"framerate\":30,\n      \"bitrate\":1500000\n    },\n    {\n      \"name\": \"audio\",\n      \"namespace\": \"conference.example.com/conference123/alice\",\n      \"packaging\": \"loc\",\n      \"renderGroup\": 1,\n      \"codec\":\"opus\",\n      \"samplerate\":48000,\n      \"channelConfig\":\"2\",\n      \"bitrate\":32000\n    }\n   ]\n}\n```\n\nwe could create a patch update using \n\n```\n{\n  \"deltaUpdate\": true,\n  \"addTrack\":  {\n        \"name\": \"video-720\",\n        \"namespace\": \"conference.example.com/conference123/alice\",\n        \"packaging\": \"loc\",\n        \"renderGroup\": 1,\n        \"codec\":\"av01.0.08M.10.0.110.09\",\n        \"width\":1280,\n        \"height\":720,\n        \"framerate\":30,\n        \"bitrate\":600000\n    }\n  \"removeTrack\": [\"video-1080\"]\n}\n```\nThis would be easier to code in the client than a full JSON patch implementation. \nTo reduce the verbosity, we could let new tracks clone existing tracks, to avoid repeating information such as auth tokens, which could be quite verbose. \n \n```\n{\n  \"deltaUpdate\": true,\n  \"cloneTrack\":  {\n        \"parent\": \"video-1080\",\n        \"name\": \"video-720\",\n        \"width\":1280,\n        \"height\":720,\n        \"bitrate\":600000\n    }\n  \"removeTrack\": [\"video-1080\"]\n}\n```",
+          "createdAt": "2025-01-30T12:22:59Z",
+          "updatedAt": "2025-01-30T12:22:59Z"
+        }
+      ]
     }
   ],
   "pulls": [
@@ -1641,13 +1680,39 @@
       "labels": [],
       "body": "Adds a 'scope' section which details the goals of WARP along with the feature-requirements considered in-scope. \r\n\r\nFixes #36 ",
       "createdAt": "2025-01-15T12:12:37Z",
-      "updatedAt": "2025-01-15T12:51:04Z",
+      "updatedAt": "2025-02-24T23:42:50Z",
       "baseRepository": "moq-wg/warp-streaming-format",
       "baseRefName": "main",
-      "baseRefOid": "810d1588b6062e281cff1d8f6e6e753a37d97da3",
+      "baseRefOid": "890f80a72d8c65f4cb6150d2800b76ecd1caa73e",
       "headRepository": "moq-wg/warp-streaming-format",
       "headRefName": "wilaw-patch-1",
-      "headRefOid": "6df76e0eb6a8856345d5c4c0d2bf4ca0fe162e1d",
+      "headRefOid": "8c3e81b55f8fafecf784eae7f1e2f678026ea33f",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 47,
+      "id": "PR_kwDOJTN4X86MN33X",
+      "title": "Replace JSON Patch Updates with a simpler custom implementation",
+      "url": "https://github.com/moq-wg/warp-streaming-format/pull/47",
+      "state": "OPEN",
+      "author": "wilaw",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Fixes #46 \r\n\r\nThis PR removes the RFC6902 JSON Patch update mechanism and replaces it with a simpler update mechanism which allows a restricted set of operations:\r\n\r\n- add a track\r\n- clone a track\r\n- remove a track",
+      "createdAt": "2025-02-24T00:45:06Z",
+      "updatedAt": "2025-02-24T23:34:45Z",
+      "baseRepository": "moq-wg/warp-streaming-format",
+      "baseRefName": "main",
+      "baseRefOid": "890f80a72d8c65f4cb6150d2800b76ecd1caa73e",
+      "headRepository": "moq-wg/warp-streaming-format",
+      "headRefName": "wilaw-patch-2",
+      "headRefOid": "8139ed028a428fcfc2472a489a9c94b2f5792fee",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
