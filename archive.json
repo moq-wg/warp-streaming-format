@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-02-25T01:45:39.976175+00:00",
+  "timestamp": "2025-02-27T01:45:30.605410+00:00",
   "repo": "moq-wg/warp-streaming-format",
   "labels": [
     {
@@ -1680,7 +1680,7 @@
       "labels": [],
       "body": "Adds a 'scope' section which details the goals of WARP along with the feature-requirements considered in-scope. \r\n\r\nFixes #36 ",
       "createdAt": "2025-01-15T12:12:37Z",
-      "updatedAt": "2025-02-24T23:42:50Z",
+      "updatedAt": "2025-02-25T21:56:42Z",
       "baseRepository": "moq-wg/warp-streaming-format",
       "baseRefName": "main",
       "baseRefOid": "890f80a72d8c65f4cb6150d2800b76ecd1caa73e",
@@ -1692,7 +1692,28 @@
       "mergedBy": null,
       "mergeCommit": null,
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOJTN4X86dgkBk",
+          "commit": {
+            "abbreviatedOid": "8c3e81b"
+          },
+          "author": "gwendalsimon",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-02-25T21:56:41Z",
+          "updatedAt": "2025-02-25T21:56:42Z",
+          "comments": [
+            {
+              "originalPosition": 57,
+              "body": "Can we add here: \r\n* Logs and analytics management - support for the reporting of client-side QoE (for example based on {{CMCD}}) and delivery actions at the relay side (for example close to {{HTTP}} logs)",
+              "createdAt": "2025-02-25T21:56:41Z",
+              "updatedAt": "2025-02-25T21:56:42Z"
+            }
+          ]
+        }
+      ]
     },
     {
       "number": 47,
@@ -1706,7 +1727,7 @@
       "labels": [],
       "body": "Fixes #46 \r\n\r\nThis PR removes the RFC6902 JSON Patch update mechanism and replaces it with a simpler update mechanism which allows a restricted set of operations:\r\n\r\n- add a track\r\n- clone a track\r\n- remove a track",
       "createdAt": "2025-02-24T00:45:06Z",
-      "updatedAt": "2025-02-24T23:34:45Z",
+      "updatedAt": "2025-02-25T21:49:03Z",
       "baseRepository": "moq-wg/warp-streaming-format",
       "baseRefName": "main",
       "baseRefOid": "890f80a72d8c65f4cb6150d2800b76ecd1caa73e",
@@ -1717,7 +1738,15 @@
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
-      "comments": [],
+      "comments": [
+        {
+          "author": "fluffy",
+          "authorAssociation": "NONE",
+          "body": "I like this much better than JSON path stuff ",
+          "createdAt": "2025-02-25T21:49:02Z",
+          "updatedAt": "2025-02-25T21:49:02Z"
+        }
+      ],
       "reviews": []
     }
   ]
