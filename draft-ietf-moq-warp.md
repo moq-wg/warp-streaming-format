@@ -19,8 +19,10 @@ venue:
   type: "Working Group"
   mail: "moq@ietf.org"
   arch: "https://mailarchive.ietf.org/arch/browse/moq/"
-  github: "wilaw/MoQ"
-  latest: "https://wilaw.github.io/MoQ/draft-law-moq-warpmedia.html"
+  github: "moq-wg/warp-streaming-format"
+  latest: "https://moq-wg.github.io/warp-streaming-format/
+           draft-ietf-moq-warp.html"
+   
 
 author:
  -
