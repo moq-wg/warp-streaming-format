@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-03-04T01:47:14.545664+00:00",
+  "timestamp": "2025-03-06T01:47:20.902634+00:00",
   "repo": "moq-wg/warp-streaming-format",
   "labels": [
     {
@@ -1680,7 +1680,7 @@
       "labels": [],
       "body": "Adds a 'scope' section which details the goals of WARP along with the feature-requirements considered in-scope. \r\n\r\nFixes #36 ",
       "createdAt": "2025-01-15T12:12:37Z",
-      "updatedAt": "2025-02-25T21:56:42Z",
+      "updatedAt": "2025-03-04T09:22:05Z",
       "baseRepository": "moq-wg/warp-streaming-format",
       "baseRefName": "main",
       "baseRefOid": "890f80a72d8c65f4cb6150d2800b76ecd1caa73e",
@@ -1712,6 +1712,46 @@
               "updatedAt": "2025-02-25T21:56:42Z"
             }
           ]
+        },
+        {
+          "id": "PRR_kwDOJTN4X86eTELJ",
+          "commit": {
+            "abbreviatedOid": "8c3e81b"
+          },
+          "author": "suhasHere",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-03-04T02:54:00Z",
+          "updatedAt": "2025-03-04T02:54:00Z",
+          "comments": [
+            {
+              "originalPosition": 11,
+              "body": "i wonder of these needs to be informative references ?",
+              "createdAt": "2025-03-04T02:54:00Z",
+              "updatedAt": "2025-03-04T02:54:01Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJTN4X86eWK1l",
+          "commit": {
+            "abbreviatedOid": "8c3e81b"
+          },
+          "author": "wilaw",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-03-04T09:22:05Z",
+          "updatedAt": "2025-03-04T09:22:05Z",
+          "comments": [
+            {
+              "originalPosition": 11,
+              "body": "The idea was to provide explicit bindings for both those caption formats in order to drive interoperability, hence the normative references. I agree that the bindings are not in the spec and the only reference is the scope section,  so we could relax them to informative for now and then when the bindings are added in the future we can tighten to normative. ",
+              "createdAt": "2025-03-04T09:22:05Z",
+              "updatedAt": "2025-03-04T09:22:05Z"
+            }
+          ]
         }
       ]
     },
@@ -1727,7 +1767,7 @@
       "labels": [],
       "body": "Fixes #46 \r\n\r\nThis PR removes the RFC6902 JSON Patch update mechanism and replaces it with a simpler update mechanism which allows a restricted set of operations:\r\n\r\n- add a track\r\n- clone a track\r\n- remove a track",
       "createdAt": "2025-02-24T00:45:06Z",
-      "updatedAt": "2025-02-25T21:49:03Z",
+      "updatedAt": "2025-03-04T02:53:25Z",
       "baseRepository": "moq-wg/warp-streaming-format",
       "baseRefName": "main",
       "baseRefOid": "890f80a72d8c65f4cb6150d2800b76ecd1caa73e",
@@ -1747,7 +1787,21 @@
           "updatedAt": "2025-02-25T21:49:02Z"
         }
       ],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOJTN4X86eTECZ",
+          "commit": {
+            "abbreviatedOid": "8139ed0"
+          },
+          "author": "suhasHere",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-03-04T02:53:25Z",
+          "updatedAt": "2025-03-04T02:53:25Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
