@@ -22,7 +22,6 @@ venue:
   github: "moq-wg/warp-streaming-format"
   latest: "https://moq-wg.github.io/warp-streaming-format/
            draft-ietf-moq-warp.html"
-   
 
 author:
  -
