@@ -690,13 +690,17 @@ The MOQT Groups and MOQT Objects need to be mapped to MOQT Streams. Irrespective
 of the {{mediapackaging}} in place, each MOQT Object MUST be mapped to a new
 MOQT Stream.
 
+## Group numbering
+The Group Number of the first Group in any WARP track MUST be 0. Each subsequent
+Group MUST increase by 1.
+
 # Timeline track
 The timeline track provides data about the previously published groups and their
 relationship to wallclock time, media time and associated timed-metadata.
 Timeline tracks allow players to seek to precise points behind the live head in
-a live broadcast, or for random access in a VOD asset. A timeline track may also
+a live broadcast, or for random access in a VOD asset. A timeline track might also
 be used to insert events at media times which do not correlate with Object
-boundaries. Timeline tracks are optional. Multiple timeline tracks MAY exist
+boundaries. Timeline tracks are optional. Multiple timeline tracks can exist
 inside a catalog.
 
 ## Timeline track payload
@@ -731,10 +735,10 @@ contains an array of all track names to which the timeline track applies.
 
 ## Timeline track updating.
 The publisher MUST publish a complete timeline in the first MOQT Object of each
-MOQT Group. The publisher MAY publish incremental updates in the second and
-subsequent Objects within each GROUP. Incremental updates only contain timeline
-events since the last timeline Object. Group duration SHOULD not exceed 30
-seconds.
+MOQT Group of a timeline track. The publisher MAY publish incremental updates
+in the second and subsequent Objects within each GROUP. Incremental updates
+only contain timeline events since the last timeline Object. Group duration
+SHOULD not exceed 30 seconds inside a timeline track.
 
 # Workflow
 
