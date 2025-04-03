@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-03-30T01:57:38.987294+00:00",
+  "timestamp": "2025-04-03T01:50:29.266684+00:00",
   "repo": "moq-wg/warp-streaming-format",
   "labels": [
     {
@@ -938,6 +938,30 @@
           "updatedAt": "2025-01-30T12:22:59Z"
         }
       ]
+    },
+    {
+      "number": 48,
+      "id": "I_kwDOJTN4X86wzPSx",
+      "title": "Constrain WARP group numbering",
+      "url": "https://github.com/moq-wg/warp-streaming-format/issues/48",
+      "state": "OPEN",
+      "author": "wilaw",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "The current MOQT draft only requires Group numbers to increment with time and there are requests to remove even that requirement.\n\nTo facilitate the media streaming use case, WARP should constrain group numbers to start at 0 and to increment by 1 with advancing time. This scheme allows transmission nodes (relays) to know when an object is missing without having to make a request to origin. It allows ordering without any other out-of-band communication. It also reduces the information that must be stored in the catalog and it simplifies the timeline track. ",
+      "createdAt": "2025-04-02T12:26:54Z",
+      "updatedAt": "2025-04-02T12:42:58Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "gwendalsimon",
+          "authorAssociation": "NONE",
+          "body": "+1",
+          "createdAt": "2025-04-02T12:42:56Z",
+          "updatedAt": "2025-04-02T12:42:56Z"
+        }
+      ]
     }
   ],
   "pulls": [
@@ -1802,6 +1826,40 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 49,
+      "id": "PR_kwDOJTN4X86RFTOa",
+      "title": "Constraining Group numbering",
+      "url": "https://github.com/moq-wg/warp-streaming-format/pull/49",
+      "state": "OPEN",
+      "author": "wilaw",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Fixes #48 .\r\n\r\nGroups within a WARP track MUST start at 0 and MUST increment by 1. ",
+      "createdAt": "2025-04-02T12:37:59Z",
+      "updatedAt": "2025-04-02T17:23:35Z",
+      "baseRepository": "moq-wg/warp-streaming-format",
+      "baseRefName": "main",
+      "baseRefOid": "bc5671f23ae2c0f1075d66caf977c7591b043c6b",
+      "headRepository": "moq-wg/warp-streaming-format",
+      "headRefName": "wilaw-patch-3",
+      "headRefOid": "f23c1bfc4136b51b16730931a1b89e27219df534",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "afrind",
+          "authorAssociation": "NONE",
+          "body": "Can you walk through a scenario like \"the publisher of a track crashes and restarts and wants to keep publishing on the same track\"?  With constrained group IDs, I assume it would be:\r\n\r\nTRACK_STAUS_REQUEST to get the last group number, then start publishing.",
+          "createdAt": "2025-04-02T17:23:35Z",
+          "updatedAt": "2025-04-02T17:23:35Z"
+        }
+      ],
+      "reviews": []
     }
   ]
 }
