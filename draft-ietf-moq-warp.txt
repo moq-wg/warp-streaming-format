@@ -75,61 +75,62 @@ Table of Contents
 
    1.  Introduction
    2.  Conventions and Definitions
-   3.  Media packaging
-     3.1.  LOC packaging
-     3.2.  Time-alignment
-     3.3.  Content protection and encryption
-   4.  Catalog
-     4.1.  Catalog Fields
-     4.2.  WARP version
-       4.2.1.  Delta update
-       4.2.2.  Add tracks
-       4.2.3.  Remove tracks
-       4.2.4.  Clone tracks
-       4.2.5.  Tracks
-       4.2.6.  Tracks object
-       4.2.7.  Track namespace
-       4.2.8.  Track name
-       4.2.9.  Packaging
-       4.2.10. Track label
-       4.2.11. Render group
-       4.2.12. Alternate group
-       4.2.13. Initialization data
-       4.2.14. Dependencies
-       4.2.15. Temporal ID
-       4.2.16. Spatial ID
-       4.2.17. Codec
-       4.2.18. Mimetype
-       4.2.19. Framerate
-       4.2.20. Bitrate
-       4.2.21. Width
-       4.2.22. Height
-       4.2.23. Audio sample rate
-       4.2.24. Channel configuration
-       4.2.25. Display width
-       4.2.26. Display height
-       4.2.27. Language
-       4.2.28. Parent name
-     4.3.  Delta updates
-     4.4.  Catalog Examples
-       4.4.1.  Time-aligned Audio/Video Tracks with single quality
-       4.4.2.  Simulcast video tracks - 3 alternate qualities along
+   3.  Scope
+   4.  Media packaging
+     4.1.  LOC packaging
+     4.2.  Time-alignment
+     4.3.  Content protection and encryption
+   5.  Catalog
+     5.1.  Catalog Fields
+     5.2.  WARP version
+       5.2.1.  Delta update
+       5.2.2.  Add tracks
+       5.2.3.  Remove tracks
+       5.2.4.  Clone tracks
+       5.2.5.  Tracks
+       5.2.6.  Tracks object
+       5.2.7.  Track namespace
+       5.2.8.  Track name
+       5.2.9.  Packaging
+       5.2.10. Track label
+       5.2.11. Render group
+       5.2.12. Alternate group
+       5.2.13. Initialization data
+       5.2.14. Dependencies
+       5.2.15. Temporal ID
+       5.2.16. Spatial ID
+       5.2.17. Codec
+       5.2.18. Mimetype
+       5.2.19. Framerate
+       5.2.20. Bitrate
+       5.2.21. Width
+       5.2.22. Height
+       5.2.23. Audio sample rate
+       5.2.24. Channel configuration
+       5.2.25. Display width
+       5.2.26. Display height
+       5.2.27. Language
+       5.2.28. Parent name
+     5.3.  Delta updates
+     5.4.  Catalog Examples
+       5.4.1.  Time-aligned Audio/Video Tracks with single quality
+       5.4.2.  Simulcast video tracks - 3 alternate qualities along
                with audio
-       4.4.3.  SVC video tracks with 2 spatial and 2 temporal
+       5.4.3.  SVC video tracks with 2 spatial and 2 temporal
                qualities
-       4.4.4.  Delta update - adding two tracks
-       4.4.5.  Delta update removing tracks
-       4.4.6.  Time-aligned Audio/Video Tracks with custom field
+       5.4.4.  Delta update - adding two tracks
+       5.4.5.  Delta update removing tracks
+       5.4.6.  Time-aligned Audio/Video Tracks with custom field
                values
-   5.  Media transmission
-   6.  Timeline track
-     6.1.  Timeline track payload
-     6.2.  Timeline Catalog requirements
-     6.3.  Timeline track updating.
-   7.  Workflow
-   8.  Security Considerations
-   9.  IANA Considerations
-   10. Normative References
+   6.  Media transmission
+   7.  Timeline track
+     7.1.  Timeline track payload
+     7.2.  Timeline Catalog requirements
+     7.3.  Timeline track updating.
+   8.  Workflow
+   9.  Security Considerations
+   10. IANA Considerations
+   11. Normative References
    Acknowledgments
    Authors' Addresses
 
@@ -160,11 +161,77 @@ Table of Contents
    This document uses the conventions detailed in Section 1.3 of
    [RFC9000] when describing the binary encoding.
 
-3.  Media packaging
+3.  Scope
+
+   The purpose of WARP is to provide an interoperable media streaming
+   format operating over [MoQTransport].  Interoperability implies that:
+
+   *  An original publisher can package incoming media content into
+      tracks, prepare a catalog and annouce the availability of the
+      content to a MOQT relay.  Media content refers to audio and video
+      data, as well as ancillary data such as captions, subtitles,
+      accessibility and other timed-text data.
+
+   *  A MOQT relay can process the annoucement as well as cache and
+      propagate the tracks, both to other relays or to the final
+      subscriber.
+
+   *  A final subscriber can parse the catalog, request tracks, decode
+      and render the received media data.
+
+   WARP is intended to provide a format for delivering commercial media
+   content.  To that end, the following features are within scope:
+
+   *  Video codecs - all codecs supported by [LOC]
+
+   *  Audio codecs - all audio codecs supported by [LOC]
+
+   *  Catalog track - describes the availability and characteristics of
+      content produced by the original publisher.
+
+   *  Timeline track - describes the relationship between MOQT Group and
+      Object IDs to media time.
+
+   *  Token-based authorization and access control
+
+   *  Captions + Subtitles - support for [WEBVTT] and [IMSC1]
+      transmission
+
+   *  Latency support across multiple regimes (thresholds are
+      informative only and describe the delay between the original
+      publisher placing the content on the wire and the final subscriber
+      rendering it)
+
+   *  Real-time - less than 500ms
+
+   *  Interactive - between 500ms and 2500ms
+
+   *  Standard - above 2500ms
+
+   *  VOD latency - content that was previously produced, is no longer
+      live and is available indefinitely.
+
+   *  Content encryption
+
+   *  ABR between time-synced tracks - subscribers may switch between
+      between tracks at different quality levels in order to maximize
+      visual or audio quality under fconditions of throughput
+      variability.
+
+   *  Capable of delivering interstitial advertising.
+
+   *  Logs and analytics management - support for the reporting of
+      client-side QoE and relay delivery actions.
+
+   Initial verisons of WARP will prioritize basic features necessary to
+   exercise interoperability across delivery systems.  Later versions
+   will add commercially necessary features.
+
+4.  Media packaging
 
    WARP delivers LOC [LOC] packaged media bitstreams.
 
-3.1.  LOC packaging
+4.1.  LOC packaging
 
    This specification references Low Overhead Container (LOC) [LOC] to
    define how audio and video content is packaged.  With this packaging
@@ -173,10 +240,10 @@ Table of Contents
    Pictures (GOP) MUST be placed within the same MOQT Group.
 
    When LOC packaging is used for a track, the catalog packaging
-   attribute (Section 4.2.9) MUST be present and it MUST be populated
+   attribute (Section 5.2.9) MUST be present and it MUST be populated
    with a value of "loc".
 
-3.2.  Time-alignment
+4.2.  Time-alignment
 
    WARP Tracks MAY be time-aligned.  Those that are, are subject to the
    following requirements:
@@ -192,11 +259,11 @@ Table of Contents
    able to cleanly switch between time-aligned media tracks at group
    boundaries.
 
-3.3.  Content protection and encryption
+4.3.  Content protection and encryption
 
    ToDo - content protection for LOC-packaged content.
 
-4.  Catalog
+5.  Catalog
 
    A Catalog is a MOQT Track that provides information about the other
    tracks being produced by a WARP publisher.  A Catalog is used by WARP
@@ -217,7 +284,7 @@ Table of Contents
 
    Each catalog update MUST be mapped to a discreet MOQT Object.
 
-4.1.  Catalog Fields
+5.1.  Catalog Fields
 
    A catalog is a JSON [JSON] document, comprised of a series of
    mandatory and optional fields.  At a minimum, a catalog MUST provide
@@ -233,61 +300,61 @@ Table of Contents
         +=======================+===============+================+
         | Field                 | Name          | Definition     |
         +=======================+===============+================+
-        | WARP version          | version       | Section 4.2    |
+        | WARP version          | version       | Section 5.2    |
         +-----------------------+---------------+----------------+
-        | Delta update          | deltaUpdate   | Section 4.2.1  |
+        | Delta update          | deltaUpdate   | Section 5.2.1  |
         +-----------------------+---------------+----------------+
-        | Add tracks            | addTracks     | Section 4.2.2  |
+        | Add tracks            | addTracks     | Section 5.2.2  |
         +-----------------------+---------------+----------------+
-        | Remove tracks         | removeTracks  | Section 4.2.3  |
+        | Remove tracks         | removeTracks  | Section 5.2.3  |
         +-----------------------+---------------+----------------+
-        | Clone tracks          | cloneTracks   | Section 4.2.4  |
+        | Clone tracks          | cloneTracks   | Section 5.2.4  |
         +-----------------------+---------------+----------------+
-        | Tracks                | tracks        | Section 4.2.5  |
+        | Tracks                | tracks        | Section 5.2.5  |
         +-----------------------+---------------+----------------+
-        | Track namespace       | namespace     | Section 4.2.7  |
+        | Track namespace       | namespace     | Section 5.2.7  |
         +-----------------------+---------------+----------------+
-        | Track name            | name          | Section 4.2.8  |
+        | Track name            | name          | Section 5.2.8  |
         +-----------------------+---------------+----------------+
-        | Packaging             | packaging     | Section 4.2.9  |
+        | Packaging             | packaging     | Section 5.2.9  |
         +-----------------------+---------------+----------------+
-        | Track label           | label         | Section 4.2.10 |
+        | Track label           | label         | Section 5.2.10 |
         +-----------------------+---------------+----------------+
-        | Render group          | renderGroup   | Section 4.2.11 |
+        | Render group          | renderGroup   | Section 5.2.11 |
         +-----------------------+---------------+----------------+
-        | Alternate group       | altGroup      | Section 4.2.12 |
+        | Alternate group       | altGroup      | Section 5.2.12 |
         +-----------------------+---------------+----------------+
-        | Initialization data   | initData      | Section 4.2.13 |
+        | Initialization data   | initData      | Section 5.2.13 |
         +-----------------------+---------------+----------------+
-        | Dependencies          | depends       | Section 4.2.14 |
+        | Dependencies          | depends       | Section 5.2.14 |
         +-----------------------+---------------+----------------+
-        | Temporal ID           | temporalId    | Section 4.2.15 |
+        | Temporal ID           | temporalId    | Section 5.2.15 |
         +-----------------------+---------------+----------------+
-        | Spatial ID            | spatialId     | Section 4.2.16 |
+        | Spatial ID            | spatialId     | Section 5.2.16 |
         +-----------------------+---------------+----------------+
-        | Codec                 | codec         | Section 4.2.17 |
+        | Codec                 | codec         | Section 5.2.17 |
         +-----------------------+---------------+----------------+
-        | Mime type             | mimeType      | Section 4.2.18 |
+        | Mime type             | mimeType      | Section 5.2.18 |
         +-----------------------+---------------+----------------+
-        | Framerate             | framerate     | Section 4.2.19 |
+        | Framerate             | framerate     | Section 5.2.19 |
         +-----------------------+---------------+----------------+
-        | Bitrate               | bitrate       | Section 4.2.20 |
+        | Bitrate               | bitrate       | Section 5.2.20 |
         +-----------------------+---------------+----------------+
-        | Width                 | width         | Section 4.2.21 |
+        | Width                 | width         | Section 5.2.21 |
         +-----------------------+---------------+----------------+
-        | Height                | height        | Section 4.2.22 |
+        | Height                | height        | Section 5.2.22 |
         +-----------------------+---------------+----------------+
-        | Audio sample rate     | samplerate    | Section 4.2.23 |
+        | Audio sample rate     | samplerate    | Section 5.2.23 |
         +-----------------------+---------------+----------------+
-        | Channel configuration | channelConfig | Section 4.2.24 |
+        | Channel configuration | channelConfig | Section 5.2.24 |
         +-----------------------+---------------+----------------+
-        | Display width         | displayWidth  | Section 4.2.25 |
+        | Display width         | displayWidth  | Section 5.2.25 |
         +-----------------------+---------------+----------------+
-        | Display height        | displayHeight | Section 4.2.26 |
+        | Display height        | displayHeight | Section 5.2.26 |
         +-----------------------+---------------+----------------+
-        | Language              | lang          | Section 4.2.27 |
+        | Language              | lang          | Section 5.2.27 |
         +-----------------------+---------------+----------------+
-        | Parent name           | parentName    | Section 4.2.28 |
+        | Parent name           | parentName    | Section 5.2.28 |
         +-----------------------+---------------+----------------+
 
                                  Table 1
@@ -305,7 +372,7 @@ Table of Contents
 
                                  Table 2
 
-4.2.  WARP version
+5.2.  WARP version
 
    Location: R Required: Yes JSON Type: Number
 
@@ -315,53 +382,53 @@ Table of Contents
    A subscriber MUST NOT attempt to parse a catalog version which it
    does not understand.
 
-4.2.1.  Delta update
+5.2.1.  Delta update
 
    Location: R Required: Optional JSON Type: Boolean
 
    A Boolean that if true indicates that this catalog object represents
    a delta (or partial) update.  A delta update has a restricted set of
-   fields and special processing rules - see Section 4.3.  This value
+   fields and special processing rules - see Section 5.3.  This value
    SHOULD NOT be added to a catalog if it is false.
 
-4.2.2.  Add tracks
+5.2.2.  Add tracks
 
    Location: R Required: Optional JSON Type: Array
 
    Indicates a delta processing instruction to add new tracks.  The
-   value of this field is an Array of track objects Section 4.2.6.
+   value of this field is an Array of track objects Section 5.2.6.
 
-4.2.3.  Remove tracks
+5.2.3.  Remove tracks
 
    Location: R Required: Optional JSON Type: Array
 
    Indicates a delta processing instruction to remove new tracks.  The
-   value of this field is an Array of track objects Section 4.2.6.  Each
-   track object MUST include a Track Name Section 4.2.8 field, MAY
-   include a Track Namespace Section 4.2.7 field and MUST NOT hold any
+   value of this field is an Array of track objects Section 5.2.6.  Each
+   track object MUST include a Track Name Section 5.2.8 field, MAY
+   include a Track Namespace Section 5.2.7 field and MUST NOT hold any
    other fields.
 
-4.2.4.  Clone tracks
+5.2.4.  Clone tracks
 
    Location: R Required: Optional JSON Type: Array
 
    Indicates a delta processing instruction to clone new tracks from
    previously declared tracks.  The value of this field is an Array of
-   track objects Section 4.2.6.  Each track object MUST include a Parent
-   Name Section 4.2.28 field.
+   track objects Section 5.2.6.  Each track object MUST include a Parent
+   Name Section 5.2.28 field.
 
-4.2.5.  Tracks
+5.2.5.  Tracks
 
    Location: R Required: Yes JSON Type: Array
 
-   An array of track objects Section 4.2.6.
+   An array of track objects Section 5.2.6.
 
-4.2.6.  Tracks object
+5.2.6.  Tracks object
 
    A track object is JSON Object containing a collection of fields whose
    location is specified 'T' in Table 2.
 
-4.2.7.  Track namespace
+5.2.7.  Track namespace
 
    Location: TFC Required: Optional JSON Type: String
 
@@ -371,7 +438,7 @@ Table of Contents
    namespace of the catalog track.  A namespace declared in a track
    object overwrites any inherited name space.
 
-4.2.8.  Track name
+5.2.8.  Track name
 
    Location: T Required: Yes JSON Type: String
 
@@ -379,7 +446,7 @@ Table of Contents
    [MoQTransport].  Within the catalog, track names MUST be unique per
    namespace.
 
-4.2.9.  Packaging
+5.2.9.  Packaging
 
    Location: T Required: Yes JSON Type: String
 
@@ -396,7 +463,7 @@ Table of Contents
 
                                   Table 3
 
-4.2.10.  Track label
+5.2.10.  Track label
 
    Location: TF Required: Optional JSON Type: String
 
@@ -404,7 +471,7 @@ Table of Contents
    might be "Overhead camera view" or "Deutscher Kommentar".  Note that
    the [JSON] spec requires UTF-8 support by decoders.
 
-4.2.11.  Render group
+5.2.11.  Render group
 
    Location: TF Required: Optional JSON Type: Number
 
@@ -414,37 +481,37 @@ Table of Contents
    accompany one another.  A common example would be tying together
    audio and video tracks.
 
-4.2.12.  Alternate group
+5.2.12.  Alternate group
 
    Location: TF Required: Optional JSON Type: Number
 
    An integer specifying a group of tracks which are alternate versions
    of one-another.  Alternate tracks represent the same media content,
    but differ in their selection properties.  Alternate tracks SHOULD
-   have matching framerate Section 4.2.19 and media time sequences.  A
+   have matching framerate Section 5.2.19 and media time sequences.  A
    subscriber typically subscribes to one track from a set of tracks
    specifying the same alternate group number.  A common example would
    be a set video tracks of the same content offered in alternate
    bitrates.
 
-4.2.13.  Initialization data
+5.2.13.  Initialization data
 
    Location: TF Required: Optional JSON Type: String
 
    A string holding Base64 [BASE64] encoded initialization data for the
    track.
 
-4.2.14.  Dependencies
+5.2.14.  Dependencies
 
    Location: T Required: Optional JSON Type: Array
 
    Certain tracks may depend on other tracks for decoding.  Dependencies
-   holds an array of track names Section 4.2.8 on which the current
+   holds an array of track names Section 5.2.8 on which the current
    track is dependent.  Since only the track name is signaled, the
    namespace of the dependencies is assumed to match that of the track
    declaring the dependencies.
 
-4.2.15.  Temporal ID
+5.2.15.  Temporal ID
 
    Location: T Required: Optional JSON Type: Number
 
@@ -452,7 +519,7 @@ Table of Contents
    track, starting with 0 for the base layer, and increasing with higher
    temporal fidelity.
 
-4.2.16.  Spatial ID
+5.2.16.  Spatial ID
 
    Location: T Required: Optional JSON Type: Number
 
@@ -460,7 +527,7 @@ Table of Contents
    starting with 0 for the base layer, and increasing with higher
    fidelity.
 
-4.2.17.  Codec
+5.2.17.  Codec
 
    Location: T Required: Optional JSON Type: String
 
@@ -468,45 +535,45 @@ Table of Contents
    packaged content, the string codec registrations are defined in Sect
    3 and Section 4 of [WEBCODECS-CODEC-REGISTRY].
 
-4.2.18.  Mimetype
+5.2.18.  Mimetype
 
    Location: T Required: Optional JSON Type: String
 
    A string defining the mime type [MIME] of the track.
 
-4.2.19.  Framerate
+5.2.19.  Framerate
 
    Location: T Required: Optional JSON Type: Number
 
    A number defining the video framerate of the track, expressed as
    frames per second.
 
-4.2.20.  Bitrate
+5.2.20.  Bitrate
 
    Location: T Required: Optional JSON Type: Number
 
    A number defining the bitrate of track, expressed in bits per second.
 
-4.2.21.  Width
+5.2.21.  Width
 
    Location: T Required: Optional JSON Type: Number
 
    A number expressing the encoded width of the video frames in pixels.
 
-4.2.22.  Height
+5.2.22.  Height
 
    Location: T Required: Optional JSON Type: Number
 
    A number expressing the encoded height of the video frames in pixels.
 
-4.2.23.  Audio sample rate
+5.2.23.  Audio sample rate
 
    Location: T Required: Optional JSON Type: Number
 
    The number of audio frame samples per second.  This property SHOULD
    only accompany audio codecs.
 
-4.2.24.  Channel configuration
+5.2.24.  Channel configuration
 
    Location: T Required: Optional JSON Type: String
 
@@ -515,21 +582,21 @@ Table of Contents
    provide the flexibility to describe complex channel configurations
    for multi-channel and Next Generation Audio schemas.
 
-4.2.25.  Display width
+5.2.25.  Display width
 
    Location: T Required: Optional JSON Type: Number
 
    A number expressing the intended display width of the track content
    in pixels.
 
-4.2.26.  Display height
+5.2.26.  Display height
 
    Location: T Required: Optional JSON Type: Number
 
    A number expressing the intended display height of the track content
    in pixels.
 
-4.2.27.  Language
+5.2.27.  Language
 
    Location: T Required: Optional JSON Type: String
 
@@ -537,15 +604,15 @@ Table of Contents
    MUST be one of the standard Tags for Identifying Languages as defined
    by [LANG].
 
-4.2.28.  Parent name
+5.2.28.  Parent name
 
    Location: T Required: Optional JSON Type: String
 
-   A string defining the parent track name Section 4.2.8 to be cloned.
-   This field MUST only be included inside a Clone tracks Section 4.2.4
+   A string defining the parent track name Section 5.2.8 to be cloned.
+   This field MUST only be included inside a Clone tracks Section 5.2.4
    object.
 
-4.3.  Delta updates
+5.3.  Delta updates
 
    A catalog update might contain incremental changes.  This is a useful
    property if many tracks may be initially declared but then there are
@@ -562,14 +629,14 @@ Table of Contents
    The following rules are to be followed in constructing and processing
    delta updates:
 
-   *  A delta update MUST include the Delta Update Section 4.2.1 field
+   *  A delta update MUST include the Delta Update Section 5.2.1 field
       set to true.
 
    *  A delta update catalog MUST contain at least one instance of Add
-      tracks Section 4.2.2, Remove tracks Section 4.2.3 or Clone Tracks
-      Section 4.2.4 fields and MAY contain more.  It MUST NOT contain an
-      instance of a Tracks Section 4.2.5 field or a WARP version
-      Section 4.2 field.
+      tracks Section 5.2.2, Remove tracks Section 5.2.3 or Clone Tracks
+      Section 5.2.4 fields and MAY contain more.  It MUST NOT contain an
+      instance of a Tracks Section 5.2.5 field or a WARP version
+      Section 5.2 field.
 
    *  The Add, Delete and Clone operations are applied sequentially in
       the order they are declared in the document.  Each operation in
@@ -578,7 +645,7 @@ Table of Contents
       continues until all operations are successfully applied.
 
    *  A Cloned track inherits all the attributes of the track defined by
-      the Parent Name Section 4.2.28, except the Track Name which MUST
+      the Parent Name Section 5.2.28, except the Track Name which MUST
       be new.  Attributes redefined in the cloning Object overwrite
       inherited values.
 
@@ -588,14 +655,14 @@ Table of Contents
       Namespace|Name tuple is created by Adding or Cloning and then the
       old track is removed.
 
-4.4.  Catalog Examples
+5.4.  Catalog Examples
 
    The following section provides non-normative JSON examples of various
    catalogs compliant with this draft.
 
-4.4.1.  Time-aligned Audio/Video Tracks with single quality
+5.4.1.  Time-aligned Audio/Video Tracks with single quality
 
-   This example shows catalog for a media producer capable of sending
+   This example shows a catalog for a media producer capable of sending
    LOC packaged, time-aligned audio and video tracks.
 
    {
@@ -625,7 +692,7 @@ Table of Contents
       ]
    }
 
-4.4.2.  Simulcast video tracks - 3 alternate qualities along with audio
+5.4.2.  Simulcast video tracks - 3 alternate qualities along with audio
 
    This example shows catalog for a media producer capable of sending 3
    time-aligned video tracks for high definition, low definition and
@@ -681,7 +748,7 @@ Table of Contents
       ]
    }
 
-4.4.3.  SVC video tracks with 2 spatial and 2 temporal qualities
+5.4.3.  SVC video tracks with 2 spatial and 2 temporal qualities
 
    This example shows catalog for a media producer capable of sending
    scalable video codec with 2 spatial and 2 temporal layers with a
@@ -773,7 +840,7 @@ Table of Contents
       ]
    }
 
-4.4.4.  Delta update - adding two tracks
+5.4.4.  Delta update - adding two tracks
 
    This example shows the catalog delta update for a media producer
    adding two tracks to an established video conference.  One track is
@@ -803,7 +870,7 @@ Table of Contents
       ]
    }
 
-4.4.5.  Delta update removing tracks
+5.4.5.  Delta update removing tracks
 
    This example shows a delta update for a media producer removing two
    tracks from an established video conference.
@@ -813,7 +880,7 @@ Table of Contents
      "removeTracks": [{"name": "video"},{"name": "slides"}]
    }
 
-4.4.6.  Time-aligned Audio/Video Tracks with custom field values
+5.4.6.  Time-aligned Audio/Video Tracks with custom field values
 
    This example shows catalog for a media producer capable of sending
    LOC packaged, time-aligned audio and video tracks along with custom
@@ -849,13 +916,13 @@ Table of Contents
       ]
    }
 
-5.  Media transmission
+6.  Media transmission
 
    The MOQT Groups and MOQT Objects need to be mapped to MOQT Streams.
-   Irrespective of the Section 3 in place, each MOQT Object MUST be
+   Irrespective of the Section 4 in place, each MOQT Object MUST be
    mapped to a new MOQT Stream.
 
-6.  Timeline track
+7.  Timeline track
 
    The timeline track provides data about the previously published
    groups and their relationship to wallclock time, media time and
@@ -866,7 +933,7 @@ Table of Contents
    boundaries.  Timeline tracks are optional.  Multiple timeline tracks
    MAY exist inside a catalog.
 
-6.1.  Timeline track payload
+7.1.  Timeline track payload
 
    The payload of a timeline track is a UTF-8 encoded CSV text file.
    This payload is formatted according to RFC4180 "Common Format and
@@ -898,14 +965,14 @@ Table of Contents
       double quotes.  A double-quote appearing inside this field MUST be
       escaped by preceding it with another double quote.
 
-6.2.  Timeline Catalog requirements
+7.2.  Timeline Catalog requirements
 
    A timeline track MUST carry a 'type' identifier in the Catalog with a
    value of "timeline".  A timeline track MUST carry a 'dependencies'
    attribute which contains an array of all track names to which the
    timeline track applies.
 
-6.3.  Timeline track updating.
+7.3.  Timeline track updating.
 
    The publisher MUST publish a complete timeline in the first MOQT
    Object of each MOQT Group.  The publisher MAY publish incremental
@@ -913,7 +980,7 @@ Table of Contents
    Incremental updates only contain timeline events since the last
    timeline Object.  Group duration SHOULD not exceed 30 seconds.
 
-7.  Workflow
+8.  Workflow
 
    A WARP publisher MUST publish a catalog track object before
    publishing any media track objects.
@@ -923,21 +990,25 @@ Table of Contents
    be interpreted by receivers to mean that the publish session is
    complete.
 
-8.  Security Considerations
+9.  Security Considerations
 
    ToDo
 
-9.  IANA Considerations
+10.  IANA Considerations
 
    This document creates a new entry in the "MoQ Streaming Format"
    Registry (see [MoQTransport] Sect 8).  The type value is 0x001, the
    name is "WARP Streaming Format" and the RFC is XXX.
 
-10.  Normative References
+11.  Normative References
 
    [BASE64]   Josefsson, S., "The Base16, Base32, and Base64 Data
               Encodings", RFC 4648, DOI 10.17487/RFC4648, October 2006,
               <https://www.rfc-editor.org/rfc/rfc4648>.
+
+   [IMSC1]    "W3C, TTML Profiles for Internet Media Subtitles and
+              Captions 1.0 (IMSC1)", April 2016,
+              <https://www.w3.org/TR/ttml-imsc1/>.
 
    [JSON]     Bray, T., Ed., "The JavaScript Object Notation (JSON) Data
               Interchange Format", STD 90, RFC 8259,
@@ -993,6 +1064,10 @@ Table of Contents
    [WEBCODECS-CODEC-REGISTRY]
               "WebCodecs Codec Registry", September 2024,
               <https://www.w3.org/TR/webcodecs-codec-registry/>.
+
+   [WEBVTT]   "World Wide Web Consortium (W3C), WebVTT: The Web Video
+              Text Tracks Format", April 2019,
+              <https://www.w3.org/TR/webvtt1/>.
 
 Acknowledgments
 
