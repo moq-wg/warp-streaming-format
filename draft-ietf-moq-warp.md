@@ -137,7 +137,8 @@ that end, the following features are within scope:
   at different quality levels in order to maximize visual or audio quality under
   fconditions of throughput variability.
 * Capable of delivering interstitial advertising.
-* Logs and analytics management - support for the reporting of client-side QoE and relay delivery actions.
+* Logs and analytics management - support for the reporting of client-side QoE
+   and relay delivery actions.
 
 Initial verisons of WARP will prioritize basic features necessary to exercise
 interoperability across delivery systems. Later versions will add commercially
