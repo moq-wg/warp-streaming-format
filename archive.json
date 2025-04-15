@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-04-03T01:50:29.266684+00:00",
+  "timestamp": "2025-04-15T01:54:58.571218+00:00",
   "repo": "moq-wg/warp-streaming-format",
   "labels": [
     {
@@ -863,15 +863,15 @@
       "id": "I_kwDOJTN4X86ZHJCY",
       "title": "Add scope/requirements section to capture the purpose of WARP clearly",
       "url": "https://github.com/moq-wg/warp-streaming-format/issues/36",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "suhasHere",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "",
       "createdAt": "2024-10-06T17:36:01Z",
-      "updatedAt": "2024-10-06T17:36:01Z",
-      "closedAt": null,
+      "updatedAt": "2025-04-13T10:01:41Z",
+      "closedAt": "2025-04-13T10:01:41Z",
       "comments": []
     },
     {
@@ -913,15 +913,15 @@
       "id": "I_kwDOJTN4X86oEvPn",
       "title": "JSON patch may be too flexible for catalog updates",
       "url": "https://github.com/moq-wg/warp-streaming-format/issues/46",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "vasilvv",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "We define catalog updates as arbitrary modifications via JSON patch.  The question I have is: does this actually make sense, or should we constrain the space of potential updates?  There are some updates that generally make sense, e.g. adding a new track, or changing the resolution on a video track.  But what if the publisher does something that typically does not make sense, e.g. patches a video track to be an audio track?  I feel like it would be easier for the client implementers if we limited the space of potential changes to a well-defined list.",
       "createdAt": "2025-01-30T03:28:55Z",
-      "updatedAt": "2025-01-30T12:23:00Z",
-      "closedAt": null,
+      "updatedAt": "2025-04-13T09:55:59Z",
+      "closedAt": "2025-04-13T09:55:59Z",
       "comments": [
         {
           "author": "englishm",
@@ -1697,24 +1697,26 @@
       "id": "PR_kwDOJTN4X86H1ywP",
       "title": "Adding scope section",
       "url": "https://github.com/moq-wg/warp-streaming-format/pull/45",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "wilaw",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Adds a 'scope' section which details the goals of WARP along with the feature-requirements considered in-scope. \r\n\r\nFixes #36 ",
       "createdAt": "2025-01-15T12:12:37Z",
-      "updatedAt": "2025-03-04T09:22:05Z",
+      "updatedAt": "2025-04-13T10:01:44Z",
       "baseRepository": "moq-wg/warp-streaming-format",
       "baseRefName": "main",
       "baseRefOid": "890f80a72d8c65f4cb6150d2800b76ecd1caa73e",
       "headRepository": "moq-wg/warp-streaming-format",
       "headRefName": "wilaw-patch-1",
-      "headRefOid": "8c3e81b55f8fafecf784eae7f1e2f678026ea33f",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "688f0d880d63b4228395ce2067b34444ca2e7f69",
+      "closedAt": "2025-04-13T10:01:40Z",
+      "mergedAt": "2025-04-13T10:01:40Z",
+      "mergedBy": "wilaw",
+      "mergeCommit": {
+        "oid": "81cb3799ad0c0a07e419e240b4d7f41572029afe"
+      },
       "comments": [],
       "reviews": [
         {
@@ -1776,6 +1778,46 @@
               "updatedAt": "2025-03-04T09:22:05Z"
             }
           ]
+        },
+        {
+          "id": "PRR_kwDOJTN4X86kq9vP",
+          "commit": {
+            "abbreviatedOid": "8c3e81b"
+          },
+          "author": "wilaw",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-04-13T09:59:39Z",
+          "updatedAt": "2025-04-13T09:59:40Z",
+          "comments": [
+            {
+              "originalPosition": 56,
+              "body": "```suggestion\r\n* Capable of delivering interstitial advertising.\r\n* Logs and analytics management - support for the reporting of client-side QoE and relay delivery actions.\r\n```",
+              "createdAt": "2025-04-13T09:59:40Z",
+              "updatedAt": "2025-04-13T09:59:40Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJTN4X86kq9yz",
+          "commit": {
+            "abbreviatedOid": "1211c04"
+          },
+          "author": "wilaw",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-04-13T10:00:49Z",
+          "updatedAt": "2025-04-13T10:00:49Z",
+          "comments": [
+            {
+              "originalPosition": 57,
+              "body": "```suggestion\r\n* Logs and analytics management - support for the reporting of client-side QoE\r\n   and relay delivery actions.\r\n```",
+              "createdAt": "2025-04-13T10:00:49Z",
+              "updatedAt": "2025-04-13T10:00:49Z"
+            }
+          ]
         }
       ]
     },
@@ -1784,24 +1826,26 @@
       "id": "PR_kwDOJTN4X86MN33X",
       "title": "Replace JSON Patch Updates with a simpler custom implementation",
       "url": "https://github.com/moq-wg/warp-streaming-format/pull/47",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "wilaw",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Fixes #46 \r\n\r\nThis PR removes the RFC6902 JSON Patch update mechanism and replaces it with a simpler update mechanism which allows a restricted set of operations:\r\n\r\n- add a track\r\n- clone a track\r\n- remove a track",
       "createdAt": "2025-02-24T00:45:06Z",
-      "updatedAt": "2025-03-04T02:53:25Z",
+      "updatedAt": "2025-04-13T09:56:03Z",
       "baseRepository": "moq-wg/warp-streaming-format",
       "baseRefName": "main",
       "baseRefOid": "890f80a72d8c65f4cb6150d2800b76ecd1caa73e",
       "headRepository": "moq-wg/warp-streaming-format",
       "headRefName": "wilaw-patch-2",
       "headRefOid": "8139ed028a428fcfc2472a489a9c94b2f5792fee",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2025-04-13T09:55:58Z",
+      "mergedAt": "2025-04-13T09:55:58Z",
+      "mergedBy": "wilaw",
+      "mergeCommit": {
+        "oid": "e8ecfab542be11411169014f5b7a6b1ec6021858"
+      },
       "comments": [
         {
           "author": "fluffy",
@@ -1839,7 +1883,7 @@
       "labels": [],
       "body": "Fixes #48 .\r\n\r\nGroups within a WARP track MUST start at 0 and MUST increment by 1. ",
       "createdAt": "2025-04-02T12:37:59Z",
-      "updatedAt": "2025-04-02T17:23:35Z",
+      "updatedAt": "2025-04-14T00:35:27Z",
       "baseRepository": "moq-wg/warp-streaming-format",
       "baseRefName": "main",
       "baseRefOid": "bc5671f23ae2c0f1075d66caf977c7591b043c6b",
@@ -1857,6 +1901,20 @@
           "body": "Can you walk through a scenario like \"the publisher of a track crashes and restarts and wants to keep publishing on the same track\"?  With constrained group IDs, I assume it would be:\r\n\r\nTRACK_STAUS_REQUEST to get the last group number, then start publishing.",
           "createdAt": "2025-04-02T17:23:35Z",
           "updatedAt": "2025-04-02T17:23:35Z"
+        },
+        {
+          "author": "wilaw",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> Can you walk through a scenario like \"the publisher of a track crashes and restarts and wants to keep publishing on the same track\"? With constrained group IDs, I assume it would be:\r\n> \r\n> TRACK_STAUS_REQUEST to get the last group number, then start publishing.\r\n\r\nOur current draft requires a relay that does not have an active live stream to go back to the publisher for status request, which would be a recursive round-trip here. I think a better approach would be for the publisher to start republishing on a new key frame (group) and then signal a gap, both via https://github.com/moq-wg/moq-transport/pull/922  and also via an updated timeline track. For the timeline track we should introduce the notion of a discontinuity.",
+          "createdAt": "2025-04-13T15:56:13Z",
+          "updatedAt": "2025-04-13T15:56:13Z"
+        },
+        {
+          "author": "afrind",
+          "authorAssociation": "NONE",
+          "body": "> Our current draft requires a relay that does not have an active live stream to go back to the publisher for status request, which would be a recursive round-trip here. \r\n\r\nInteresting point.  I'm thinking about how resumable HTTP uploads work - once you POST'ed part of a resource, you can issue a query to the endpoint to ask how much is there.  It would be slightly strange for the \"original publisher\" to ask the upload endpoint for previous state, but if it did so before ANNOUNCE, it could still conceivably work (eg: the endpoint wouldn't route the TRACK_STAUS_REQUEST back).\r\n\r\n> I think a better approach would be for the publisher to start republishing on a new key frame (group) and then signal a gap, both via [moq-wg/moq-transport#922](https://github.com/moq-wg/moq-transport/pull/922) and also via an updated timeline track. For the timeline track we should introduce the notion of a discontinuity.\r\n\r\nWould this PR change to reflect that discontinuities might exist in group ID space as well?  What group ID would the publisher use?",
+          "createdAt": "2025-04-14T00:35:27Z",
+          "updatedAt": "2025-04-14T00:35:27Z"
         }
       ],
       "reviews": []
