@@ -322,7 +322,7 @@ Table 3: Allowed packaging values
 Location: TF    Required: Required  JSON Type: Boolean
 
 True if new Objects will be added to the track.
-False if no new Objects will be added to the track. 
+False if no new Objects will be added to the track.
 
 ### Track label {#tracklabel}
 Location: TF    Required: Optional   JSON Type: String
@@ -450,7 +450,7 @@ MUST only be included inside a Clone tracks {{clonetracks}} object.
 Location: T    Required: Optional   JSON Type: Number
 
 The duration of the track expressed in integer milliseconds. This field MUST NOT
-be included if the isLive {{islive}} field value is false. 
+be included if the isLive {{islive}} field value is false.
 
 ## Delta updates {#deltaupdates}
 A catalog update might contain incremental changes. This is a useful property if
