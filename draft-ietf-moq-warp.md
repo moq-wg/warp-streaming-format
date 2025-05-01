@@ -211,7 +211,7 @@ Table 1 provides an overview of all fields defined by this document.
 | Add tracks              | addTracks              | {{addtracks}}             |
 | Remove tracks           | removeTracks           | {{removetracks}}          |
 | Clone tracks            | cloneTracks            | {{clonetracks}}           |
-| Generated at            | generatedAt            | {{generated}}             |
+| Generated at            | generatedAt            | {{generatedat}}           |
 | Tracks                  | tracks                 | {{tracks}}                |
 | Track namespace         | namespace              | {{tracknamespace}}        |
 | Track name              | name                   | {{trackname}}             |
@@ -286,7 +286,7 @@ Location: R    Required: Optional    JSON Type: Number
 
 The wallclock time at which this catalog instance was generated, expressed as the
 number of milliseconds that have elapsed since January 1, 1970 (midnight UTC/GMT).
-This field SHOULD NOT be included if the isLive {{islive}} field is false.
+This field SHOULD NOT be included if the isLive field is false.
 
 ### Tracks {#tracks}
 Location: R    Required: Yes    JSON Type: Array
