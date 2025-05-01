@@ -322,10 +322,10 @@ Table 3: Allowed packaging values
 Location: T    Required: Optional   JSON Type: String
 
 A string defining the type of content carried by the track. Reserved types
-are described in Table 4. These type values are case-sensitive. 
+are described in Table 4. These type values are case-sensitive.
 
 This type field MAY be used in conjunction with the Mimetype {{mimetype}} to
-fully describe the content of the track. 
+fully describe the content of the track.
 
 Table 4: Reserved track types
 
@@ -799,7 +799,7 @@ description.
 ### Time-aligned Audio/Video Tracks with a timeline track
 
 This example shows catalog for a media producer capable of sending LOC packaged,
-time-aligned audio and video tracks along with a timeline track. 
+time-aligned audio and video tracks along with a timeline track.
 
 ~~~json
 {
