@@ -694,6 +694,12 @@ MOQT Stream.
 The Group Number of the first Group in any WARP track MUST be 0. Each subsequent
 Group MUST increase by 1.
 
+If a publishing session is interrupted at Group ID N midway through Object ID M,
+and then the session is later recovered, the publisher MAY resume publishing on
+the same Track Name and Track Namespace starting at Group ID N+1 Object 0. The
+timeline track, if used, should be updated to indicate a discontinuity at Group
+ID N and Object M using a metadata field entry of "WARP.DISCONTINUITY".
+
 # Timeline track
 The timeline track provides data about the previously published groups and their
 relationship to wallclock time, media time and associated timed-metadata.
