@@ -215,6 +215,7 @@ Table 1 provides an overview of all fields defined by this document.
 | Track namespace         | namespace              | {{tracknamespace}}        |
 | Track name              | name                   | {{trackname}}             |
 | Packaging               | packaging              | {{packaging}}             |
+| Track type              | type                   | {{tracktype}}             |
 | Track label             | label                  | {{tracklabel}}            |
 | Render group            | renderGroup            | {{rendergroup}}           |
 | Alternate group         | altGroup               | {{altgroup}}              |
@@ -312,9 +313,34 @@ as defined in Table 3.
 
 Table 3: Allowed packaging values
 
-| Name            |   Value   |      Draft       |
-|:================|:==========|:=================|
-| LOC             | "loc"     | See RFC XXXX     |
+| Name            |   Value   |      Reference        |
+|:================|:==========|:======================|
+| LOC             | loc       | See RFC XXXX          |
+| Timeline        | timeline  | See {{timelinetrack}} |
+
+### Track type {#tracktype}
+Location: T    Required: Optional   JSON Type: String
+
+A string defining the type of content carried by the track. Reserved types
+are described in Table 4. These type values are case-sensitive. 
+
+This type field MAY be used in conjunction with the Mimetype {{mimetype}} to
+fully describe the content of the track. 
+
+Table 4: Reserved track types
+
+| Type             |   Description                                              |
+|:=================|:===========================================================|
+| audiodescription | An audio description for visually impaired users           |
+| video            | Visual content                                             |
+| audio            | Audio content                                              |
+| timeline         | A WARP timeline {{timelinetrack}}                          |
+| caption          | A textual representation of the audio track                |
+| subtitle         | A transcription of the spoken dialogue                     |
+| signlanguage     | A visual track for hearing impaired users.                 |
+|------------------|------------------------------------------------------------|
+
+Custom types MAY be used as long as they do not collide with the reserved types.
 
 ### Track label {#tracklabel}
 Location: TF    Required: Optional   JSON Type: String
@@ -486,9 +512,10 @@ packaged, time-aligned audio and video tracks.
   "version": 1,
   "tracks": [
     {
-      "name": "video",
+      "name": "1080p-video",
       "namespace": "conference.example.com/conference123/alice",
       "packaging": "loc",
+      "type": "video",
       "renderGroup": 1,
       "codec":"av01.0.08M.10.0.110.09",
       "width":1920,
@@ -500,6 +527,7 @@ packaged, time-aligned audio and video tracks.
       "name": "audio",
       "namespace": "conference.example.com/conference123/alice",
       "packaging": "loc",
+      "type": "audio",
       "renderGroup": 1,
       "codec":"opus",
       "samplerate":48000,
@@ -529,6 +557,7 @@ of the catalog.
       "name": "hd",
       "renderGroup": 1,
       "packaging": "loc",
+      "type": "video",
       "codec":"av01",
       "width":1920,
       "height":1080,
@@ -540,6 +569,7 @@ of the catalog.
       "name": "md",
       "renderGroup": 1,
       "packaging": "loc",
+      "type": "video",
       "codec":"av01",
       "width":720,
       "height":640,
@@ -551,6 +581,7 @@ of the catalog.
       "name": "sd",
       "renderGroup": 1,
       "packaging": "loc",
+      "type": "video",
       "codec":"av01",
       "width":192,
       "height":144,
@@ -562,6 +593,7 @@ of the catalog.
       "name": "audio",
       "renderGroup": 1,
       "packaging": "loc",
+      "type": "audio",
       "codec":"opus",
       "samplerate":48000,
       "channelConfig":"2",
@@ -615,6 +647,7 @@ express the track relationships.
       "namespace": "conference.example.com/conference123/alice",
       "renderGroup": 1,
       "packaging": "loc",
+      "type": "video",
       "codec":"av01.0.01M.10.0.110.09",
       "width":640,
       "height":480,
@@ -626,6 +659,7 @@ express the track relationships.
       "namespace": "conference.example.com/conference123/alice",
       "renderGroup": 1,
       "packaging": "loc",
+      "type": "video",
       "codec":"av01.0.04M.10.0.110.09",
       "width":640,
       "height":480,
@@ -638,6 +672,7 @@ express the track relationships.
       "namespace": "conference.example.com/conference123/alice",
       "renderGroup": 1,
       "packaging": "loc",
+      "type": "video",
       "codec":"av01.0.05M.10.0.110.09",
       "width":1920,
       "height":1080,
@@ -651,6 +686,7 @@ express the track relationships.
       "namespace": "conference.example.com/conference123/alice",
       "renderGroup": 1,
       "packaging": "loc",
+      "type": "video",
       "codec":"av01.0.08M.10.0.110.09",
       "width":1920,
       "height":1080,
@@ -663,6 +699,7 @@ express the track relationships.
       "namespace": "conference.example.com/conference123/alice",
       "renderGroup": 1,
       "packaging": "loc",
+      "type": "audio",
       "codec":"opus",
       "samplerate":48000,
       "channelConfig":"2",
@@ -684,6 +721,7 @@ the other is cloned from a previous track.
   "addTracks": [
       {
         "name": "slides",
+        "type": "video",
         "codec": "av01.0.08M.10.0.110.09",
         "width": 1920,
         "height": 1080,
@@ -728,9 +766,10 @@ description.
   "version": 1,
   "tracks": [
     {
-      "name": "video",
+      "name": "1080p-video",
       "namespace": "conference.example.com/conference123/alice",
       "packaging": "loc",
+      "type": "video",
       "renderGroup": 1,
       "codec":"av01.0.08M.10.0.110.09",
       "width":1920,
@@ -745,6 +784,7 @@ description.
       "name": "audio",
       "namespace": "conference.example.com/conference123/alice",
       "packaging": "loc",
+      "type": "audio",
       "renderGroup": 1,
       "codec":"opus",
       "samplerate":48000,
@@ -756,14 +796,59 @@ description.
 
 ~~~
 
+### Time-aligned Audio/Video Tracks with a timeline track
 
+This example shows catalog for a media producer capable of sending LOC packaged,
+time-aligned audio and video tracks along with a timeline track. 
+
+~~~json
+{
+  "version": 1,
+  "tracks": [
+    {
+      "name": "1080p-video",
+      "namespace": "conference.example.com/conference123/alice",
+      "packaging": "loc",
+      "type": "video",
+      "renderGroup": 1,
+      "codec":"av01.0.08M.10.0.110.09",
+      "width":1920,
+      "height":1080,
+      "framerate":30,
+      "bitrate":1500000,
+      "com.example-billing-code": 3201,
+      "com.example-tier": "premium",
+      "com.example-debug": "h349835bfkjfg82394d945034jsdfn349fns"
+    },
+    {
+      "name": "audio",
+      "namespace": "conference.example.com/conference123/alice",
+      "packaging": "loc",
+      "type": "audio",
+      "renderGroup": 1,
+      "codec":"opus",
+      "samplerate":48000,
+      "channelConfig":"2",
+      "bitrate":32000
+    },
+    {
+      "name": "history",
+      "namespace": "conference.example.com/conference123/alice",
+      "packaging": "timeline",
+      "type": "timeline",
+      "depends": ["1080p-video","audio"]
+    }
+   ]
+}
+
+~~~
 
 # Media transmission
 The MOQT Groups and MOQT Objects need to be mapped to MOQT Streams. Irrespective
 of the {{mediapackaging}} in place, each MOQT Object MUST be mapped to a new
 MOQT Stream.
 
-# Timeline track
+# Timeline track {#timelinetrack}
 The timeline track provides data about the previously published groups and their
 relationship to wallclock time, media time and associated timed-metadata.
 Timeline tracks allow players to seek to precise points behind the live head in
@@ -799,7 +884,7 @@ WALLCLOCK,METADATA. This row defines the 5 columns of data within each record.
 
 ## Timeline Catalog requirements
 A timeline track MUST carry a 'type' identifier in the Catalog with a value of
-"timeline". A timeline track MUST carry a 'dependencies' attribute which
+"timeline". A timeline track MUST carry a 'dependes' attribute which
 contains an array of all track names to which the timeline track applies.
 
 ## Timeline track updating.
