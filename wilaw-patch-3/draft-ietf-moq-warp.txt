@@ -5,14 +5,14 @@
 Media Over QUIC                                                   W. Law
 Internet-Draft                                                    Akamai
 Intended status: Informational                                 L. Curley
-Expires: 4 October 2025                                           Twitch
+Expires: 2 November 2025                                          Twitch
                                                              V. Vasiliev
                                                                   Google
                                                            S. Nandakumar
                                                                    Cisco
                                                                 K. Pugin
                                                                     Meta
-                                                            2 April 2025
+                                                              1 May 2025
 
 
                          WARP Streaming Format
@@ -55,7 +55,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 4 October 2025.
+   This Internet-Draft will expire on 2 November 2025.
 
 Copyright Notice
 
@@ -817,6 +817,13 @@ Table of Contents
 
    The Group Number of the first Group in any WARP track MUST be 0.
    Each subsequent Group MUST increase by 1.
+
+   If a publishing session is interrupted at Group ID N midway through
+   Object ID M, and then the session is later recovered, the publisher
+   MAY resume publishing on the same Track Name and Track Namespace
+   starting at Group ID N+1 Object 0.  The timeline track, if used,
+   should be updated to indicate a discontinuity at Group ID N and
+   Object M using a metadata field entry of "WARP.DISCONTINUITY".
 
 6.  Timeline track
 
