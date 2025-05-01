@@ -215,6 +215,7 @@ Table 1 provides an overview of all fields defined by this document.
 | Track namespace         | namespace              | {{tracknamespace}}        |
 | Track name              | name                   | {{trackname}}             |
 | Packaging               | packaging              | {{packaging}}             |
+| Is Live                 | isLive                 | {{islive}}                |
 | Track label             | label                  | {{tracklabel}}            |
 | Render group            | renderGroup            | {{rendergroup}}           |
 | Alternate group         | altGroup               | {{altgroup}}              |
@@ -234,6 +235,7 @@ Table 1 provides an overview of all fields defined by this document.
 | Display height          | displayHeight          | {{displayheight}}         |
 | Language                | lang                   | {{language}}              |
 | Parent name             | parentName             | {{parentname}}            |
+| Track duration          | trackDuration          | {{trackduration}}         |
 
 Table 2 defines the allowed locations for these fields within the document
 
@@ -291,7 +293,7 @@ A track object is JSON Object containing a collection of fields whose location
 is specified 'T' in Table 2.
 
 ### Track namespace {#tracknamespace}
-Location: TFC    Required: Optional    JSON Type: String
+Location: T    Required: Optional    JSON Type: String
 
 The name space under which the track name is defined. See section 2.3 of
 {{MoQTransport}}. The track namespace is optional. If it is not declared within
@@ -316,6 +318,12 @@ Table 3: Allowed packaging values
 |:================|:==========|:=================|
 | LOC             | "loc"     | See RFC XXXX     |
 
+### Is Live {#islive}
+Location: TF    Required: Required  JSON Type: Boolean
+
+True if new Objects will be added to the track.
+False if no new Objects will be added to the track. 
+
 ### Track label {#tracklabel}
 Location: TF    Required: Optional   JSON Type: String
 
@@ -324,7 +332,7 @@ A string defining a human-readable label for the track. Examples might be
 requires UTF-8 support by decoders.
 
 ### Render group {#rendergroup}
-Location: TF    Required: Optional   JSON Type: Number
+Location: T    Required: Optional   JSON Type: Number
 
 An integer specifying a group of tracks which are designed to be rendered
 together. Tracks with the same group number SHOULD be rendered simultaneously,
@@ -332,7 +340,7 @@ are usually time-aligned and are designed to accompany one another. A common
 example would be tying together audio and video tracks.
 
 ### Alternate group {#altgroup}
-Location: TF    Required: Optional   JSON Type: Number
+Location: T    Required: Optional   JSON Type: Number
 
 An integer specifying a group of tracks which are alternate versions of
 one-another. Alternate tracks represent the same media content, but differ in
@@ -343,7 +351,7 @@ common example would be a set video tracks of the same content offered in
 alternate bitrates.
 
 ### Initialization data {#initdata}
-Location: TF    Required: Optional   JSON Type: String
+Location: T    Required: Optional   JSON Type: String
 
 A string holding Base64 {{BASE64}} encoded initialization data for the track.
 
@@ -438,6 +446,12 @@ Location: T    Required: Optional   JSON Type: String
 A string defining the parent track name {{trackname}} to be cloned. This field
 MUST only be included inside a Clone tracks {{clonetracks}} object.
 
+### Track duration {#trackduration}
+Location: T    Required: Optional   JSON Type: Number
+
+The duration of the track expressed in integer milliseconds. This field MUST NOT
+be included if the isLive {{islive}} field value is false. 
+
 ## Delta updates {#deltaupdates}
 A catalog update might contain incremental changes. This is a useful property if
 many tracks may be initially declared but then there are small changes to a
@@ -489,6 +503,7 @@ packaged, time-aligned audio and video tracks.
       "name": "video",
       "namespace": "conference.example.com/conference123/alice",
       "packaging": "loc",
+      "isLive": true,
       "renderGroup": 1,
       "codec":"av01.0.08M.10.0.110.09",
       "width":1920,
@@ -500,6 +515,7 @@ packaged, time-aligned audio and video tracks.
       "name": "audio",
       "namespace": "conference.example.com/conference123/alice",
       "packaging": "loc",
+      "isLive": true,
       "renderGroup": 1,
       "codec":"opus",
       "samplerate":48000,
@@ -529,6 +545,7 @@ of the catalog.
       "name": "hd",
       "renderGroup": 1,
       "packaging": "loc",
+      "isLive": true,
       "codec":"av01",
       "width":1920,
       "height":1080,
@@ -540,6 +557,7 @@ of the catalog.
       "name": "md",
       "renderGroup": 1,
       "packaging": "loc",
+      "isLive": true,
       "codec":"av01",
       "width":720,
       "height":640,
@@ -551,6 +569,7 @@ of the catalog.
       "name": "sd",
       "renderGroup": 1,
       "packaging": "loc",
+      "isLive": true,
       "codec":"av01",
       "width":192,
       "height":144,
@@ -562,6 +581,7 @@ of the catalog.
       "name": "audio",
       "renderGroup": 1,
       "packaging": "loc",
+      "isLive": true,
       "codec":"opus",
       "samplerate":48000,
       "channelConfig":"2",
@@ -615,6 +635,7 @@ express the track relationships.
       "namespace": "conference.example.com/conference123/alice",
       "renderGroup": 1,
       "packaging": "loc",
+      "isLive": true,
       "codec":"av01.0.01M.10.0.110.09",
       "width":640,
       "height":480,
@@ -626,6 +647,7 @@ express the track relationships.
       "namespace": "conference.example.com/conference123/alice",
       "renderGroup": 1,
       "packaging": "loc",
+      "isLive": true,
       "codec":"av01.0.04M.10.0.110.09",
       "width":640,
       "height":480,
@@ -638,6 +660,7 @@ express the track relationships.
       "namespace": "conference.example.com/conference123/alice",
       "renderGroup": 1,
       "packaging": "loc",
+      "isLive": true,
       "codec":"av01.0.05M.10.0.110.09",
       "width":1920,
       "height":1080,
@@ -651,6 +674,7 @@ express the track relationships.
       "namespace": "conference.example.com/conference123/alice",
       "renderGroup": 1,
       "packaging": "loc",
+      "isLive": true,
       "codec":"av01.0.08M.10.0.110.09",
       "width":1920,
       "height":1080,
@@ -663,6 +687,7 @@ express the track relationships.
       "namespace": "conference.example.com/conference123/alice",
       "renderGroup": 1,
       "packaging": "loc",
+      "isLive": true,
       "codec":"opus",
       "samplerate":48000,
       "channelConfig":"2",
@@ -684,6 +709,7 @@ the other is cloned from a previous track.
   "addTracks": [
       {
         "name": "slides",
+        "isLive": true,
         "codec": "av01.0.08M.10.0.110.09",
         "width": 1920,
         "height": 1080,
@@ -731,6 +757,7 @@ description.
       "name": "video",
       "namespace": "conference.example.com/conference123/alice",
       "packaging": "loc",
+      "isLive": true,
       "renderGroup": 1,
       "codec":"av01.0.08M.10.0.110.09",
       "width":1920,
@@ -745,6 +772,7 @@ description.
       "name": "audio",
       "namespace": "conference.example.com/conference123/alice",
       "packaging": "loc",
+      "isLive": true,
       "renderGroup": 1,
       "codec":"opus",
       "samplerate":48000,
@@ -756,6 +784,45 @@ description.
 
 ~~~
 
+### Time-aligned VOD Audio/Video Tracks
+
+This example shows catalog for a media producer offering VOD (video on-demand)
+non-live content. The content is LOC packaged, and includes time-aligned audio
+and video tracks.
+
+~~~json
+{
+  "version": 1,
+  "tracks": [
+    {
+      "name": "video",
+      "namespace": "movies.example.com/assets/boy-meets-girl-season3/episode5",
+      "packaging": "loc",
+      "isLive": false,
+      "trackDuration": 8072340,
+      "renderGroup": 1,
+      "codec":"av01.0.08M.10.0.110.09",
+      "width":1920,
+      "height":1080,
+      "framerate":30,
+      "bitrate":1500000,
+    },
+    {
+      "name": "audio",
+      "namespace": "movies.example.com/assets/boy-meets-girl-season3/episode5",
+      "packaging": "loc",
+      "isLive": false,
+      "trackDuration": 8072340,
+      "renderGroup": 1,
+      "codec":"opus",
+      "samplerate":48000,
+      "channelConfig":"2",
+      "bitrate":32000
+    }
+   ]
+}
+
+~~~
 
 
 # Media transmission
