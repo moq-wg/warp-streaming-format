@@ -211,6 +211,7 @@ Table 1 provides an overview of all fields defined by this document.
 | Add tracks              | addTracks              | {{addtracks}}             |
 | Remove tracks           | removeTracks           | {{removetracks}}          |
 | Clone tracks            | cloneTracks            | {{clonetracks}}           |
+| Generated at            | generatedAt            | {{generated}}             |
 | Tracks                  | tracks                 | {{tracks}}                |
 | Track namespace         | namespace              | {{tracknamespace}}        |
 | Track name              | name                   | {{trackname}}             |
@@ -279,6 +280,13 @@ Location: R    Required: Optional    JSON Type: Array
 Indicates a delta processing instruction to clone new tracks from previously declared
 tracks. The value of this field is an Array of track objects {{trackobject}}. Each
 track object MUST include a Parent Name {{parentname}} field.
+
+### Generated at {#generatedat}
+Location: R    Required: Optional    JSON Type: Number
+
+The wallclock time at which this catalog instance was generated, expressed as the
+number of milliseconds that have elapsed since January 1, 1970 (midnight UTC/GMT).
+This field SHOULD NOT be included if the isLive {{islive}} field is false.
 
 ### Tracks {#tracks}
 Location: R    Required: Yes    JSON Type: Array
@@ -484,6 +492,7 @@ packaged, time-aligned audio and video tracks.
 ~~~json
 {
   "version": 1,
+  "generatedAt": 1746104606044,
   "tracks": [
     {
       "name": "video",
@@ -524,6 +533,7 @@ of the catalog.
 ~~~json
 {
   "version": 1,
+  "generatedAt": 1746104606044,
   "tracks":[
     {
       "name": "hd",
@@ -609,6 +619,7 @@ express the track relationships.
 ~~~json
 {
   "version": 1,
+  "generatedAt": 1746104606044,
   "tracks":[
     {
       "name": "480p15",
@@ -681,6 +692,7 @@ the other is cloned from a previous track.
 ~~~json
 {
   "deltaUpdate": true,
+  "generatedAt": 1746104606044,
   "addTracks": [
       {
         "name": "slides",
@@ -712,6 +724,7 @@ from an established video conference.
 ~~~json
 {
   "deltaUpdate": true,
+  "generatedAt": 1746104606044,
   "removeTracks": [{"name": "video"},{"name": "slides"}]
 }
 ~~~
@@ -726,6 +739,7 @@ description.
 ~~~json
 {
   "version": 1,
+  "generatedAt": 1746104606044,
   "tracks": [
     {
       "name": "video",
