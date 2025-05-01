@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-04-15T01:54:58.571218+00:00",
+  "timestamp": "2025-05-01T02:04:37.460137+00:00",
   "repo": "moq-wg/warp-streaming-format",
   "labels": [
     {
@@ -962,6 +962,38 @@
           "updatedAt": "2025-04-02T12:42:56Z"
         }
       ]
+    },
+    {
+      "number": 50,
+      "id": "I_kwDOJTN4X860eQYd",
+      "title": "Catalog should differentiate between live and VOD tracks",
+      "url": "https://github.com/moq-wg/warp-streaming-format/issues/50",
+      "state": "OPEN",
+      "author": "wilaw",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Currently the catalog does not differentiate a live track (new media data is being constantly added) from a VOD one ( data is complete and will never change going forward). Players need to understand the difference in order to structure their requests (SUBSCRIBE versus FETCH), and also construct their UI and timeline. \n\nWe propose a new track attribute called \"Type\" with the following allowed string values:\n-    \"live\" - new objects are being added to the track over time.  Content can be retrieved using a SUBSCRIBE action.\n-    \"vod\" - the track is fully available and no new Objects will be added. Content can only be retrieved using a FETCH action. \n\nWe also propose a \"Duration\" track attribute which can only be present when the Type is VOD.\n-   \"Duration\"  - the duration of the track rounded to the nearest millisecond. ",
+      "createdAt": "2025-04-29T10:31:10Z",
+      "updatedAt": "2025-04-29T10:31:10Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 51,
+      "id": "I_kwDOJTN4X860fHfO",
+      "title": "Catalog should indicate the time at which it was produced.",
+      "url": "https://github.com/moq-wg/warp-streaming-format/issues/51",
+      "state": "OPEN",
+      "author": "wilaw",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "It would be useful for the catalog to include a timestamp of the wallclock time at which it was produced. This will help players in solving freshness and in debugging delivery issues. \n\nThis timestamp can show the nearest millisecond since Unix epoch\n\n`1745926027321`\n\n or it could show ISO UTC time such as \n\n`Tuesday, April 29, 2025 11:27:07.321 AM`",
+      "createdAt": "2025-04-29T11:59:19Z",
+      "updatedAt": "2025-04-29T11:59:19Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
