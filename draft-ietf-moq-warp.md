@@ -319,7 +319,7 @@ Table 3: Allowed packaging values
 | LOC             | "loc"     | See RFC XXXX     |
 
 ### Is Live {#islive}
-Location: TF    Required: Required  JSON Type: Boolean
+Location: T    Required: Required  JSON Type: Boolean
 
 True if new Objects will be added to the track.
 False if no new Objects will be added to the track.
