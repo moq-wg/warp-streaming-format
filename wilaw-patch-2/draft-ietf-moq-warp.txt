@@ -5,14 +5,14 @@
 Media Over QUIC                                                   W. Law
 Internet-Draft                                                    Akamai
 Intended status: Informational                                 L. Curley
-Expires: 2 November 2025                                          Twitch
+Expires: 3 November 2025                                          Twitch
                                                              V. Vasiliev
                                                                   Google
                                                            S. Nandakumar
                                                                    Cisco
                                                                 K. Pugin
                                                                     Meta
-                                                              1 May 2025
+                                                              2 May 2025
 
 
                          WARP Streaming Format
@@ -55,7 +55,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 2 November 2025.
+   This Internet-Draft will expire on 3 November 2025.
 
 Copyright Notice
 
@@ -472,7 +472,7 @@ Table of Contents
 
 5.2.10.  Is Live
 
-   Location: TF Required: Required JSON Type: Boolean
+   Location: T Required: Required JSON Type: Boolean
 
    True if new Objects will be added to the track.  False if no new
    Objects will be added to the track.
