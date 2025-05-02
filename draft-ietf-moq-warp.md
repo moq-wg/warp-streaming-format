@@ -46,13 +46,12 @@ author:
     email: ikir@meta.com
 
 normative:
-  MoQTransport: I-D.draft-ietf-moq-transport-05
-  LOC: I-D.draft-mzanaty-moq-loc-03
+  MoQTransport: I-D.draft-ietf-moq-transport-11
+  LOC: I-D.draft-mzanaty-moq-loc-05
   BASE64: RFC4648
   JSON: RFC8259
   LANG: RFC5646
   MIME: RFC6838
-  RFC5226: RFC5226
   RFC9000: RFC9000
   RFC4180: RFC4180
   WEBCODECS-CODEC-REGISTRY:
@@ -783,7 +782,7 @@ Each timeline track begins with a header row of MEDIA_PTS,GROUP_ID,OBJECT_ID,
 WALLCLOCK,METADATA. This row defines the 5 columns of data within each record.
 
 * MEDIA_PTS: a media timestamp rounded to the nearest millisecond. This entry
-  MUST not be empty. If the Object ID entry is present, then this value MUST
+  MUST NOT be empty. If the Object ID entry is present, then this value MUST
   match the media presentation timestamp of the first media sample in the
   referenced Object.
 * GROUP_ID: the MOQT Group ID. This entry MAY be empty.
@@ -806,7 +805,7 @@ contains an array of all track names to which the timeline track applies.
 The publisher MUST publish a complete timeline in the first MOQT Object of each
 MOQT Group. The publisher MAY publish incremental updates in the second and
 subsequent Objects within each GROUP. Incremental updates only contain timeline
-events since the last timeline Object. Group duration SHOULD not exceed 30
+events since the last timeline Object. Group duration SHOULD NOT exceed 30
 seconds.
 
 # Workflow
