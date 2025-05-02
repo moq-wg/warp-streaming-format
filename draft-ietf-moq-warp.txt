@@ -5,14 +5,14 @@
 Media Over QUIC                                                   W. Law
 Internet-Draft                                                    Akamai
 Intended status: Informational                                 L. Curley
-Expires: 15 October 2025                                          Twitch
+Expires: 3 November 2025                                          Twitch
                                                              V. Vasiliev
                                                                   Google
                                                            S. Nandakumar
                                                                    Cisco
                                                                 K. Pugin
                                                                     Meta
-                                                           13 April 2025
+                                                              2 May 2025
 
 
                          WARP Streaming Format
@@ -55,7 +55,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 15 October 2025.
+   This Internet-Draft will expire on 3 November 2025.
 
 Copyright Notice
 
@@ -947,7 +947,7 @@ Table of Contents
    the 5 columns of data within each record.
 
    *  MEDIA_PTS: a media timestamp rounded to the nearest millisecond.
-      This entry MUST not be empty.  If the Object ID entry is present,
+      This entry MUST NOT be empty.  If the Object ID entry is present,
       then this value MUST match the media presentation timestamp of the
       first media sample in the referenced Object.
 
@@ -978,7 +978,7 @@ Table of Contents
    Object of each MOQT Group.  The publisher MAY publish incremental
    updates in the second and subsequent Objects within each GROUP.
    Incremental updates only contain timeline events since the last
-   timeline Object.  Group duration SHOULD not exceed 30 seconds.
+   timeline Object.  Group duration SHOULD NOT exceed 30 seconds.
 
 8.  Workflow
 
@@ -1021,9 +1021,9 @@ Table of Contents
 
    [LOC]      Zanaty, M., Nandakumar, S., and P. Thatcher, "Low Overhead
               Media Container", Work in Progress, Internet-Draft, draft-
-              mzanaty-moq-loc-03, 4 March 2024,
+              mzanaty-moq-loc-05, 3 March 2025,
               <https://datatracker.ietf.org/doc/html/draft-mzanaty-moq-
-              loc-03>.
+              loc-05>.
 
    [MIME]     Freed, N., Klensin, J., and T. Hansen, "Media Type
               Specifications and Registration Procedures", BCP 13,
@@ -1031,11 +1031,11 @@ Table of Contents
               <https://www.rfc-editor.org/rfc/rfc6838>.
 
    [MoQTransport]
-              Curley, L., Pugin, K., Nandakumar, S., Vasiliev, V., and
-              I. Swett, "Media over QUIC Transport", Work in Progress,
-              Internet-Draft, draft-ietf-moq-transport-05, 8 July 2024,
+              Nandakumar, S., Vasiliev, V., Swett, I., and A. Frindell,
+              "Media over QUIC Transport", Work in Progress, Internet-
+              Draft, draft-ietf-moq-transport-11, 28 April 2025,
               <https://datatracker.ietf.org/doc/html/draft-ietf-moq-
-              transport-05>.
+              transport-11>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -1046,11 +1046,6 @@ Table of Contents
               Separated Values (CSV) Files", RFC 4180,
               DOI 10.17487/RFC4180, October 2005,
               <https://www.rfc-editor.org/rfc/rfc4180>.
-
-   [RFC5226]  Narten, T. and H. Alvestrand, "Guidelines for Writing an
-              IANA Considerations Section in RFCs", RFC 5226,
-              DOI 10.17487/RFC5226, May 2008,
-              <https://www.rfc-editor.org/rfc/rfc5226>.
 
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
