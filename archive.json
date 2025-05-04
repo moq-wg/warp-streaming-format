@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-05-01T02:04:37.460137+00:00",
+  "timestamp": "2025-05-04T02:05:35.659958+00:00",
   "repo": "moq-wg/warp-streaming-format",
   "labels": [
     {
@@ -991,7 +991,61 @@
       "labels": [],
       "body": "It would be useful for the catalog to include a timestamp of the wallclock time at which it was produced. This will help players in solving freshness and in debugging delivery issues. \n\nThis timestamp can show the nearest millisecond since Unix epoch\n\n`1745926027321`\n\n or it could show ISO UTC time such as \n\n`Tuesday, April 29, 2025 11:27:07.321 AM`",
       "createdAt": "2025-04-29T11:59:19Z",
-      "updatedAt": "2025-04-29T11:59:19Z",
+      "updatedAt": "2025-05-02T12:45:31Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "wilaw",
+          "authorAssociation": "COLLABORATOR",
+          "body": "This field makes sense for live streams, but less so for VOD streams. Should recommend to only use with live. ",
+          "createdAt": "2025-05-01T12:50:38Z",
+          "updatedAt": "2025-05-01T12:50:38Z"
+        },
+        {
+          "author": "gwendalsimon",
+          "authorAssociation": "NONE",
+          "body": "This issue kind of revealed that I am a bit confused by communication related to the catalog track.\n\nHow is the Subscriber expected to get access to the catalog track? \n\nIf the catalog is based on Delta-updates, then I guess we should do:\nSUBSCRIBE catalog\nABSOLUTE_JOINING_FETCH catalog 0,0\n\nAm I correct? In that case, the generatedAt indicates the very initial catalog and then all updates. Should we have generatedAt for Delta-updates as well?\n\nIf, on the contrary, the catalog track is based on a Publisher who emits one full catalog at every group, aligned with other tracks (similarly to many live HLS/DASH implementations in practice), then the Subscriber should not do ABSOLUTE_JOINING_FETCH (at the risk of getting hundreds of copies of almost the same manifest). Here the generatedAt indicates the latest publication time.\n\nShould we indicate somehow the \"format\" of the catalog track? (maybe here I misunderstand a point)\n",
+          "createdAt": "2025-05-02T10:09:07Z",
+          "updatedAt": "2025-05-02T10:09:07Z"
+        },
+        {
+          "author": "wilaw",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> How is the Subscriber expected to get access to the catalog track?\n\nThe subscriber must be given the address of the catalog i.e namespace + name. This is equivalent to the manifest URL in DASH/HLS. The spec mandates that the catalog name must be \"catalog\". \n\nThe current spec says that the first catalog object published within a new group MUST be independent. So yes, if SUBSCRIBE is only going to give us future objects, then a client should join a catalog by using SUBSCRIBE followed by a RELATIVE_JOINING_FETCH. It can't do absolute because it knows nothing about the current group ID when joining for the first time. Absolute is only for switches.\n\n> If, on the contrary, the catalog track is based on a Publisher who emits one full catalog at every group, aligned with other tracks (similarly to many live HLS/DASH implementations in practice), \n\nThis approach is very wasteful when the tracks and their states are not changing. Imagine a 2 hr sports event with groups that are 2s long. The publisher would send out 3600 catalog Objects, all exactly the same. I prefer that an catalog update is only sent out when there is a track change. \n\n\n\n",
+          "createdAt": "2025-05-02T12:45:30Z",
+          "updatedAt": "2025-05-02T12:45:30Z"
+        }
+      ]
+    },
+    {
+      "number": 52,
+      "id": "I_kwDOJTN4X8600Usf",
+      "title": "Catalog should provide a track timescale field",
+      "url": "https://github.com/moq-wg/warp-streaming-format/issues/52",
+      "state": "OPEN",
+      "author": "wilaw",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "The timescale should be specified in units per second.\n\nThis will help with the future definition of non-LOC packaging. ",
+      "createdAt": "2025-05-01T10:42:35Z",
+      "updatedAt": "2025-05-01T10:42:35Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 54,
+      "id": "I_kwDOJTN4X8600iu9",
+      "title": "Catalog should define the 'type' of each track",
+      "url": "https://github.com/moq-wg/warp-streaming-format/issues/54",
+      "state": "OPEN",
+      "author": "wilaw",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "> [7.2. ](https://moq-wg.github.io/warp-streaming-format/draft-ietf-moq-warp.html#section-7.2)[Timeline Catalog requirements](https://moq-wg.github.io/warp-streaming-format/draft-ietf-moq-warp.html#name-timeline-catalog-requiremen)\n> A timeline track MUST carry a 'type' identifier in the Catalog with a value of \"timeline\".\n\nHowever no 'type' field exists for the catalog. \n\nThe proposal is to add a 'type' field. Value is a JSON string with an enumeration of reserved values\n\n\"video\" - carries visual content\n\"audio\" - carries audio content\n\"timeline\" - carries a timeline track\n\"caption\" - provides a full textual representation of the audio track for deaf or hard-of-hearing viewers\n\"subtitle\" - a transcription of the spoken dialogue, potentially in an alternate language. \n\"audiodescription\" - an audio description to promote accessibility for visually impaired users\n\"signlanguage\" - a visual track for hearing impaired users. \n\nThese should be specified in an IANA table so we can add more later, for VR, gaming etc. \n\nWe should also allow custom 'types\" to be specified , as long as thet do not collide with the reserved types. ",
+      "createdAt": "2025-05-01T11:31:11Z",
+      "updatedAt": "2025-05-01T11:31:11Z",
       "closedAt": null,
       "comments": []
     }
@@ -1915,13 +1969,13 @@
       "labels": [],
       "body": "Fixes #48 .\r\n\r\nGroups within a WARP track MUST start at 0 and MUST increment by 1. ",
       "createdAt": "2025-04-02T12:37:59Z",
-      "updatedAt": "2025-04-14T00:35:27Z",
+      "updatedAt": "2025-05-02T17:12:10Z",
       "baseRepository": "moq-wg/warp-streaming-format",
       "baseRefName": "main",
       "baseRefOid": "bc5671f23ae2c0f1075d66caf977c7591b043c6b",
       "headRepository": "moq-wg/warp-streaming-format",
       "headRefName": "wilaw-patch-3",
-      "headRefOid": "f23c1bfc4136b51b16730931a1b89e27219df534",
+      "headRefOid": "704c09744daabc44317949cdb2167b32c0ddfad7",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -1947,8 +2001,323 @@
           "body": "> Our current draft requires a relay that does not have an active live stream to go back to the publisher for status request, which would be a recursive round-trip here. \r\n\r\nInteresting point.  I'm thinking about how resumable HTTP uploads work - once you POST'ed part of a resource, you can issue a query to the endpoint to ask how much is there.  It would be slightly strange for the \"original publisher\" to ask the upload endpoint for previous state, but if it did so before ANNOUNCE, it could still conceivably work (eg: the endpoint wouldn't route the TRACK_STAUS_REQUEST back).\r\n\r\n> I think a better approach would be for the publisher to start republishing on a new key frame (group) and then signal a gap, both via [moq-wg/moq-transport#922](https://github.com/moq-wg/moq-transport/pull/922) and also via an updated timeline track. For the timeline track we should introduce the notion of a discontinuity.\r\n\r\nWould this PR change to reflect that discontinuities might exist in group ID space as well?  What group ID would the publisher use?",
           "createdAt": "2025-04-14T00:35:27Z",
           "updatedAt": "2025-04-14T00:35:27Z"
+        },
+        {
+          "author": "wilaw",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Commit https://github.com/moq-wg/warp-streaming-format/pull/49/commits/704c09744daabc44317949cdb2167b32c0ddfad7 address numbering across breaks:\r\n\r\n> If a publishing session is interrupted at Group ID N midway through Object ID M,\r\n> and then the session is later recovered, the publisher MAY resume publishing on\r\n> the same Track Name and Track Namespace starting at Group ID N+1 Object 0. The\r\n> timeline track, if used, should be updated to indicate a discontinuity at Group\r\n> ID N and Object M using a metadata field entry of \"WARP.DISCONTINUITY\".",
+          "createdAt": "2025-05-01T11:59:19Z",
+          "updatedAt": "2025-05-01T11:59:19Z"
+        },
+        {
+          "author": "gwendalsimon",
+          "authorAssociation": "NONE",
+          "body": "Let me try to summarize:\r\n- MoQT has now adopted that group_IDs are disconnected from temporal publication. Filters are integer-based, and the underlying assumption is that subscribers know the structure of group_ID in the track they are interested in (this awareness is out of MoQT scope).\r\n- WARP re-introduces both a strong temporal relation in the group_ID structure, and a Timeline track that carries all time-related publication details.\r\n\r\nI am OK with the general approach. It may look like a belt and suspenders one, but, on the one hand, strictly increasing group_ID helps the Relay to manage caches, while on the other hand, timeline track helps the final Subscriber to consume the content. \r\n\r\nYet, I am not a fan of \"WARP.DISCONTINUITY\" metadata, which somehow means that all previous group_ID have been published in a perfectly continuous periodical basis. Readers may interpret that the temporal synch is even bigger than just group_ID sequential increase.\r\n\r\nShould we say that the \"Extension header prior group\" https://github.com/moq-wg/moq-transport/pull/922 is not relevant at all in WARP?",
+          "createdAt": "2025-05-02T08:22:18Z",
+          "updatedAt": "2025-05-02T08:22:18Z"
+        },
+        {
+          "author": "wilaw",
+          "authorAssociation": "COLLABORATOR",
+          "body": "\r\n> Yet, I am not a fan of \"WARP.DISCONTINUITY\" metadata, which somehow means that all previous group_ID have been published in a perfectly continuous periodical basis. Readers may interpret that the temporal synch is even bigger than just group_ID sequential increase.\r\n\r\nI would expect previous group IDs to be published in a reasonably continuous basis. We can define what that means but \"perfect\" seems a stronger threshold than is necessary. Here's what I was thinking the timeline track might look like after a disconnect and republish\r\n\r\n```\r\nMEDIA_PTS,GROUP_ID,OBJECT_ID,WALLCLOCK,METADATA\r\n64000,32,0,1746171037288,\r\n66000,33,0,1746171039288,\r\n66667,33,10,1746171039955,\"WARP.DISCONTINUITY\"\r\n80000,34,0,1746171053288,\r\n```\r\n\r\nWould you prefer something like WARP.GAP or you don't like the whole metadata approach all-together? If the latter, what would be an alternative?\r\n\r\n> Should we say that the \"Extension header prior group\" https://github.com/moq-wg/moq-transport/pull/922 is not relevant at all in WARP?\r\n\r\nI was going to use the gap-signaling we just codified, however I realized that the publisher is in control of the group IDs and I could not come up with a scenario under which the publisher could not ensure that they are contiguous. Can you? ",
+          "createdAt": "2025-05-02T09:13:32Z",
+          "updatedAt": "2025-05-02T09:13:32Z"
+        },
+        {
+          "author": "gwendalsimon",
+          "authorAssociation": "NONE",
+          "body": "> ```\r\n> MEDIA_PTS,GROUP_ID,OBJECT_ID,WALLCLOCK,METADATA\r\n> 64000,32,0,1746171037288,\r\n> 66000,33,0,1746171039288,\r\n> 66667,33,10,1746171039955,\"WARP.DISCONTINUITY\"\r\n> 80000,34,0,1746171053288,\r\n> ```\r\n> \r\n> Would you prefer something like WARP.GAP or you don't like the whole metadata approach all-together? If the latter, what would be an alternative?\r\n\r\nWe don't necessarily need the timeline to explicitly state the disconnection, do we? The media_PTS + group_ID + wallclock information is, by essence, sufficient to inform the Subscriber.\r\n\r\nThinking about it, I have two additional concerns here:\r\n- Today, the spec has a very loose definition of the Timeline metadata. I would suggest we keep it that way. Otherwise, we would need to define a list of reserved metadata names with a proper definition.\r\n- It may be difficult for a Publisher to even realize that it disconnected. Forcing the Publisher to add such a metadata in the Timeline can be challenging.\r\n \r\n> I was going to use the gap-signaling we just codified, however I realized that the publisher is in control of the group IDs and I could not come up with a scenario under which the publisher could not ensure that they are contiguous. Can you?\r\n\r\nWe can omit any mention of the gap-signaling code. Or we can mention that it is useless in WARP, but I don't know if such a mention is relevant.\r\n\r\n",
+          "createdAt": "2025-05-02T10:42:59Z",
+          "updatedAt": "2025-05-02T10:42:59Z"
+        },
+        {
+          "author": "wilaw",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> We don't necessarily need the timeline to explicitly state the disconnection, do we? The media_PTS + group_ID + wallclock information is, by essence, sufficient to inform the Subscriber.\r\n\r\nCorrect, the client could infer the discontinuity by comparing delta-media time with delta wallclock time. However, imagine a timeline with 12,000 rows. To know if there is a break in the timeline it would need to process all 12,000 rows, whereas if we explicitly signal it, then it is cheaper to find. I could be persuaded either way.\r\n\r\n> Today, the spec has a very loose definition of the Timeline metadata. I would suggest we keep it that way. Otherwise, we would need to define a list of reserved metadata names with a proper definition.\r\n\r\nWhat I had in ind was a middle ground - mostly open metadata, but with a single reserved prefix in which we could code WARP specific timeline events. I'm thinking of things like\r\n\r\nWARP.AD_START\r\nWARP.AD_END\r\nWARP.SCTE\r\nWARP.DISCONTINUITY.\r\n\r\nAnother way to structure the metadata would be as key/value pairs. We can then create WARP-reserved keys. \r\n\r\n> We can omit any mention of the gap-signaling code. Or we can mention that it is useless in WARP, but I don't know if such a mention is relevant.\r\n\r\nI think we can mention that its not required, to save the packager a tiny bit of work.  \r\n",
+          "createdAt": "2025-05-02T12:18:53Z",
+          "updatedAt": "2025-05-02T12:18:53Z"
+        },
+        {
+          "author": "gwendalsimon",
+          "authorAssociation": "NONE",
+          "body": " > Correct, the client could infer the discontinuity by comparing delta-media time with delta wallclock time. However, imagine a timeline with 12,000 rows. To know if there is a break in the timeline it would need to process all 12,000 rows, whereas if we explicitly signal it, then it is cheaper to find. I could be persuaded either way.\r\n\r\nMe too.\r\nI don't know which use case requires the client to identify whether there is a break in the timeline.\r\n\r\n> > Today, the spec has a very loose definition of the Timeline metadata. I would suggest we keep it that way. Otherwise, we would need to define a list of reserved metadata names with a proper definition.\r\n> \r\n> What I had in ind was a middle ground - mostly open metadata, but with a single reserved prefix in which we could code WARP specific timeline events. I'm thinking of things like\r\n> \r\n> WARP.AD_START WARP.AD_END WARP.SCTE WARP.DISCONTINUITY.\r\n> \r\n> Another way to structure the metadata would be as key/value pairs. We can then create WARP-reserved keys.\r\n\r\nIt is my worry. We would enter into a new round of community debates about formal definitions and mandatory/optional keys (somewhat close to CMSD v2 btw). It is another layer of information to carry, besides SEI and Extension info. \r\n\r\nBut I can see the benefits and I would not fight against it.",
+          "createdAt": "2025-05-02T17:12:09Z",
+          "updatedAt": "2025-05-02T17:12:09Z"
         }
       ],
+      "reviews": []
+    },
+    {
+      "number": 53,
+      "id": "PR_kwDOJTN4X86UoQPq",
+      "title": "Adding timescale to catalog",
+      "url": "https://github.com/moq-wg/warp-streaming-format/pull/53",
+      "state": "OPEN",
+      "author": "wilaw",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Fixes #52 ",
+      "createdAt": "2025-05-01T10:52:16Z",
+      "updatedAt": "2025-05-01T10:52:16Z",
+      "baseRepository": "moq-wg/warp-streaming-format",
+      "baseRefName": "main",
+      "baseRefOid": "81cb3799ad0c0a07e419e240b4d7f41572029afe",
+      "headRepository": "moq-wg/warp-streaming-format",
+      "headRefName": "wilaw-patch-1",
+      "headRefOid": "a777802d0426b7b63438543e2c08a74b9e50522c",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 55,
+      "id": "PR_kwDOJTN4X86UoxMP",
+      "title": "Adding islive and track duration fields to catalog and a new VOD example",
+      "url": "https://github.com/moq-wg/warp-streaming-format/pull/55",
+      "state": "OPEN",
+      "author": "wilaw",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Fixes #50 ",
+      "createdAt": "2025-05-01T12:42:14Z",
+      "updatedAt": "2025-05-02T09:28:17Z",
+      "baseRepository": "moq-wg/warp-streaming-format",
+      "baseRefName": "main",
+      "baseRefOid": "81cb3799ad0c0a07e419e240b4d7f41572029afe",
+      "headRepository": "moq-wg/warp-streaming-format",
+      "headRefName": "wilaw-patch-2",
+      "headRefOid": "a9b1dcee93c143d586f2e518d397f4dec1811148",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJTN4X86nk_xY",
+          "commit": {
+            "abbreviatedOid": "99847f8"
+          },
+          "author": "gwendalsimon",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-05-02T08:49:46Z",
+          "updatedAt": "2025-05-02T08:49:46Z",
+          "comments": [
+            {
+              "originalPosition": 30,
+              "body": "T and R are defined, but F and C are not (unless I missed it)",
+              "createdAt": "2025-05-02T08:49:46Z",
+              "updatedAt": "2025-05-02T08:49:46Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJTN4X86nlA-E",
+          "commit": {
+            "abbreviatedOid": "99847f8"
+          },
+          "author": "gwendalsimon",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-05-02T08:52:25Z",
+          "updatedAt": "2025-05-02T08:52:26Z",
+          "comments": [
+            {
+              "originalPosition": 198,
+              "body": "The introduction includes a sentence \"WARP is targeted at real-time and interactive levels of live latency.\" We may fix it if WARP also targets VoD and non-live streaming.\r\n",
+              "createdAt": "2025-05-02T08:52:25Z",
+              "updatedAt": "2025-05-02T08:52:26Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJTN4X86nlBZp",
+          "commit": {
+            "abbreviatedOid": "99847f8"
+          },
+          "author": "gwendalsimon",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-05-02T08:53:21Z",
+          "updatedAt": "2025-05-02T08:53:22Z",
+          "comments": [
+            {
+              "originalPosition": 72,
+              "body": "Do we use milliseconds or the newly defined timescale unit?",
+              "createdAt": "2025-05-02T08:53:22Z",
+              "updatedAt": "2025-05-02T08:53:22Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJTN4X86nlMDO",
+          "commit": {
+            "abbreviatedOid": "99847f8"
+          },
+          "author": "wilaw",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-05-02T09:16:07Z",
+          "updatedAt": "2025-05-02T09:16:07Z",
+          "comments": [
+            {
+              "originalPosition": 30,
+              "body": "```suggestion\r\nLocation: T    Required: Required  JSON Type: Boolean\r\n```\r\nGood catch. ",
+              "createdAt": "2025-05-02T09:16:07Z",
+              "updatedAt": "2025-05-02T09:16:07Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJTN4X86nlNa6",
+          "commit": {
+            "abbreviatedOid": "a9b1dce"
+          },
+          "author": "wilaw",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-05-02T09:18:00Z",
+          "updatedAt": "2025-05-02T09:18:00Z",
+          "comments": [
+            {
+              "originalPosition": 72,
+              "body": "Milliseconds. The timescale unit is optional and intended for players playing back single track avc3 content who want to avoid sending init segments.  ",
+              "createdAt": "2025-05-02T09:18:00Z",
+              "updatedAt": "2025-05-02T09:18:00Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJTN4X86nlSFT",
+          "commit": {
+            "abbreviatedOid": "99847f8"
+          },
+          "author": "wilaw",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-05-02T09:25:09Z",
+          "updatedAt": "2025-05-02T09:25:10Z",
+          "comments": [
+            {
+              "originalPosition": 198,
+              "body": "The scope section https://moq-wg.github.io/warp-streaming-format/draft-ietf-moq-warp.html#name-scope defines latency support across multiple ranges including \"VOD latency - content that was previously produced, is no longer live and is available indefinitely.\". The abstract needs to be updated to match the scope. ",
+              "createdAt": "2025-05-02T09:25:10Z",
+              "updatedAt": "2025-05-02T09:25:10Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJTN4X86nlTgx",
+          "commit": {
+            "abbreviatedOid": "99847f8"
+          },
+          "author": "wilaw",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-05-02T09:28:17Z",
+          "updatedAt": "2025-05-02T09:28:17Z",
+          "comments": [
+            {
+              "originalPosition": 30,
+              "body": "Fixed with https://github.com/moq-wg/warp-streaming-format/pull/55/commits/a9b1dcee93c143d586f2e518d397f4dec1811148",
+              "createdAt": "2025-05-02T09:28:17Z",
+              "updatedAt": "2025-05-02T09:28:17Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 56,
+      "id": "PR_kwDOJTN4X86Uo9ai",
+      "title": "Adding the generatedAt field and updating examples",
+      "url": "https://github.com/moq-wg/warp-streaming-format/pull/56",
+      "state": "OPEN",
+      "author": "wilaw",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Fixes #51 ",
+      "createdAt": "2025-05-01T13:05:39Z",
+      "updatedAt": "2025-05-01T13:07:55Z",
+      "baseRepository": "moq-wg/warp-streaming-format",
+      "baseRefName": "main",
+      "baseRefOid": "81cb3799ad0c0a07e419e240b4d7f41572029afe",
+      "headRepository": "moq-wg/warp-streaming-format",
+      "headRefName": "wilaw-patch-4",
+      "headRefOid": "15d8441577005136cfab4c203392271612a0919d",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 57,
+      "id": "PR_kwDOJTN4X86Upfsd",
+      "title": "Adding the track type field and updating examples",
+      "url": "https://github.com/moq-wg/warp-streaming-format/pull/57",
+      "state": "OPEN",
+      "author": "wilaw",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Fixes #54 ",
+      "createdAt": "2025-05-01T14:30:54Z",
+      "updatedAt": "2025-05-01T14:32:04Z",
+      "baseRepository": "moq-wg/warp-streaming-format",
+      "baseRefName": "main",
+      "baseRefOid": "81cb3799ad0c0a07e419e240b4d7f41572029afe",
+      "headRepository": "moq-wg/warp-streaming-format",
+      "headRefName": "wilaw-patch-5",
+      "headRefOid": "3f0366290ebbc5477fdc75c0f9364fd70395f901",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 58,
+      "id": "PR_kwDOJTN4X86UvEkV",
+      "title": "Editorial changes suggested by idnits before submission",
+      "url": "https://github.com/moq-wg/warp-streaming-format/pull/58",
+      "state": "MERGED",
+      "author": "wilaw",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2025-05-02T10:18:39Z",
+      "updatedAt": "2025-05-02T10:19:18Z",
+      "baseRepository": "moq-wg/warp-streaming-format",
+      "baseRefName": "main",
+      "baseRefOid": "81cb3799ad0c0a07e419e240b4d7f41572029afe",
+      "headRepository": "moq-wg/warp-streaming-format",
+      "headRefName": "wilaw-patch-6",
+      "headRefOid": "03c5161dd6656d268cb860b2b4c28733e0af33d0",
+      "closedAt": "2025-05-02T10:19:14Z",
+      "mergedAt": "2025-05-02T10:19:14Z",
+      "mergedBy": "wilaw",
+      "mergeCommit": {
+        "oid": "9f4ae2c44a9312df7dede311a8897d90b8364b49"
+      },
+      "comments": [],
       "reviews": []
     }
   ]
