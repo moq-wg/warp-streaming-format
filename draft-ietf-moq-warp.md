@@ -691,14 +691,18 @@ of the {{mediapackaging}} in place, each MOQT Object MUST be mapped to a new
 MOQT Stream.
 
 ## Group numbering
-The Group Number of the first Group in any WARP track MUST be 0. Each subsequent
-Group MUST increase by 1.
+The Group ID of the first Group in an track MUST begin with an integer which does
+not repeat in the future. One algorithm that satisifes this requirement is for the
+first Group ID in a track to be the creation time of the first Object expressed as
+the rounded number of milliseconds since Unix epoch. The purpose of this requirement
+is to ensure that republishing the same track in the future, after a loss of
+connectivity or an encoder restart, will never result in smaller or duplicate
+Group IDs being produced under the same track name.
 
-If a publishing session is interrupted at Group ID N midway through Object ID M,
-and then the session is later recovered, the publisher MAY resume publishing on
-the same Track Name and Track Namespace starting at Group ID N+1 Object 0. The
-timeline track, if used, should be updated to indicate a discontinuity at Group
-ID N and Object M using a metadata field entry of "WARP.DISCONTINUITY".
+Each subsequent Group ID MUST increase by 1.
+
+If a publisher is able to maintain state across a republish, it MUST signal the gap
+in Group IDs using the MOQT Prior Group ID Gap Extension header.
 
 # Timeline track
 The timeline track provides data about the previously published groups and their
