@@ -1054,7 +1054,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Law, et al.</td>
-<td class="center">Expires 2 November 2025</td>
+<td class="center">Expires 8 November 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1067,12 +1067,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ietf-moq-warp-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-05-01" class="published">1 May 2025</time>
+<time datetime="2025-05-07" class="published">7 May 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-11-02">2 November 2025</time></dd>
+<dd class="expires"><time datetime="2025-11-08">8 November 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1138,7 +1138,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 2 November 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 8 November 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -2323,13 +2323,16 @@ MOQT Stream.<a href="#section-5-1" class="pilcrow">¶</a></p>
         <h3 id="name-group-numbering">
 <a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-group-numbering" class="section-name selfRef">Group numbering</a>
         </h3>
-<p id="section-5.1-1">The Group Number of the first Group in any WARP track <span class="bcp14">MUST</span> be 0. Each subsequent
-Group <span class="bcp14">MUST</span> increase by 1.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
-<p id="section-5.1-2">If a publishing session is interrupted at Group ID N midway through Object ID M,
-and then the session is later recovered, the publisher <span class="bcp14">MAY</span> resume publishing on
-the same Track Name and Track Namespace starting at Group ID N+1 Object 0. The
-timeline track, if used, should be updated to indicate a discontinuity at Group
-ID N and Object M using a metadata field entry of "WARP.DISCONTINUITY".<a href="#section-5.1-2" class="pilcrow">¶</a></p>
+<p id="section-5.1-1">The Group ID of the first Group in an track <span class="bcp14">MUST</span> begin with an integer which does
+not repeat in the future. One algorithm that satisifes this requirement is for the
+first Group ID in a track to be the creation time of the first Object expressed as
+the rounded number of milliseconds since Unix epoch. The purpose of this requirement
+is to ensure that republishing the same track in the future, after a loss of
+connectivity or an encoder restart, will never result in smaller or duplicate
+Group IDs being produced under the same track name.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
+<p id="section-5.1-2">Each subsequent Group ID <span class="bcp14">MUST</span> increase by 1.<a href="#section-5.1-2" class="pilcrow">¶</a></p>
+<p id="section-5.1-3">If a publisher is able to maintain state across a republish, it <span class="bcp14">MUST</span> signal the gap
+in Group IDs using the MOQT Prior Group ID Gap Extension header.<a href="#section-5.1-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
