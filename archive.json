@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-05-04T02:05:35.659958+00:00",
+  "timestamp": "2025-05-08T01:58:22.010166+00:00",
   "repo": "moq-wg/warp-streaming-format",
   "labels": [
     {
@@ -1048,6 +1048,22 @@
       "updatedAt": "2025-05-01T11:31:11Z",
       "closedAt": null,
       "comments": []
+    },
+    {
+      "number": 59,
+      "id": "I_kwDOJTN4X861XcYh",
+      "title": "How do we signal the end of a broadcast?",
+      "url": "https://github.com/moq-wg/warp-streaming-format/issues/59",
+      "state": "OPEN",
+      "author": "wilaw",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "A SUBSCRIBE_DONE can be sent for each active subscription. However, the tracks may begin and end at different times, or more tracks may be published in the future.\n\nWhat is the signal to indicate that the client can unsubscribe from the catalog track because the broadcast is complete?\n\nSome options:\n1. Send a catalog with no tracks (this does not solve for the case that there may be future tracks made available)\n2. Create an explicit catalog field for \"END OF BROADCAST\".\n3. Some other signal?",
+      "createdAt": "2025-05-06T13:17:23Z",
+      "updatedAt": "2025-05-06T13:19:48Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
@@ -1969,13 +1985,13 @@
       "labels": [],
       "body": "Fixes #48 .\r\n\r\nGroups within a WARP track MUST start at 0 and MUST increment by 1. ",
       "createdAt": "2025-04-02T12:37:59Z",
-      "updatedAt": "2025-05-02T17:12:10Z",
+      "updatedAt": "2025-05-07T13:38:48Z",
       "baseRepository": "moq-wg/warp-streaming-format",
       "baseRefName": "main",
       "baseRefOid": "bc5671f23ae2c0f1075d66caf977c7591b043c6b",
       "headRepository": "moq-wg/warp-streaming-format",
       "headRefName": "wilaw-patch-3",
-      "headRefOid": "704c09744daabc44317949cdb2167b32c0ddfad7",
+      "headRefOid": "48b4b03109d5f84a7e90b8c455e234afec060cc4",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -2043,6 +2059,20 @@
           "body": " > Correct, the client could infer the discontinuity by comparing delta-media time with delta wallclock time. However, imagine a timeline with 12,000 rows. To know if there is a break in the timeline it would need to process all 12,000 rows, whereas if we explicitly signal it, then it is cheaper to find. I could be persuaded either way.\r\n\r\nMe too.\r\nI don't know which use case requires the client to identify whether there is a break in the timeline.\r\n\r\n> > Today, the spec has a very loose definition of the Timeline metadata. I would suggest we keep it that way. Otherwise, we would need to define a list of reserved metadata names with a proper definition.\r\n> \r\n> What I had in ind was a middle ground - mostly open metadata, but with a single reserved prefix in which we could code WARP specific timeline events. I'm thinking of things like\r\n> \r\n> WARP.AD_START WARP.AD_END WARP.SCTE WARP.DISCONTINUITY.\r\n> \r\n> Another way to structure the metadata would be as key/value pairs. We can then create WARP-reserved keys.\r\n\r\nIt is my worry. We would enter into a new round of community debates about formal definitions and mandatory/optional keys (somewhat close to CMSD v2 btw). It is another layer of information to carry, besides SEI and Extension info. \r\n\r\nBut I can see the benefits and I would not fight against it.",
           "createdAt": "2025-05-02T17:12:09Z",
           "updatedAt": "2025-05-02T17:12:09Z"
+        },
+        {
+          "author": "fluffy",
+          "authorAssociation": "NONE",
+          "body": "Discussion from WG meeting \r\n\r\nWe agreed to normally increment by 1 other than gaps from crashes / disconnects etc. \r\n\r\nWe decided not to require start at 0, instead start at an integer that will have a sufficiently incremented after a crash to not use a group number that was previous used. \r\n\r\nAn algorithm that can be used for this is taking the time since uniz epoch in ms as the starting group numbers ( assuming the usage will never use more than 1000 groups per second ) ",
+          "createdAt": "2025-05-07T08:49:07Z",
+          "updatedAt": "2025-05-07T08:49:07Z"
+        },
+        {
+          "author": "wilaw",
+          "authorAssociation": "COLLABORATOR",
+          "body": "@fluffy  - see commit https://github.com/moq-wg/warp-streaming-format/pull/49/commits/48b4b03109d5f84a7e90b8c455e234afec060cc4 for adjustment of starting Group ID. ",
+          "createdAt": "2025-05-07T13:38:47Z",
+          "updatedAt": "2025-05-07T13:38:47Z"
         }
       ],
       "reviews": []
