@@ -46,13 +46,12 @@ author:
     email: ikir@meta.com
 
 normative:
-  MoQTransport: I-D.draft-ietf-moq-transport-05
-  LOC: I-D.draft-mzanaty-moq-loc-03
+  MoQTransport: I-D.draft-ietf-moq-transport-11
+  LOC: I-D.draft-mzanaty-moq-loc-05
   BASE64: RFC4648
   JSON: RFC8259
   LANG: RFC5646
   MIME: RFC6838
-  RFC5226: RFC5226
   RFC9000: RFC9000
   RFC4180: RFC4180
   WEBCODECS-CODEC-REGISTRY:
@@ -212,11 +211,13 @@ Table 1 provides an overview of all fields defined by this document.
 | Add tracks              | addTracks              | {{addtracks}}             |
 | Remove tracks           | removeTracks           | {{removetracks}}          |
 | Clone tracks            | cloneTracks            | {{clonetracks}}           |
+| Generated at            | generatedAt            | {{generatedat}}           |
 | Tracks                  | tracks                 | {{tracks}}                |
 | Track namespace         | namespace              | {{tracknamespace}}        |
 | Track name              | name                   | {{trackname}}             |
 | Packaging               | packaging              | {{packaging}}             |
 | Is Live                 | isLive                 | {{islive}}                |
+| Track role              | role                   | {{trackrole}}             |
 | Track label             | label                  | {{tracklabel}}            |
 | Render group            | renderGroup            | {{rendergroup}}           |
 | Alternate group         | altGroup               | {{altgroup}}              |
@@ -227,6 +228,7 @@ Table 1 provides an overview of all fields defined by this document.
 | Codec                   | codec                  | {{codec}}                 |
 | Mime type               | mimeType               | {{mimetype}}              |
 | Framerate               | framerate              | {{framerate}}             |
+| Timescale               | timescale              | {{timescale}}             |
 | Bitrate                 | bitrate                | {{bitrate}}               |
 | Width                   | width                  | {{width}}                 |
 | Height                  | height                 | {{height}}                |
@@ -283,6 +285,13 @@ Indicates a delta processing instruction to clone new tracks from previously dec
 tracks. The value of this field is an Array of track objects {{trackobject}}. Each
 track object MUST include a Parent Name {{parentname}} field.
 
+### Generated at {#generatedat}
+Location: R    Required: Optional    JSON Type: Number
+
+The wallclock time at which this catalog instance was generated, expressed as the
+number of milliseconds that have elapsed since January 1, 1970 (midnight UTC/GMT).
+This field SHOULD NOT be included if the isLive field is false.
+
 ### Tracks {#tracks}
 Location: R    Required: Yes    JSON Type: Array
 
@@ -315,9 +324,34 @@ as defined in Table 3.
 
 Table 3: Allowed packaging values
 
-| Name            |   Value   |      Draft       |
-|:================|:==========|:=================|
-| LOC             | "loc"     | See RFC XXXX     |
+| Name            |   Value   |      Reference        |
+|:================|:==========|:======================|
+| LOC             | loc       | See RFC XXXX          |
+| Timeline        | timeline  | See {{timelinetrack}} |
+
+### Track role {#trackrole}
+Location: T    Required: Optional   JSON Type: String
+
+A string defining the role of content carried by the track. Reserved roles
+are described in Table 4. These role values are case-sensitive.
+
+This role field MAY be used in conjunction with the Mimetype {{mimetype}} to
+fully describe the content of the track.
+
+Table 4: Reserved track roles
+
+| Role             |   Description                                              |
+|:=================|:===========================================================|
+| audiodescription | An audio description for visually impaired users           |
+| video            | Visual content                                             |
+| audio            | Audio content                                              |
+| timeline         | A WARP timeline {{timelinetrack}}                          |
+| caption          | A textual representation of the audio track                |
+| subtitle         | A transcription of the spoken dialogue                     |
+| signlanguage     | A visual track for hearing impaired users.                 |
+|------------------|------------------------------------------------------------|
+
+Custom roles MAY be used as long as they do not collide with the reserved roles.
 
 ### Is Live {#islive}
 Location: T    Required: Required  JSON Type: Boolean
@@ -397,6 +431,11 @@ Location: T    Required: Optional   JSON Type: Number
 
 A number defining the video framerate of the track, expressed as frames per
 second.
+
+### Timescale {#timescale}
+Location: T    Required: Optional   JSON Type: Number
+
+The number of time units that pass per second.
 
 ### Bitrate {#bitrate}
 Location: T    Required: Optional   JSON Type: Number
@@ -502,12 +541,14 @@ packaged, time-aligned audio and video tracks.
 ~~~json
 {
   "version": 1,
+  "generatedAt": 1746104606044,
   "tracks": [
     {
-      "name": "video",
+      "name": "1080p-video",
       "namespace": "conference.example.com/conference123/alice",
       "packaging": "loc",
       "isLive": true,
+      "role": "video",
       "renderGroup": 1,
       "codec":"av01.0.08M.10.0.110.09",
       "width":1920,
@@ -520,6 +561,7 @@ packaged, time-aligned audio and video tracks.
       "namespace": "conference.example.com/conference123/alice",
       "packaging": "loc",
       "isLive": true,
+      "role": "audio",
       "renderGroup": 1,
       "codec":"opus",
       "samplerate":48000,
@@ -544,12 +586,14 @@ of the catalog.
 ~~~json
 {
   "version": 1,
+  "generatedAt": 1746104606044,
   "tracks":[
     {
       "name": "hd",
       "renderGroup": 1,
       "packaging": "loc",
       "isLive": true,
+      "role": "video",
       "codec":"av01",
       "width":1920,
       "height":1080,
@@ -562,6 +606,7 @@ of the catalog.
       "renderGroup": 1,
       "packaging": "loc",
       "isLive": true,
+      "role": "video",
       "codec":"av01",
       "width":720,
       "height":640,
@@ -574,6 +619,7 @@ of the catalog.
       "renderGroup": 1,
       "packaging": "loc",
       "isLive": true,
+      "role": "video",
       "codec":"av01",
       "width":192,
       "height":144,
@@ -586,6 +632,7 @@ of the catalog.
       "renderGroup": 1,
       "packaging": "loc",
       "isLive": true,
+      "role": "audio",
       "codec":"opus",
       "samplerate":48000,
       "channelConfig":"2",
@@ -633,6 +680,7 @@ express the track relationships.
 ~~~json
 {
   "version": 1,
+  "generatedAt": 1746104606044,
   "tracks":[
     {
       "name": "480p15",
@@ -640,6 +688,7 @@ express the track relationships.
       "renderGroup": 1,
       "packaging": "loc",
       "isLive": true,
+      "role": "video",
       "codec":"av01.0.01M.10.0.110.09",
       "width":640,
       "height":480,
@@ -652,6 +701,7 @@ express the track relationships.
       "renderGroup": 1,
       "packaging": "loc",
       "isLive": true,
+      "role": "video",
       "codec":"av01.0.04M.10.0.110.09",
       "width":640,
       "height":480,
@@ -665,6 +715,7 @@ express the track relationships.
       "renderGroup": 1,
       "packaging": "loc",
       "isLive": true,
+      "role": "video",
       "codec":"av01.0.05M.10.0.110.09",
       "width":1920,
       "height":1080,
@@ -679,6 +730,7 @@ express the track relationships.
       "renderGroup": 1,
       "packaging": "loc",
       "isLive": true,
+      "role": "video",
       "codec":"av01.0.08M.10.0.110.09",
       "width":1920,
       "height":1080,
@@ -692,6 +744,7 @@ express the track relationships.
       "renderGroup": 1,
       "packaging": "loc",
       "isLive": true,
+      "role": "audio",
       "codec":"opus",
       "samplerate":48000,
       "channelConfig":"2",
@@ -710,10 +763,12 @@ the other is cloned from a previous track.
 ~~~json
 {
   "deltaUpdate": true,
+  "generatedAt": 1746104606044,
   "addTracks": [
       {
         "name": "slides",
         "isLive": true,
+        "role": "video",
         "codec": "av01.0.08M.10.0.110.09",
         "width": 1920,
         "height": 1080,
@@ -742,6 +797,7 @@ from an established video conference.
 ~~~json
 {
   "deltaUpdate": true,
+  "generatedAt": 1746104606044,
   "removeTracks": [{"name": "video"},{"name": "slides"}]
 }
 ~~~
@@ -756,12 +812,14 @@ description.
 ~~~json
 {
   "version": 1,
+  "generatedAt": 1746104606044,
   "tracks": [
     {
-      "name": "video",
+      "name": "1080p-video",
       "namespace": "conference.example.com/conference123/alice",
       "packaging": "loc",
       "isLive": true,
+      "role": "video",
       "renderGroup": 1,
       "codec":"av01.0.08M.10.0.110.09",
       "width":1920,
@@ -777,6 +835,7 @@ description.
       "namespace": "conference.example.com/conference123/alice",
       "packaging": "loc",
       "isLive": true,
+      "role": "audio",
       "renderGroup": 1,
       "codec":"opus",
       "samplerate":48000,
@@ -788,11 +847,13 @@ description.
 
 ~~~
 
+
 ### Time-aligned VOD Audio/Video Tracks
 
 This example shows catalog for a media producer offering VOD (video on-demand)
 non-live content. The content is LOC packaged, and includes time-aligned audio
 and video tracks.
+
 
 ~~~json
 {
@@ -809,7 +870,7 @@ and video tracks.
       "width":1920,
       "height":1080,
       "framerate":30,
-      "bitrate":1500000,
+      "bitrate":1500000
     },
     {
       "name": "audio",
@@ -834,13 +895,28 @@ The MOQT Groups and MOQT Objects need to be mapped to MOQT Streams. Irrespective
 of the {{mediapackaging}} in place, each MOQT Object MUST be mapped to a new
 MOQT Stream.
 
-# Timeline track
+## Group numbering
+The Group ID of the first Group published in a track at application startup MUST be
+a unique integer that will not repeat in the future. One approach to achieve this
+is to set the initial Group ID to the creation time of the first Object in the
+group, represented as the number of milliseconds since the Unix epoch, rounded to
+the nearest millisecond. This ensures that republishing the same track in the
+future, such as after a loss of connectivity or an encoder restart, will not result
+in smaller or duplicate Group IDs for the same track name. Note that this method
+does not prevent duplication if more than 1000 groups are published per second.
+
+Each subsequent Group ID MUST increase by 1.
+
+If a publisher is able to maintain state across a republish, it MUST signal the gap
+in Group IDs using the MOQT Prior Group ID Gap Extension header.
+
+# Timeline track {#timelinetrack}
 The timeline track provides data about the previously published groups and their
 relationship to wallclock time, media time and associated timed-metadata.
 Timeline tracks allow players to seek to precise points behind the live head in
-a live broadcast, or for random access in a VOD asset. A timeline track may also
+a live broadcast, or for random access in a VOD asset. A timeline track might also
 be used to insert events at media times which do not correlate with Object
-boundaries. Timeline tracks are optional. Multiple timeline tracks MAY exist
+boundaries. Timeline tracks are optional. Multiple timeline tracks can exist
 inside a catalog.
 
 ## Timeline track payload
@@ -854,7 +930,7 @@ Each timeline track begins with a header row of MEDIA_PTS,GROUP_ID,OBJECT_ID,
 WALLCLOCK,METADATA. This row defines the 5 columns of data within each record.
 
 * MEDIA_PTS: a media timestamp rounded to the nearest millisecond. This entry
-  MUST not be empty. If the Object ID entry is present, then this value MUST
+  MUST NOT be empty. If the Object ID entry is present, then this value MUST
   match the media presentation timestamp of the first media sample in the
   referenced Object.
 * GROUP_ID: the MOQT Group ID. This entry MAY be empty.
@@ -870,15 +946,16 @@ WALLCLOCK,METADATA. This row defines the 5 columns of data within each record.
 
 ## Timeline Catalog requirements
 A timeline track MUST carry a 'type' identifier in the Catalog with a value of
-"timeline". A timeline track MUST carry a 'dependencies' attribute which
+"timeline". A timeline track MUST carry a 'dependes' attribute which
 contains an array of all track names to which the timeline track applies.
 
 ## Timeline track updating.
 The publisher MUST publish a complete timeline in the first MOQT Object of each
-MOQT Group. The publisher MAY publish incremental updates in the second and
-subsequent Objects within each GROUP. Incremental updates only contain timeline
-events since the last timeline Object. Group duration SHOULD not exceed 30
-seconds.
+MOQT Group of a timeline track. The publisher MAY publish incremental updates
+in the second and subsequent Objects within each GROUP. Incremental updates
+only contain timeline events since the last timeline Object. Group duration
+SHOULD not exceed 30 seconds inside a timeline track.
+
 
 # Workflow
 
