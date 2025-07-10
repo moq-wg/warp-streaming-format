@@ -323,7 +323,10 @@ Table 3: Allowed packaging values
 Location: T    Required: Required  JSON Type: Boolean
 
 True if new Objects will be added to the track.
-False if no new Objects will be added to the track.
+False if no new Objects will be added to the track. This is sent under two
+possible conditions:
+* the publisher of a previously live track has ended the track.
+* the track is Video-On-Demand (VOD) and was never live.
 
 ### Track label {#tracklabel}
 Location: TF    Required: Optional   JSON Type: String
