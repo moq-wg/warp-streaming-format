@@ -1327,6 +1327,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
             <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-media-transmission" class="internal xref">Media transmission</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.1">
+                <p id="section-toc.1-1.6.2.1.1"><a href="#section-6.1" class="auto internal xref">6.1</a>.  <a href="#name-group-numbering" class="internal xref">Group numbering</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
             <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-timeline-track" class="internal xref">Timeline track</a></p>
@@ -2651,6 +2656,24 @@ time-aligned audio and video tracks along with a timeline track.<a href="#sectio
 <p id="section-6-1">The MOQT Groups and MOQT Objects need to be mapped to MOQT Streams. Irrespective
 of the <a href="#mediapackaging" class="auto internal xref">Section 4</a> in place, each MOQT Object <span class="bcp14">MUST</span> be mapped to a new
 MOQT Stream.<a href="#section-6-1" class="pilcrow">¶</a></p>
+<div id="group-numbering">
+<section id="section-6.1">
+        <h3 id="name-group-numbering">
+<a href="#section-6.1" class="section-number selfRef">6.1. </a><a href="#name-group-numbering" class="section-name selfRef">Group numbering</a>
+        </h3>
+<p id="section-6.1-1">The Group ID of the first Group published in a track at application startup <span class="bcp14">MUST</span> be
+a unique integer that will not repeat in the future. One approach to achieve this
+is to set the initial Group ID to the creation time of the first Object in the
+group, represented as the number of milliseconds since the Unix epoch, rounded to
+the nearest millisecond. This ensures that republishing the same track in the
+future, such as after a loss of connectivity or an encoder restart, will not result
+in smaller or duplicate Group IDs for the same track name. Note that this method
+does not prevent duplication if more than 1000 groups are published per second.<a href="#section-6.1-1" class="pilcrow">¶</a></p>
+<p id="section-6.1-2">Each subsequent Group ID <span class="bcp14">MUST</span> increase by 1.<a href="#section-6.1-2" class="pilcrow">¶</a></p>
+<p id="section-6.1-3">If a publisher is able to maintain state across a republish, it <span class="bcp14">MUST</span> signal the gap
+in Group IDs using the MOQT Prior Group ID Gap Extension header.<a href="#section-6.1-3" class="pilcrow">¶</a></p>
+</section>
+</div>
 </section>
 </div>
 <div id="timelinetrack">
@@ -2661,9 +2684,9 @@ MOQT Stream.<a href="#section-6-1" class="pilcrow">¶</a></p>
 <p id="section-7-1">The timeline track provides data about the previously published groups and their
 relationship to wallclock time, media time and associated timed-metadata.
 Timeline tracks allow players to seek to precise points behind the live head in
-a live broadcast, or for random access in a VOD asset. A timeline track may also
+a live broadcast, or for random access in a VOD asset. A timeline track might also
 be used to insert events at media times which do not correlate with Object
-boundaries. Timeline tracks are optional. Multiple timeline tracks <span class="bcp14">MAY</span> exist
+boundaries. Timeline tracks are optional. Multiple timeline tracks can exist
 inside a catalog.<a href="#section-7-1" class="pilcrow">¶</a></p>
 <div id="timeline-track-payload">
 <section id="section-7.1">
@@ -2721,10 +2744,10 @@ contains an array of all track names to which the timeline track applies.<a href
 <a href="#section-7.3" class="section-number selfRef">7.3. </a><a href="#name-timeline-track-updating" class="section-name selfRef">Timeline track updating.</a>
         </h3>
 <p id="section-7.3-1">The publisher <span class="bcp14">MUST</span> publish a complete timeline in the first MOQT Object of each
-MOQT Group. The publisher <span class="bcp14">MAY</span> publish incremental updates in the second and
-subsequent Objects within each GROUP. Incremental updates only contain timeline
-events since the last timeline Object. Group duration <span class="bcp14">SHOULD NOT</span> exceed 30
-seconds.<a href="#section-7.3-1" class="pilcrow">¶</a></p>
+MOQT Group of a timeline track. The publisher <span class="bcp14">MAY</span> publish incremental updates
+in the second and subsequent Objects within each GROUP. Incremental updates
+only contain timeline events since the last timeline Object. Group duration
+<span class="bcp14">SHOULD</span> not exceed 30 seconds inside a timeline track.<a href="#section-7.3-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
