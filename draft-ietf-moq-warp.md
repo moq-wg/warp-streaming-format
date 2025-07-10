@@ -88,7 +88,8 @@ original publisher. WARP specifies how content should be packaged and signaled,
 defines how the catalog communicates the content, specifies prioritization
 strategies for real-time and workflows for beginning and terminating broadcasts.
 WARP also details how end-subscribers may perform adaptive bitrate switching.
-WARP is targeted at real-time and interactive levels of live latency.
+WARP is targeted at real-time and interactive levels of live latency, as well as
+VOD content.
 
 This document describes version 1 of the streaming format.
 
