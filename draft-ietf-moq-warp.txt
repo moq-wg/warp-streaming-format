@@ -104,15 +104,16 @@ Table of Contents
        5.2.19. Codec
        5.2.20. Mimetype
        5.2.21. Framerate
-       5.2.22. Bitrate
-       5.2.23. Width
-       5.2.24. Height
-       5.2.25. Audio sample rate
-       5.2.26. Channel configuration
-       5.2.27. Display width
-       5.2.28. Display height
-       5.2.29. Language
-       5.2.30. Parent name
+       5.2.22. Timescale
+       5.2.23. Bitrate
+       5.2.24. Width
+       5.2.25. Height
+       5.2.26. Audio sample rate
+       5.2.27. Channel configuration
+       5.2.28. Display width
+       5.2.29. Display height
+       5.2.30. Language
+       5.2.31. Parent name
      5.3.  Delta updates
      5.4.  Catalog Examples
        5.4.1.  Time-aligned Audio/Video Tracks with single quality
@@ -345,23 +346,25 @@ Table of Contents
         +-----------------------+---------------+----------------+
         | Framerate             | framerate     | Section 5.2.21 |
         +-----------------------+---------------+----------------+
-        | Bitrate               | bitrate       | Section 5.2.22 |
+        | Timescale             | timescale     | Section 5.2.22 |
         +-----------------------+---------------+----------------+
-        | Width                 | width         | Section 5.2.23 |
+        | Bitrate               | bitrate       | Section 5.2.23 |
         +-----------------------+---------------+----------------+
-        | Height                | height        | Section 5.2.24 |
+        | Width                 | width         | Section 5.2.24 |
         +-----------------------+---------------+----------------+
-        | Audio sample rate     | samplerate    | Section 5.2.25 |
+        | Height                | height        | Section 5.2.25 |
         +-----------------------+---------------+----------------+
-        | Channel configuration | channelConfig | Section 5.2.26 |
+        | Audio sample rate     | samplerate    | Section 5.2.26 |
         +-----------------------+---------------+----------------+
-        | Display width         | displayWidth  | Section 5.2.27 |
+        | Channel configuration | channelConfig | Section 5.2.27 |
         +-----------------------+---------------+----------------+
-        | Display height        | displayHeight | Section 5.2.28 |
+        | Display width         | displayWidth  | Section 5.2.28 |
         +-----------------------+---------------+----------------+
-        | Language              | lang          | Section 5.2.29 |
+        | Display height        | displayHeight | Section 5.2.29 |
         +-----------------------+---------------+----------------+
-        | Parent name           | parentName    | Section 5.2.30 |
+        | Language              | lang          | Section 5.2.30 |
+        +-----------------------+---------------+----------------+
+        | Parent name           | parentName    | Section 5.2.31 |
         +-----------------------+---------------+----------------+
 
                                  Table 1
@@ -422,7 +425,7 @@ Table of Contents
    Indicates a delta processing instruction to clone new tracks from
    previously declared tracks.  The value of this field is an Array of
    track objects Section 5.2.7.  Each track object MUST include a Parent
-   Name Section 5.2.30 field.
+   Name Section 5.2.31 field.
 
 5.2.5.  Generated at
 
@@ -607,32 +610,38 @@ Table of Contents
    A number defining the video framerate of the track, expressed as
    frames per second.
 
-5.2.22.  Bitrate
+5.2.22.  Timescale
+
+   Location: T Required: Optional JSON Type: Number
+
+   The number of time units that pass per second.
+
+5.2.23.  Bitrate
 
    Location: T Required: Optional JSON Type: Number
 
    A number defining the bitrate of track, expressed in bits per second.
 
-5.2.23.  Width
+5.2.24.  Width
 
    Location: T Required: Optional JSON Type: Number
 
    A number expressing the encoded width of the video frames in pixels.
 
-5.2.24.  Height
+5.2.25.  Height
 
    Location: T Required: Optional JSON Type: Number
 
    A number expressing the encoded height of the video frames in pixels.
 
-5.2.25.  Audio sample rate
+5.2.26.  Audio sample rate
 
    Location: T Required: Optional JSON Type: Number
 
    The number of audio frame samples per second.  This property SHOULD
    only accompany audio codecs.
 
-5.2.26.  Channel configuration
+5.2.27.  Channel configuration
 
    Location: T Required: Optional JSON Type: String
 
@@ -641,21 +650,21 @@ Table of Contents
    provide the flexibility to describe complex channel configurations
    for multi-channel and Next Generation Audio schemas.
 
-5.2.27.  Display width
+5.2.28.  Display width
 
    Location: T Required: Optional JSON Type: Number
 
    A number expressing the intended display width of the track content
    in pixels.
 
-5.2.28.  Display height
+5.2.29.  Display height
 
    Location: T Required: Optional JSON Type: Number
 
    A number expressing the intended display height of the track content
    in pixels.
 
-5.2.29.  Language
+5.2.30.  Language
 
    Location: T Required: Optional JSON Type: String
 
@@ -663,7 +672,7 @@ Table of Contents
    MUST be one of the standard Tags for Identifying Languages as defined
    by [LANG].
 
-5.2.30.  Parent name
+5.2.31.  Parent name
 
    Location: T Required: Optional JSON Type: String
 
@@ -704,7 +713,7 @@ Table of Contents
       continues until all operations are successfully applied.
 
    *  A Cloned track inherits all the attributes of the track defined by
-      the Parent Name Section 5.2.30, except the Track Name which MUST
+      the Parent Name Section 5.2.31, except the Track Name which MUST
       be new.  Attributes redefined in the cloning Object overwrite
       inherited values.
 
