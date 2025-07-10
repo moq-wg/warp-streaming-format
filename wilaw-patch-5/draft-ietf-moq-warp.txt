@@ -5,14 +5,14 @@
 Media Over QUIC                                                   W. Law
 Internet-Draft                                                    Akamai
 Intended status: Informational                                 L. Curley
-Expires: 2 November 2025                                          Twitch
+Expires: 11 January 2026                                          Twitch
                                                              V. Vasiliev
                                                                   Google
                                                            S. Nandakumar
                                                                    Cisco
                                                                 K. Pugin
                                                                     Meta
-                                                              1 May 2025
+                                                            10 July 2025
 
 
                          WARP Streaming Format
@@ -55,7 +55,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 2 November 2025.
+   This Internet-Draft will expire on 11 January 2026.
 
 Copyright Notice
 
@@ -92,7 +92,7 @@ Table of Contents
        5.2.7.  Track namespace
        5.2.8.  Track name
        5.2.9.  Packaging
-       5.2.10. Track type
+       5.2.10. Track role
        5.2.11. Track label
        5.2.12. Render group
        5.2.13. Alternate group
@@ -320,7 +320,7 @@ Table of Contents
         +-----------------------+---------------+----------------+
         | Packaging             | packaging     | Section 5.2.9  |
         +-----------------------+---------------+----------------+
-        | Track type            | type          | Section 5.2.10 |
+        | Track role            | role          | Section 5.2.10 |
         +-----------------------+---------------+----------------+
         | Track label           | label         | Section 5.2.11 |
         +-----------------------+---------------+----------------+
@@ -469,21 +469,21 @@ Table of Contents
 
                                   Table 3
 
-5.2.10.  Track type
+5.2.10.  Track role
 
    Location: T Required: Optional JSON Type: String
 
-   A string defining the type of content carried by the track.  Reserved
-   types are described in Table 4.  These type values are case-
+   A string defining the role of content carried by the track.  Reserved
+   roles are described in Table 4.  These role values are case-
    sensitive.
 
-   This type field MAY be used in conjunction with the Mimetype
+   This role field MAY be used in conjunction with the Mimetype
    Section 5.2.19 to fully describe the content of the track.
 
-   Table 4: Reserved track types
+   Table 4: Reserved track roles
 
               +==================+==========================+
-              | Type             | Description              |
+              | Role             | Description              |
               +==================+==========================+
               | audiodescription | An audio description for |
               |                  | visually impaired users  |
@@ -507,8 +507,8 @@ Table of Contents
 
                                   Table 4
 
-   Custom types MAY be used as long as they do not collide with the
-   reserved types.
+   Custom roles MAY be used as long as they do not collide with the
+   reserved roles.
 
 5.2.11.  Track label
 
@@ -719,7 +719,7 @@ Table of Contents
          "name": "1080p-video",
          "namespace": "conference.example.com/conference123/alice",
          "packaging": "loc",
-         "type": "video",
+         "role": "video",
          "renderGroup": 1,
          "codec":"av01.0.08M.10.0.110.09",
          "width":1920,
@@ -731,7 +731,7 @@ Table of Contents
          "name": "audio",
          "namespace": "conference.example.com/conference123/alice",
          "packaging": "loc",
-         "type": "audio",
+         "role": "audio",
          "renderGroup": 1,
          "codec":"opus",
          "samplerate":48000,
@@ -756,7 +756,7 @@ Table of Contents
          "name": "hd",
          "renderGroup": 1,
          "packaging": "loc",
-         "type": "video",
+         "role": "video",
          "codec":"av01",
          "width":1920,
          "height":1080,
@@ -768,7 +768,7 @@ Table of Contents
          "name": "md",
          "renderGroup": 1,
          "packaging": "loc",
-         "type": "video",
+         "role": "video",
          "codec":"av01",
          "width":720,
          "height":640,
@@ -780,7 +780,7 @@ Table of Contents
          "name": "sd",
          "renderGroup": 1,
          "packaging": "loc",
-         "type": "video",
+         "role": "video",
          "codec":"av01",
          "width":192,
          "height":144,
@@ -792,7 +792,7 @@ Table of Contents
          "name": "audio",
          "renderGroup": 1,
          "packaging": "loc",
-         "type": "audio",
+         "role": "audio",
          "codec":"opus",
          "samplerate":48000,
          "channelConfig":"2",
@@ -837,7 +837,7 @@ Table of Contents
          "namespace": "conference.example.com/conference123/alice",
          "renderGroup": 1,
          "packaging": "loc",
-         "type": "video",
+         "role": "video",
          "codec":"av01.0.01M.10.0.110.09",
          "width":640,
          "height":480,
@@ -849,7 +849,7 @@ Table of Contents
          "namespace": "conference.example.com/conference123/alice",
          "renderGroup": 1,
          "packaging": "loc",
-         "type": "video",
+         "role": "video",
          "codec":"av01.0.04M.10.0.110.09",
          "width":640,
          "height":480,
@@ -862,7 +862,7 @@ Table of Contents
          "namespace": "conference.example.com/conference123/alice",
          "renderGroup": 1,
          "packaging": "loc",
-         "type": "video",
+         "role": "video",
          "codec":"av01.0.05M.10.0.110.09",
          "width":1920,
          "height":1080,
@@ -876,7 +876,7 @@ Table of Contents
          "namespace": "conference.example.com/conference123/alice",
          "renderGroup": 1,
          "packaging": "loc",
-         "type": "video",
+         "role": "video",
          "codec":"av01.0.08M.10.0.110.09",
          "width":1920,
          "height":1080,
@@ -889,7 +889,7 @@ Table of Contents
          "namespace": "conference.example.com/conference123/alice",
          "renderGroup": 1,
          "packaging": "loc",
-         "type": "audio",
+         "role": "audio",
          "codec":"opus",
          "samplerate":48000,
          "channelConfig":"2",
@@ -909,7 +909,7 @@ Table of Contents
      "addTracks": [
          {
            "name": "slides",
-           "type": "video",
+           "role": "video",
            "codec": "av01.0.08M.10.0.110.09",
            "width": 1920,
            "height": 1080,
@@ -952,7 +952,7 @@ Table of Contents
          "name": "1080p-video",
          "namespace": "conference.example.com/conference123/alice",
          "packaging": "loc",
-         "type": "video",
+         "role": "video",
          "renderGroup": 1,
          "codec":"av01.0.08M.10.0.110.09",
          "width":1920,
@@ -967,7 +967,7 @@ Table of Contents
          "name": "audio",
          "namespace": "conference.example.com/conference123/alice",
          "packaging": "loc",
-         "type": "audio",
+         "role": "audio",
          "renderGroup": 1,
          "codec":"opus",
          "samplerate":48000,
@@ -990,7 +990,7 @@ Table of Contents
          "name": "1080p-video",
          "namespace": "conference.example.com/conference123/alice",
          "packaging": "loc",
-         "type": "video",
+         "role": "video",
          "renderGroup": 1,
          "codec":"av01.0.08M.10.0.110.09",
          "width":1920,
@@ -1005,7 +1005,7 @@ Table of Contents
          "name": "audio",
          "namespace": "conference.example.com/conference123/alice",
          "packaging": "loc",
-         "type": "audio",
+         "role": "audio",
          "renderGroup": 1,
          "codec":"opus",
          "samplerate":48000,
@@ -1016,7 +1016,7 @@ Table of Contents
          "name": "history",
          "namespace": "conference.example.com/conference123/alice",
          "packaging": "timeline",
-         "type": "timeline",
+         "role": "timeline",
          "depends": ["1080p-video","audio"]
        }
       ]
