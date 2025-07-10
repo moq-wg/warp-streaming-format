@@ -226,6 +226,7 @@ Table 1 provides an overview of all fields defined by this document.
 | Codec                   | codec                  | {{codec}}                 |
 | Mime type               | mimeType               | {{mimetype}}              |
 | Framerate               | framerate              | {{framerate}}             |
+| Timescale               | timescale              | {{timescale}}             |
 | Bitrate                 | bitrate                | {{bitrate}}               |
 | Width                   | width                  | {{width}}                 |
 | Height                  | height                 | {{height}}                |
@@ -418,6 +419,11 @@ Location: T    Required: Optional   JSON Type: Number
 
 A number defining the video framerate of the track, expressed as frames per
 second.
+
+### Timescale {#timescale}
+Location: T    Required: Optional   JSON Type: Number
+
+The number of time units that pass per second.
 
 ### Bitrate {#bitrate}
 Location: T    Required: Optional   JSON Type: Number
