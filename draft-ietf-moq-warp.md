@@ -691,13 +691,7 @@ of the {{mediapackaging}} in place, each MOQT Object MUST be mapped to a new
 MOQT Stream.
 
 ## Group numbering
-The Group ID of the first Group in an track MUST begin with an integer which does
-not repeat in the future. One algorithm that satisifes this requirement is for the
-first Group ID in a track to be the creation time of the first Object expressed as
-the rounded number of milliseconds since Unix epoch. The purpose of this requirement
-is to ensure that republishing the same track in the future, after a loss of
-connectivity or an encoder restart, will never result in smaller or duplicate
-Group IDs being produced under the same track name.
+The Group ID of the first Group published in a track at application startup MUST be a unique integer that will not repeat in the future. One approach to achieve this is to set the initial Group ID to the creation time of the first Object in the group, represented as the number of milliseconds since the Unix epoch, rounded to the nearest millisecond. This ensures that republishing the same track in the future, such as after a loss of connectivity or an encoder restart, will not result in smaller or duplicate Group IDs for the same track name. However, this method does not prevent duplication if more than 1000 groups are published per second.
 
 Each subsequent Group ID MUST increase by 1.
 
