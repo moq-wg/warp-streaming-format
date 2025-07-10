@@ -867,13 +867,28 @@ The MOQT Groups and MOQT Objects need to be mapped to MOQT Streams. Irrespective
 of the {{mediapackaging}} in place, each MOQT Object MUST be mapped to a new
 MOQT Stream.
 
+## Group numbering
+The Group ID of the first Group published in a track at application startup MUST be
+a unique integer that will not repeat in the future. One approach to achieve this
+is to set the initial Group ID to the creation time of the first Object in the
+group, represented as the number of milliseconds since the Unix epoch, rounded to
+the nearest millisecond. This ensures that republishing the same track in the
+future, such as after a loss of connectivity or an encoder restart, will not result
+in smaller or duplicate Group IDs for the same track name. Note that this method
+does not prevent duplication if more than 1000 groups are published per second.
+
+Each subsequent Group ID MUST increase by 1.
+
+If a publisher is able to maintain state across a republish, it MUST signal the gap
+in Group IDs using the MOQT Prior Group ID Gap Extension header.
+
 # Timeline track {#timelinetrack}
 The timeline track provides data about the previously published groups and their
 relationship to wallclock time, media time and associated timed-metadata.
 Timeline tracks allow players to seek to precise points behind the live head in
-a live broadcast, or for random access in a VOD asset. A timeline track may also
+a live broadcast, or for random access in a VOD asset. A timeline track might also
 be used to insert events at media times which do not correlate with Object
-boundaries. Timeline tracks are optional. Multiple timeline tracks MAY exist
+boundaries. Timeline tracks are optional. Multiple timeline tracks can exist
 inside a catalog.
 
 ## Timeline track payload
@@ -908,10 +923,11 @@ contains an array of all track names to which the timeline track applies.
 
 ## Timeline track updating.
 The publisher MUST publish a complete timeline in the first MOQT Object of each
-MOQT Group. The publisher MAY publish incremental updates in the second and
-subsequent Objects within each GROUP. Incremental updates only contain timeline
-events since the last timeline Object. Group duration SHOULD NOT exceed 30
-seconds.
+MOQT Group of a timeline track. The publisher MAY publish incremental updates
+in the second and subsequent Objects within each GROUP. Incremental updates
+only contain timeline events since the last timeline Object. Group duration
+SHOULD not exceed 30 seconds inside a timeline track.
+
 
 # Workflow
 
