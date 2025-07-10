@@ -87,31 +87,32 @@ Table of Contents
        5.2.2.  Add tracks
        5.2.3.  Remove tracks
        5.2.4.  Clone tracks
-       5.2.5.  Tracks
-       5.2.6.  Tracks object
-       5.2.7.  Track namespace
-       5.2.8.  Track name
-       5.2.9.  Packaging
-       5.2.10. Track role
-       5.2.11. Track label
-       5.2.12. Render group
-       5.2.13. Alternate group
-       5.2.14. Initialization data
-       5.2.15. Dependencies
-       5.2.16. Temporal ID
-       5.2.17. Spatial ID
-       5.2.18. Codec
-       5.2.19. Mimetype
-       5.2.20. Framerate
-       5.2.21. Bitrate
-       5.2.22. Width
-       5.2.23. Height
-       5.2.24. Audio sample rate
-       5.2.25. Channel configuration
-       5.2.26. Display width
-       5.2.27. Display height
-       5.2.28. Language
-       5.2.29. Parent name
+       5.2.5.  Generated at
+       5.2.6.  Tracks
+       5.2.7.  Tracks object
+       5.2.8.  Track namespace
+       5.2.9.  Track name
+       5.2.10. Packaging
+       5.2.11. Track role
+       5.2.12. Track label
+       5.2.13. Render group
+       5.2.14. Alternate group
+       5.2.15. Initialization data
+       5.2.16. Dependencies
+       5.2.17. Temporal ID
+       5.2.18. Spatial ID
+       5.2.19. Codec
+       5.2.20. Mimetype
+       5.2.21. Framerate
+       5.2.22. Bitrate
+       5.2.23. Width
+       5.2.24. Height
+       5.2.25. Audio sample rate
+       5.2.26. Channel configuration
+       5.2.27. Display width
+       5.2.28. Display height
+       5.2.29. Language
+       5.2.30. Parent name
      5.3.  Delta updates
      5.4.  Catalog Examples
        5.4.1.  Time-aligned Audio/Video Tracks with single quality
@@ -242,7 +243,7 @@ Table of Contents
    Pictures (GOP) MUST be placed within the same MOQT Group.
 
    When LOC packaging is used for a track, the catalog packaging
-   attribute (Section 5.2.9) MUST be present and it MUST be populated
+   attribute (Section 5.2.10) MUST be present and it MUST be populated
    with a value of "loc".
 
 4.2.  Time-alignment
@@ -312,53 +313,55 @@ Table of Contents
         +-----------------------+---------------+----------------+
         | Clone tracks          | cloneTracks   | Section 5.2.4  |
         +-----------------------+---------------+----------------+
-        | Tracks                | tracks        | Section 5.2.5  |
+        | Generated at          | generatedAt   | Section 5.2.5  |
         +-----------------------+---------------+----------------+
-        | Track namespace       | namespace     | Section 5.2.7  |
+        | Tracks                | tracks        | Section 5.2.6  |
         +-----------------------+---------------+----------------+
-        | Track name            | name          | Section 5.2.8  |
+        | Track namespace       | namespace     | Section 5.2.8  |
         +-----------------------+---------------+----------------+
-        | Packaging             | packaging     | Section 5.2.9  |
+        | Track name            | name          | Section 5.2.9  |
         +-----------------------+---------------+----------------+
-        | Track role            | role          | Section 5.2.10 |
+        | Packaging             | packaging     | Section 5.2.10 |
         +-----------------------+---------------+----------------+
-        | Track label           | label         | Section 5.2.11 |
+        | Track role            | role          | Section 5.2.11 |
         +-----------------------+---------------+----------------+
-        | Render group          | renderGroup   | Section 5.2.12 |
+        | Track label           | label         | Section 5.2.12 |
         +-----------------------+---------------+----------------+
-        | Alternate group       | altGroup      | Section 5.2.13 |
+        | Render group          | renderGroup   | Section 5.2.13 |
         +-----------------------+---------------+----------------+
-        | Initialization data   | initData      | Section 5.2.14 |
+        | Alternate group       | altGroup      | Section 5.2.14 |
         +-----------------------+---------------+----------------+
-        | Dependencies          | depends       | Section 5.2.15 |
+        | Initialization data   | initData      | Section 5.2.15 |
         +-----------------------+---------------+----------------+
-        | Temporal ID           | temporalId    | Section 5.2.16 |
+        | Dependencies          | depends       | Section 5.2.16 |
         +-----------------------+---------------+----------------+
-        | Spatial ID            | spatialId     | Section 5.2.17 |
+        | Temporal ID           | temporalId    | Section 5.2.17 |
         +-----------------------+---------------+----------------+
-        | Codec                 | codec         | Section 5.2.18 |
+        | Spatial ID            | spatialId     | Section 5.2.18 |
         +-----------------------+---------------+----------------+
-        | Mime type             | mimeType      | Section 5.2.19 |
+        | Codec                 | codec         | Section 5.2.19 |
         +-----------------------+---------------+----------------+
-        | Framerate             | framerate     | Section 5.2.20 |
+        | Mime type             | mimeType      | Section 5.2.20 |
         +-----------------------+---------------+----------------+
-        | Bitrate               | bitrate       | Section 5.2.21 |
+        | Framerate             | framerate     | Section 5.2.21 |
         +-----------------------+---------------+----------------+
-        | Width                 | width         | Section 5.2.22 |
+        | Bitrate               | bitrate       | Section 5.2.22 |
         +-----------------------+---------------+----------------+
-        | Height                | height        | Section 5.2.23 |
+        | Width                 | width         | Section 5.2.23 |
         +-----------------------+---------------+----------------+
-        | Audio sample rate     | samplerate    | Section 5.2.24 |
+        | Height                | height        | Section 5.2.24 |
         +-----------------------+---------------+----------------+
-        | Channel configuration | channelConfig | Section 5.2.25 |
+        | Audio sample rate     | samplerate    | Section 5.2.25 |
         +-----------------------+---------------+----------------+
-        | Display width         | displayWidth  | Section 5.2.26 |
+        | Channel configuration | channelConfig | Section 5.2.26 |
         +-----------------------+---------------+----------------+
-        | Display height        | displayHeight | Section 5.2.27 |
+        | Display width         | displayWidth  | Section 5.2.27 |
         +-----------------------+---------------+----------------+
-        | Language              | lang          | Section 5.2.28 |
+        | Display height        | displayHeight | Section 5.2.28 |
         +-----------------------+---------------+----------------+
-        | Parent name           | parentName    | Section 5.2.29 |
+        | Language              | lang          | Section 5.2.29 |
+        +-----------------------+---------------+----------------+
+        | Parent name           | parentName    | Section 5.2.30 |
         +-----------------------+---------------+----------------+
 
                                  Table 1
@@ -400,16 +403,16 @@ Table of Contents
    Location: R Required: Optional JSON Type: Array
 
    Indicates a delta processing instruction to add new tracks.  The
-   value of this field is an Array of track objects Section 5.2.6.
+   value of this field is an Array of track objects Section 5.2.7.
 
 5.2.3.  Remove tracks
 
    Location: R Required: Optional JSON Type: Array
 
    Indicates a delta processing instruction to remove new tracks.  The
-   value of this field is an Array of track objects Section 5.2.6.  Each
-   track object MUST include a Track Name Section 5.2.8 field, MAY
-   include a Track Namespace Section 5.2.7 field and MUST NOT hold any
+   value of this field is an Array of track objects Section 5.2.7.  Each
+   track object MUST include a Track Name Section 5.2.9 field, MAY
+   include a Track Namespace Section 5.2.8 field and MUST NOT hold any
    other fields.
 
 5.2.4.  Clone tracks
@@ -418,21 +421,30 @@ Table of Contents
 
    Indicates a delta processing instruction to clone new tracks from
    previously declared tracks.  The value of this field is an Array of
-   track objects Section 5.2.6.  Each track object MUST include a Parent
-   Name Section 5.2.29 field.
+   track objects Section 5.2.7.  Each track object MUST include a Parent
+   Name Section 5.2.30 field.
 
-5.2.5.  Tracks
+5.2.5.  Generated at
+
+   Location: R Required: Optional JSON Type: Number
+
+   The wallclock time at which this catalog instance was generated,
+   expressed as the number of milliseconds that have elapsed since
+   January 1, 1970 (midnight UTC/GMT).  This field SHOULD NOT be
+   included if the isLive field is false.
+
+5.2.6.  Tracks
 
    Location: R Required: Yes JSON Type: Array
 
-   An array of track objects Section 5.2.6.
+   An array of track objects Section 5.2.7.
 
-5.2.6.  Tracks object
+5.2.7.  Tracks object
 
    A track object is JSON Object containing a collection of fields whose
    location is specified 'T' in Table 2.
 
-5.2.7.  Track namespace
+5.2.8.  Track namespace
 
    Location: TFC Required: Optional JSON Type: String
 
@@ -442,7 +454,7 @@ Table of Contents
    namespace of the catalog track.  A namespace declared in a track
    object overwrites any inherited name space.
 
-5.2.8.  Track name
+5.2.9.  Track name
 
    Location: T Required: Yes JSON Type: String
 
@@ -450,7 +462,7 @@ Table of Contents
    [MoQTransport].  Within the catalog, track names MUST be unique per
    namespace.
 
-5.2.9.  Packaging
+5.2.10.  Packaging
 
    Location: T Required: Yes JSON Type: String
 
@@ -469,7 +481,7 @@ Table of Contents
 
                                   Table 3
 
-5.2.10.  Track role
+5.2.11.  Track role
 
    Location: T Required: Optional JSON Type: String
 
@@ -478,7 +490,7 @@ Table of Contents
    sensitive.
 
    This role field MAY be used in conjunction with the Mimetype
-   Section 5.2.19 to fully describe the content of the track.
+   Section 5.2.20 to fully describe the content of the track.
 
    Table 4: Reserved track roles
 
@@ -510,7 +522,7 @@ Table of Contents
    Custom roles MAY be used as long as they do not collide with the
    reserved roles.
 
-5.2.11.  Track label
+5.2.12.  Track label
 
    Location: TF Required: Optional JSON Type: String
 
@@ -518,7 +530,7 @@ Table of Contents
    might be "Overhead camera view" or "Deutscher Kommentar".  Note that
    the [JSON] spec requires UTF-8 support by decoders.
 
-5.2.12.  Render group
+5.2.13.  Render group
 
    Location: TF Required: Optional JSON Type: Number
 
@@ -528,37 +540,37 @@ Table of Contents
    accompany one another.  A common example would be tying together
    audio and video tracks.
 
-5.2.13.  Alternate group
+5.2.14.  Alternate group
 
    Location: TF Required: Optional JSON Type: Number
 
    An integer specifying a group of tracks which are alternate versions
    of one-another.  Alternate tracks represent the same media content,
    but differ in their selection properties.  Alternate tracks SHOULD
-   have matching framerate Section 5.2.20 and media time sequences.  A
+   have matching framerate Section 5.2.21 and media time sequences.  A
    subscriber typically subscribes to one track from a set of tracks
    specifying the same alternate group number.  A common example would
    be a set video tracks of the same content offered in alternate
    bitrates.
 
-5.2.14.  Initialization data
+5.2.15.  Initialization data
 
    Location: TF Required: Optional JSON Type: String
 
    A string holding Base64 [BASE64] encoded initialization data for the
    track.
 
-5.2.15.  Dependencies
+5.2.16.  Dependencies
 
    Location: T Required: Optional JSON Type: Array
 
    Certain tracks may depend on other tracks for decoding.  Dependencies
-   holds an array of track names Section 5.2.8 on which the current
+   holds an array of track names Section 5.2.9 on which the current
    track is dependent.  Since only the track name is signaled, the
    namespace of the dependencies is assumed to match that of the track
    declaring the dependencies.
 
-5.2.16.  Temporal ID
+5.2.17.  Temporal ID
 
    Location: T Required: Optional JSON Type: Number
 
@@ -566,7 +578,7 @@ Table of Contents
    track, starting with 0 for the base layer, and increasing with higher
    temporal fidelity.
 
-5.2.17.  Spatial ID
+5.2.18.  Spatial ID
 
    Location: T Required: Optional JSON Type: Number
 
@@ -574,7 +586,7 @@ Table of Contents
    starting with 0 for the base layer, and increasing with higher
    fidelity.
 
-5.2.18.  Codec
+5.2.19.  Codec
 
    Location: T Required: Optional JSON Type: String
 
@@ -582,45 +594,45 @@ Table of Contents
    packaged content, the string codec registrations are defined in Sect
    3 and Section 4 of [WEBCODECS-CODEC-REGISTRY].
 
-5.2.19.  Mimetype
+5.2.20.  Mimetype
 
    Location: T Required: Optional JSON Type: String
 
    A string defining the mime type [MIME] of the track.
 
-5.2.20.  Framerate
+5.2.21.  Framerate
 
    Location: T Required: Optional JSON Type: Number
 
    A number defining the video framerate of the track, expressed as
    frames per second.
 
-5.2.21.  Bitrate
+5.2.22.  Bitrate
 
    Location: T Required: Optional JSON Type: Number
 
    A number defining the bitrate of track, expressed in bits per second.
 
-5.2.22.  Width
+5.2.23.  Width
 
    Location: T Required: Optional JSON Type: Number
 
    A number expressing the encoded width of the video frames in pixels.
 
-5.2.23.  Height
+5.2.24.  Height
 
    Location: T Required: Optional JSON Type: Number
 
    A number expressing the encoded height of the video frames in pixels.
 
-5.2.24.  Audio sample rate
+5.2.25.  Audio sample rate
 
    Location: T Required: Optional JSON Type: Number
 
    The number of audio frame samples per second.  This property SHOULD
    only accompany audio codecs.
 
-5.2.25.  Channel configuration
+5.2.26.  Channel configuration
 
    Location: T Required: Optional JSON Type: String
 
@@ -629,21 +641,21 @@ Table of Contents
    provide the flexibility to describe complex channel configurations
    for multi-channel and Next Generation Audio schemas.
 
-5.2.26.  Display width
+5.2.27.  Display width
 
    Location: T Required: Optional JSON Type: Number
 
    A number expressing the intended display width of the track content
    in pixels.
 
-5.2.27.  Display height
+5.2.28.  Display height
 
    Location: T Required: Optional JSON Type: Number
 
    A number expressing the intended display height of the track content
    in pixels.
 
-5.2.28.  Language
+5.2.29.  Language
 
    Location: T Required: Optional JSON Type: String
 
@@ -651,11 +663,11 @@ Table of Contents
    MUST be one of the standard Tags for Identifying Languages as defined
    by [LANG].
 
-5.2.29.  Parent name
+5.2.30.  Parent name
 
    Location: T Required: Optional JSON Type: String
 
-   A string defining the parent track name Section 5.2.8 to be cloned.
+   A string defining the parent track name Section 5.2.9 to be cloned.
    This field MUST only be included inside a Clone tracks Section 5.2.4
    object.
 
@@ -682,7 +694,7 @@ Table of Contents
    *  A delta update catalog MUST contain at least one instance of Add
       tracks Section 5.2.2, Remove tracks Section 5.2.3 or Clone Tracks
       Section 5.2.4 fields and MAY contain more.  It MUST NOT contain an
-      instance of a Tracks Section 5.2.5 field or a WARP version
+      instance of a Tracks Section 5.2.6 field or a WARP version
       Section 5.2 field.
 
    *  The Add, Delete and Clone operations are applied sequentially in
@@ -692,7 +704,7 @@ Table of Contents
       continues until all operations are successfully applied.
 
    *  A Cloned track inherits all the attributes of the track defined by
-      the Parent Name Section 5.2.29, except the Track Name which MUST
+      the Parent Name Section 5.2.30, except the Track Name which MUST
       be new.  Attributes redefined in the cloning Object overwrite
       inherited values.
 
@@ -714,6 +726,7 @@ Table of Contents
 
    {
      "version": 1,
+     "generatedAt": 1746104606044,
      "tracks": [
        {
          "name": "1080p-video",
@@ -751,6 +764,7 @@ Table of Contents
 
    {
      "version": 1,
+     "generatedAt": 1746104606044,
      "tracks":[
        {
          "name": "hd",
@@ -831,6 +845,7 @@ Table of Contents
 
    {
      "version": 1,
+     "generatedAt": 1746104606044,
      "tracks":[
        {
          "name": "480p15",
@@ -906,6 +921,7 @@ Table of Contents
 
    {
      "deltaUpdate": true,
+     "generatedAt": 1746104606044,
      "addTracks": [
          {
            "name": "slides",
@@ -936,6 +952,7 @@ Table of Contents
 
    {
      "deltaUpdate": true,
+     "generatedAt": 1746104606044,
      "removeTracks": [{"name": "video"},{"name": "slides"}]
    }
 
@@ -947,6 +964,7 @@ Table of Contents
 
    {
      "version": 1,
+     "generatedAt": 1746104606044,
      "tracks": [
        {
          "name": "1080p-video",
