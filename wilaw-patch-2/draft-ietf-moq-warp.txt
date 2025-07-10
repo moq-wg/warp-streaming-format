@@ -475,7 +475,9 @@ Table of Contents
    Location: T Required: Required JSON Type: Boolean
 
    True if new Objects will be added to the track.  False if no new
-   Objects will be added to the track.
+   Objects will be added to the track.  This is sent under two possible
+   conditions: * the publisher of a previously live track has ended the
+   track. * the track is Video-On-Demand (VOD) and was never live.
 
 5.2.11.  Track label
 

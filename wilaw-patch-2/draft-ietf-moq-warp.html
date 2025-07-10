@@ -1932,7 +1932,10 @@ as defined in Table 3.<a href="#section-5.2.9-2" class="pilcrow">¶</a></p>
           </h4>
 <p id="section-5.2.10-1">Location: T    Required: Required  JSON Type: Boolean<a href="#section-5.2.10-1" class="pilcrow">¶</a></p>
 <p id="section-5.2.10-2">True if new Objects will be added to the track.
-False if no new Objects will be added to the track.<a href="#section-5.2.10-2" class="pilcrow">¶</a></p>
+False if no new Objects will be added to the track. This is sent under two
+possible conditions:
+* the publisher of a previously live track has ended the track.
+* the track is Video-On-Demand (VOD) and was never live.<a href="#section-5.2.10-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="tracklabel">
