@@ -46,20 +46,26 @@ author:
     email: ikir@meta.com
 
 normative:
-  MoQTransport: I-D.draft-ietf-moq-transport-05
-  LOC: I-D.draft-mzanaty-moq-loc-03
+  MoQTransport: I-D.draft-ietf-moq-transport-11
+  LOC: I-D.draft-mzanaty-moq-loc-05
   BASE64: RFC4648
   JSON: RFC8259
   LANG: RFC5646
   MIME: RFC6838
-  JSON-PATCH: RFC6902
-  RFC5226: RFC5226
   RFC9000: RFC9000
   RFC4180: RFC4180
   WEBCODECS-CODEC-REGISTRY:
     title: "WebCodecs Codec Registry"
     date: September 2024
     target: https://www.w3.org/TR/webcodecs-codec-registry/
+  WEBVTT:
+    title: "World Wide Web Consortium (W3C), WebVTT: The Web Video Text Tracks Format"
+    date: April 2019
+    target: https://www.w3.org/TR/webvtt1/
+  IMSC1:
+    title: "W3C, TTML Profiles for Internet Media Subtitles and Captions 1.0 (IMSC1)"
+    date: April 2016
+    target: https://www.w3.org/TR/ttml-imsc1/
 
 informative:
 
@@ -91,6 +97,51 @@ This document describes version 1 of the streaming format.
 
 This document uses the conventions detailed in Section 1.3 of {{RFC9000}} when
 describing the binary encoding.
+
+# Scope
+
+The purpose of WARP is to provide an interoperable media streaming format
+operating over {{MoQTransport}}. Interoperability implies that:
+
+* An original publisher can package incoming media content into tracks, prepare
+  a catalog and annouce the availability of the content to a MOQT relay. Media
+  content refers to audio and video data, as well as ancillary data such as
+  captions, subtitles, accessibility and other timed-text data.
+* A MOQT relay can process the annoucement as well as cache and propagate the
+  tracks, both to other relays or to the final subscriber.
+* A final subscriber can parse the catalog, request tracks, decode and render
+  the received media data.
+
+WARP is intended to provide a format for delivering commercial media content. To
+that end, the following features are within scope:
+
+* Video codecs - all codecs supported by {{LOC}}
+* Audio codecs  - all audio codecs supported by {{LOC}}
+* Catalog track - describes the availability and characteristics of content
+  produced by the original publisher.
+* Timeline track - describes the relationship between MOQT Group and Object IDs
+  to media time.
+* Token-based authorization and access control
+* Captions + Subtitles - support for {{WEBVTT}} and {{IMSC1}} transmission
+* Latency support across multiple regimes (thresholds are informative only and
+  describe the delay between the original publisher placing the content on the
+  wire and the final subscriber rendering it)
+ * Real-time - less than 500ms
+ * Interactive - between 500ms and 2500ms
+ * Standard  - above 2500ms
+ * VOD latency - content that was previously produced, is no longer live and is
+   available indefinitely.
+* Content encryption
+* ABR between time-synced tracks - subscribers may switch between between tracks
+  at different quality levels in order to maximize visual or audio quality under
+  fconditions of throughput variability.
+* Capable of delivering interstitial advertising.
+* Logs and analytics management - support for the reporting of client-side QoE
+   and relay delivery actions.
+
+Initial verisons of WARP will prioritize basic features necessary to exercise
+interoperability across delivery systems. Later versions will add commercially
+necessary features.
 
 # Media packaging {#mediapackaging}
 WARP delivers LOC {{LOC}} packaged media bitstreams.
@@ -143,10 +194,10 @@ Each catalog update MUST be mapped to a discreet MOQT Object.
 ## Catalog Fields
 
 A catalog is a JSON {{JSON}} document, comprised of a series of mandatory and
-optional fields. At a minimum, a catalog MUST provide all mandatory fields and
-a 'tracks' field. A producer MAY add additional fields to the ones described in
-this draft. Custom field names MUST NOT collide with field names described in
-this draft. The order of field names within the JSON document is not important.
+optional fields. At a minimum, a catalog MUST provide all mandatory fields. A
+producer MAY add additional fields to the ones described in this draft. Custom
+field names MUST NOT collide with field names described in this draft. The order
+of field names within the JSON document is not important.
 
 A parser MUST ignore fields it does not understand.
 
@@ -155,11 +206,16 @@ Table 1 provides an overview of all fields defined by this document.
 | Field                   |  Name                  |           Definition      |
 |:========================|:=======================|:==========================|
 | WARP version            | version                | {{warpversion}}           |
-| Supports delta updates  | supportsDeltaUpdates   | {{supportsdeltaupdates}}  |
+| Delta update            | deltaUpdate            | {{deltaupdate}}           |
+| Add tracks              | addTracks              | {{addtracks}}             |
+| Remove tracks           | removeTracks           | {{removetracks}}          |
+| Clone tracks            | cloneTracks            | {{clonetracks}}           |
+| Generated at            | generatedAt            | {{generatedat}}           |
 | Tracks                  | tracks                 | {{tracks}}                |
 | Track namespace         | namespace              | {{tracknamespace}}        |
 | Track name              | name                   | {{trackname}}             |
 | Packaging               | packaging              | {{packaging}}             |
+| Track role              | role                   | {{trackrole}}             |
 | Track label             | label                  | {{tracklabel}}            |
 | Render group            | renderGroup            | {{rendergroup}}           |
 | Alternate group         | altGroup               | {{altgroup}}              |
@@ -170,6 +226,7 @@ Table 1 provides an overview of all fields defined by this document.
 | Codec                   | codec                  | {{codec}}                 |
 | Mime type               | mimeType               | {{mimetype}}              |
 | Framerate               | framerate              | {{framerate}}             |
+| Timescale               | timescale              | {{timescale}}             |
 | Bitrate                 | bitrate                | {{bitrate}}               |
 | Width                   | width                  | {{width}}                 |
 | Height                  | height                 | {{height}}                |
@@ -178,7 +235,7 @@ Table 1 provides an overview of all fields defined by this document.
 | Display width           | displayWidth           | {{displaywidth}}          |
 | Display height          | displayHeight          | {{displayheight}}         |
 | Language                | lang                   | {{language}}              |
-
+| Parent name             | parentName             | {{parentname}}            |
 
 Table 2 defines the allowed locations for these fields within the document
 
@@ -196,16 +253,41 @@ that future catalog versions are backwards compatible and field definitions and
 interpretation may change between versions. A subscriber MUST NOT attempt to
 parse a catalog version which it does not understand.
 
-
-### Supports delta updates {#supportsdeltaupdates}
+### Delta update {#deltaupdate}
 Location: R    Required: Optional    JSON Type: Boolean
 
-A Boolean that if true indicates that the publisher MAY issue incremental
-(delta) updates - see {{patch}}. If false or absent, then the publisher
-guarantees that they will NOT issue any incremental updates and that any
-future updates to the catalog will be independent. The default value is
-false. This field MUST be present if its value is true, but may be omitted
-if the value is false.
+A Boolean that if true indicates that this catalog object represents a delta
+(or partial) update. A delta update has a restricted set of fields and special
+processing rules - see {{deltaupdates}}. This value SHOULD NOT be added to a
+catalog if it is false.
+
+### Add tracks {#addtracks}
+Location: R    Required: Optional    JSON Type: Array
+
+Indicates a delta processing instruction to add new tracks. The value of this
+field is an Array of track objects {{trackobject}}.
+
+### Remove tracks {#removetracks}
+Location: R    Required: Optional    JSON Type: Array
+
+Indicates a delta processing instruction to remove new tracks. The value of this
+field is an Array of track objects {{trackobject}}. Each track object MUST include
+a Track Name {{trackname}} field, MAY include a Track Namespace {{tracknamespace}}
+field and MUST NOT hold any other fields.
+
+### Clone tracks {#clonetracks}
+Location: R    Required: Optional    JSON Type: Array
+
+Indicates a delta processing instruction to clone new tracks from previously declared
+tracks. The value of this field is an Array of track objects {{trackobject}}. Each
+track object MUST include a Parent Name {{parentname}} field.
+
+### Generated at {#generatedat}
+Location: R    Required: Optional    JSON Type: Number
+
+The wallclock time at which this catalog instance was generated, expressed as the
+number of milliseconds that have elapsed since January 1, 1970 (midnight UTC/GMT).
+This field SHOULD NOT be included if the isLive field is false.
 
 ### Tracks {#tracks}
 Location: R    Required: Yes    JSON Type: Array
@@ -213,8 +295,9 @@ Location: R    Required: Yes    JSON Type: Array
 An array of track objects {{trackobject}}.
 
 ### Tracks object {#trackobject}
-A track object is a collection of fields whose location is specified 'T' in
-Table 2.
+
+A track object is JSON Object containing a collection of fields whose location
+is specified 'T' in Table 2.
 
 ### Track namespace {#tracknamespace}
 Location: TFC    Required: Optional    JSON Type: String
@@ -238,9 +321,34 @@ as defined in Table 3.
 
 Table 3: Allowed packaging values
 
-| Name            |   Value   |      Draft       |
-|:================|:==========|:=================|
-| LOC             | "loc"     | See RFC XXXX     |
+| Name            |   Value   |      Reference        |
+|:================|:==========|:======================|
+| LOC             | loc       | See RFC XXXX          |
+| Timeline        | timeline  | See {{timelinetrack}} |
+
+### Track role {#trackrole}
+Location: T    Required: Optional   JSON Type: String
+
+A string defining the role of content carried by the track. Reserved roles
+are described in Table 4. These role values are case-sensitive.
+
+This role field MAY be used in conjunction with the Mimetype {{mimetype}} to
+fully describe the content of the track.
+
+Table 4: Reserved track roles
+
+| Role             |   Description                                              |
+|:=================|:===========================================================|
+| audiodescription | An audio description for visually impaired users           |
+| video            | Visual content                                             |
+| audio            | Audio content                                              |
+| timeline         | A WARP timeline {{timelinetrack}}                          |
+| caption          | A textual representation of the audio track                |
+| subtitle         | A transcription of the spoken dialogue                     |
+| signlanguage     | A visual track for hearing impaired users.                 |
+|------------------|------------------------------------------------------------|
+
+Custom roles MAY be used as long as they do not collide with the reserved roles.
 
 ### Track label {#tracklabel}
 Location: TF    Required: Optional   JSON Type: String
@@ -312,6 +420,11 @@ Location: T    Required: Optional   JSON Type: Number
 A number defining the video framerate of the track, expressed as frames per
 second.
 
+### Timescale {#timescale}
+Location: T    Required: Optional   JSON Type: Number
+
+The number of time units that pass per second.
+
 ### Bitrate {#bitrate}
 Location: T    Required: Optional   JSON Type: Number
 
@@ -358,34 +471,43 @@ Location: T    Required: Optional   JSON Type: String
 A string defining the dominant language of the track. The string MUST be one of
 the standard Tags for Identifying Languages as defined by {{LANG}}.
 
-## Catalog Patch {#patch}
+### Parent name {#parentname}
+Location: T    Required: Optional   JSON Type: String
+
+A string defining the parent track name {{trackname}} to be cloned. This field
+MUST only be included inside a Clone tracks {{clonetracks}} object.
+
+## Delta updates {#deltaupdates}
 A catalog update might contain incremental changes. This is a useful property if
 many tracks may be initially declared but then there are small changes to a
-subset of tracks. The producer can issue a patch to describe these small
-changes. Changes are described incrementally, meaning that a patch can itself
-modify a prior patch. Patching leverages JSON PATCH {{JSON-PATCH}} to modify the
-catalog.   JSON Patch is a format for expressing a sequence of operations to
-apply to a target JSON document.
+subset of tracks. The producer can issue a delta update to describe these changes.
+Changes are described incrementally, meaning that a delta update can itself modify
+a prior delta update.
 
-The following rules MUST be followed in processing patches:
+A restricted set of operations are allowed with each delta update:
+* Add a new track that has not previously been declared.
+* Add a new track by cloning a previously declared track.
+* Remove a track that has been previously declared.
 
-* The target JSON to be modified is the JSON document described by the preceding
-{{MoQTransport}} Object in the Catalog track, post any patching that may have
-been applied to that Object.
-* A Catalog Patch is identified by having a single array at the root level,
-holding a series of JSON objects, each object representing a single operation
-to be applied to the target JSON document.
-* Operations are applied sequentially in the order they appear in the array.
-Each operation in the sequence is applied to the target document; the
-resulting document becomes the target of the next operation.  Evaluation
-continues until all operations are successfully applied or until an error
-condition is encountered.
-* Track namespaces and track names may not be changed across patch updates
-To change either namespace or name, remove the track and then add a new track
-with matching properties and the new namespace and name.
-* Contents of the track selection properties object may not be varied across
-updates. To adjust a track selection property, the track must first be removed
-and then added with the new selection properties and a different name.
+The following rules are to be followed in constructing and processing delta updates:
+
+* A delta update MUST include the Delta Update {{deltaupdate}} field set to true.
+* A delta update catalog MUST contain at least one instance of Add tracks
+  {{addtracks}}, Remove tracks {{removetracks}} or Clone Tracks {{clonetracks}}
+  fields and MAY contain more. It MUST NOT contain an instance of a Tracks
+  {{tracks}} field or a WARP version {{warpversion}} field.
+* The Add, Delete and Clone operations are applied sequentially in the order they
+  are declared in the document. Each operation in the sequence is applied to the
+  target document; the resulting document becomes the target of the next operation.
+  Evaluation continues until all operations are successfully applied.
+* A Cloned track inherits all the attributes of the track defined by the Parent Name
+  {{parentname}}, except the Track Name which MUST be new. Attributes redefined
+  in the cloning Object overwrite inherited values.
+* The tuple of Track Namespace and Track Name defines a fixed set of Track attributes
+  which MUST NOT be modified after being declared. To modify any attribute, a new
+  track with a different Namespace|Name tuple is created by Adding or Cloning and then
+  the old track is removed.
+
 
 ## Catalog Examples
 
@@ -395,17 +517,19 @@ compliant with this draft.
 
 ### Time-aligned Audio/Video Tracks with single quality
 
-This example shows catalog for a media producer capable of sending LOC packaged,
-time-aligned audio and video tracks.
+This example shows a catalog for a media producer capable of sending LOC
+packaged, time-aligned audio and video tracks.
 
 ~~~json
 {
   "version": 1,
+  "generatedAt": 1746104606044,
   "tracks": [
     {
-      "name": "video",
+      "name": "1080p-video",
       "namespace": "conference.example.com/conference123/alice",
       "packaging": "loc",
+      "role": "video",
       "renderGroup": 1,
       "codec":"av01.0.08M.10.0.110.09",
       "width":1920,
@@ -417,6 +541,7 @@ time-aligned audio and video tracks.
       "name": "audio",
       "namespace": "conference.example.com/conference123/alice",
       "packaging": "loc",
+      "role": "audio",
       "renderGroup": 1,
       "codec":"opus",
       "samplerate":48000,
@@ -436,19 +561,18 @@ This example shows catalog for a media producer capable of sending 3
 time-aligned video tracks for high definition, low definition and medium
 definition video qualities, along with an audio track. In this example the
 namespace is absent, which infers that each track must inherit the namespace
-of the catalog. Additionally this example shows the presence of the
-supportsDeltaUpdates flag.
-
+of the catalog.
 
 ~~~json
 {
   "version": 1,
-  "supportsDeltaUpdates": true,
+  "generatedAt": 1746104606044,
   "tracks":[
     {
       "name": "hd",
       "renderGroup": 1,
       "packaging": "loc",
+      "role": "video",
       "codec":"av01",
       "width":1920,
       "height":1080,
@@ -460,6 +584,7 @@ supportsDeltaUpdates flag.
       "name": "md",
       "renderGroup": 1,
       "packaging": "loc",
+      "role": "video",
       "codec":"av01",
       "width":720,
       "height":640,
@@ -471,6 +596,7 @@ supportsDeltaUpdates flag.
       "name": "sd",
       "renderGroup": 1,
       "packaging": "loc",
+      "role": "video",
       "codec":"av01",
       "width":192,
       "height":144,
@@ -482,6 +608,7 @@ supportsDeltaUpdates flag.
       "name": "audio",
       "renderGroup": 1,
       "packaging": "loc",
+      "role": "audio",
       "codec":"opus",
       "samplerate":48000,
       "channelConfig":"2",
@@ -529,13 +656,14 @@ express the track relationships.
 ~~~json
 {
   "version": 1,
-  "supportsDeltaUpdates": true,
+  "generatedAt": 1746104606044,
   "tracks":[
     {
       "name": "480p15",
       "namespace": "conference.example.com/conference123/alice",
       "renderGroup": 1,
       "packaging": "loc",
+      "role": "video",
       "codec":"av01.0.01M.10.0.110.09",
       "width":640,
       "height":480,
@@ -547,6 +675,7 @@ express the track relationships.
       "namespace": "conference.example.com/conference123/alice",
       "renderGroup": 1,
       "packaging": "loc",
+      "role": "video",
       "codec":"av01.0.04M.10.0.110.09",
       "width":640,
       "height":480,
@@ -559,6 +688,7 @@ express the track relationships.
       "namespace": "conference.example.com/conference123/alice",
       "renderGroup": 1,
       "packaging": "loc",
+      "role": "video",
       "codec":"av01.0.05M.10.0.110.09",
       "width":1920,
       "height":1080,
@@ -572,6 +702,7 @@ express the track relationships.
       "namespace": "conference.example.com/conference123/alice",
       "renderGroup": 1,
       "packaging": "loc",
+      "role": "video",
       "codec":"av01.0.08M.10.0.110.09",
       "width":1920,
       "height":1080,
@@ -584,6 +715,7 @@ express the track relationships.
       "namespace": "conference.example.com/conference123/alice",
       "renderGroup": 1,
       "packaging": "loc",
+      "role": "audio",
       "codec":"opus",
       "samplerate":48000,
       "channelConfig":"2",
@@ -593,54 +725,51 @@ express the track relationships.
 }
 ~~~
 
-### Patch update adding a track
+### Delta update  - adding two tracks
 
-This example shows catalog for the media producer adding a slide track to an
-established video conference.
+This example shows the catalog delta update for a media producer adding
+two tracks to an established video conference. One track is newly declared,
+the other is cloned from a previous track.
 
 ~~~json
-[
-    {
-        "op": "add",
-        "path": "/tracks/-",
-        "value": {
-            "name": "slides",
-            "codec": "av01.0.08M.10.0.110.09",
-            "width": 1920,
-            "height": 1080,
-            "framerate": 15,
-            "bitrate": 750000,
-            "renderGroup": 1
-        }
-    }
-]
-
-
+{
+  "deltaUpdate": true,
+  "generatedAt": 1746104606044,
+  "addTracks": [
+      {
+        "name": "slides",
+        "role": "video",
+        "codec": "av01.0.08M.10.0.110.09",
+        "width": 1920,
+        "height": 1080,
+        "framerate": 15,
+        "bitrate": 750000,
+        "renderGroup": 1
+      }
+   ],
+   "cloneTracks": [
+      {
+        "parentName": "video-1080",
+        "name": "video-720",
+        "width":1280,
+        "height":720,
+        "bitrate":600000
+      }
+   ]
+}
 ~~~
 
-### Patch update removing a track
+### Delta update removing tracks
 
-This example shows patch catalog update for a media producer removing the track
+This example shows a delta update for a media producer removing two tracks
 from an established video conference.
 
 ~~~json
-[
-  { "op": "remove", "path": "/tracks/2"}
-]
-~~~
-
-### Patch update removing all tracks and terminating the broadcast
-
-This example shows a patch catalog update for a media producer removing all
-tracks and terminating the broadcast.
-
-~~~json
-[
-  { "op": "remove", "path": "/tracks/2"},
-  { "op": "remove", "path": "/tracks/1"},
-  { "op": "remove", "path": "/tracks/0"},
-]
-
+{
+  "deltaUpdate": true,
+  "generatedAt": 1746104606044,
+  "removeTracks": [{"name": "video"},{"name": "slides"}]
+}
 ~~~
 
 
@@ -653,11 +782,13 @@ description.
 ~~~json
 {
   "version": 1,
+  "generatedAt": 1746104606044,
   "tracks": [
     {
-      "name": "video",
+      "name": "1080p-video",
       "namespace": "conference.example.com/conference123/alice",
       "packaging": "loc",
+      "role": "video",
       "renderGroup": 1,
       "codec":"av01.0.08M.10.0.110.09",
       "width":1920,
@@ -672,6 +803,7 @@ description.
       "name": "audio",
       "namespace": "conference.example.com/conference123/alice",
       "packaging": "loc",
+      "role": "audio",
       "renderGroup": 1,
       "codec":"opus",
       "samplerate":48000,
@@ -683,7 +815,52 @@ description.
 
 ~~~
 
+### Time-aligned Audio/Video Tracks with a timeline track
 
+This example shows catalog for a media producer capable of sending LOC packaged,
+time-aligned audio and video tracks along with a timeline track.
+
+~~~json
+{
+  "version": 1,
+  "tracks": [
+    {
+      "name": "1080p-video",
+      "namespace": "conference.example.com/conference123/alice",
+      "packaging": "loc",
+      "role": "video",
+      "renderGroup": 1,
+      "codec":"av01.0.08M.10.0.110.09",
+      "width":1920,
+      "height":1080,
+      "framerate":30,
+      "bitrate":1500000,
+      "com.example-billing-code": 3201,
+      "com.example-tier": "premium",
+      "com.example-debug": "h349835bfkjfg82394d945034jsdfn349fns"
+    },
+    {
+      "name": "audio",
+      "namespace": "conference.example.com/conference123/alice",
+      "packaging": "loc",
+      "role": "audio",
+      "renderGroup": 1,
+      "codec":"opus",
+      "samplerate":48000,
+      "channelConfig":"2",
+      "bitrate":32000
+    },
+    {
+      "name": "history",
+      "namespace": "conference.example.com/conference123/alice",
+      "packaging": "timeline",
+      "role": "timeline",
+      "depends": ["1080p-video","audio"]
+    }
+   ]
+}
+
+~~~
 
 # Media transmission
 The MOQT Groups and MOQT Objects need to be mapped to MOQT Streams. Irrespective
@@ -691,14 +868,21 @@ of the {{mediapackaging}} in place, each MOQT Object MUST be mapped to a new
 MOQT Stream.
 
 ## Group numbering
-The Group ID of the first Group published in a track at application startup MUST be a unique integer that will not repeat in the future. One approach to achieve this is to set the initial Group ID to the creation time of the first Object in the group, represented as the number of milliseconds since the Unix epoch, rounded to the nearest millisecond. This ensures that republishing the same track in the future, such as after a loss of connectivity or an encoder restart, will not result in smaller or duplicate Group IDs for the same track name. However, this method does not prevent duplication if more than 1000 groups are published per second.
+The Group ID of the first Group published in a track at application startup MUST be
+a unique integer that will not repeat in the future. One approach to achieve this
+is to set the initial Group ID to the creation time of the first Object in the
+group, represented as the number of milliseconds since the Unix epoch, rounded to
+the nearest millisecond. This ensures that republishing the same track in the
+future, such as after a loss of connectivity or an encoder restart, will not result
+in smaller or duplicate Group IDs for the same track name. Note that this method
+does not prevent duplication if more than 1000 groups are published per second.
 
 Each subsequent Group ID MUST increase by 1.
 
 If a publisher is able to maintain state across a republish, it MUST signal the gap
 in Group IDs using the MOQT Prior Group ID Gap Extension header.
 
-# Timeline track
+# Timeline track {#timelinetrack}
 The timeline track provides data about the previously published groups and their
 relationship to wallclock time, media time and associated timed-metadata.
 Timeline tracks allow players to seek to precise points behind the live head in
@@ -718,7 +902,7 @@ Each timeline track begins with a header row of MEDIA_PTS,GROUP_ID,OBJECT_ID,
 WALLCLOCK,METADATA. This row defines the 5 columns of data within each record.
 
 * MEDIA_PTS: a media timestamp rounded to the nearest millisecond. This entry
-  MUST not be empty. If the Object ID entry is present, then this value MUST
+  MUST NOT be empty. If the Object ID entry is present, then this value MUST
   match the media presentation timestamp of the first media sample in the
   referenced Object.
 * GROUP_ID: the MOQT Group ID. This entry MAY be empty.
@@ -734,7 +918,7 @@ WALLCLOCK,METADATA. This row defines the 5 columns of data within each record.
 
 ## Timeline Catalog requirements
 A timeline track MUST carry a 'type' identifier in the Catalog with a value of
-"timeline". A timeline track MUST carry a 'dependencies' attribute which
+"timeline". A timeline track MUST carry a 'dependes' attribute which
 contains an array of all track names to which the timeline track applies.
 
 ## Timeline track updating.
@@ -743,6 +927,7 @@ MOQT Group of a timeline track. The publisher MAY publish incremental updates
 in the second and subsequent Objects within each GROUP. Incremental updates
 only contain timeline events since the last timeline Object. Group duration
 SHOULD not exceed 30 seconds inside a timeline track.
+
 
 # Workflow
 
