@@ -988,6 +988,7 @@ track objects.
 After publishing a catalog and defining tracks carrying live content, an original
 publisher can deliver a deterministic signal to all subscribers that it is complete
 by taking the following steps:
+
 * Send a SUBSCRIBE_DONE (See MOQT Sect 8.1.2) message for all active tracks using
   status code 0x2	Track Ended.
 * Publish a catalog update, either absolute or as delta update, which signals
