@@ -2865,11 +2865,17 @@ track objects.<a href="#section-8-1" class="pilcrow">¶</a></p>
         </h3>
 <p id="section-8.1-1">After publishing a catalog and defining tracks carrying live content, an original
 publisher can deliver a deterministic signal to all subscribers that it is complete
-by taking the following steps:
-* Send a SUBSCRIBE_DONE (See MOQT Sect 8.1.2) message for all active tracks using
-  status code 0x2       Track Ended.
-* Publish a catalog update, either absolute or as delta update, which signals
-  isComplete as TRUE.<a href="#section-8.1-1" class="pilcrow">¶</a></p>
+by taking the following steps:<a href="#section-8.1-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-8.1-2.1">
+            <p id="section-8.1-2.1.1">Send a SUBSCRIBE_DONE (See MOQT Sect 8.1.2) message for all active tracks using
+status code 0x2       Track Ended.<a href="#section-8.1-2.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-8.1-2.2">
+            <p id="section-8.1-2.2.1">Publish a catalog update, either absolute or as delta update, which signals
+isComplete as TRUE.<a href="#section-8.1-2.2.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
 </section>
 </div>
 </section>
