@@ -212,6 +212,7 @@ Table 1 provides an overview of all fields defined by this document.
 | Remove tracks           | removeTracks           | {{removetracks}}          |
 | Clone tracks            | cloneTracks            | {{clonetracks}}           |
 | Generated at            | generatedAt            | {{generatedat}}           |
+| Is Complete             | isComplete             | {{iscomplete}}            |
 | Tracks                  | tracks                 | {{tracks}}                |
 | Track namespace         | namespace              | {{tracknamespace}}        |
 | Track name              | name                   | {{trackname}}             |
@@ -291,6 +292,13 @@ Location: R    Required: Optional    JSON Type: Number
 The wallclock time at which this catalog instance was generated, expressed as the
 number of milliseconds that have elapsed since January 1, 1970 (midnight UTC/GMT).
 This field SHOULD NOT be included if the isLive field is false.
+
+### Is Complete {#iscomplete}
+Location: R    Required: Optional    JSON Type: Boolean
+
+Issued once a previously live broadcast is complete. This is a commitment that all
+tracks are complete, no new tracks will be added and no new content will be
+published. This field MUST NOT be included if it is FALSE.
 
 ### Tracks {#tracks}
 Location: R    Required: Yes    JSON Type: Array
@@ -889,6 +897,20 @@ and video tracks.
 
 ~~~
 
+### Terminating a live broadcast
+
+This example shows catalog for a media producer terminating a previously
+live broadcast containing a video and an audio track. 
+
+~~~json
+{
+  "version": 1,
+  "generatedAt": 1746104606044,
+  "isComplete": TRUE
+}
+
+~~~
+
 
 # Media transmission
 The MOQT Groups and MOQT Objects need to be mapped to MOQT Streams. Irrespective
@@ -962,10 +984,14 @@ SHOULD not exceed 30 seconds inside a timeline track.
 A WARP publisher MUST publish a catalog track object before publishing any media
 track objects.
 
-At the completion of a session, a publisher MUST publish a catalog update that
-removes all currently active tracks.  This action SHOULD be interpreted by
-receivers to mean that the publish session is complete.
-
+## Ending a live broadcast
+After publishing a catalog and defining tracks carrying live content, an original
+publisher can deliver a deterministic signal to all subscribers that it is complete
+by taking the following steps:
+* Send a SUBSCRIBE_DONE (See MOQT Sect 8.1.2) message for all active tracks using
+  status code 0x2	Track Ended.
+* Publish a catalog update, either absolute or as delta update, which signals
+  isComplete as TRUE.
 
 # Security Considerations
 
