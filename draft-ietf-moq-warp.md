@@ -900,7 +900,7 @@ and video tracks.
 ### Terminating a live broadcast
 
 This example shows catalog for a media producer terminating a previously
-live broadcast containing a video and an audio track. 
+live broadcast containing a video and an audio track.
 
 ~~~json
 {
