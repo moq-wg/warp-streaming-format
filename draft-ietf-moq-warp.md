@@ -217,6 +217,7 @@ Table 1 provides an overview of all fields defined by this document.
 | Track name              | name                   | {{trackname}}             |
 | Packaging               | packaging              | {{packaging}}             |
 | Is Live                 | isLive                 | {{islive}}                |
+| Target latency          | targetLatency          | {{targetlatency}}         |
 | Track role              | role                   | {{trackrole}}             |
 | Track label             | label                  | {{tracklabel}}            |
 | Render group            | renderGroup            | {{rendergroup}}           |
@@ -361,6 +362,19 @@ False if no new Objects will be added to the track. This is sent under two
 possible conditions:
 * the publisher of a previously live track has ended the track.
 * the track is Video-On-Demand (VOD) and was never live.
+
+### Target latency {#targetlatency}
+Location: T    Required: Optional  JSON Type: Number
+
+The target latency in milliseconds. Target latency is defined as the offset in
+wallclock time between when content was encoded and when it is displayed to the
+end user. For example, if a frame of video is encoded at 10:08:32.638 UTC and the
+target latency is 5000, then that frame should be rendered to the end-user at
+10:08:37.638 UTC. This field MUST NOT be included if isLive is FALSE. All tracks
+belonging to the same render group MUST have identical target latencies. All tracks
+belonging to the same alternate group MUST have identical target latencies. If this
+field is absent from the track definition, then the player MAY choose the latency
+with which it renders the content.
 
 ### Track label {#tracklabel}
 Location: TF    Required: Optional   JSON Type: String
@@ -548,6 +562,7 @@ packaged, time-aligned audio and video tracks.
       "namespace": "conference.example.com/conference123/alice",
       "packaging": "loc",
       "isLive": true,
+      "targetLatency": 2000,
       "role": "video",
       "renderGroup": 1,
       "codec":"av01.0.08M.10.0.110.09",
@@ -561,6 +576,7 @@ packaged, time-aligned audio and video tracks.
       "namespace": "conference.example.com/conference123/alice",
       "packaging": "loc",
       "isLive": true,
+      "targetLatency": 2000,
       "role": "audio",
       "renderGroup": 1,
       "codec":"opus",
@@ -593,6 +609,7 @@ of the catalog.
       "renderGroup": 1,
       "packaging": "loc",
       "isLive": true,
+      "targetLatency": 1500,
       "role": "video",
       "codec":"av01",
       "width":1920,
@@ -606,6 +623,7 @@ of the catalog.
       "renderGroup": 1,
       "packaging": "loc",
       "isLive": true,
+      "targetLatency": 1500,
       "role": "video",
       "codec":"av01",
       "width":720,
@@ -619,6 +637,7 @@ of the catalog.
       "renderGroup": 1,
       "packaging": "loc",
       "isLive": true,
+      "targetLatency": 1500,
       "role": "video",
       "codec":"av01",
       "width":192,
@@ -632,6 +651,7 @@ of the catalog.
       "renderGroup": 1,
       "packaging": "loc",
       "isLive": true,
+      "targetLatency": 1500,
       "role": "audio",
       "codec":"opus",
       "samplerate":48000,
