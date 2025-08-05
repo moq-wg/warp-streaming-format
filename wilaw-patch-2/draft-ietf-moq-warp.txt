@@ -5,14 +5,14 @@
 Media Over QUIC                                                   W. Law
 Internet-Draft                                                    Akamai
 Intended status: Informational                                 L. Curley
-Expires: 11 January 2026                                          Twitch
+Expires: 6 February 2026                                          Twitch
                                                              V. Vasiliev
                                                                   Google
                                                            S. Nandakumar
                                                                    Cisco
                                                                 K. Pugin
                                                                     Meta
-                                                            10 July 2025
+                                                           5 August 2025
 
 
                          WARP Streaming Format
@@ -55,7 +55,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 11 January 2026.
+   This Internet-Draft will expire on 6 February 2026.
 
 Copyright Notice
 
@@ -95,27 +95,28 @@ Table of Contents
        5.2.10. Packaging
        5.2.11. Track role
        5.2.12. Is Live
-       5.2.13. Track label
-       5.2.14. Render group
-       5.2.15. Alternate group
-       5.2.16. Initialization data
-       5.2.17. Dependencies
-       5.2.18. Temporal ID
-       5.2.19. Spatial ID
-       5.2.20. Codec
-       5.2.21. Mimetype
-       5.2.22. Framerate
-       5.2.23. Timescale
-       5.2.24. Bitrate
-       5.2.25. Width
-       5.2.26. Height
-       5.2.27. Audio sample rate
-       5.2.28. Channel configuration
-       5.2.29. Display width
-       5.2.30. Display height
-       5.2.31. Language
-       5.2.32. Parent name
-       5.2.33. Track duration
+       5.2.13. Target latency
+       5.2.14. Track label
+       5.2.15. Render group
+       5.2.16. Alternate group
+       5.2.17. Initialization data
+       5.2.18. Dependencies
+       5.2.19. Temporal ID
+       5.2.20. Spatial ID
+       5.2.21. Codec
+       5.2.22. Mimetype
+       5.2.23. Framerate
+       5.2.24. Timescale
+       5.2.25. Bitrate
+       5.2.26. Width
+       5.2.27. Height
+       5.2.28. Audio sample rate
+       5.2.29. Channel configuration
+       5.2.30. Display width
+       5.2.31. Display height
+       5.2.32. Language
+       5.2.33. Parent name
+       5.2.34. Track duration
      5.3.  Delta updates
      5.4.  Catalog Examples
        5.4.1.  Time-aligned Audio/Video Tracks with single quality
@@ -329,49 +330,51 @@ Table of Contents
         +-----------------------+---------------+----------------+
         | Is Live               | isLive        | Section 5.2.12 |
         +-----------------------+---------------+----------------+
+        | Target latency        | targetLatency | Section 5.2.13 |
+        +-----------------------+---------------+----------------+
         | Track role            | role          | Section 5.2.11 |
         +-----------------------+---------------+----------------+
-        | Track label           | label         | Section 5.2.13 |
+        | Track label           | label         | Section 5.2.14 |
         +-----------------------+---------------+----------------+
-        | Render group          | renderGroup   | Section 5.2.14 |
+        | Render group          | renderGroup   | Section 5.2.15 |
         +-----------------------+---------------+----------------+
-        | Alternate group       | altGroup      | Section 5.2.15 |
+        | Alternate group       | altGroup      | Section 5.2.16 |
         +-----------------------+---------------+----------------+
-        | Initialization data   | initData      | Section 5.2.16 |
+        | Initialization data   | initData      | Section 5.2.17 |
         +-----------------------+---------------+----------------+
-        | Dependencies          | depends       | Section 5.2.17 |
+        | Dependencies          | depends       | Section 5.2.18 |
         +-----------------------+---------------+----------------+
-        | Temporal ID           | temporalId    | Section 5.2.18 |
+        | Temporal ID           | temporalId    | Section 5.2.19 |
         +-----------------------+---------------+----------------+
-        | Spatial ID            | spatialId     | Section 5.2.19 |
+        | Spatial ID            | spatialId     | Section 5.2.20 |
         +-----------------------+---------------+----------------+
-        | Codec                 | codec         | Section 5.2.20 |
+        | Codec                 | codec         | Section 5.2.21 |
         +-----------------------+---------------+----------------+
-        | Mime type             | mimeType      | Section 5.2.21 |
+        | Mime type             | mimeType      | Section 5.2.22 |
         +-----------------------+---------------+----------------+
-        | Framerate             | framerate     | Section 5.2.22 |
+        | Framerate             | framerate     | Section 5.2.23 |
         +-----------------------+---------------+----------------+
-        | Timescale             | timescale     | Section 5.2.23 |
+        | Timescale             | timescale     | Section 5.2.24 |
         +-----------------------+---------------+----------------+
-        | Bitrate               | bitrate       | Section 5.2.24 |
+        | Bitrate               | bitrate       | Section 5.2.25 |
         +-----------------------+---------------+----------------+
-        | Width                 | width         | Section 5.2.25 |
+        | Width                 | width         | Section 5.2.26 |
         +-----------------------+---------------+----------------+
-        | Height                | height        | Section 5.2.26 |
+        | Height                | height        | Section 5.2.27 |
         +-----------------------+---------------+----------------+
-        | Audio sample rate     | samplerate    | Section 5.2.27 |
+        | Audio sample rate     | samplerate    | Section 5.2.28 |
         +-----------------------+---------------+----------------+
-        | Channel configuration | channelConfig | Section 5.2.28 |
+        | Channel configuration | channelConfig | Section 5.2.29 |
         +-----------------------+---------------+----------------+
-        | Display width         | displayWidth  | Section 5.2.29 |
+        | Display width         | displayWidth  | Section 5.2.30 |
         +-----------------------+---------------+----------------+
-        | Display height        | displayHeight | Section 5.2.30 |
+        | Display height        | displayHeight | Section 5.2.31 |
         +-----------------------+---------------+----------------+
-        | Language              | lang          | Section 5.2.31 |
+        | Language              | lang          | Section 5.2.32 |
         +-----------------------+---------------+----------------+
-        | Parent name           | parentName    | Section 5.2.32 |
+        | Parent name           | parentName    | Section 5.2.33 |
         +-----------------------+---------------+----------------+
-        | Track duration        | trackDuration | Section 5.2.33 |
+        | Track duration        | trackDuration | Section 5.2.34 |
         +-----------------------+---------------+----------------+
 
                                  Table 1
@@ -432,7 +435,7 @@ Table of Contents
    Indicates a delta processing instruction to clone new tracks from
    previously declared tracks.  The value of this field is an Array of
    track objects Section 5.2.7.  Each track object MUST include a Parent
-   Name Section 5.2.32 field.
+   Name Section 5.2.33 field.
 
 5.2.5.  Generated at
 
@@ -500,7 +503,7 @@ Table of Contents
    sensitive.
 
    This role field MAY be used in conjunction with the Mimetype
-   Section 5.2.21 to fully describe the content of the track.
+   Section 5.2.22 to fully describe the content of the track.
 
    Table 4: Reserved track roles
 
@@ -541,7 +544,23 @@ Table of Contents
    conditions: * the publisher of a previously live track has ended the
    track. * the track is Video-On-Demand (VOD) and was never live.
 
-5.2.13.  Track label
+5.2.13.  Target latency
+
+   Location: T Required: Optional JSON Type: Number
+
+   The target latency in milliseconds.  Target latency is defined as the
+   offset in wallclock time between when content was encoded and when it
+   is displayed to the end user.  For example, if a frame of video is
+   encoded at 10:08:32.638 UTC and the target latency is 5000, then that
+   frame should be rendered to the end-user at 10:08:37.638 UTC.  This
+   field MUST NOT be included if isLive is FALSE.  All tracks belonging
+   to the same render group MUST have identical target latencies.  All
+   tracks belonging to the same alternate group MUST have identical
+   target latencies.  If this field is absent from the track definition,
+   then the player MAY choose the latency with which it renders the
+   content.
+
+5.2.14.  Track label
 
    Location: TF Required: Optional JSON Type: String
 
@@ -549,7 +568,7 @@ Table of Contents
    might be "Overhead camera view" or "Deutscher Kommentar".  Note that
    the [JSON] spec requires UTF-8 support by decoders.
 
-5.2.14.  Render group
+5.2.15.  Render group
 
    Location: T Required: Optional JSON Type: Number
 
@@ -559,27 +578,27 @@ Table of Contents
    accompany one another.  A common example would be tying together
    audio and video tracks.
 
-5.2.15.  Alternate group
+5.2.16.  Alternate group
 
    Location: T Required: Optional JSON Type: Number
 
    An integer specifying a group of tracks which are alternate versions
    of one-another.  Alternate tracks represent the same media content,
    but differ in their selection properties.  Alternate tracks SHOULD
-   have matching framerate Section 5.2.22 and media time sequences.  A
+   have matching framerate Section 5.2.23 and media time sequences.  A
    subscriber typically subscribes to one track from a set of tracks
    specifying the same alternate group number.  A common example would
    be a set video tracks of the same content offered in alternate
    bitrates.
 
-5.2.16.  Initialization data
+5.2.17.  Initialization data
 
    Location: T Required: Optional JSON Type: String
 
    A string holding Base64 [BASE64] encoded initialization data for the
    track.
 
-5.2.17.  Dependencies
+5.2.18.  Dependencies
 
    Location: T Required: Optional JSON Type: Array
 
@@ -589,7 +608,7 @@ Table of Contents
    namespace of the dependencies is assumed to match that of the track
    declaring the dependencies.
 
-5.2.18.  Temporal ID
+5.2.19.  Temporal ID
 
    Location: T Required: Optional JSON Type: Number
 
@@ -597,7 +616,7 @@ Table of Contents
    track, starting with 0 for the base layer, and increasing with higher
    temporal fidelity.
 
-5.2.19.  Spatial ID
+5.2.20.  Spatial ID
 
    Location: T Required: Optional JSON Type: Number
 
@@ -605,7 +624,7 @@ Table of Contents
    starting with 0 for the base layer, and increasing with higher
    fidelity.
 
-5.2.20.  Codec
+5.2.21.  Codec
 
    Location: T Required: Optional JSON Type: String
 
@@ -613,51 +632,51 @@ Table of Contents
    packaged content, the string codec registrations are defined in Sect
    3 and Section 4 of [WEBCODECS-CODEC-REGISTRY].
 
-5.2.21.  Mimetype
+5.2.22.  Mimetype
 
    Location: T Required: Optional JSON Type: String
 
    A string defining the mime type [MIME] of the track.
 
-5.2.22.  Framerate
+5.2.23.  Framerate
 
    Location: T Required: Optional JSON Type: Number
 
    A number defining the video framerate of the track, expressed as
    frames per second.
 
-5.2.23.  Timescale
+5.2.24.  Timescale
 
    Location: T Required: Optional JSON Type: Number
 
    The number of time units that pass per second.
 
-5.2.24.  Bitrate
+5.2.25.  Bitrate
 
    Location: T Required: Optional JSON Type: Number
 
    A number defining the bitrate of track, expressed in bits per second.
 
-5.2.25.  Width
+5.2.26.  Width
 
    Location: T Required: Optional JSON Type: Number
 
    A number expressing the encoded width of the video frames in pixels.
 
-5.2.26.  Height
+5.2.27.  Height
 
    Location: T Required: Optional JSON Type: Number
 
    A number expressing the encoded height of the video frames in pixels.
 
-5.2.27.  Audio sample rate
+5.2.28.  Audio sample rate
 
    Location: T Required: Optional JSON Type: Number
 
    The number of audio frame samples per second.  This property SHOULD
    only accompany audio codecs.
 
-5.2.28.  Channel configuration
+5.2.29.  Channel configuration
 
    Location: T Required: Optional JSON Type: String
 
@@ -666,21 +685,21 @@ Table of Contents
    provide the flexibility to describe complex channel configurations
    for multi-channel and Next Generation Audio schemas.
 
-5.2.29.  Display width
+5.2.30.  Display width
 
    Location: T Required: Optional JSON Type: Number
 
    A number expressing the intended display width of the track content
    in pixels.
 
-5.2.30.  Display height
+5.2.31.  Display height
 
    Location: T Required: Optional JSON Type: Number
 
    A number expressing the intended display height of the track content
    in pixels.
 
-5.2.31.  Language
+5.2.32.  Language
 
    Location: T Required: Optional JSON Type: String
 
@@ -688,7 +707,7 @@ Table of Contents
    MUST be one of the standard Tags for Identifying Languages as defined
    by [LANG].
 
-5.2.32.  Parent name
+5.2.33.  Parent name
 
    Location: T Required: Optional JSON Type: String
 
@@ -696,7 +715,7 @@ Table of Contents
    This field MUST only be included inside a Clone tracks Section 5.2.4
    object.
 
-5.2.33.  Track duration
+5.2.34.  Track duration
 
    Location: T Required: Optional JSON Type: Number
 
@@ -737,7 +756,7 @@ Table of Contents
       continues until all operations are successfully applied.
 
    *  A Cloned track inherits all the attributes of the track defined by
-      the Parent Name Section 5.2.32, except the Track Name which MUST
+      the Parent Name Section 5.2.33, except the Track Name which MUST
       be new.  Attributes redefined in the cloning Object overwrite
       inherited values.
 
@@ -766,6 +785,7 @@ Table of Contents
          "namespace": "conference.example.com/conference123/alice",
          "packaging": "loc",
          "isLive": true,
+         "targetLatency": 2000,
          "role": "video",
          "renderGroup": 1,
          "codec":"av01.0.08M.10.0.110.09",
@@ -779,6 +799,7 @@ Table of Contents
          "namespace": "conference.example.com/conference123/alice",
          "packaging": "loc",
          "isLive": true,
+         "targetLatency": 2000,
          "role": "audio",
          "renderGroup": 1,
          "codec":"opus",
@@ -806,6 +827,7 @@ Table of Contents
          "renderGroup": 1,
          "packaging": "loc",
          "isLive": true,
+         "targetLatency": 1500,
          "role": "video",
          "codec":"av01",
          "width":1920,
@@ -819,6 +841,7 @@ Table of Contents
          "renderGroup": 1,
          "packaging": "loc",
          "isLive": true,
+         "targetLatency": 1500,
          "role": "video",
          "codec":"av01",
          "width":720,
@@ -832,6 +855,7 @@ Table of Contents
          "renderGroup": 1,
          "packaging": "loc",
          "isLive": true,
+         "targetLatency": 1500,
          "role": "video",
          "codec":"av01",
          "width":192,
@@ -845,6 +869,7 @@ Table of Contents
          "renderGroup": 1,
          "packaging": "loc",
          "isLive": true,
+         "targetLatency": 1500,
          "role": "audio",
          "codec":"opus",
          "samplerate":48000,
