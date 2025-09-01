@@ -105,7 +105,7 @@ The purpose of WARP is to provide an interoperable media streaming format
 operating over {{MoQTransport}}. Interoperability implies that:
 
 * An original publisher can package incoming media content into tracks, prepare
-  a catalog and annouce the availability of the content to an MOQT relay. Media
+  a catalog and announce the availability of the content to an MOQT relay. Media
   content refers to audio and video data, as well as ancillary data such as
   captions, subtitles, accessibility and other timed-text data.
 * An MOQT relay can process the annoucement as well as cache and propagate the
