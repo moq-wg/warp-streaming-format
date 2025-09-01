@@ -108,7 +108,7 @@ operating over {{MoQTransport}}. Interoperability implies that:
   a catalog and announce the availability of the content to an MOQT relay. Media
   content refers to audio and video data, as well as ancillary data such as
   captions, subtitles, accessibility and other timed-text data.
-* An MOQT relay can process the annoucement as well as cache and propagate the
+* An MOQT relay can process the announcement as well as cache and propagate the
   tracks, both to other relays or to the final subscriber.
 * A final subscriber can parse the catalog, request tracks, decode and render
   the received media data.
