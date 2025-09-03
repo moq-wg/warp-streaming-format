@@ -945,19 +945,19 @@ Comma-Separated Values (CSV)" Files {{RFC4180}}. The separator is a comma and
 each line is separated by a carriage return. The mime-type of a timeline track
 MUST be specified as "text/csv" in the catalog.
 
-Each timeline track begins with a header row of MEDIA_PTS,GROUP_ID,OBJECT_ID,
+Each timeline track begins with a header row of GROUP_ID,OBJECT_ID,MEDIA_PTS,
 WALLCLOCK,METADATA. This row defines the 5 columns of data within each record.
 
+* GROUP_ID: the MOQT Group ID. This entry MUST not be empty.
+* OBJECT_ID: the MOQT Object ID. This entry MAY be empty. If this entry is
+  present and equal to -1, the Object ID is unknow. Otherwise if this entry
+  is absent, the the Object ID is 0.
 * MEDIA_PTS: a media timestamp rounded to the nearest millisecond. This entry
   MUST NOT be empty. If the Object ID entry is present and equal to -1, this
   value MUST match the media presentation timestamp of the first media sample
   in an Object that is in the Group but is not the first Object in the Group.
   Otherwise, this value MUST match the media presentation timestamp of the
   first media sample in the referenced Object.
-* GROUP_ID: the MOQT Group ID. This entry MUST not be empty.
-* OBJECT_ID: the MOQT Object ID. This entry MAY be empty. If this entry is
-  present and equal to -1, the Object ID is unknow. Otherwise if this entry
-  is absent, the the Object ID is 0.
 * WALLCLOCK: the wallclock time at which the media was encoded, expressed as
   the number of milliseconds that have elapsed since January 1, 1970
   (midnight UTC/GMT). For VOD assets, or if the wallclock time is not known,
