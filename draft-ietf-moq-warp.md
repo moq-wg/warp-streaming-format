@@ -972,7 +972,7 @@ A timeline track MUST carry a 'type' identifier in the Catalog with a value of
 "timeline". A timeline track MUST carry a 'dependes' attribute which
 contains an array of all track names to which the timeline track applies.
 
-## Timeline track updating.
+## Timeline track updating
 The publisher MUST publish a complete timeline in the first MOQT Object of each
 MOQT Group of a timeline track. The publisher MAY publish incremental updates
 in the second and subsequent Objects within each GROUP. Incremental updates
