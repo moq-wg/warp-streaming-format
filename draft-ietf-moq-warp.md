@@ -950,8 +950,8 @@ WALLCLOCK,METADATA. This row defines the 5 columns of data within each record.
 
 * GROUP_ID: the MOQT Group ID. This entry MUST not be empty.
 * OBJECT_ID: the MOQT Object ID. This entry MAY be empty. If this entry is
-  present and equal to -1, the Object ID is unknow. Otherwise if this entry
-  is absent, the the Object ID is 0.
+  present and equal to -1, then Object ID is unknown. Otherwise if this entry
+  is absent, then the Object ID is 0.
 * MEDIA_PTS: a media timestamp rounded to the nearest millisecond. This entry
   MUST NOT be empty. If the Object ID entry is present and equal to -1, this
   value MUST match the media presentation timestamp of the first media sample
