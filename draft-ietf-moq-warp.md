@@ -212,6 +212,7 @@ Table 1 provides an overview of all fields defined by this document.
 | Remove tracks           | removeTracks           | {{removetracks}}          |
 | Clone tracks            | cloneTracks            | {{clonetracks}}           |
 | Generated at            | generatedAt            | {{generatedat}}           |
+| Is Complete             | isComplete             | {{iscomplete}}            |
 | Tracks                  | tracks                 | {{tracks}}                |
 | Track namespace         | namespace              | {{tracknamespace}}        |
 | Track name              | name                   | {{trackname}}             |
@@ -292,6 +293,14 @@ Location: R    Required: Optional    JSON Type: Number
 The wallclock time at which this catalog instance was generated, expressed as the
 number of milliseconds that have elapsed since January 1, 1970 (midnight UTC/GMT).
 This field SHOULD NOT be included if the isLive field is false.
+
+### Is Complete {#iscomplete}
+Location: R    Required: Optional    JSON Type: Boolean
+
+Issued once a previously live broadcast is complete. This is a commitment that all
+tracks are complete, no new tracks will be added and no new content will be
+published. This field MUST NOT be included if it is FALSE. This field MUST NOT be
+removed from a catalog once it has been added.
 
 ### Tracks {#tracks}
 Location: R    Required: Yes    JSON Type: Array
@@ -908,6 +917,21 @@ and video tracks.
 
 ~~~
 
+### Terminating a live broadcast
+
+This example shows catalog for a media producer terminating a previously
+live broadcast containing a video and an audio track.
+
+~~~json
+{
+  "version": 1,
+  "generatedAt": 1746104606044,
+  "isComplete": TRUE,
+  "tracks": []
+}
+
+~~~
+
 
 # Media transmission
 The MOQT Groups and MOQT Objects need to be mapped to MOQT Streams. Irrespective
@@ -972,23 +996,31 @@ A timeline track MUST carry a 'type' identifier in the Catalog with a value of
 "timeline". A timeline track MUST carry a 'dependes' attribute which
 contains an array of all track names to which the timeline track applies.
 
-## Timeline track updating
-The publisher MUST publish a complete timeline in the first MOQT Object of each
-MOQT Group of a timeline track. The publisher MAY publish incremental updates
+## Timeline track updating.
+The publisher MUST publish an indepdendent timeline in the first MOQT Object of
+each MOQT Group of a timeline track. The publisher MAY publish incremental updates
 in the second and subsequent Objects within each GROUP. Incremental updates
 only contain timeline events since the last timeline Object. Group duration
 SHOULD not exceed 30 seconds inside a timeline track.
-
 
 # Workflow
 
 A WARP publisher MUST publish a catalog track object before publishing any media
 track objects.
 
-At the completion of a session, a publisher MUST publish a catalog update that
-removes all currently active tracks.  This action SHOULD be interpreted by
-receivers to mean that the publish session is complete.
+## Ending a live broadcast
+After publishing a catalog and defining tracks carrying live content, an original
+publisher can deliver a deterministic signal to all subscribers that the broadcast
+is complete by taking the following steps:
 
+* Send a SUBSCRIBE_DONE (See MOQT Sect 8.1.2) message for all active tracks using
+  status code 0x2	Track Ended.
+* If the live stream is being converted instantly to a VOD asset, then publish an
+  independent (non-delta) catalog update which, for each track, sets isLive {{islive}}
+  to FALSE and adds a track duration {{trackduration}} field.
+* If the live stream is being terminated permanently without conversion to VOD, then
+  publish an independent catalog update which signals isComplete {{iscomplete}} as
+  TRUE and which contains an empty Tracks {{tracks}} field.
 
 # Security Considerations
 
