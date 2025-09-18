@@ -419,7 +419,7 @@ Location: T    Required: Optional   JSON Type: Number
 
 A number identifying the temporal layer/sub-layer encoding of the track,
 starting with 0 for the base layer, and increasing by 1 for the next higher
- temporal fidelity.
+temporal fidelity.
 
 ### Spatial ID {#spatialid}
 Location: T    Required: Optional   JSON Type: Number
