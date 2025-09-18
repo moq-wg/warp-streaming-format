@@ -298,7 +298,8 @@ Location: R    Required: Optional    JSON Type: Boolean
 
 Issued once a previously live broadcast is complete. This is a commitment that all
 tracks are complete, no new tracks will be added and no new content will be
-published. This field MUST NOT be included if it is FALSE.
+published. This field MUST NOT be included if it is FALSE. This field MUST NOT be
+removed from a catalog once it has been added.
 
 ### Tracks {#tracks}
 Location: R    Required: Yes    JSON Type: Array
@@ -972,8 +973,8 @@ A timeline track MUST carry a 'type' identifier in the Catalog with a value of
 contains an array of all track names to which the timeline track applies.
 
 ## Timeline track updating.
-The publisher MUST publish a complete timeline in the first MOQT Object of each
-MOQT Group of a timeline track. The publisher MAY publish incremental updates
+The publisher MUST publish an indepdendent timeline in the first MOQT Object of
+each MOQT Group of a timeline track. The publisher MAY publish incremental updates
 in the second and subsequent Objects within each GROUP. Incremental updates
 only contain timeline events since the last timeline Object. Group duration
 SHOULD not exceed 30 seconds inside a timeline track.
@@ -986,13 +987,17 @@ track objects.
 
 ## Ending a live broadcast
 After publishing a catalog and defining tracks carrying live content, an original
-publisher can deliver a deterministic signal to all subscribers that it is complete
-by taking the following steps:
+publisher can deliver a deterministic signal to all subscribers that the broadcast
+is complete by taking the following steps:
 
 * Send a SUBSCRIBE_DONE (See MOQT Sect 8.1.2) message for all active tracks using
   status code 0x2	Track Ended.
-* Publish a catalog update, either absolute or as delta update, which signals
-  isComplete as TRUE.
+* If the live stream is being converted instantly to a VOD asset, then publish an
+  independent (non-delta) catalog update which, for each tracks, sets isLive {{islive}}
+  to FALSE and adds a track duration {{trackduration}} field.
+* If the live stream is being terminated permanently without conversion to VOD, then
+  publish an independent catalog update which signals isComplete {{iscomplete}} as
+  TRUE and which contains an empty Track {{tracks}} field.
 
 # Security Considerations
 
