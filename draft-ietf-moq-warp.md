@@ -907,7 +907,8 @@ live broadcast containing a video and an audio track.
 {
   "version": 1,
   "generatedAt": 1746104606044,
-  "isComplete": TRUE
+  "isComplete": TRUE,
+  "tracks": []
 }
 
 ~~~
