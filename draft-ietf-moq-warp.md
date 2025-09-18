@@ -994,7 +994,7 @@ is complete by taking the following steps:
 * Send a SUBSCRIBE_DONE (See MOQT Sect 8.1.2) message for all active tracks using
   status code 0x2	Track Ended.
 * If the live stream is being converted instantly to a VOD asset, then publish an
-  independent (non-delta) catalog update which, for each tracks, sets isLive {{islive}}
+  independent (non-delta) catalog update which, for each track, sets isLive {{islive}}
   to FALSE and adds a track duration {{trackduration}} field.
 * If the live stream is being terminated permanently without conversion to VOD, then
   publish an independent catalog update which signals isComplete {{iscomplete}} as
