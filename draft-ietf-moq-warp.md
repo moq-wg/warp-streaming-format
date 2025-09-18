@@ -998,7 +998,7 @@ is complete by taking the following steps:
   to FALSE and adds a track duration {{trackduration}} field.
 * If the live stream is being terminated permanently without conversion to VOD, then
   publish an independent catalog update which signals isComplete {{iscomplete}} as
-  TRUE and which contains an empty Track {{tracks}} field.
+  TRUE and which contains an empty Tracks {{tracks}} field.
 
 # Security Considerations
 
