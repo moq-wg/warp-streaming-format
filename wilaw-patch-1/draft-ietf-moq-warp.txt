@@ -1213,7 +1213,7 @@ Table of Contents
    *  If the live stream is being terminated permanently without
       conversion to VOD, then publish an independent catalog update
       which signals isComplete Section 5.2.6 as TRUE and which contains
-      an empty Track Section 5.2.7 field.
+      an empty Tracks Section 5.2.7 field.
 
 9.  Security Considerations
 
