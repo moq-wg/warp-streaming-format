@@ -1207,7 +1207,7 @@ Table of Contents
 
    *  If the live stream is being converted instantly to a VOD asset,
       then publish an independent (non-delta) catalog update which, for
-      each tracks, sets isLive Section 5.2.13 to FALSE and adds a track
+      each track, sets isLive Section 5.2.13 to FALSE and adds a track
       duration Section 5.2.34 field.
 
    *  If the live stream is being terminated permanently without
