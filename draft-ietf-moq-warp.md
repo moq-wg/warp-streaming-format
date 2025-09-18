@@ -105,10 +105,10 @@ The purpose of WARP is to provide an interoperable media streaming format
 operating over {{MoQTransport}}. Interoperability implies that:
 
 * An original publisher can package incoming media content into tracks, prepare
-  a catalog and annouce the availability of the content to a MOQT relay. Media
+  a catalog and announce the availability of the content to an MOQT relay. Media
   content refers to audio and video data, as well as ancillary data such as
   captions, subtitles, accessibility and other timed-text data.
-* A MOQT relay can process the annoucement as well as cache and propagate the
+* An MOQT relay can process the announcement as well as cache and propagate the
   tracks, both to other relays or to the final subscriber.
 * A final subscriber can parse the catalog, request tracks, decode and render
   the received media data.
@@ -133,7 +133,7 @@ that end, the following features are within scope:
  * VOD latency - content that was previously produced, is no longer live and is
    available indefinitely.
 * Content encryption
-* ABR between time-synced tracks - subscribers may switch between between tracks
+* ABR between time-synced tracks - subscribers may switch between tracks
   at different quality levels in order to maximize visual or audio quality under
   fconditions of throughput variability.
 * Capable of delivering interstitial advertising.
@@ -161,8 +161,8 @@ When LOC packaging is used for a track, the catalog packaging attribute
 WARP Tracks MAY be time-aligned. Those that are, are subject to the following
 requirements:
 
-* Time-aligned tracks MUST be advertised in the catalog as belonging to a common
-  render group.
+* Tracks advertised in the catalog as belonging to a common render group MUST
+  be time-aligned.
 * The render duration of the first media object of each equally numbered MOQT
   Group, after decoding, MUST have overlapping presentation time.
 
@@ -174,22 +174,22 @@ cleanly switch between time-aligned media tracks at group boundaries.
 ToDo - content protection for LOC-packaged content.
 
 # Catalog {#catalog}
-A Catalog is a MOQT Track that provides information about the other tracks being
+A Catalog is an MOQT Track that provides information about the other tracks being
 produced by a WARP publisher. A Catalog is used by WARP publishers for
 advertising their output and for subscribers in consuming that output. The
 payload of the Catalog object is opaque to Relays and can be end-to-end
 encrypted. The Catalog provides the names and namespaces of the tracks being
-produced, along with therelationship between tracks, properties of the tracks
+produced, along with the relationship between tracks, properties of the tracks
 that consumers may use for selection and any relevant initialization data.
 
 The catalog track MUST have a case-sensitive Track Name of "catalog".
 
 A catalog object MAY be independent of other catalog objects or it MAY represent
 a delta update of a prior catalog object. The first catalog object published
-within a new group MUST be independent.  A catalog object SHOULD only be
+within a new group MUST be independent.  A catalog object SHOULD be
 published only when the availability of tracks changes.
 
-Each catalog update MUST be mapped to a discreet MOQT Object.
+Each catalog update MUST be mapped to an MOQT Object.
 
 
 ## Catalog Fields
@@ -218,6 +218,7 @@ Table 1 provides an overview of all fields defined by this document.
 | Track name              | name                   | {{trackname}}             |
 | Packaging               | packaging              | {{packaging}}             |
 | Is Live                 | isLive                 | {{islive}}                |
+| Target latency          | targetLatency          | {{targetlatency}}         |
 | Track role              | role                   | {{trackrole}}             |
 | Track label             | label                  | {{tracklabel}}            |
 | Render group            | renderGroup            | {{rendergroup}}           |
@@ -249,7 +250,7 @@ Table 2 defines the allowed locations for these fields within the document
 | T        | Track object                                                  |
 
 
-## WARP version {#warpversion}
+### WARP version {#warpversion}
 Location: R    Required: Yes    JSON Type: Number
 
 Specifies the version of WARP referenced by this catalog. There is no guarantee
@@ -341,7 +342,7 @@ Table 3: Allowed packaging values
 ### Track role {#trackrole}
 Location: T    Required: Optional   JSON Type: String
 
-A string defining the role of content carried by the track. Reserved roles
+A string defining the role of content carried by the track. Specified roles
 are described in Table 4. These role values are case-sensitive.
 
 This role field MAY be used in conjunction with the Mimetype {{mimetype}} to
@@ -360,7 +361,7 @@ Table 4: Reserved track roles
 | signlanguage     | A visual track for hearing impaired users.                 |
 |------------------|------------------------------------------------------------|
 
-Custom roles MAY be used as long as they do not collide with the reserved roles.
+Custom roles MAY be used as long as they do not collide with the specified roles.
 
 ### Is Live {#islive}
 Location: T    Required: Required  JSON Type: Boolean
@@ -371,8 +372,21 @@ possible conditions:
 * the publisher of a previously live track has ended the track.
 * the track is Video-On-Demand (VOD) and was never live.
 
+### Target latency {#targetlatency}
+Location: T    Required: Optional  JSON Type: Number
+
+The target latency in milliseconds. Target latency is defined as the offset in
+wallclock time between when content was encoded and when it is displayed to the
+end user. For example, if a frame of video is encoded at 10:08:32.638 UTC and the
+target latency is 5000, then that frame should be rendered to the end-user at
+10:08:37.638 UTC. This field MUST NOT be included if isLive is FALSE. All tracks
+belonging to the same render group MUST have identical target latencies. All tracks
+belonging to the same alternate group MUST have identical target latencies. If this
+field is absent from the track definition, then the player MAY choose the latency
+with which it renders the content.
+
 ### Track label {#tracklabel}
-Location: TF    Required: Optional   JSON Type: String
+Location: T    Required: Optional   JSON Type: String
 
 A string defining a human-readable label for the track. Examples might be
 "Overhead camera view" or "Deutscher Kommentar". Note that the {{JSON}} spec
@@ -383,7 +397,7 @@ Location: T    Required: Optional   JSON Type: Number
 
 An integer specifying a group of tracks which are designed to be rendered
 together. Tracks with the same group number SHOULD be rendered simultaneously,
-are usually time-aligned and are designed to accompany one another. A common
+are time-aligned and are designed to accompany one another. A common
 example would be tying together audio and video tracks.
 
 ### Alternate group {#altgroup}
@@ -391,11 +405,10 @@ Location: T    Required: Optional   JSON Type: Number
 
 An integer specifying a group of tracks which are alternate versions of
 one-another. Alternate tracks represent the same media content, but differ in
-their selection properties. Alternate tracks SHOULD have matching framerate
-{{framerate}} and media time sequences. A subscriber typically subscribes to
-one track from a set of tracks specifying the same alternate group number. A
-common example would be a set video tracks of the same content offered in
-alternate bitrates.
+their selection properties. Alternate tracks MUST have matching media time
+sequences. A subscriber typically subscribes to one track from a set of
+tracks specifying the same alternate group number. A common example would be
+a set video tracks of the same content offered in alternate bitrates.
 
 ### Initialization data {#initdata}
 Location: T    Required: Optional   JSON Type: String
@@ -414,14 +427,14 @@ assumed to match that of the track declaring the dependencies.
 Location: T    Required: Optional   JSON Type: Number
 
 A number identifying the temporal layer/sub-layer encoding of the track,
-starting with 0 for the base layer, and increasing with higher temporal
-fidelity.
+starting with 0 for the base layer, and increasing by 1 for the next higher
+temporal fidelity.
 
 ### Spatial ID {#spatialid}
 Location: T    Required: Optional   JSON Type: Number
 
 A number identifying the spatial layer encoding of the track, starting with 0
-for the base layer, and increasing with higher fidelity.
+for the base layer, and increasing by 1 for the next higher fidelity.
 
 ### Codec {#codec}
 Location: T    Required: Optional   JSON Type: String
@@ -502,7 +515,7 @@ MUST only be included inside a Clone tracks {{clonetracks}} object.
 Location: T    Required: Optional   JSON Type: Number
 
 The duration of the track expressed in integer milliseconds. This field MUST NOT
-be included if the isLive {{islive}} field value is false.
+be included if the isLive {{islive}} field value is true.
 
 ## Delta updates {#deltaupdates}
 A catalog update might contain incremental changes. This is a useful property if
@@ -557,6 +570,7 @@ packaged, time-aligned audio and video tracks.
       "namespace": "conference.example.com/conference123/alice",
       "packaging": "loc",
       "isLive": true,
+      "targetLatency": 2000,
       "role": "video",
       "renderGroup": 1,
       "codec":"av01.0.08M.10.0.110.09",
@@ -570,6 +584,7 @@ packaged, time-aligned audio and video tracks.
       "namespace": "conference.example.com/conference123/alice",
       "packaging": "loc",
       "isLive": true,
+      "targetLatency": 2000,
       "role": "audio",
       "renderGroup": 1,
       "codec":"opus",
@@ -602,6 +617,7 @@ of the catalog.
       "renderGroup": 1,
       "packaging": "loc",
       "isLive": true,
+      "targetLatency": 1500,
       "role": "video",
       "codec":"av01",
       "width":1920,
@@ -615,6 +631,7 @@ of the catalog.
       "renderGroup": 1,
       "packaging": "loc",
       "isLive": true,
+      "targetLatency": 1500,
       "role": "video",
       "codec":"av01",
       "width":720,
@@ -628,6 +645,7 @@ of the catalog.
       "renderGroup": 1,
       "packaging": "loc",
       "isLive": true,
+      "targetLatency": 1500,
       "role": "video",
       "codec":"av01",
       "width":192,
@@ -641,6 +659,7 @@ of the catalog.
       "renderGroup": 1,
       "packaging": "loc",
       "isLive": true,
+      "targetLatency": 1500,
       "role": "audio",
       "codec":"opus",
       "samplerate":48000,
@@ -950,15 +969,19 @@ Comma-Separated Values (CSV)" Files {{RFC4180}}. The separator is a comma and
 each line is separated by a carriage return. The mime-type of a timeline track
 MUST be specified as "text/csv" in the catalog.
 
-Each timeline track begins with a header row of MEDIA_PTS,GROUP_ID,OBJECT_ID,
+Each timeline track begins with a header row of GROUP_ID,OBJECT_ID,MEDIA_PTS,
 WALLCLOCK,METADATA. This row defines the 5 columns of data within each record.
 
+* GROUP_ID: the MOQT Group ID. This entry MUST not be empty.
+* OBJECT_ID: the MOQT Object ID. This entry MAY be empty. If this entry is
+  present and equal to -1, then Object ID is unknown. Otherwise if this entry
+  is absent, then the Object ID is 0.
 * MEDIA_PTS: a media timestamp rounded to the nearest millisecond. This entry
-  MUST NOT be empty. If the Object ID entry is present, then this value MUST
-  match the media presentation timestamp of the first media sample in the
-  referenced Object.
-* GROUP_ID: the MOQT Group ID. This entry MAY be empty.
-* OBJECT_ID: the MOQT Object ID. This entry MAY be empty.
+  MUST NOT be empty. If the Object ID entry is present and equal to -1, this
+  value MUST match the media presentation timestamp of the first media sample
+  in an Object that is in the Group but is not the first Object in the Group.
+  Otherwise, this value MUST match the media presentation timestamp of the
+  first media sample in the referenced Object.
 * WALLCLOCK: the wallclock time at which the media was encoded, expressed as
   the number of milliseconds that have elapsed since January 1, 1970
   (midnight UTC/GMT). For VOD assets, or if the wallclock time is not known,
@@ -979,7 +1002,6 @@ each MOQT Group of a timeline track. The publisher MAY publish incremental updat
 in the second and subsequent Objects within each GROUP. Incremental updates
 only contain timeline events since the last timeline Object. Group duration
 SHOULD not exceed 30 seconds inside a timeline track.
-
 
 # Workflow
 
