@@ -1020,11 +1020,10 @@ An event timeline track is a JSON {{JSON}} document. It contains an array of rec
 Each record consists of a JSON Object containing the following required fields:
 
 * A timeline reference, which MUST be either 't' for wallclock time, 'g' for Group ID or
-  'm' for Media PTS. Typically only one timeline reference is included in each record,
-  although multiple timeline entries may exist within a record, as long as they
-  express temporal consistency. Event timelines SHOULD use the same timeline indexing for
-  each record. The definitions for wallclock time, GroupID and Media PTS are identical to
-  those defined for media timeline payload {{mediatimelinepayload}}.
+  'm' for Media PTS. Only one of these index values may be used within a record. Event
+  timelines SHOULD use the same timeline index type for each record. The definitions for
+  wallclock time, GroupID and Media PTS are identical to those defined for media timeline
+  payload {{mediatimelinepayload}}.
 * A 'type' field, which is a String defining the type of data contained within the data
   field. Types are defined by the application provider.
 * A 'data' Object, whose structure is defined by the 'type' value.
