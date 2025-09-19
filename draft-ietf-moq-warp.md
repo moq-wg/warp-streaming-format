@@ -1009,7 +1009,7 @@ the broadcast. Use-case examples include live sports score data, GPS coordinates
 cars, or active speaker notifications in web conferences.
 
 To allow the client to bind this event metadata with the broadcast content described by
-the media timeline track, each event record MUST contain a reference to either GroupID,
+the media timeline track, each event record MUST contain a reference to GroupID,
 Media PTS or wallclock time.
 
 Event timeline tracks are optional. Multiple event timeline tracks can exist inside a
