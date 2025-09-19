@@ -1358,7 +1358,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
                 <p id="section-toc.1-1.7.2.2.1"><a href="#section-7.2" class="auto internal xref">7.2</a>.  <a href="#name-media-timeline-catalog-requ" class="internal xref">Media Timeline Catalog requirements</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.3">
-                <p id="section-toc.1-1.7.2.3.1"><a href="#section-7.3" class="auto internal xref">7.3</a>.  <a href="#name-media-timeline-track-updati" class="internal xref">Media Timeline track updating.</a></p>
+                <p id="section-toc.1-1.7.2.3.1"><a href="#section-7.3" class="auto internal xref">7.3</a>.  <a href="#name-media-timeline-track-updati" class="internal xref">Media Timeline track updating</a></p>
 </li>
             </ul>
 </li>
@@ -2846,11 +2846,11 @@ in Group IDs using the MOQT Prior Group ID Gap Extension header.<a href="#sectio
 <a href="#section-7" class="section-number selfRef">7. </a><a href="#name-media-timeline-track" class="section-name selfRef">Media Timeline track</a>
       </h2>
 <p id="section-7-1">The media timeline track provides data about the previously published groups and their
-relationship to wallclock time and media time. Timeline tracks allow players to seek to
-precise points behind the live head in a live broadcast, or for random access in a
-VOD asset. The optional metadata can describe a characteristic of any record in the
-timeline. Timeline tracks are optional. Multiple timeline tracks can exist inside a
-catalog.<a href="#section-7-1" class="pilcrow">¶</a></p>
+relationship to wallclock time and media time. Media timeline tracks allow players to
+seek to precise points behind the live head in a live broadcast, or for random access
+in a VOD asset. The optional metadata can describe a characteristic of any record in
+the media timeline. Media timeline tracks are optional. Multiple media timeline tracks
+can exist inside a catalog.<a href="#section-7-1" class="pilcrow">¶</a></p>
 <div id="mediatimelinepayload">
 <section id="section-7.1">
         <h3 id="name-media-timeline-track-payloa">
@@ -2908,11 +2908,11 @@ contains an array of all track names to which the media timeline track applies.<
 <div id="media-timeline-track-updating">
 <section id="section-7.3">
         <h3 id="name-media-timeline-track-updati">
-<a href="#section-7.3" class="section-number selfRef">7.3. </a><a href="#name-media-timeline-track-updati" class="section-name selfRef">Media Timeline track updating.</a>
+<a href="#section-7.3" class="section-number selfRef">7.3. </a><a href="#name-media-timeline-track-updati" class="section-name selfRef">Media Timeline track updating</a>
         </h3>
 <p id="section-7.3-1">The publisher <span class="bcp14">MUST</span> publish an indepdendent media timeline in the first MOQT Object
 of each MOQT Group of a media timeline track. The publisher <span class="bcp14">MAY</span> publish incremental
-updates in the second and subsequent Objects within each GROUP. Incremental updates
+updates in the second and subsequent Objects within each Group. Incremental updates
 only contain media timeline records since the last media timeline Object.<a href="#section-7.3-1" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -2927,7 +2927,7 @@ only contain media timeline records since the last media timeline Object.<a href
 the broadcast. Use-case examples include live sports score data, GPS coordinates of race
 cars, or active speaker notifications in web conferences.<a href="#section-8-1" class="pilcrow">¶</a></p>
 <p id="section-8-2">To allow the client to bind this event metadata with the broadcast content described by
-the media timeline track, each event record <span class="bcp14">MUST</span> contain a reference to either GroupID,
+the media timeline track, each event record <span class="bcp14">MUST</span> contain a reference to GroupID,
 Media PTS or wallclock time.<a href="#section-8-2" class="pilcrow">¶</a></p>
 <p id="section-8-3">Event timeline tracks are optional. Multiple event timeline tracks can exist inside a
 catalog.<a href="#section-8-3" class="pilcrow">¶</a></p>
@@ -2973,7 +2973,7 @@ contains an array of all track names to which the event timeline track applies.<
         </h3>
 <p id="section-8.3-1">The publisher <span class="bcp14">MUST</span> publish an indepdendent event timeline in the first MOQT Object
 of each MOQT Group of an event timeline track. The publisher <span class="bcp14">MAY</span> publish incremental
-updates in the second and subsequent Objects within each GROUP. Incremental updates
+updates in the second and subsequent Objects within each Group. Incremental updates
 only contain event timeline records since the last event timeline Object.<a href="#section-8.3-1" class="pilcrow">¶</a></p>
 </section>
 </div>

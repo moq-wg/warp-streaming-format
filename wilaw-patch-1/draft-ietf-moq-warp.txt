@@ -136,7 +136,7 @@ Table of Contents
    7.  Media Timeline track
      7.1.  Media Timeline track payload
      7.2.  Media Timeline Catalog requirements
-     7.3.  Media Timeline track updating.
+     7.3.  Media Timeline track updating
    8.  Event Timeline track
      8.1.  Event Timeline data format
      8.2.  Event Timeline Catalog requirements
@@ -1169,11 +1169,11 @@ Table of Contents
 
    The media timeline track provides data about the previously published
    groups and their relationship to wallclock time and media time.
-   Timeline tracks allow players to seek to precise points behind the
-   live head in a live broadcast, or for random access in a VOD asset.
-   The optional metadata can describe a characteristic of any record in
-   the timeline.  Timeline tracks are optional.  Multiple timeline
-   tracks can exist inside a catalog.
+   Media timeline tracks allow players to seek to precise points behind
+   the live head in a live broadcast, or for random access in a VOD
+   asset.  The optional metadata can describe a characteristic of any
+   record in the media timeline.  Media timeline tracks are optional.
+   Multiple media timeline tracks can exist inside a catalog.
 
 7.1.  Media Timeline track payload
 
@@ -1219,12 +1219,12 @@ Table of Contents
    'depends' attribute which contains an array of all track names to
    which the media timeline track applies.
 
-7.3.  Media Timeline track updating.
+7.3.  Media Timeline track updating
 
    The publisher MUST publish an indepdendent media timeline in the
    first MOQT Object of each MOQT Group of a media timeline track.  The
    publisher MAY publish incremental updates in the second and
-   subsequent Objects within each GROUP.  Incremental updates only
+   subsequent Objects within each Group.  Incremental updates only
    contain media timeline records since the last media timeline Object.
 
 8.  Event Timeline track
@@ -1236,7 +1236,7 @@ Table of Contents
 
    To allow the client to bind this event metadata with the broadcast
    content described by the media timeline track, each event record MUST
-   contain a reference to either GroupID, Media PTS or wallclock time.
+   contain a reference to GroupID, Media PTS or wallclock time.
 
    Event timeline tracks are optional.  Multiple event timeline tracks
    can exist inside a catalog.
@@ -1272,7 +1272,7 @@ Table of Contents
    The publisher MUST publish an indepdendent event timeline in the
    first MOQT Object of each MOQT Group of an event timeline track.  The
    publisher MAY publish incremental updates in the second and
-   subsequent Objects within each GROUP.  Incremental updates only
+   subsequent Objects within each Group.  Incremental updates only
    contain event timeline records since the last event timeline Object.
 
 8.4.  Example event timeline track
