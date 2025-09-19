@@ -1000,7 +1000,7 @@ contains an array of all track names to which the media timeline track applies.
 ## Media Timeline track updating
 The publisher MUST publish an indepdendent media timeline in the first MOQT Object
 of each MOQT Group of a media timeline track. The publisher MAY publish incremental
-updates in the second and subsequent Objects within each GROUP. Incremental updates
+updates in the second and subsequent Objects within each Group. Incremental updates
 only contain media timeline records since the last media timeline Object.
 
 # Event Timeline track {#eventtimelinetrack}
