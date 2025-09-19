@@ -1033,7 +1033,7 @@ An event timeline track MUST carry a 'type' identifier in the Catalog with a val
 of "eventtimeline". An event timeline track MUST carry a 'depends' attribute which
 contains an array of all track names to which the event timeline track applies.
 
-## Event Timeline track updating.
+## Event Timeline track updating
 The publisher MUST publish an indepdendent event timeline in the first MOQT Object
 of each MOQT Group of an event timeline track. The publisher MAY publish incremental
 updates in the second and subsequent Objects within each Group. Incremental updates
