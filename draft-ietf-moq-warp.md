@@ -997,7 +997,7 @@ A media timeline track MUST carry a 'type' identifier in the Catalog with a valu
 of "mediatimeline". A media timeline track MUST carry a 'depends' attribute which
 contains an array of all track names to which the media timeline track applies.
 
-## Media Timeline track updating.
+## Media Timeline track updating
 The publisher MUST publish an indepdendent media timeline in the first MOQT Object
 of each MOQT Group of a media timeline track. The publisher MAY publish incremental
 updates in the second and subsequent Objects within each GROUP. Incremental updates
