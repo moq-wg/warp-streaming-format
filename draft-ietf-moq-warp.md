@@ -957,11 +957,11 @@ in Group IDs using the MOQT Prior Group ID Gap Extension header.
 
 # Media Timeline track {#mediatimelinetrack}
 The media timeline track provides data about the previously published groups and their
-relationship to wallclock time and media time. Media timeline tracks allow players to seek to
-precise points behind the live head in a live broadcast, or for random access in a
-VOD asset. The optional metadata can describe a characteristic of any record in the media 
-timeline. Media timeline tracks are optional. Multiple media timeline tracks can exist inside a
-catalog.
+relationship to wallclock time and media time. Media timeline tracks allow players to
+seek to precise points behind the live head in a live broadcast, or for random access
+in a VOD asset. The optional metadata can describe a characteristic of any record in
+the media timeline. Media timeline tracks are optional. Multiple media timeline tracks
+can exist inside a catalog.
 
 ## Media Timeline track payload {#mediatimelinepayload}
 The payload of a media timeline track is a UTF-8 encoded CSV text file. This
