@@ -140,7 +140,7 @@ Table of Contents
    8.  Event Timeline track
      8.1.  Event Timeline data format
      8.2.  Event Timeline Catalog requirements
-     8.3.  Event Timeline track updating.
+     8.3.  Event Timeline track updating
      8.4.  Example event timeline track
    9.  Workflow
      9.1.  Initiating a broadcast
@@ -1267,7 +1267,7 @@ Table of Contents
    a 'depends' attribute which contains an array of all track names to
    which the event timeline track applies.
 
-8.3.  Event Timeline track updating.
+8.3.  Event Timeline track updating
 
    The publisher MUST publish an indepdendent event timeline in the
    first MOQT Object of each MOQT Group of an event timeline track.  The
