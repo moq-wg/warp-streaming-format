@@ -334,10 +334,11 @@ as defined in Table 3.
 
 Table 3: Allowed packaging values
 
-| Name            |   Value   |      Reference        |
-|:================|:==========|:======================|
-| LOC             | loc       | See RFC XXXX          |
-| Timeline        | timeline  | See {{timelinetrack}} |
+| Name            |   Value        |      Reference             |
+|:================|:===============|:===========================|
+| LOC             | loc            | See RFC XXXX               |
+| Media Timeline  | mediatimeline  | See {{mediatimelinetrack}} |
+| Event Timeline  | eventtimeline  | See {{eventtimelinetrack}} |
 
 ### Track role {#trackrole}
 Location: T    Required: Optional   JSON Type: String
@@ -355,7 +356,8 @@ Table 4: Reserved track roles
 | audiodescription | An audio description for visually impaired users           |
 | video            | Visual content                                             |
 | audio            | Audio content                                              |
-| timeline         | A WARP timeline {{timelinetrack}}                          |
+| mediatimeline    | A WARP media timeline {{mediatimelinetrack}}               |
+| eventtimeline    | A WARP event timeline {{eventtimelinetrack}}               |
 | caption          | A textual representation of the audio track                |
 | subtitle         | A transcription of the spoken dialogue                     |
 | signlanguage     | A visual track for hearing impaired users.                 |
@@ -953,23 +955,22 @@ Each subsequent Group ID MUST increase by 1.
 If a publisher is able to maintain state across a republish, it MUST signal the gap
 in Group IDs using the MOQT Prior Group ID Gap Extension header.
 
-# Timeline track {#timelinetrack}
-The timeline track provides data about the previously published groups and their
-relationship to wallclock time, media time and associated timed-metadata.
-Timeline tracks allow players to seek to precise points behind the live head in
-a live broadcast, or for random access in a VOD asset. A timeline track might also
-be used to insert events at media times which do not correlate with Object
-boundaries. Timeline tracks are optional. Multiple timeline tracks can exist
-inside a catalog.
+# Media Timeline track {#mediatimelinetrack}
+The media timeline track provides data about the previously published groups and their
+relationship to wallclock time and media time. Timeline tracks allow players to seek to
+precise points behind the live head in a live broadcast, or for random access in a
+VOD asset. The optional metadata can describe a characteristic of any record in the
+timeline. Timeline tracks are optional. Multiple timeline tracks can exist inside a
+catalog.
 
-## Timeline track payload
-The payload of a timeline track is a UTF-8 encoded CSV text file. This payload
-is formatted according to RFC4180 "Common Format and MIME Type for
+## Media Timeline track payload {#mediatimelinepayload}
+The payload of a media timeline track is a UTF-8 encoded CSV text file. This
+payload is formatted according to RFC4180 "Common Format and MIME Type for
 Comma-Separated Values (CSV)" Files {{RFC4180}}. The separator is a comma and
-each line is separated by a carriage return. The mime-type of a timeline track
-MUST be specified as "text/csv" in the catalog.
+each line is separated by a carriage return. The mime-type of a media timeline
+track MUST be specified as "text/csv" in the catalog.
 
-Each timeline track begins with a header row of GROUP_ID,OBJECT_ID,MEDIA_PTS,
+Each media timeline track begins with a header row of GROUP_ID, OBJECT_ID, MEDIA_PTS,
 WALLCLOCK,METADATA. This row defines the 5 columns of data within each record.
 
 * GROUP_ID: the MOQT Group ID. This entry MUST not be empty.
@@ -991,20 +992,91 @@ WALLCLOCK,METADATA. This row defines the 5 columns of data within each record.
   appearing inside this field MUST be escaped by preceding it with another
   double quote.
 
-## Timeline Catalog requirements
-A timeline track MUST carry a 'type' identifier in the Catalog with a value of
-"timeline". A timeline track MUST carry a 'dependes' attribute which
-contains an array of all track names to which the timeline track applies.
+## Media Timeline Catalog requirements
+A media timeline track MUST carry a 'type' identifier in the Catalog with a value
+of "mediatimeline". A media timeline track MUST carry a 'depends' attribute which
+contains an array of all track names to which the media timeline track applies.
 
-## Timeline track updating.
-The publisher MUST publish an indepdendent timeline in the first MOQT Object of
-each MOQT Group of a timeline track. The publisher MAY publish incremental updates
-in the second and subsequent Objects within each GROUP. Incremental updates
-only contain timeline events since the last timeline Object. Group duration
-SHOULD not exceed 30 seconds inside a timeline track.
+## Media Timeline track updating.
+The publisher MUST publish an indepdendent media timeline in the first MOQT Object
+of each MOQT Group of a media timeline track. The publisher MAY publish incremental
+updates in the second and subsequent Objects within each GROUP. Incremental updates
+only contain media timeline records since the last media timeline Object.
+
+# Event Timeline track {#eventtimelinetrack}
+The event timeline track provides a mechanism to associate ad-hoc event metadata with
+the broadcast. Use-case examples include live sports score data, GPS coordinates of race
+cars, or active speaker notifications in web conferences.
+
+To allow the client to bind this event metadata with the broadcast content described by
+the media timeline track, each event record MUST contain a reference to either GroupID,
+Media PTS or wallclock time.
+
+Event timeline tracks are optional. Multiple event timeline tracks can exist inside a
+catalog.
+
+## Event Timeline data format {#eventtimelineformat}
+An event timeline track is a JSON {{JSON}} document. It contains an array of records.
+Each record consists of a JSON Object containing the following required fields:
+
+* A timeline reference, which MUST be either 't' for wallclock time, 'g' for Group ID or
+  'm' for Media PTS. Typically only one timeline reference is included in each record,
+  although multiple timeline entries may exist within a record, as long as they
+  express temporal consistency. Event timelines SHOULD use the same timeline indexing for
+  each record. The definitions for wallclock time, GroupID and Media PTS are identical to
+  those defined for media timeline payload {{mediatimelinepayload}}.
+* A 'type' field, which is a String defining the type of data contained within the data
+  field. Types are defined by the application provider.
+* A 'data' Object, whose structure is defined by the 'type' value.
+
+## Event Timeline Catalog requirements
+An event timeline track MUST carry a 'type' identifier in the Catalog with a value
+of "eventtimeline". An event timeline track MUST carry a 'depends' attribute which
+contains an array of all track names to which the event timeline track applies.
+
+## Event Timeline track updating.
+The publisher MUST publish an indepdendent event timeline in the first MOQT Object
+of each MOQT Group of an event timeline track. The publisher MAY publish incremental
+updates in the second and subsequent Objects within each GROUP. Incremental updates
+only contain event timeline records since the last event timeline Object.
+
+## Example event timeline track
+This example shows how sports scores and game information might be defined in a live sports
+broadcast.
+
+~~~json
+[
+    {
+        "t": 1756885678361,
+        "type": "com.example.custom.live-score-data",
+        "data": {
+            "status": "in_progress",
+            "period": 1,
+            "clock": "12:00",
+            "homeScore": 0,
+            "awayScore": 0,
+            "lastPlay": "Game Start"
+        }
+    },
+    {
+        "t": 1756885981542,
+        "type": "com.example.custom.live-score-data",
+        "data": {
+            "status": "in_progress",
+            "period": 1,
+            "clock": "09:25",
+            "homeScore": 2,
+            "awayScore": 0,
+            "lastPlay": "Team A: #23 makes 2-pt jump shot"
+        }
+    }
+]
+
+~~~
 
 # Workflow
 
+## Initiating a broadcast
 A WARP publisher MUST publish a catalog track object before publishing any media
 track objects.
 
