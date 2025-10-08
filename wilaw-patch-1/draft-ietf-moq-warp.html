@@ -31,7 +31,7 @@
     PyYAML 6.0.2
     requests 2.32.5
     setuptools 80.9.0
-    wcwidth 0.2.13
+    wcwidth 0.2.14
 -->
 <link href="draft-ietf-moq-warp.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -1050,11 +1050,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">WARP Streaming Format</td>
-<td class="right">September 2025</td>
+<td class="right">October 2025</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Law, et al.</td>
-<td class="center">Expires 23 March 2026</td>
+<td class="center">Expires 11 April 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1067,12 +1067,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ietf-moq-warp-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-09-19" class="published">19 September 2025</time>
+<time datetime="2025-10-08" class="published">8 October 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-03-23">23 March 2026</time></dd>
+<dd class="expires"><time datetime="2026-04-11">11 April 2026</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1138,7 +1138,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 23 March 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 11 April 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1375,7 +1375,15 @@ svg :is([fill="white"], [fill^="#fff"]) {
                 <p id="section-toc.1-1.8.2.3.1"><a href="#section-8.3" class="auto internal xref">8.3</a>.  <a href="#name-event-timeline-track-updati" class="internal xref">Event Timeline track updating</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.4">
-                <p id="section-toc.1-1.8.2.4.1"><a href="#section-8.4" class="auto internal xref">8.4</a>.  <a href="#name-example-event-timeline-trac" class="internal xref">Example event timeline track</a></p>
+                <p id="section-toc.1-1.8.2.4.1"><a href="#section-8.4" class="auto internal xref">8.4</a>.  <a href="#name-event-timeline-track-exampl" class="internal xref">Event timeline track examples</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.4.2.1">
+                    <p id="section-toc.1-1.8.2.4.2.1.1"><a href="#section-8.4.1" class="auto internal xref">8.4.1</a>.  <a href="#name-event-timeline-track-with-w" class="internal xref">Event timeline track with wallclock time indexing</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.4.2.2">
+                    <p id="section-toc.1-1.8.2.4.2.2.1"><a href="#section-8.4.2" class="auto internal xref">8.4.2</a>.  <a href="#name-event-timeline-track-with-l" class="internal xref">Event timeline track with Location indexing</a></p>
+</li>
+                </ul>
 </li>
             </ul>
 </li>
@@ -2925,10 +2933,10 @@ only contain media timeline records since the last media timeline Object.<a href
       </h2>
 <p id="section-8-1">The event timeline track provides a mechanism to associate ad-hoc event metadata with
 the broadcast. Use-case examples include live sports score data, GPS coordinates of race
-cars, or active speaker notifications in web conferences.<a href="#section-8-1" class="pilcrow">¶</a></p>
+cars, SAP-types for media segments or active speaker notifications in web conferences.<a href="#section-8-1" class="pilcrow">¶</a></p>
 <p id="section-8-2">To allow the client to bind this event metadata with the broadcast content described by
-the media timeline track, each event record <span class="bcp14">MUST</span> contain a reference to GroupID,
-Media PTS or wallclock time.<a href="#section-8-2" class="pilcrow">¶</a></p>
+the media timeline track, each event record <span class="bcp14">MUST</span> contain a reference to one of
+Media PTS, wallclock time or MOQT Location.<a href="#section-8-2" class="pilcrow">¶</a></p>
 <p id="section-8-3">Event timeline tracks are optional. Multiple event timeline tracks can exist inside a
 catalog.<a href="#section-8-3" class="pilcrow">¶</a></p>
 <div id="eventtimelineformat">
@@ -2936,19 +2944,24 @@ catalog.<a href="#section-8-3" class="pilcrow">¶</a></p>
         <h3 id="name-event-timeline-data-format">
 <a href="#section-8.1" class="section-number selfRef">8.1. </a><a href="#name-event-timeline-data-format" class="section-name selfRef">Event Timeline data format</a>
         </h3>
-<p id="section-8.1-1">An event timeline track is a JSON <span>[<a href="#JSON" class="cite xref">JSON</a>]</span> document. It contains an array of records.
-Each record consists of a JSON Object containing the following required fields:<a href="#section-8.1-1" class="pilcrow">¶</a></p>
+<p id="section-8.1-1">An event timeline track is a JSON <span>[<a href="#JSON" class="cite xref">JSON</a>]</span> document. This document <span class="bcp14">MAY</span> be compressed
+using GZIP <span>[<a href="#GZIP" class="cite xref">GZIP</a>]</span>. The document contains an array of records. Each record consists of
+a JSON Object containing the following required fields:<a href="#section-8.1-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-8.1-2.1">
-            <p id="section-8.1-2.1.1">A timeline reference, which <span class="bcp14">MUST</span> be either 't' for wallclock time, 'g' for Group ID or
-'m' for Media PTS. Only one of these index values may be used within a record. Event
-timelines <span class="bcp14">SHOULD</span> use the same timeline index type for each record. The definitions for
-wallclock time, GroupID and Media PTS are identical to those defined for media timeline
-payload <a href="#mediatimelinepayload" class="auto internal xref">Section 7.1</a>.<a href="#section-8.1-2.1.1" class="pilcrow">¶</a></p>
+            <p id="section-8.1-2.1.1">An index reference, which <span class="bcp14">MUST</span> be either 't' for wallclock time, 'l' for Location or
+'m' for Media PTS. Only one of these index values may be used within each record. Event
+timelines <span class="bcp14">SHOULD</span> use the same index reference type for each record. The definitions for
+wallclock time, Location and Media PTS are identical to those defined for media timeline
+payload <a href="#mediatimelinepayload" class="auto internal xref">Section 7.1</a>. Wallclock time and media PTS values are JSON Number,
+while Location value is an Array of Numbers, where the first item represents the MOQT
+GroupID and the second item the MOQT Object ID.<a href="#section-8.1-2.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-8.1-2.2">
             <p id="section-8.1-2.2.1">A 'type' field, which is a String defining the type of data contained within the data
-field. Types are defined by the application provider.<a href="#section-8.1-2.2.1" class="pilcrow">¶</a></p>
+field. Types are defined by the application provider and are not centrally registered.
+Implementers are encouraged to use a unique naming scheme, such as Reverse Domain Name
+Notation, to avoid naming collisions.<a href="#section-8.1-2.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-8.1-2.3">
             <p id="section-8.1-2.3.1">A 'data' Object, whose structure is defined by the 'type' value.<a href="#section-8.1-2.3.1" class="pilcrow">¶</a></p>
@@ -2977,14 +2990,19 @@ updates in the second and subsequent Objects within each Group. Incremental upda
 only contain event timeline records since the last event timeline Object.<a href="#section-8.3-1" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="example-event-timeline-track">
+<div id="event-timeline-track-examples">
 <section id="section-8.4">
-        <h3 id="name-example-event-timeline-trac">
-<a href="#section-8.4" class="section-number selfRef">8.4. </a><a href="#name-example-event-timeline-trac" class="section-name selfRef">Example event timeline track</a>
+        <h3 id="name-event-timeline-track-exampl">
+<a href="#section-8.4" class="section-number selfRef">8.4. </a><a href="#name-event-timeline-track-exampl" class="section-name selfRef">Event timeline track examples</a>
         </h3>
-<p id="section-8.4-1">This example shows how sports scores and game information might be defined in a live sports
-broadcast.<a href="#section-8.4-1" class="pilcrow">¶</a></p>
-<div class="lang-json sourcecode" id="section-8.4-2">
+<div id="event-timeline-track-with-wallclock-time-indexing">
+<section id="section-8.4.1">
+          <h4 id="name-event-timeline-track-with-w">
+<a href="#section-8.4.1" class="section-number selfRef">8.4.1. </a><a href="#name-event-timeline-track-with-w" class="section-name selfRef">Event timeline track with wallclock time indexing</a>
+          </h4>
+<p id="section-8.4.1-1">This example shows how sports scores and game information might be defined in a live
+sports broadcast.<a href="#section-8.4.1-1" class="pilcrow">¶</a></p>
+<div class="lang-json sourcecode" id="section-8.4.1-2">
 <pre>
 [
     {
@@ -3013,7 +3031,34 @@ broadcast.<a href="#section-8.4-1" class="pilcrow">¶</a></p>
     }
 ]
 
-</pre><a href="#section-8.4-2" class="pilcrow">¶</a>
+</pre><a href="#section-8.4.1-2" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="event-timeline-track-with-location-indexing">
+<section id="section-8.4.2">
+          <h4 id="name-event-timeline-track-with-l">
+<a href="#section-8.4.2" class="section-number selfRef">8.4.2. </a><a href="#name-event-timeline-track-with-l" class="section-name selfRef">Event timeline track with Location indexing</a>
+          </h4>
+<p id="section-8.4.2-1">This example shows drone GPS coordinates synched with the start of each Group.<a href="#section-8.4.2-1" class="pilcrow">¶</a></p>
+<div class="lang-json sourcecode" id="section-8.4.2-2">
+<pre>
+[
+    {
+        "l": [0,0],
+        "type": "org.example-tracking.gps",
+        "data": [47.1812,8.4592]
+    },
+    {
+        "l": [1,0],
+        "type": "org.example-tracking.gps",
+        "data": [47.1662,8.5155]
+    }
+]
+
+</pre><a href="#section-8.4.2-2" class="pilcrow">¶</a>
+</div>
+</section>
 </div>
 </section>
 </div>
@@ -3088,6 +3133,10 @@ TRUE and which contains an empty Tracks <a href="#tracks" class="auto internal x
 <dt id="BASE64">[BASE64]</dt>
       <dd>
 <span class="refAuthor">Josefsson, S.</span>, <span class="refTitle">"The Base16, Base32, and Base64 Data Encodings"</span>, <span class="seriesInfo">RFC 4648</span>, <span class="seriesInfo">DOI 10.17487/RFC4648</span>, <time datetime="2006-10" class="refDate">October 2006</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc4648">https://www.rfc-editor.org/rfc/rfc4648</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="GZIP">[GZIP]</dt>
+      <dd>
+<span class="refAuthor">Deutsch, P.</span>, <span class="refTitle">"GZIP file format specification version 4.3"</span>, <span class="seriesInfo">RFC 1952</span>, <span class="seriesInfo">DOI 10.17487/RFC1952</span>, <time datetime="1996-05" class="refDate">May 1996</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc1952">https://www.rfc-editor.org/rfc/rfc1952</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="IMSC1">[IMSC1]</dt>
       <dd>

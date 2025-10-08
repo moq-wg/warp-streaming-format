@@ -5,14 +5,14 @@
 Media Over QUIC                                                   W. Law
 Internet-Draft                                                    Akamai
 Intended status: Informational                                 L. Curley
-Expires: 23 March 2026                                            Twitch
+Expires: 11 April 2026                                            Twitch
                                                              V. Vasiliev
                                                                   Google
                                                            S. Nandakumar
                                                                    Cisco
                                                                 K. Pugin
                                                                     Meta
-                                                       19 September 2025
+                                                          8 October 2025
 
 
                          WARP Streaming Format
@@ -55,7 +55,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 23 March 2026.
+   This Internet-Draft will expire on 11 April 2026.
 
 Copyright Notice
 
@@ -141,7 +141,9 @@ Table of Contents
      8.1.  Event Timeline data format
      8.2.  Event Timeline Catalog requirements
      8.3.  Event Timeline track updating
-     8.4.  Example event timeline track
+     8.4.  Event timeline track examples
+       8.4.1.  Event timeline track with wallclock time indexing
+       8.4.2.  Event timeline track with Location indexing
    9.  Workflow
      9.1.  Initiating a broadcast
      9.2.  Ending a live broadcast
@@ -1231,32 +1233,39 @@ Table of Contents
 
    The event timeline track provides a mechanism to associate ad-hoc
    event metadata with the broadcast.  Use-case examples include live
-   sports score data, GPS coordinates of race cars, or active speaker
-   notifications in web conferences.
+   sports score data, GPS coordinates of race cars, SAP-types for media
+   segments or active speaker notifications in web conferences.
 
    To allow the client to bind this event metadata with the broadcast
    content described by the media timeline track, each event record MUST
-   contain a reference to GroupID, Media PTS or wallclock time.
+   contain a reference to one of Media PTS, wallclock time or MOQT
+   Location.
 
    Event timeline tracks are optional.  Multiple event timeline tracks
    can exist inside a catalog.
 
 8.1.  Event Timeline data format
 
-   An event timeline track is a JSON [JSON] document.  It contains an
-   array of records.  Each record consists of a JSON Object containing
-   the following required fields:
+   An event timeline track is a JSON [JSON] document.  This document MAY
+   be compressed using GZIP [GZIP].  The document contains an array of
+   records.  Each record consists of a JSON Object containing the
+   following required fields:
 
-   *  A timeline reference, which MUST be either 't' for wallclock time,
-      'g' for Group ID or 'm' for Media PTS.  Only one of these index
-      values may be used within a record.  Event timelines SHOULD use
-      the same timeline index type for each record.  The definitions for
-      wallclock time, GroupID and Media PTS are identical to those
-      defined for media timeline payload Section 7.1.
+   *  An index reference, which MUST be either 't' for wallclock time,
+      'l' for Location or 'm' for Media PTS.  Only one of these index
+      values may be used within each record.  Event timelines SHOULD use
+      the same index reference type for each record.  The definitions
+      for wallclock time, Location and Media PTS are identical to those
+      defined for media timeline payload Section 7.1.  Wallclock time
+      and media PTS values are JSON Number, while Location value is an
+      Array of Numbers, where the first item represents the MOQT GroupID
+      and the second item the MOQT Object ID.
 
    *  A 'type' field, which is a String defining the type of data
       contained within the data field.  Types are defined by the
-      application provider.
+      application provider and are not centrally registered.
+      Implementers are encouraged to use a unique naming scheme, such as
+      Reverse Domain Name Notation, to avoid naming collisions.
 
    *  A 'data' Object, whose structure is defined by the 'type' value.
 
@@ -1275,7 +1284,9 @@ Table of Contents
    subsequent Objects within each Group.  Incremental updates only
    contain event timeline records since the last event timeline Object.
 
-8.4.  Example event timeline track
+8.4.  Event timeline track examples
+
+8.4.1.  Event timeline track with wallclock time indexing
 
    This example shows how sports scores and game information might be
    defined in a live sports broadcast.
@@ -1304,6 +1315,24 @@ Table of Contents
                "awayScore": 0,
                "lastPlay": "Team A: #23 makes 2-pt jump shot"
            }
+       }
+   ]
+
+8.4.2.  Event timeline track with Location indexing
+
+   This example shows drone GPS coordinates synched with the start of
+   each Group.
+
+   [
+       {
+           "l": [0,0],
+           "type": "org.example-tracking.gps",
+           "data": [47.1812,8.4592]
+       },
+       {
+           "l": [1,0],
+           "type": "org.example-tracking.gps",
+           "data": [47.1662,8.5155]
        }
    ]
 
@@ -1349,6 +1378,10 @@ Table of Contents
    [BASE64]   Josefsson, S., "The Base16, Base32, and Base64 Data
               Encodings", RFC 4648, DOI 10.17487/RFC4648, October 2006,
               <https://www.rfc-editor.org/rfc/rfc4648>.
+
+   [GZIP]     Deutsch, P., "GZIP file format specification version 4.3",
+              RFC 1952, DOI 10.17487/RFC1952, May 1996,
+              <https://www.rfc-editor.org/rfc/rfc1952>.
 
    [IMSC1]    "W3C, TTML Profiles for Internet Media Subtitles and
               Captions 1.0 (IMSC1)", April 2016,
