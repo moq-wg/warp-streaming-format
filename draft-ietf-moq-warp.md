@@ -218,7 +218,7 @@ Table 1 provides an overview of all fields defined by this document.
 | Track namespace         | namespace              | {{tracknamespace}}        |
 | Track name              | name                   | {{trackname}}             |
 | Packaging               | packaging              | {{packaging}}             |
-| Event timeline type     | eventType              | {{eventtype}              |
+| Event timeline type     | eventType              | {{eventtype}}             |
 | Is Live                 | isLive                 | {{islive}}                |
 | Target latency          | targetLatency          | {{targetlatency}}         |
 | Track role              | role                   | {{trackrole}}             |
