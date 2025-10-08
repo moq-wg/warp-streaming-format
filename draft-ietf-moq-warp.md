@@ -218,6 +218,7 @@ Table 1 provides an overview of all fields defined by this document.
 | Track namespace         | namespace              | {{tracknamespace}}        |
 | Track name              | name                   | {{trackname}}             |
 | Packaging               | packaging              | {{packaging}}             |
+| Event timeline type     | eventType              | {{eventtype}}             |
 | Is Live                 | isLive                 | {{islive}}                |
 | Target latency          | targetLatency          | {{targetlatency}}         |
 | Track role              | role                   | {{trackrole}}             |
@@ -340,6 +341,17 @@ Table 3: Allowed packaging values
 | LOC             | loc            | See RFC XXXX               |
 | Media Timeline  | mediatimeline  | See {{mediatimelinetrack}} |
 | Event Timeline  | eventtimeline  | See {{eventtimelinetrack}} |
+
+
+### Event timeline type {#eventtype}
+Location: T    Required: Optional   JSON Type: String
+
+A String defining the type & structure of the data contained within the data
+field of the Event timeline track. Types are defined by the application provider
+and are not centrally registered. Implementers are encouraged to use a unique
+naming scheme, such as Reverse Domain Name Notation, to avoid naming collisions.
+This field is required if the {{packaging}} value is "eventtimeline".
+This field MUST NOT be used if the packaging value is not "eventtimeline".
 
 ### Track role {#trackrole}
 Location: T    Required: Optional   JSON Type: String
@@ -920,6 +932,65 @@ and video tracks.
 
 ~~~
 
+### Media timeline and Event timeline
+
+This example shows a catalog for a media producer capable of sending LOC
+packaged, time-aligned audio and video tracks, along with a Media Timeline
+which describes the history of those tracks and an Event Timeline providing
+synchronized data.
+
+~~~json
+{
+  "version": 1,
+  "generatedAt": 1746104606044,
+  "tracks": [
+    {
+      "name": "history",
+      "namespace": "conference.example.com/conference123/alice",
+      "packaging": "mediatimeline",
+      "mimetype": "application/json",
+      "depends": ["1080p-video","audio"],
+    },
+    {
+      "name": "identified-objects",
+      "namespace": "another-provider/time-synchronized-data",
+      "packaging": "eventtimeline",
+      "eventTimelineType": "com.ai-extraction/appID/v3"
+      "mimetype": "application/json",
+      "depends": ["1080p-video"],
+    },
+    {
+      "name": "1080p-video",
+      "namespace": "conference.example.com/conference123/alice",
+      "packaging": "loc",
+      "isLive": true,
+      "targetLatency": 2000,
+      "role": "video",
+      "renderGroup": 1,
+      "codec":"av01.0.08M.10.0.110.09",
+      "width":1920,
+      "height":1080,
+      "framerate":30,
+      "bitrate":1500000
+    },
+    {
+      "name": "audio",
+      "namespace": "conference.example.com/conference123/alice",
+      "packaging": "loc",
+      "isLive": true,
+      "targetLatency": 2000,
+      "role": "audio",
+      "renderGroup": 1,
+      "codec":"opus",
+      "samplerate":48000,
+      "channelConfig":"2",
+      "bitrate":32000
+    }
+   ]
+}
+
+~~~
+
 ### Terminating a live broadcast
 
 This example shows catalog for a media producer terminating a previously
@@ -960,43 +1031,42 @@ in Group IDs using the MOQT Prior Group ID Gap Extension header.
 The media timeline track provides data about the previously published groups and their
 relationship to wallclock time and media time. Media timeline tracks allow players to
 seek to precise points behind the live head in a live broadcast, or for random access
-in a VOD asset. The optional metadata can describe a characteristic of any record in
-the media timeline. Media timeline tracks are optional. Multiple media timeline tracks
+in a VOD asset. Media timeline tracks are optional. Multiple media timeline tracks
 can exist inside a catalog.
 
 ## Media Timeline track payload {#mediatimelinepayload}
-The payload of a media timeline track is a UTF-8 encoded CSV text file. This
-payload is formatted according to RFC4180 "Common Format and MIME Type for
-Comma-Separated Values (CSV)" Files {{RFC4180}}. The separator is a comma and
-each line is separated by a carriage return. The mime-type of a media timeline
-track MUST be specified as "text/csv" in the catalog.
+A media timeline track is a JSON {{JSON}} document. This document MAY be compressed
+using GZIP {{GZIP}}. The document contains an array of records. Each record consists of
+an array of three required items, whose ordinal position defines their type:
 
-Each media timeline track begins with a header row of GROUP_ID, OBJECT_ID, MEDIA_PTS,
-WALLCLOCK,METADATA. This row defines the 5 columns of data within each record.
-
-* GROUP_ID: the MOQT Group ID. This entry MUST not be empty.
-* OBJECT_ID: the MOQT Object ID. This entry MAY be empty. If this entry is
-  present and equal to -1, then Object ID is unknown. Otherwise if this entry
-  is absent, then the Object ID is 0.
-* MEDIA_PTS: a media timestamp rounded to the nearest millisecond. This entry
-  MUST NOT be empty. If the Object ID entry is present and equal to -1, this
-  value MUST match the media presentation timestamp of the first media sample
-  in an Object that is in the Group but is not the first Object in the Group.
-  Otherwise, this value MUST match the media presentation timestamp of the
-  first media sample in the referenced Object.
-* WALLCLOCK: the wallclock time at which the media was encoded, expressed as
+* The first item holds the media presentation timestamp, expressed as a JSON Number.
+  This value MUST match the media presentation timestamp, rounded to the nearest
+  millisecond, of the first media sample in the referenced Object
+* The second item holds the MOQT Location of the entry, defined as a tuple of the MOQT
+  Group ID and MOQT Object ID, and expressed as a JSON Array of Numbers, where the
+  first number is the Group ID and the second number is the Object ID.
+* The third time holds the wallclock time at which the media was encoded, defined as
   the number of milliseconds that have elapsed since January 1, 1970
-  (midnight UTC/GMT). For VOD assets, or if the wallclock time is not known,
-  the value SHOULD be 0.
-* METADATA: a flexible field holding arbitrary string metadata. This field may
-  be empty. If not empty, it MUST be enclosed in double quotes. A double-quote
-  appearing inside this field MUST be escaped by preceding it with another
-  double quote.
+  (midnight UTC/GMT) and expressed as a JSON Number. For VOD assets, or if the
+  wallclock time is not known, the value SHOULD be 0.
+
+An example media timeline is shown below:
+
+~~~json
+[
+  [0, [0,0], 1759924158381],
+  [2002, [1,0], 1759924160383],
+  [4004, [2,0], 1759924162385],
+  [6006, [3,0], 1759924164387],
+  [8008, [4,0], 1759924166389]
+]
+~~~
 
 ## Media Timeline Catalog requirements
 A media timeline track MUST carry a 'type' identifier in the Catalog with a value
 of "mediatimeline". A media timeline track MUST carry a 'depends' attribute which
 contains an array of all track names to which the media timeline track applies.
+The mime-type of a media timeline track MUST be specified as "application/json".
 
 ## Media Timeline track updating
 The publisher MUST publish an indepdendent media timeline in the first MOQT Object
@@ -1014,7 +1084,8 @@ the media timeline track, each event record MUST contain a reference to one of
 Media PTS, wallclock time or MOQT Location.
 
 Event timeline tracks are optional. Multiple event timeline tracks can exist inside a
-catalog.
+catalog. The type & structure of the data contained within each event timeline track is
+declared in the catalog, to facilitate client selection and parsing.
 
 ## Event Timeline data format {#eventtimelineformat}
 An event timeline track is a JSON {{JSON}} document. This document MAY be compressed
@@ -1028,16 +1099,18 @@ a JSON Object containing the following required fields:
   payload {{mediatimelinepayload}}. Wallclock time and media PTS values are JSON Number,
   while Location value is an Array of Numbers, where the first item represents the MOQT
   GroupID and the second item the MOQT Object ID.
-* A 'type' field, which is a String defining the type of data contained within the data
-  field. Types are defined by the application provider and are not centrally registered.
-  Implementers are encouraged to use a unique naming scheme, such as Reverse Domain Name
-  Notation, to avoid naming collisions.
-* A 'data' Object, whose structure is defined by the 'type' value.
+* A 'data' Object, whose structure is defined by the {{eventtype}} value declared for this
+  track in the Catalog.
 
 ## Event Timeline Catalog requirements
-An event timeline track MUST carry a 'type' identifier in the Catalog with a value
-of "eventtimeline". An event timeline track MUST carry a 'depends' attribute which
-contains an array of all track names to which the event timeline track applies.
+An event timeline track MUST carry:
+
+* a {{packaging}} attribute with a value of "eventtimeline".
+* a {{dependencies}} attribute which contains an array of all track names to which the event
+  timeline track applies.
+* a {{mimetype}} attribute with a value of "application/json".
+* an {{eventtype}} attribute declaring the type & structure of data contained in the
+  event timeline track.
 
 ## Event Timeline track updating
 The publisher MUST publish an indepdendent event timeline in the first MOQT Object
@@ -1055,7 +1128,6 @@ sports broadcast.
 [
     {
         "t": 1756885678361,
-        "type": "com.example.custom.live-score-data",
         "data": {
             "status": "in_progress",
             "period": 1,
@@ -1067,7 +1139,6 @@ sports broadcast.
     },
     {
         "t": 1756885981542,
-        "type": "com.example.custom.live-score-data",
         "data": {
             "status": "in_progress",
             "period": 1,
@@ -1081,19 +1152,17 @@ sports broadcast.
 
 ~~~
 
-### Event timeline track with Location indexing
+### Event timeline track with MOQT Location indexing
 This example shows drone GPS coordinates synched with the start of each Group.
 
 ~~~json
 [
     {
         "l": [0,0],
-        "type": "org.example-tracking.gps",
         "data": [47.1812,8.4592]
     },
     {
         "l": [1,0],
-        "type": "org.example-tracking.gps",
         "data": [47.1662,8.5155]
     }
 ]
@@ -1112,7 +1181,7 @@ publisher can deliver a deterministic signal to all subscribers that the broadca
 is complete by taking the following steps:
 
 * Send a SUBSCRIBE_DONE (See MOQT Sect 8.1.2) message for all active tracks using
-  status code 0x2	Track Ended.
+  status code 0x2 Track Ended.
 * If the live stream is being converted instantly to a VOD asset, then publish an
   independent (non-delta) catalog update which, for each track, sets isLive {{islive}}
   to FALSE and adds a track duration {{trackduration}} field.
