@@ -54,6 +54,7 @@ normative:
   MIME: RFC6838
   RFC9000: RFC9000
   RFC4180: RFC4180
+  GZIP: RFC1952
   WEBCODECS-CODEC-REGISTRY:
     title: "WebCodecs Codec Registry"
     date: September 2024
@@ -1006,26 +1007,31 @@ only contain media timeline records since the last media timeline Object.
 # Event Timeline track {#eventtimelinetrack}
 The event timeline track provides a mechanism to associate ad-hoc event metadata with
 the broadcast. Use-case examples include live sports score data, GPS coordinates of race
-cars, or active speaker notifications in web conferences.
+cars, SAP-types for media segments or active speaker notifications in web conferences.
 
 To allow the client to bind this event metadata with the broadcast content described by
-the media timeline track, each event record MUST contain a reference to GroupID,
-Media PTS or wallclock time.
+the media timeline track, each event record MUST contain a reference to one of
+Media PTS, wallclock time or MOQT Location.
 
 Event timeline tracks are optional. Multiple event timeline tracks can exist inside a
 catalog.
 
 ## Event Timeline data format {#eventtimelineformat}
-An event timeline track is a JSON {{JSON}} document. It contains an array of records.
-Each record consists of a JSON Object containing the following required fields:
+An event timeline track is a JSON {{JSON}} document. This document MAY be compressed
+using GZIP {{GZIP}}. The document contains an array of records. Each record consists of
+a JSON Object containing the following required fields:
 
-* A timeline reference, which MUST be either 't' for wallclock time, 'g' for Group ID or
-  'm' for Media PTS. Only one of these index values may be used within a record. Event
-  timelines SHOULD use the same timeline index type for each record. The definitions for
-  wallclock time, GroupID and Media PTS are identical to those defined for media timeline
-  payload {{mediatimelinepayload}}.
+* An index reference, which MUST be either 't' for wallclock time, 'l' for Location or
+  'm' for Media PTS. Only one of these index values may be used within each record. Event
+  timelines SHOULD use the same index reference type for each record. The definitions for
+  wallclock time, Location and Media PTS are identical to those defined for media timeline
+  payload {{mediatimelinepayload}}. Wallclock time and media PTS values are JSON Number,
+  while Location value is an Array of Numbers, where the first item represents the MOQT
+  GroupID and the second item the MOQT Object ID.
 * A 'type' field, which is a String defining the type of data contained within the data
-  field. Types are defined by the application provider.
+  field. Types are defined by the application provider and are not centrally registered.
+  Implementers are encouraged to use a unique naming scheme, such as Reverse Domain Name
+  Notation, to avoid naming collisions.
 * A 'data' Object, whose structure is defined by the 'type' value.
 
 ## Event Timeline Catalog requirements
@@ -1039,9 +1045,11 @@ of each MOQT Group of an event timeline track. The publisher MAY publish increme
 updates in the second and subsequent Objects within each Group. Incremental updates
 only contain event timeline records since the last event timeline Object.
 
-## Example event timeline track
-This example shows how sports scores and game information might be defined in a live sports
-broadcast.
+## Event timeline track examples
+
+### Event timeline track with wallclock time indexing
+This example shows how sports scores and game information might be defined in a live
+sports broadcast.
 
 ~~~json
 [
@@ -1068,6 +1076,25 @@ broadcast.
             "awayScore": 0,
             "lastPlay": "Team A: #23 makes 2-pt jump shot"
         }
+    }
+]
+
+~~~
+
+### Event timeline track with Location indexing
+This example shows drone GPS coordinates synched with the start of each Group.
+
+~~~json
+[
+    {
+        "l": [0,0],
+        "type": "org.example-tracking.gps",
+        "data": [47.1812,8.4592]
+    },
+    {
+        "l": [1,0],
+        "type": "org.example-tracking.gps",
+        "data": [47.1662,8.5155]
     }
 ]
 
