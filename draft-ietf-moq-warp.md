@@ -351,7 +351,7 @@ field of the Event timeline track. Types are defined by the application provider
 and are not centrally registered. Implementers are encouraged to use a unique
 naming scheme, such as Reverse Domain Name Notation, to avoid naming collisions.
 This field is required if the {{packaging}} value is "eventtimeline".
-This field MUST NOT be used if the packaging value is not "eventtimeline". 
+This field MUST NOT be used if the packaging value is not "eventtimeline".
 
 ### Track role {#trackrole}
 Location: T    Required: Optional   JSON Type: String
@@ -935,9 +935,9 @@ and video tracks.
 ### Media timeline and Event timeline
 
 This example shows a catalog for a media producer capable of sending LOC
-packaged, time-aligned audio and video tracks, along with a Media Timeline 
+packaged, time-aligned audio and video tracks, along with a Media Timeline
 which describes the history of those tracks and an Event Timeline providing
-synchronized data.  
+synchronized data.
 
 ~~~json
 {
@@ -1085,7 +1085,7 @@ Media PTS, wallclock time or MOQT Location.
 
 Event timeline tracks are optional. Multiple event timeline tracks can exist inside a
 catalog. The type & structure of the data contained within each event timeline track is
-declared in the catalog, to facilitate client selection and parsing. 
+declared in the catalog, to facilitate client selection and parsing.
 
 ## Event Timeline data format {#eventtimelineformat}
 An event timeline track is a JSON {{JSON}} document. This document MAY be compressed
@@ -1100,7 +1100,7 @@ a JSON Object containing the following required fields:
   while Location value is an Array of Numbers, where the first item represents the MOQT
   GroupID and the second item the MOQT Object ID.
 * A 'data' Object, whose structure is defined by the {{eventtype}} value declared for this
-  track in the Catalog. 
+  track in the Catalog.
 
 ## Event Timeline Catalog requirements
 An event timeline track MUST carry:
@@ -1110,7 +1110,7 @@ An event timeline track MUST carry:
   timeline track applies.
 * a {{mimetype}} attribute with a value of "application/json".
 * an {{eventtimetype}} attribute declaring the type & structure of data contained in the
-  event timeline track. 
+  event timeline track.
 
 ## Event Timeline track updating
 The publisher MUST publish an indepdendent event timeline in the first MOQT Object
