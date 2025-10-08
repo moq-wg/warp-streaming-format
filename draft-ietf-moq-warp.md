@@ -1105,11 +1105,11 @@ a JSON Object containing the following required fields:
 ## Event Timeline Catalog requirements
 An event timeline track MUST carry:
 
-* a {{packagingtype}} attribute with a value of "eventtimeline".
-* a {{depends}} attribute which contains an array of all track names to which the event
+* a {{packaging}} attribute with a value of "eventtimeline".
+* a {{dependencies}} attribute which contains an array of all track names to which the event
   timeline track applies.
 * a {{mimetype}} attribute with a value of "application/json".
-* an {{eventtimetype}} attribute declaring the type & structure of data contained in the
+* an {{eventtype}} attribute declaring the type & structure of data contained in the
   event timeline track.
 
 ## Event Timeline track updating
@@ -1181,7 +1181,7 @@ publisher can deliver a deterministic signal to all subscribers that the broadca
 is complete by taking the following steps:
 
 * Send a SUBSCRIBE_DONE (See MOQT Sect 8.1.2) message for all active tracks using
-  status code 0x2	Track Ended.
+  status code 0x2 Track Ended.
 * If the live stream is being converted instantly to a VOD asset, then publish an
   independent (non-delta) catalog update which, for each track, sets isLive {{islive}}
   to FALSE and adds a track duration {{trackduration}} field.
