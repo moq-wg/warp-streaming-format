@@ -31,7 +31,7 @@
     PyYAML 6.0.2
     requests 2.32.5
     setuptools 80.9.0
-    wcwidth 0.2.13
+    wcwidth 0.2.14
 -->
 <link href="draft-ietf-moq-warp.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -1050,11 +1050,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">WARP Streaming Format</td>
-<td class="right">September 2025</td>
+<td class="right">October 2025</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Law, et al.</td>
-<td class="center">Expires 22 March 2026</td>
+<td class="center">Expires 11 April 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1067,12 +1067,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ietf-moq-warp-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-09-18" class="published">18 September 2025</time>
+<time datetime="2025-10-08" class="published">8 October 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-03-22">22 March 2026</time></dd>
+<dd class="expires"><time datetime="2026-04-11">11 April 2026</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1138,7 +1138,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 22 March 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 11 April 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1349,41 +1349,69 @@ svg :is([fill="white"], [fill^="#fff"]) {
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
-            <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-timeline-track" class="internal xref">Timeline track</a></p>
+            <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-media-timeline-track" class="internal xref">Media Timeline track</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1">
-                <p id="section-toc.1-1.7.2.1.1"><a href="#section-7.1" class="auto internal xref">7.1</a>.  <a href="#name-timeline-track-payload" class="internal xref">Timeline track payload</a></p>
+                <p id="section-toc.1-1.7.2.1.1"><a href="#section-7.1" class="auto internal xref">7.1</a>.  <a href="#name-media-timeline-track-payloa" class="internal xref">Media Timeline track payload</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.2">
-                <p id="section-toc.1-1.7.2.2.1"><a href="#section-7.2" class="auto internal xref">7.2</a>.  <a href="#name-timeline-catalog-requiremen" class="internal xref">Timeline Catalog requirements</a></p>
+                <p id="section-toc.1-1.7.2.2.1"><a href="#section-7.2" class="auto internal xref">7.2</a>.  <a href="#name-media-timeline-catalog-requ" class="internal xref">Media Timeline Catalog requirements</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.3">
-                <p id="section-toc.1-1.7.2.3.1"><a href="#section-7.3" class="auto internal xref">7.3</a>.  <a href="#name-timeline-track-updating" class="internal xref">Timeline track updating.</a></p>
+                <p id="section-toc.1-1.7.2.3.1"><a href="#section-7.3" class="auto internal xref">7.3</a>.  <a href="#name-media-timeline-track-updati" class="internal xref">Media Timeline track updating</a></p>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
-            <p id="section-toc.1-1.8.1"><a href="#section-8" class="auto internal xref">8</a>.  <a href="#name-workflow" class="internal xref">Workflow</a></p>
+            <p id="section-toc.1-1.8.1"><a href="#section-8" class="auto internal xref">8</a>.  <a href="#name-event-timeline-track" class="internal xref">Event Timeline track</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.1">
-                <p id="section-toc.1-1.8.2.1.1"><a href="#section-8.1" class="auto internal xref">8.1</a>.  <a href="#name-ending-a-live-broadcast" class="internal xref">Ending a live broadcast</a></p>
+                <p id="section-toc.1-1.8.2.1.1"><a href="#section-8.1" class="auto internal xref">8.1</a>.  <a href="#name-event-timeline-data-format" class="internal xref">Event Timeline data format</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.2">
+                <p id="section-toc.1-1.8.2.2.1"><a href="#section-8.2" class="auto internal xref">8.2</a>.  <a href="#name-event-timeline-catalog-requ" class="internal xref">Event Timeline Catalog requirements</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.3">
+                <p id="section-toc.1-1.8.2.3.1"><a href="#section-8.3" class="auto internal xref">8.3</a>.  <a href="#name-event-timeline-track-updati" class="internal xref">Event Timeline track updating</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.4">
+                <p id="section-toc.1-1.8.2.4.1"><a href="#section-8.4" class="auto internal xref">8.4</a>.  <a href="#name-event-timeline-track-exampl" class="internal xref">Event timeline track examples</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.4.2.1">
+                    <p id="section-toc.1-1.8.2.4.2.1.1"><a href="#section-8.4.1" class="auto internal xref">8.4.1</a>.  <a href="#name-event-timeline-track-with-w" class="internal xref">Event timeline track with wallclock time indexing</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.4.2.2">
+                    <p id="section-toc.1-1.8.2.4.2.2.1"><a href="#section-8.4.2" class="auto internal xref">8.4.2</a>.  <a href="#name-event-timeline-track-with-l" class="internal xref">Event timeline track with Location indexing</a></p>
+</li>
+                </ul>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
-            <p id="section-toc.1-1.9.1"><a href="#section-9" class="auto internal xref">9</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
+            <p id="section-toc.1-1.9.1"><a href="#section-9" class="auto internal xref">9</a>.  <a href="#name-workflow" class="internal xref">Workflow</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.1">
+                <p id="section-toc.1-1.9.2.1.1"><a href="#section-9.1" class="auto internal xref">9.1</a>.  <a href="#name-initiating-a-broadcast" class="internal xref">Initiating a broadcast</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.2">
+                <p id="section-toc.1-1.9.2.2.1"><a href="#section-9.2" class="auto internal xref">9.2</a>.  <a href="#name-ending-a-live-broadcast" class="internal xref">Ending a live broadcast</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10">
-            <p id="section-toc.1-1.10.1"><a href="#section-10" class="auto internal xref">10</a>. <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
+            <p id="section-toc.1-1.10.1"><a href="#section-10" class="auto internal xref">10</a>. <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11">
-            <p id="section-toc.1-1.11.1"><a href="#section-11" class="auto internal xref">11</a>. <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+            <p id="section-toc.1-1.11.1"><a href="#section-11" class="auto internal xref">11</a>. <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12">
-            <p id="section-toc.1-1.12.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+            <p id="section-toc.1-1.12.1"><a href="#section-12" class="auto internal xref">12</a>. <a href="#name-normative-references" class="internal xref">Normative References</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13">
-            <p id="section-toc.1-1.13.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
+            <p id="section-toc.1-1.13.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14">
+            <p id="section-toc.1-1.14.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
 </li>
         </ul>
 </nav>
@@ -2008,9 +2036,15 @@ as defined in Table 3.<a href="#section-5.1.12-2" class="pilcrow">¶</a></p>
                 <td class="text-left" rowspan="1" colspan="1">See RFC XXXX</td>
               </tr>
               <tr>
-                <td class="text-left" rowspan="1" colspan="1">Timeline</td>
-                <td class="text-left" rowspan="1" colspan="1">timeline</td>
-                <td class="text-left" rowspan="1" colspan="1">See <a href="#timelinetrack" class="auto internal xref">Section 7</a>
+                <td class="text-left" rowspan="1" colspan="1">Media Timeline</td>
+                <td class="text-left" rowspan="1" colspan="1">mediatimeline</td>
+                <td class="text-left" rowspan="1" colspan="1">See <a href="#mediatimelinetrack" class="auto internal xref">Section 7</a>
+</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">Event Timeline</td>
+                <td class="text-left" rowspan="1" colspan="1">eventtimeline</td>
+                <td class="text-left" rowspan="1" colspan="1">See <a href="#eventtimelinetrack" class="auto internal xref">Section 8</a>
 </td>
               </tr>
             </tbody>
@@ -2050,8 +2084,13 @@ fully describe the content of the track.<a href="#section-5.1.13-3" class="pilcr
                 <td class="text-left" rowspan="1" colspan="1">Audio content</td>
               </tr>
               <tr>
-                <td class="text-left" rowspan="1" colspan="1">timeline</td>
-                <td class="text-left" rowspan="1" colspan="1">A WARP timeline <a href="#timelinetrack" class="auto internal xref">Section 7</a>
+                <td class="text-left" rowspan="1" colspan="1">mediatimeline</td>
+                <td class="text-left" rowspan="1" colspan="1">A WARP media timeline <a href="#mediatimelinetrack" class="auto internal xref">Section 7</a>
+</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">eventtimeline</td>
+                <td class="text-left" rowspan="1" colspan="1">A WARP event timeline <a href="#eventtimelinetrack" class="auto internal xref">Section 8</a>
 </td>
               </tr>
               <tr>
@@ -2809,29 +2848,28 @@ in Group IDs using the MOQT Prior Group ID Gap Extension header.<a href="#sectio
 </div>
 </section>
 </div>
-<div id="timelinetrack">
+<div id="mediatimelinetrack">
 <section id="section-7">
-      <h2 id="name-timeline-track">
-<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-timeline-track" class="section-name selfRef">Timeline track</a>
+      <h2 id="name-media-timeline-track">
+<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-media-timeline-track" class="section-name selfRef">Media Timeline track</a>
       </h2>
-<p id="section-7-1">The timeline track provides data about the previously published groups and their
-relationship to wallclock time, media time and associated timed-metadata.
-Timeline tracks allow players to seek to precise points behind the live head in
-a live broadcast, or for random access in a VOD asset. A timeline track might also
-be used to insert events at media times which do not correlate with Object
-boundaries. Timeline tracks are optional. Multiple timeline tracks can exist
-inside a catalog.<a href="#section-7-1" class="pilcrow">¶</a></p>
-<div id="timeline-track-payload">
+<p id="section-7-1">The media timeline track provides data about the previously published groups and their
+relationship to wallclock time and media time. Media timeline tracks allow players to
+seek to precise points behind the live head in a live broadcast, or for random access
+in a VOD asset. The optional metadata can describe a characteristic of any record in
+the media timeline. Media timeline tracks are optional. Multiple media timeline tracks
+can exist inside a catalog.<a href="#section-7-1" class="pilcrow">¶</a></p>
+<div id="mediatimelinepayload">
 <section id="section-7.1">
-        <h3 id="name-timeline-track-payload">
-<a href="#section-7.1" class="section-number selfRef">7.1. </a><a href="#name-timeline-track-payload" class="section-name selfRef">Timeline track payload</a>
+        <h3 id="name-media-timeline-track-payloa">
+<a href="#section-7.1" class="section-number selfRef">7.1. </a><a href="#name-media-timeline-track-payloa" class="section-name selfRef">Media Timeline track payload</a>
         </h3>
-<p id="section-7.1-1">The payload of a timeline track is a UTF-8 encoded CSV text file. This payload
-is formatted according to RFC4180 "Common Format and MIME Type for
+<p id="section-7.1-1">The payload of a media timeline track is a UTF-8 encoded CSV text file. This
+payload is formatted according to RFC4180 "Common Format and MIME Type for
 Comma-Separated Values (CSV)" Files <span>[<a href="#RFC4180" class="cite xref">RFC4180</a>]</span>. The separator is a comma and
-each line is separated by a carriage return. The mime-type of a timeline track
-<span class="bcp14">MUST</span> be specified as "text/csv" in the catalog.<a href="#section-7.1-1" class="pilcrow">¶</a></p>
-<p id="section-7.1-2">Each timeline track begins with a header row of GROUP_ID,OBJECT_ID,MEDIA_PTS,
+each line is separated by a carriage return. The mime-type of a media timeline
+track <span class="bcp14">MUST</span> be specified as "text/csv" in the catalog.<a href="#section-7.1-1" class="pilcrow">¶</a></p>
+<p id="section-7.1-2">Each media timeline track begins with a header row of GROUP_ID, OBJECT_ID, MEDIA_PTS,
 WALLCLOCK,METADATA. This row defines the 5 columns of data within each record.<a href="#section-7.1-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-7.1-3.1">
@@ -2865,59 +2903,203 @@ double quote.<a href="#section-7.1-3.5.1" class="pilcrow">¶</a></p>
         </ul>
 </section>
 </div>
-<div id="timeline-catalog-requirements">
+<div id="media-timeline-catalog-requirements">
 <section id="section-7.2">
-        <h3 id="name-timeline-catalog-requiremen">
-<a href="#section-7.2" class="section-number selfRef">7.2. </a><a href="#name-timeline-catalog-requiremen" class="section-name selfRef">Timeline Catalog requirements</a>
+        <h3 id="name-media-timeline-catalog-requ">
+<a href="#section-7.2" class="section-number selfRef">7.2. </a><a href="#name-media-timeline-catalog-requ" class="section-name selfRef">Media Timeline Catalog requirements</a>
         </h3>
-<p id="section-7.2-1">A timeline track <span class="bcp14">MUST</span> carry a 'type' identifier in the Catalog with a value of
-"timeline". A timeline track <span class="bcp14">MUST</span> carry a 'dependes' attribute which
-contains an array of all track names to which the timeline track applies.<a href="#section-7.2-1" class="pilcrow">¶</a></p>
+<p id="section-7.2-1">A media timeline track <span class="bcp14">MUST</span> carry a 'type' identifier in the Catalog with a value
+of "mediatimeline". A media timeline track <span class="bcp14">MUST</span> carry a 'depends' attribute which
+contains an array of all track names to which the media timeline track applies.<a href="#section-7.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="timeline-track-updating">
+<div id="media-timeline-track-updating">
 <section id="section-7.3">
-        <h3 id="name-timeline-track-updating">
-<a href="#section-7.3" class="section-number selfRef">7.3. </a><a href="#name-timeline-track-updating" class="section-name selfRef">Timeline track updating.</a>
+        <h3 id="name-media-timeline-track-updati">
+<a href="#section-7.3" class="section-number selfRef">7.3. </a><a href="#name-media-timeline-track-updati" class="section-name selfRef">Media Timeline track updating</a>
         </h3>
-<p id="section-7.3-1">The publisher <span class="bcp14">MUST</span> publish an indepdendent timeline in the first MOQT Object of
-each MOQT Group of a timeline track. The publisher <span class="bcp14">MAY</span> publish incremental updates
-in the second and subsequent Objects within each GROUP. Incremental updates
-only contain timeline events since the last timeline Object. Group duration
-<span class="bcp14">SHOULD</span> not exceed 30 seconds inside a timeline track.<a href="#section-7.3-1" class="pilcrow">¶</a></p>
+<p id="section-7.3-1">The publisher <span class="bcp14">MUST</span> publish an indepdendent media timeline in the first MOQT Object
+of each MOQT Group of a media timeline track. The publisher <span class="bcp14">MAY</span> publish incremental
+updates in the second and subsequent Objects within each Group. Incremental updates
+only contain media timeline records since the last media timeline Object.<a href="#section-7.3-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="eventtimelinetrack">
+<section id="section-8">
+      <h2 id="name-event-timeline-track">
+<a href="#section-8" class="section-number selfRef">8. </a><a href="#name-event-timeline-track" class="section-name selfRef">Event Timeline track</a>
+      </h2>
+<p id="section-8-1">The event timeline track provides a mechanism to associate ad-hoc event metadata with
+the broadcast. Use-case examples include live sports score data, GPS coordinates of race
+cars, SAP-types for media segments or active speaker notifications in web conferences.<a href="#section-8-1" class="pilcrow">¶</a></p>
+<p id="section-8-2">To allow the client to bind this event metadata with the broadcast content described by
+the media timeline track, each event record <span class="bcp14">MUST</span> contain a reference to one of
+Media PTS, wallclock time or MOQT Location.<a href="#section-8-2" class="pilcrow">¶</a></p>
+<p id="section-8-3">Event timeline tracks are optional. Multiple event timeline tracks can exist inside a
+catalog.<a href="#section-8-3" class="pilcrow">¶</a></p>
+<div id="eventtimelineformat">
+<section id="section-8.1">
+        <h3 id="name-event-timeline-data-format">
+<a href="#section-8.1" class="section-number selfRef">8.1. </a><a href="#name-event-timeline-data-format" class="section-name selfRef">Event Timeline data format</a>
+        </h3>
+<p id="section-8.1-1">An event timeline track is a JSON <span>[<a href="#JSON" class="cite xref">JSON</a>]</span> document. This document <span class="bcp14">MAY</span> be compressed
+using GZIP <span>[<a href="#GZIP" class="cite xref">GZIP</a>]</span>. The document contains an array of records. Each record consists of
+a JSON Object containing the following required fields:<a href="#section-8.1-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-8.1-2.1">
+            <p id="section-8.1-2.1.1">An index reference, which <span class="bcp14">MUST</span> be either 't' for wallclock time, 'l' for Location or
+'m' for Media PTS. Only one of these index values may be used within each record. Event
+timelines <span class="bcp14">SHOULD</span> use the same index reference type for each record. The definitions for
+wallclock time, Location and Media PTS are identical to those defined for media timeline
+payload <a href="#mediatimelinepayload" class="auto internal xref">Section 7.1</a>. Wallclock time and media PTS values are JSON Number,
+while Location value is an Array of Numbers, where the first item represents the MOQT
+GroupID and the second item the MOQT Object ID.<a href="#section-8.1-2.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-8.1-2.2">
+            <p id="section-8.1-2.2.1">A 'type' field, which is a String defining the type of data contained within the data
+field. Types are defined by the application provider and are not centrally registered.
+Implementers are encouraged to use a unique naming scheme, such as Reverse Domain Name
+Notation, to avoid naming collisions.<a href="#section-8.1-2.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-8.1-2.3">
+            <p id="section-8.1-2.3.1">A 'data' Object, whose structure is defined by the 'type' value.<a href="#section-8.1-2.3.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+</section>
+</div>
+<div id="event-timeline-catalog-requirements">
+<section id="section-8.2">
+        <h3 id="name-event-timeline-catalog-requ">
+<a href="#section-8.2" class="section-number selfRef">8.2. </a><a href="#name-event-timeline-catalog-requ" class="section-name selfRef">Event Timeline Catalog requirements</a>
+        </h3>
+<p id="section-8.2-1">An event timeline track <span class="bcp14">MUST</span> carry a 'type' identifier in the Catalog with a value
+of "eventtimeline". An event timeline track <span class="bcp14">MUST</span> carry a 'depends' attribute which
+contains an array of all track names to which the event timeline track applies.<a href="#section-8.2-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="event-timeline-track-updating">
+<section id="section-8.3">
+        <h3 id="name-event-timeline-track-updati">
+<a href="#section-8.3" class="section-number selfRef">8.3. </a><a href="#name-event-timeline-track-updati" class="section-name selfRef">Event Timeline track updating</a>
+        </h3>
+<p id="section-8.3-1">The publisher <span class="bcp14">MUST</span> publish an indepdendent event timeline in the first MOQT Object
+of each MOQT Group of an event timeline track. The publisher <span class="bcp14">MAY</span> publish incremental
+updates in the second and subsequent Objects within each Group. Incremental updates
+only contain event timeline records since the last event timeline Object.<a href="#section-8.3-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="event-timeline-track-examples">
+<section id="section-8.4">
+        <h3 id="name-event-timeline-track-exampl">
+<a href="#section-8.4" class="section-number selfRef">8.4. </a><a href="#name-event-timeline-track-exampl" class="section-name selfRef">Event timeline track examples</a>
+        </h3>
+<div id="event-timeline-track-with-wallclock-time-indexing">
+<section id="section-8.4.1">
+          <h4 id="name-event-timeline-track-with-w">
+<a href="#section-8.4.1" class="section-number selfRef">8.4.1. </a><a href="#name-event-timeline-track-with-w" class="section-name selfRef">Event timeline track with wallclock time indexing</a>
+          </h4>
+<p id="section-8.4.1-1">This example shows how sports scores and game information might be defined in a live
+sports broadcast.<a href="#section-8.4.1-1" class="pilcrow">¶</a></p>
+<div class="lang-json sourcecode" id="section-8.4.1-2">
+<pre>
+[
+    {
+        "t": 1756885678361,
+        "type": "com.example.custom.live-score-data",
+        "data": {
+            "status": "in_progress",
+            "period": 1,
+            "clock": "12:00",
+            "homeScore": 0,
+            "awayScore": 0,
+            "lastPlay": "Game Start"
+        }
+    },
+    {
+        "t": 1756885981542,
+        "type": "com.example.custom.live-score-data",
+        "data": {
+            "status": "in_progress",
+            "period": 1,
+            "clock": "09:25",
+            "homeScore": 2,
+            "awayScore": 0,
+            "lastPlay": "Team A: #23 makes 2-pt jump shot"
+        }
+    }
+]
+
+</pre><a href="#section-8.4.1-2" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="event-timeline-track-with-location-indexing">
+<section id="section-8.4.2">
+          <h4 id="name-event-timeline-track-with-l">
+<a href="#section-8.4.2" class="section-number selfRef">8.4.2. </a><a href="#name-event-timeline-track-with-l" class="section-name selfRef">Event timeline track with Location indexing</a>
+          </h4>
+<p id="section-8.4.2-1">This example shows drone GPS coordinates synched with the start of each Group.<a href="#section-8.4.2-1" class="pilcrow">¶</a></p>
+<div class="lang-json sourcecode" id="section-8.4.2-2">
+<pre>
+[
+    {
+        "l": [0,0],
+        "type": "org.example-tracking.gps",
+        "data": [47.1812,8.4592]
+    },
+    {
+        "l": [1,0],
+        "type": "org.example-tracking.gps",
+        "data": [47.1662,8.5155]
+    }
+]
+
+</pre><a href="#section-8.4.2-2" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
 </section>
 </div>
 </section>
 </div>
 <div id="workflow">
-<section id="section-8">
+<section id="section-9">
       <h2 id="name-workflow">
-<a href="#section-8" class="section-number selfRef">8. </a><a href="#name-workflow" class="section-name selfRef">Workflow</a>
+<a href="#section-9" class="section-number selfRef">9. </a><a href="#name-workflow" class="section-name selfRef">Workflow</a>
       </h2>
-<p id="section-8-1">A WARP publisher <span class="bcp14">MUST</span> publish a catalog track object before publishing any media
-track objects.<a href="#section-8-1" class="pilcrow">¶</a></p>
-<div id="ending-a-live-broadcast">
-<section id="section-8.1">
-        <h3 id="name-ending-a-live-broadcast">
-<a href="#section-8.1" class="section-number selfRef">8.1. </a><a href="#name-ending-a-live-broadcast" class="section-name selfRef">Ending a live broadcast</a>
+<div id="initiating-a-broadcast">
+<section id="section-9.1">
+        <h3 id="name-initiating-a-broadcast">
+<a href="#section-9.1" class="section-number selfRef">9.1. </a><a href="#name-initiating-a-broadcast" class="section-name selfRef">Initiating a broadcast</a>
         </h3>
-<p id="section-8.1-1">After publishing a catalog and defining tracks carrying live content, an original
+<p id="section-9.1-1">A WARP publisher <span class="bcp14">MUST</span> publish a catalog track object before publishing any media
+track objects.<a href="#section-9.1-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="ending-a-live-broadcast">
+<section id="section-9.2">
+        <h3 id="name-ending-a-live-broadcast">
+<a href="#section-9.2" class="section-number selfRef">9.2. </a><a href="#name-ending-a-live-broadcast" class="section-name selfRef">Ending a live broadcast</a>
+        </h3>
+<p id="section-9.2-1">After publishing a catalog and defining tracks carrying live content, an original
 publisher can deliver a deterministic signal to all subscribers that the broadcast
-is complete by taking the following steps:<a href="#section-8.1-1" class="pilcrow">¶</a></p>
+is complete by taking the following steps:<a href="#section-9.2-1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-8.1-2.1">
-            <p id="section-8.1-2.1.1">Send a SUBSCRIBE_DONE (See MOQT Sect 8.1.2) message for all active tracks using
-status code 0x2       Track Ended.<a href="#section-8.1-2.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-9.2-2.1">
+            <p id="section-9.2-2.1.1">Send a SUBSCRIBE_DONE (See MOQT Sect 8.1.2) message for all active tracks using
+status code 0x2       Track Ended.<a href="#section-9.2-2.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-8.1-2.2">
-            <p id="section-8.1-2.2.1">If the live stream is being converted instantly to a VOD asset, then publish an
+          <li class="normal" id="section-9.2-2.2">
+            <p id="section-9.2-2.2.1">If the live stream is being converted instantly to a VOD asset, then publish an
 independent (non-delta) catalog update which, for each track, sets isLive <a href="#islive" class="auto internal xref">Section 5.1.14</a>
-to FALSE and adds a track duration <a href="#trackduration" class="auto internal xref">Section 5.1.36</a> field.<a href="#section-8.1-2.2.1" class="pilcrow">¶</a></p>
+to FALSE and adds a track duration <a href="#trackduration" class="auto internal xref">Section 5.1.36</a> field.<a href="#section-9.2-2.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-8.1-2.3">
-            <p id="section-8.1-2.3.1">If the live stream is being terminated permanently without conversion to VOD, then
+          <li class="normal" id="section-9.2-2.3">
+            <p id="section-9.2-2.3.1">If the live stream is being terminated permanently without conversion to VOD, then
 publish an independent catalog update which signals isComplete <a href="#iscomplete" class="auto internal xref">Section 5.1.7</a> as
-TRUE and which contains an empty Tracks <a href="#tracks" class="auto internal xref">Section 5.1.8</a> field.<a href="#section-8.1-2.3.1" class="pilcrow">¶</a></p>
+TRUE and which contains an empty Tracks <a href="#tracks" class="auto internal xref">Section 5.1.8</a> field.<a href="#section-9.2-2.3.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
@@ -2925,32 +3107,36 @@ TRUE and which contains an empty Tracks <a href="#tracks" class="auto internal x
 </section>
 </div>
 <div id="security-considerations">
-<section id="section-9">
+<section id="section-10">
       <h2 id="name-security-considerations">
-<a href="#section-9" class="section-number selfRef">9. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
+<a href="#section-10" class="section-number selfRef">10. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
       </h2>
-<p id="section-9-1">ToDo<a href="#section-9-1" class="pilcrow">¶</a></p>
+<p id="section-10-1">ToDo<a href="#section-10-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="IANA">
-<section id="section-10">
+<section id="section-11">
       <h2 id="name-iana-considerations">
-<a href="#section-10" class="section-number selfRef">10. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
+<a href="#section-11" class="section-number selfRef">11. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
       </h2>
-<p id="section-10-1">This document creates a new entry in the "MoQ Streaming Format" Registry
+<p id="section-11-1">This document creates a new entry in the "MoQ Streaming Format" Registry
 (see <span>[<a href="#MoQTransport" class="cite xref">MoQTransport</a>]</span> Sect 8).  The type value is 0x001, the name is
-"WARP Streaming Format" and the RFC is XXX.<a href="#section-10-1" class="pilcrow">¶</a></p>
+"WARP Streaming Format" and the RFC is XXX.<a href="#section-11-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="sec-normative-references">
-<section id="section-11">
+<section id="section-12">
       <h2 id="name-normative-references">
-<a href="#section-11" class="section-number selfRef">11. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+<a href="#section-12" class="section-number selfRef">12. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
       </h2>
 <dl class="references">
 <dt id="BASE64">[BASE64]</dt>
       <dd>
 <span class="refAuthor">Josefsson, S.</span>, <span class="refTitle">"The Base16, Base32, and Base64 Data Encodings"</span>, <span class="seriesInfo">RFC 4648</span>, <span class="seriesInfo">DOI 10.17487/RFC4648</span>, <time datetime="2006-10" class="refDate">October 2006</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc4648">https://www.rfc-editor.org/rfc/rfc4648</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="GZIP">[GZIP]</dt>
+      <dd>
+<span class="refAuthor">Deutsch, P.</span>, <span class="refTitle">"GZIP file format specification version 4.3"</span>, <span class="seriesInfo">RFC 1952</span>, <span class="seriesInfo">DOI 10.17487/RFC1952</span>, <time datetime="1996-05" class="refDate">May 1996</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc1952">https://www.rfc-editor.org/rfc/rfc1952</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="IMSC1">[IMSC1]</dt>
       <dd>
