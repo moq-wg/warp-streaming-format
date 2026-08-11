@@ -1457,7 +1457,7 @@ synchronized data.
       "namespace": "another-provider/time-synchronized-data",
       "packaging": "eventtimeline",
       "eventType": "com.ai-extraction/appID/v3",
-      "depends": ["1080p-video"]
+      "depends": ["history"]
     },
     {
       "name": "1080p-video",
@@ -1580,11 +1580,18 @@ in the video track and a separate SCTE-35 event timeline for ad insertion.
       "bitrate": 128000
     },
     {
+      "name": "video-timeline",
+      "packaging": "mediatimeline",
+      "isLive": true,
+      "depends": ["video"]
+      ]
+    },
+    {
       "name": "scte35",
       "packaging": "eventtimeline",
       "eventType": "urn:scte:scte35:2013:bin",
       "isLive": true,
-      "depends": ["video"]
+      "depends": ["video-timeline"]
     }
   ]
 }
@@ -1939,7 +1946,6 @@ An example media timeline is shown below:
 A media timeline track MUST carry a 'type' identifier in the Catalog with a value
 of "mediatimeline". A media timeline track MUST carry a 'depends' attribute which
 contains an array of all track names to which the media timeline track applies.
-The mime-type of a media timeline track MUST be specified as "application/json".
 
 ## Media Timeline track updating
 The publisher MUST publish an independent media timeline in the first MOQT Object
@@ -2045,8 +2051,9 @@ An event timeline track MUST carry:
 * an 'eventType' {{eventtype}} attribute declaring the type & structure of data contained in the
   event timeline track.
 
-If an event timeline track is a dependency for other tracks, then it SHOULD carry a 'depends'
-{{dependencies}} attribute referencing each of the tracks for which it is a dependency.
+If an Event Timeline track has an index reference which refers to one or more Media Timeline tracks,
+then those Media Timline tracks MUST be listed in a 'depends' {{dependencies}} field within the
+the Event Timeline track definition.
 
 ## Event Timeline track updating
 The mapping of Event Timeline payloads to MOQT Groups is defined by the 'eventType'.
