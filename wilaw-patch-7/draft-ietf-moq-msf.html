@@ -24,7 +24,7 @@
     Jinja2 3.1.6
     lxml 6.1.1
     natsort 8.4.0
-    platformdirs 4.10.0
+    platformdirs 4.11.0
     pycountry 24.6.1
     PyYAML 6.0.3
     requests 2.33.1
@@ -64,7 +64,6 @@
   src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-latin-ext.woff2') format('woff2');
   unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
-
 @font-face {
   font-family: 'Lora';
   font-style: italic;
@@ -113,7 +112,6 @@
   src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-latin.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
-
 @font-face {
   font-family: 'Lora';
   font-style: normal;
@@ -178,7 +176,6 @@
   font-display: swap;
   src: local('Oxygen Mono'), local('OxygenMono-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/oxygenmono-regular-latin.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
 }
 
 @font-face {
@@ -1047,11 +1044,11 @@ svg {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">MOQT Streaming Format</td>
-<td class="right">July 2026</td>
+<td class="right">August 2026</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Law &amp; Nandakumar</td>
-<td class="center">Expires 18 January 2027</td>
+<td class="center">Expires 12 February 2027</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1064,12 +1061,12 @@ svg {
 <dd class="internet-draft">draft-ietf-moq-msf-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-07-17" class="published">17 July 2026</time>
+<time datetime="2026-08-11" class="published">11 August 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2027-01-18">18 January 2027</time></dd>
+<dd class="expires"><time datetime="2027-02-12">12 February 2027</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1123,7 +1120,7 @@ svg {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 18 January 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 12 February 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1421,7 +1418,10 @@ svg {
                     <p id="section-toc.1-1.5.2.6.2.15.1"><a href="#section-5.6.15" class="auto internal xref">5.6.15</a>. <a href="#name-time-aligned-audio-video-trac" class="internal xref">Time-aligned Audio/Video Tracks with Authorization</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.6.2.16">
-                    <p id="section-toc.1-1.5.2.6.2.16.1"><a href="#section-5.6.16" class="auto internal xref">5.6.16</a>. <a href="#name-publish-tracks-for-logs-and" class="internal xref">Publish tracks for logs and metrics</a></p>
+                    <p id="section-toc.1-1.5.2.6.2.16.1"><a href="#section-5.6.16" class="auto internal xref">5.6.16</a>. <a href="#name-a-catalog-referencing-other" class="internal xref">A catalog referencing other catalogs</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.6.2.17">
+                    <p id="section-toc.1-1.5.2.6.2.17.1"><a href="#section-5.6.17" class="auto internal xref">5.6.17</a>. <a href="#name-publish-tracks-for-logs-and" class="internal xref">Publish tracks for logs and metrics</a></p>
 </li>
                 </ul>
 </li>
@@ -1481,13 +1481,16 @@ svg {
                 <p id="section-toc.1-1.8.2.3.1"><a href="#section-8.3" class="auto internal xref">8.3</a>.  <a href="#name-event-timeline-track-updati" class="internal xref">Event Timeline track updating</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.4">
-                <p id="section-toc.1-1.8.2.4.1"><a href="#section-8.4" class="auto internal xref">8.4</a>.  <a href="#name-event-timeline-track-exampl" class="internal xref">Event timeline track examples</a></p>
+                <p id="section-toc.1-1.8.2.4.1"><a href="#section-8.4" class="auto internal xref">8.4</a>.  <a href="#name-event-timeline-track-payloa" class="internal xref">Event timeline track payload examples</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.4.2.1">
                     <p id="section-toc.1-1.8.2.4.2.1.1"><a href="#section-8.4.1" class="auto internal xref">8.4.1</a>.  <a href="#name-event-timeline-track-with-w" class="internal xref">Event timeline track with wallclock time indexing</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.4.2.2">
                     <p id="section-toc.1-1.8.2.4.2.2.1"><a href="#section-8.4.2" class="auto internal xref">8.4.2</a>.  <a href="#name-event-timeline-track-with-m" class="internal xref">Event timeline track with MOQT Location indexing</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.4.2.3">
+                    <p id="section-toc.1-1.8.2.4.2.3.1"><a href="#section-8.4.3" class="auto internal xref">8.4.3</a>.  <a href="#name-event-timeline-track-with-me" class="internal xref">Event timeline track with media time indexing</a></p>
 </li>
                 </ul>
 </li>
@@ -1917,31 +1920,36 @@ advertising their output and for subscribers in consuming that output. The
 payload of the Catalog object is opaque to Relays and can be end-to-end
 encrypted. The Catalog provides the names and namespaces of the tracks being
 produced, along with the relationship between tracks, properties of the tracks
-that consumers may use for selection and any relevant initialization data.<a href="#section-5-1" class="pilcrow">¶</a></p>
-<p id="section-5-2">The catalog track <span class="bcp14">MUST</span> have a case-sensitive Track Name of "catalog".<a href="#section-5-2" class="pilcrow">¶</a></p>
+that consumers may use for selection and any relevant initialization data. A
+catalog track <span class="bcp14">MAY</span> reference other catalog tracks.<a href="#section-5-1" class="pilcrow">¶</a></p>
+<p id="section-5-2">The top-level catalog track <span class="bcp14">MUST</span> have a case-sensitive Track Name of "catalog".<a href="#section-5-2" class="pilcrow">¶</a></p>
 <p id="section-5-3">A catalog object <span class="bcp14">MAY</span> be independent of other catalog objects or it <span class="bcp14">MAY</span> represent
 a delta update of a prior catalog object. The first catalog object published
 within a new group <span class="bcp14">MUST</span> be independent and <span class="bcp14">MUST</span> provide a complete catalog that
 does not require any prior catalog object for interpretation. Any catalog updates
 that precede the first Object of the latest Group <span class="bcp14">MUST</span> be ignored.<a href="#section-5-3" class="pilcrow">¶</a></p>
-<p id="section-5-4">A catalog object <span class="bcp14">SHOULD</span> be published only when the availability of tracks changes, or
-after a period of time has passed such that the catalog object might fall out of cache
+<p id="section-5-4">A catalog object <span class="bcp14">SHOULD</span> be published only when the content of the catalog has changed,
+or after a period of time has passed such that the catalog object might fall out of cache
 in a delivery network.<a href="#section-5-4" class="pilcrow">¶</a></p>
-<p id="section-5-5">Each catalog update <span class="bcp14">MUST</span> be mapped to an MOQT Object. All catalog updates, both
+<p id="section-5-5">The catalog track <span class="bcp14">SHOULD</span> have a higher publisher priority than all tracks described
+within the catalog.<a href="#section-5-5" class="pilcrow">¶</a></p>
+<p id="section-5-6">A subscriber to a catalog track <span class="bcp14">SHOULD</span> use a higher subscriber priority for the catalog
+subscription than for any other concurrent subscriptions.<a href="#section-5-6" class="pilcrow">¶</a></p>
+<p id="section-5-7">Each catalog update <span class="bcp14">MUST</span> be mapped to an MOQT Object. All catalog updates, both
 independent and delta, <span class="bcp14">MUST</span> be mapped to MOQT sub-group 0. The first Object (with
 Object ID 0) in any Group in a catalog track <span class="bcp14">MUST</span> hold an independent copy of the
 catalog. All subsequent Objects within that Group (i.e Objects IDs &gt;= 1) <span class="bcp14">MUST</span> hold
 a delta update. As soon as an independent update is produced, it <span class="bcp14">MUST</span> be placed at the
-start of a new Group.<a href="#section-5-5" class="pilcrow">¶</a></p>
-<p id="section-5-6">Subscribers accessing the catalog <span class="bcp14">MUST</span> use SUBSCRIBE with a Joining FETCH
+start of a new Group.<a href="#section-5-7" class="pilcrow">¶</a></p>
+<p id="section-5-8">Subscribers accessing the catalog <span class="bcp14">MUST</span> use SUBSCRIBE with a Joining FETCH
 (offset = 0) in order to obtain the latest complete catalog along with all subsequent
-catalog objects, including delta updates, that follow.<a href="#section-5-6" class="pilcrow">¶</a></p>
-<p id="section-5-7">A catalog is a JSON <span>[<a href="#JSON" class="cite xref">JSON</a>]</span> document, comprised of a series of mandatory and
+catalog objects, including delta updates, that follow.<a href="#section-5-8" class="pilcrow">¶</a></p>
+<p id="section-5-9">A catalog is a JSON <span>[<a href="#JSON" class="cite xref">JSON</a>]</span> document, comprised of a series of mandatory and
 optional fields. At a minimum, a catalog <span class="bcp14">MUST</span> provide all mandatory fields. Some
 fields are conditional depending on the type of content carried. A producer <span class="bcp14">MAY</span> add
 additional fields to the ones described in this draft. Custom field names <span class="bcp14">MUST NOT</span>
-collide with field names described in this draft.<a href="#section-5-7" class="pilcrow">¶</a></p>
-<p id="section-5-8">A parser <span class="bcp14">MUST</span> ignore fields it does not understand.<a href="#section-5-8" class="pilcrow">¶</a></p>
+collide with field names described in this draft.<a href="#section-5-9" class="pilcrow">¶</a></p>
+<p id="section-5-10">A parser <span class="bcp14">MUST</span> ignore fields it does not understand.<a href="#section-5-10" class="pilcrow">¶</a></p>
 <div id="rootcatalogfield">
 <section id="section-5.1">
         <h3 id="name-root-catalog-fields">
@@ -2509,6 +2517,12 @@ as defined in Table 3.<a href="#section-5.2.4-2" class="pilcrow">¶</a></p>
                 <td class="text-left" rowspan="1" colspan="1">MoQ Metrics</td>
                 <td class="text-left" rowspan="1" colspan="1">moqmetrics</td>
                 <td class="text-left" rowspan="1" colspan="1">See <span>[<a href="#MOQMETRICS" class="cite xref">MOQMETRICS</a>]</span>
+</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">Catalog</td>
+                <td class="text-left" rowspan="1" colspan="1">catalog</td>
+                <td class="text-left" rowspan="1" colspan="1">See <a href="#catalog" class="auto internal xref">Section 5</a>
 </td>
               </tr>
             </tbody>
@@ -3794,7 +3808,7 @@ tracks using MoQ Secure Objects with AES-128-GCM.<a href="#section-5.6.8-1" clas
 packaged, time-aligned audio and video tracks, along with a Media Timeline
 which describes the history of those tracks and an Event Timeline providing
 synchronized data.<a href="#section-5.6.9-1" class="pilcrow">¶</a></p>
-<div class="breakable lang-json sourcecode" id="section-5.6.9-2">
+<div class="lang-json sourcecode" id="section-5.6.9-2">
 <pre>
 {
   "version": "draft-01",
@@ -3812,7 +3826,6 @@ synchronized data.<a href="#section-5.6.9-1" class="pilcrow">¶</a></p>
       "namespace": "another-provider/time-synchronized-data",
       "packaging": "eventtimeline",
       "eventType": "com.ai-extraction/appID/v3",
-      "mimeType": "application/json",
       "depends": ["1080p-video"]
     },
     {
@@ -3949,9 +3962,7 @@ in the video track and a separate SCTE-35 event timeline for ad insertion.<a hre
       "name": "scte35",
       "packaging": "eventtimeline",
       "eventType": "urn:scte:scte35:2013:bin",
-      "mimeType": "application/json",
       "isLive": true,
-      "role": "eventtimeline",
       "depends": ["video"]
     }
   ]
@@ -4058,7 +4069,7 @@ substitution. The following catalog template:<a href="#section-5.6.14-3" class="
       "renderGroup": 1
     },
     {
-      "name": "cmcdv2-%id%",
+      "name": "tracking-%id%",
       "namespace": "advertising-decisions/live-sports/%event%",
       "packaging": "eventtimeline",
       "eventType": "com.example.iab.vast",
@@ -4068,7 +4079,7 @@ substitution. The following catalog template:<a href="#section-5.6.14-3" class="
 }
 </pre><a href="#section-5.6.14-4" class="pilcrow">¶</a>
 </div>
-<p id="section-5.6.14-5">Would be resolved by the subscriber as:<a href="#section-5.6.14-5" class="pilcrow">¶</a></p>
+<p id="section-5.6.14-5">would be resolved by the subscriber as:<a href="#section-5.6.14-5" class="pilcrow">¶</a></p>
 <div class="lang-json sourcecode" id="section-5.6.14-6">
 <pre>
 {
@@ -4082,7 +4093,7 @@ substitution. The following catalog template:<a href="#section-5.6.14-3" class="
       "renderGroup": 1
     },
     {
-      "name": "cmcdv2-bob",
+      "name": "ctracking-bob",
       "namespace": "advertising-decisions/live-sports/xyz",
       "packaging": "eventtimeline",
       "eventType": "com.example.iab.vast",
@@ -4164,16 +4175,50 @@ specification.<a href="#section-5.6.15-1" class="pilcrow">¶</a></p>
 </div>
 </section>
 </div>
-<div id="publish-tracks-for-logs-and-metrics">
+<div id="a-catalog-referencing-other-catalogs">
 <section id="section-5.6.16">
-          <h4 id="name-publish-tracks-for-logs-and">
-<a href="#section-5.6.16" class="section-number selfRef">5.6.16. </a><a href="#name-publish-tracks-for-logs-and" class="section-name selfRef">Publish tracks for logs and metrics</a>
+          <h4 id="name-a-catalog-referencing-other">
+<a href="#section-5.6.16" class="section-number selfRef">5.6.16. </a><a href="#name-a-catalog-referencing-other" class="section-name selfRef">A catalog referencing other catalogs</a>
           </h4>
-<p id="section-5.6.16-1">This example shows a catalog that includes publish tracks for client-side
+<p id="section-5.6.16-1">This example shows a catalog referencing three other catalogs, one of which is in
+a different namespace.<a href="#section-5.6.16-1" class="pilcrow">¶</a></p>
+<div class="lang-json sourcecode" id="section-5.6.16-2">
+<pre>
+{
+  "version": "1",
+  "generatedAt": 1746104606044,
+  "tracks": [
+    {
+      "name": "premium-catalog",
+      "packaging": "catalog"
+    },
+    {
+      "name": "free-catalog",
+      "packaging": "catalog"
+    },
+    {
+      "name": "camera33-catalog",
+      "namespace": "example.com/blimps-R-us",
+      "packaging": "catalog",
+      "label": "Eye From the Sky video feeds"
+    }
+   ]
+}
+
+</pre><a href="#section-5.6.16-2" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="publish-tracks-for-logs-and-metrics">
+<section id="section-5.6.17">
+          <h4 id="name-publish-tracks-for-logs-and">
+<a href="#section-5.6.17" class="section-number selfRef">5.6.17. </a><a href="#name-publish-tracks-for-logs-and" class="section-name selfRef">Publish tracks for logs and metrics</a>
+          </h4>
+<p id="section-5.6.17-1">This example shows a catalog that includes publish tracks for client-side
 logging and metrics collection. The subscriber can publish QoE data and logs
 back to the delivery system using these track definitions. The namespace and
-track name formats follow the conventions defined in <span>[<a href="#MOQLOG" class="cite xref">MOQLOG</a>]</span> and <span>[<a href="#MOQMETRICS" class="cite xref">MOQMETRICS</a>]</span>.<a href="#section-5.6.16-1" class="pilcrow">¶</a></p>
-<div class="breakable lang-json sourcecode" id="section-5.6.16-2">
+track name formats follow the conventions defined in <span>[<a href="#MOQLOG" class="cite xref">MOQLOG</a>]</span> and <span>[<a href="#MOQMETRICS" class="cite xref">MOQMETRICS</a>]</span>.<a href="#section-5.6.17-1" class="pilcrow">¶</a></p>
+<div class="breakable lang-json sourcecode" id="section-5.6.17-2">
 <pre>
 {
   "version": "draft-01",
@@ -4226,26 +4271,26 @@ track name formats follow the conventions defined in <span>[<a href="#MOQLOG" cl
   ]
 }
 
-</pre><a href="#section-5.6.16-2" class="pilcrow">¶</a>
+</pre><a href="#section-5.6.17-2" class="pilcrow">¶</a>
 </div>
-<p id="section-5.6.16-3">In this example:<a href="#section-5.6.16-3" class="pilcrow">¶</a></p>
+<p id="section-5.6.17-3">In this example:<a href="#section-5.6.17-3" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-5.6.16-4.1">
-              <p id="section-5.6.16-4.1.1">The metrics track uses the namespace format defined in <span>[<a href="#MOQMETRICS" class="cite xref">MOQMETRICS</a>]</span> with
+<li class="normal" id="section-5.6.17-4.1">
+              <p id="section-5.6.17-4.1.1">The metrics track uses the namespace format defined in <span>[<a href="#MOQMETRICS" class="cite xref">MOQMETRICS</a>]</span> with
 %resourceId% as a placeholder for the subscriber's unique resource identifier.
-The track name "4" indicates Warning level granularity.<a href="#section-5.6.16-4.1.1" class="pilcrow">¶</a></p>
+The track name "4" indicates Warning level granularity.<a href="#section-5.6.17-4.1.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-5.6.16-4.2">
-              <p id="section-5.6.16-4.2.1">The log track uses the namespace format defined in <span>[<a href="#MOQLOG" class="cite xref">MOQLOG</a>]</span> with %resourceId%
+            <li class="normal" id="section-5.6.17-4.2">
+              <p id="section-5.6.17-4.2.1">The log track uses the namespace format defined in <span>[<a href="#MOQLOG" class="cite xref">MOQLOG</a>]</span> with %resourceId%
 as a placeholder. The track name "6" indicates Informational level priority.
-This track establishes a separate connection to logs.example.com.<a href="#section-5.6.16-4.2.1" class="pilcrow">¶</a></p>
+This track establishes a separate connection to logs.example.com.<a href="#section-5.6.17-4.2.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-5.6.16-4.3">
-              <p id="section-5.6.16-4.3.1">Both tracks include authentication tokens for publishing authorization.<a href="#section-5.6.16-4.3.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-5.6.17-4.3">
+              <p id="section-5.6.17-4.3.1">Both tracks include authentication tokens for publishing authorization.<a href="#section-5.6.17-4.3.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-5.6.16-4.4">
-              <p id="section-5.6.16-4.4.1">The subscriber <span class="bcp14">MUST</span> replace %resourceId% with their actual resource identifier
-as defined in the respective specifications.<a href="#section-5.6.16-4.4.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-5.6.17-4.4">
+              <p id="section-5.6.17-4.4.1">The subscriber <span class="bcp14">MUST</span> replace %resourceId% with their actual resource identifier
+as defined in the respective specifications.<a href="#section-5.6.17-4.4.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
 </section>
@@ -4471,6 +4516,8 @@ Media PTS, wallclock time or MOQT Location.<a href="#section-8-2" class="pilcrow
 <p id="section-8-3">Event timeline tracks are optional. Multiple event timeline tracks can exist inside a
 catalog. The type &amp; structure of the data contained within each event timeline track is
 declared in the catalog, to facilitate client selection and parsing.<a href="#section-8-3" class="pilcrow">¶</a></p>
+<p id="section-8-4">Event timeline tracks can be present in both the 'tracks' and 'publishtracks' arrays,
+implying that can be both consumed and produced by an endpoint.<a href="#section-8-4" class="pilcrow">¶</a></p>
 <div id="eventtimelineformat">
 <section id="section-8.1">
         <h3 id="name-event-timeline-data-format">
@@ -4482,8 +4529,8 @@ contains an array of records. Each record consists of a JSON Object containing
 the following required fields:<a href="#section-8.1-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-8.1-2.1">
-            <p id="section-8.1-2.1.1">An index reference, which <span class="bcp14">MUST</span> be either 't' for wallclock time, 'l' for Location or
-'m' for Media PTS. Only one of these index values may be used within each record. Event
+            <p id="section-8.1-2.1.1">An index reference, which <span class="bcp14">MUST</span> be either 'T' for wallclock time, 'L' for Location or
+'M' for Media PTS. Only one of these index values may be used within each record. Event
 timelines <span class="bcp14">SHOULD</span> use the same index reference type for each record. The definitions for
 wallclock time, Location and Media PTS are identical to those defined for media timeline
 payload <a href="#mediatimelinepayload" class="auto internal xref">Section 7.1</a>. Wallclock time and media PTS values are JSON Number,
@@ -4505,20 +4552,15 @@ track in the Catalog.<a href="#section-8.1-2.2.1" class="pilcrow">¶</a></p>
 <p id="section-8.2-1">An event timeline track <span class="bcp14">MUST</span> carry:<a href="#section-8.2-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-8.2-2.1">
-            <p id="section-8.2-2.1.1">a <a href="#packaging" class="auto internal xref">Section 5.2.4</a> attribute with a value of "eventtimeline".<a href="#section-8.2-2.1.1" class="pilcrow">¶</a></p>
+            <p id="section-8.2-2.1.1">a 'packaging' <a href="#packaging" class="auto internal xref">Section 5.2.4</a> attribute with a value of "eventtimeline".<a href="#section-8.2-2.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-8.2-2.2">
-            <p id="section-8.2-2.2.1">a <a href="#dependencies" class="auto internal xref">Section 5.2.14</a> attribute which contains an array of all track names to which the event
-timeline track applies.<a href="#section-8.2-2.2.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-8.2-2.3">
-            <p id="section-8.2-2.3.1">a <a href="#mimetype" class="auto internal xref">Section 5.2.19</a> attribute with a value of "application/json".<a href="#section-8.2-2.3.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-8.2-2.4">
-            <p id="section-8.2-2.4.1">an <a href="#eventtype" class="auto internal xref">Section 5.2.5</a> attribute declaring the type &amp; structure of data contained in the
-event timeline track.<a href="#section-8.2-2.4.1" class="pilcrow">¶</a></p>
+            <p id="section-8.2-2.2.1">an 'eventType' <a href="#eventtype" class="auto internal xref">Section 5.2.5</a> attribute declaring the type &amp; structure of data contained in the
+event timeline track.<a href="#section-8.2-2.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
+<p id="section-8.2-3">If an event timeline track is a dependency for other tracks, then it <span class="bcp14">SHOULD</span> carry a 'depends'
+<a href="#dependencies" class="auto internal xref">Section 5.2.14</a> attribute referencing each of the tracks for which it is a dependency.<a href="#section-8.2-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="event-timeline-track-updating">
@@ -4526,19 +4568,24 @@ event timeline track.<a href="#section-8.2-2.4.1" class="pilcrow">¶</a></p>
         <h3 id="name-event-timeline-track-updati">
 <a href="#section-8.3" class="section-number selfRef">8.3. </a><a href="#name-event-timeline-track-updati" class="section-name selfRef">Event Timeline track updating</a>
         </h3>
-<p id="section-8.3-1">The publisher <span class="bcp14">MUST</span> publish an independent event timeline in the first MOQT Object
+<p id="section-8.3-1">The mapping of Event Timeline payloads to MOQT Groups is defined by the 'eventType'.<a href="#section-8.3-1" class="pilcrow">¶</a></p>
+<p id="section-8.3-2">If the data in the event timeline track is to be consumed as a sequence, then the
+the publisher <span class="bcp14">SHOULD</span> publish an independent event timeline in the first MOQT Object
 of each MOQT Group of an event timeline track. An independent event timeline object
-<span class="bcp14">MUST</span> contain all event timeline records accumulated and accessible up to that point, allowing a
+<span class="bcp14">SHOULD</span> contain all event timeline records accumulated and accessible up to that point, allowing a
 subscriber joining at any group boundary to receive the accessible event history.
 The publisher <span class="bcp14">MAY</span> publish incremental updates in the second and subsequent Objects
 within each Group. Incremental updates contain only new event timeline records since
-the previous event timeline Object in that Group.<a href="#section-8.3-1" class="pilcrow">¶</a></p>
+the previous event timeline Object in that Group.<a href="#section-8.3-2" class="pilcrow">¶</a></p>
+<p id="section-8.3-3">If the data in the event timeline track is independent of its history, then the
+publisher <span class="bcp14">SHOULD</span> publish each record in its own MOQT Group and use a single MOQT Object
+per MOQT Group.<a href="#section-8.3-3" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="event-timeline-track-examples">
+<div id="event-timeline-track-payload-examples">
 <section id="section-8.4">
-        <h3 id="name-event-timeline-track-exampl">
-<a href="#section-8.4" class="section-number selfRef">8.4. </a><a href="#name-event-timeline-track-exampl" class="section-name selfRef">Event timeline track examples</a>
+        <h3 id="name-event-timeline-track-payloa">
+<a href="#section-8.4" class="section-number selfRef">8.4. </a><a href="#name-event-timeline-track-payloa" class="section-name selfRef">Event timeline track payload examples</a>
         </h3>
 <div id="event-timeline-track-with-wallclock-time-indexing">
 <section id="section-8.4.1">
@@ -4551,7 +4598,7 @@ sports broadcast.<a href="#section-8.4.1-1" class="pilcrow">¶</a></p>
 <pre>
 [
     {
-        "t": 1756885678361,
+        "T": 1756885678361,
         "data": {
             "status": "in_progress",
             "period": 1,
@@ -4562,7 +4609,7 @@ sports broadcast.<a href="#section-8.4.1-1" class="pilcrow">¶</a></p>
         }
     },
     {
-        "t": 1756885981542,
+        "T": 1756885981542,
         "data": {
             "status": "in_progress",
             "period": 1,
@@ -4588,16 +4635,57 @@ sports broadcast.<a href="#section-8.4.1-1" class="pilcrow">¶</a></p>
 <pre>
 [
     {
-        "l": [0,0],
+        "L": [0,0],
         "data": [47.1812,8.4592]
     },
     {
-        "l": [1,0],
+        "L": [1,0],
         "data": [47.1662,8.5155]
     }
 ]
 
 </pre><a href="#section-8.4.2-2" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="event-timeline-track-with-media-time-indexing">
+<section id="section-8.4.3">
+          <h4 id="name-event-timeline-track-with-me">
+<a href="#section-8.4.3" class="section-number selfRef">8.4.3. </a><a href="#name-event-timeline-track-with-me" class="section-name selfRef">Event timeline track with media time indexing</a>
+          </h4>
+<p id="section-8.4.3-1">This example shows an object identification track from a hypothetical video
+indexing system.<a href="#section-8.4.3-1" class="pilcrow">¶</a></p>
+<div class="lang-json sourcecode" id="section-8.4.3-2">
+<pre>
+[
+    {
+        "M": 23051,
+        "data": {
+            "object_id": "obj_00123",
+            "class": "human",
+            "attributes": {
+                "sex": "male",
+                "action": "eating dinner"
+            },
+            "bounding_box": { "x": 312, "y": 140, "width": 180, "height": 260 },
+            "confidence": 0.94
+        }
+    },
+    {
+        "M": 43796,
+        "data": {
+            "object_id": "obj_00124",
+            "class": "object",
+            "attributes": {
+                "type": "dog",
+                "action": "sitting"
+            },
+            "bounding_box": { "x": 20, "y": 300, "width": 120, "height": 90 },
+            "confidence": 0.88
+        }
+    }
+]
+</pre><a href="#section-8.4.3-2" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
