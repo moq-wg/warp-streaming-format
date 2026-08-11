@@ -2020,7 +2020,7 @@ catalog. The type & structure of the data contained within each event timeline t
 declared in the catalog, to facilitate client selection and parsing.
 
 Event timeline tracks can be present in both the 'tracks' and 'publishtracks' arrays,
-implying that can be both consumed and produced by an endpoint. 
+implying that can be both consumed and produced by an endpoint.
 
 ## Event Timeline data format {#eventtimelineformat}
 An event timeline track is a JSON {{JSON}} document. This document MAY be compressed
@@ -2046,7 +2046,7 @@ An event timeline track MUST carry:
   event timeline track.
 
 If an event timeline track is a dependency for other tracks, then it SHOULD carry a 'depends'
-{{dependencies}} attribute referencing each of the tracks for which it is a dependency. 
+{{dependencies}} attribute referencing each of the tracks for which it is a dependency.
 
 ## Event Timeline track updating
 The mapping of Event Timeline payloads to MOQT Groups is defined by the 'eventType'.
