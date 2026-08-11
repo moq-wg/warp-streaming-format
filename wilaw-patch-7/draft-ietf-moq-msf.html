@@ -3826,7 +3826,7 @@ synchronized data.<a href="#section-5.6.9-1" class="pilcrow">¶</a></p>
       "namespace": "another-provider/time-synchronized-data",
       "packaging": "eventtimeline",
       "eventType": "com.ai-extraction/appID/v3",
-      "depends": ["1080p-video"]
+      "depends": ["history"]
     },
     {
       "name": "1080p-video",
@@ -3921,7 +3921,7 @@ template values to accommodate different group durations.<a href="#section-5.6.1
           </h4>
 <p id="section-5.6.11-1">This example shows a live broadcast with CEA-608 closed captions embedded
 in the video track and a separate SCTE-35 event timeline for ad insertion.<a href="#section-5.6.11-1" class="pilcrow">¶</a></p>
-<div class="lang-json sourcecode" id="section-5.6.11-2">
+<div class="breakable lang-json sourcecode" id="section-5.6.11-2">
 <pre>
 {
   "version": "draft-01",
@@ -3959,11 +3959,18 @@ in the video track and a separate SCTE-35 event timeline for ad insertion.<a hre
       "bitrate": 128000
     },
     {
+      "name": "video-timeline",
+      "packaging": "mediatimeline",
+      "isLive": true,
+      "depends": ["video"]
+      ]
+    },
+    {
       "name": "scte35",
       "packaging": "eventtimeline",
       "eventType": "urn:scte:scte35:2013:bin",
       "isLive": true,
-      "depends": ["video"]
+      "depends": ["video-timeline"]
     }
   ]
 }
@@ -4400,8 +4407,7 @@ wallclock time is not known, the value <span class="bcp14">SHOULD</span> be 0.<a
         </h3>
 <p id="section-7.2-1">A media timeline track <span class="bcp14">MUST</span> carry a 'type' identifier in the Catalog with a value
 of "mediatimeline". A media timeline track <span class="bcp14">MUST</span> carry a 'depends' attribute which
-contains an array of all track names to which the media timeline track applies.
-The mime-type of a media timeline track <span class="bcp14">MUST</span> be specified as "application/json".<a href="#section-7.2-1" class="pilcrow">¶</a></p>
+contains an array of all track names to which the media timeline track applies.<a href="#section-7.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="media-timeline-track-updating">
@@ -4559,8 +4565,9 @@ track in the Catalog.<a href="#section-8.1-2.2.1" class="pilcrow">¶</a></p>
 event timeline track.<a href="#section-8.2-2.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-8.2-3">If an event timeline track is a dependency for other tracks, then it <span class="bcp14">SHOULD</span> carry a 'depends'
-<a href="#dependencies" class="auto internal xref">Section 5.2.14</a> attribute referencing each of the tracks for which it is a dependency.<a href="#section-8.2-3" class="pilcrow">¶</a></p>
+<p id="section-8.2-3">If an Event Timeline track has an index reference which refers to one or more Media Timeline tracks,
+then those Media Timline tracks <span class="bcp14">MUST</span> be listed in a 'depends' <a href="#dependencies" class="auto internal xref">Section 5.2.14</a> field within the
+the Event Timeline track definition.<a href="#section-8.2-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="event-timeline-track-updating">

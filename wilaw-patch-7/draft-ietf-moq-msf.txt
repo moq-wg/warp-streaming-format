@@ -1849,7 +1849,7 @@ Table of Contents
          "namespace": "another-provider/time-synchronized-data",
          "packaging": "eventtimeline",
          "eventType": "com.ai-extraction/appID/v3",
-         "depends": ["1080p-video"]
+         "depends": ["history"]
        },
        {
          "name": "1080p-video",
@@ -1968,11 +1968,18 @@ Table of Contents
          "bitrate": 128000
        },
        {
+         "name": "video-timeline",
+         "packaging": "mediatimeline",
+         "isLive": true,
+         "depends": ["video"]
+         ]
+       },
+       {
          "name": "scte35",
          "packaging": "eventtimeline",
          "eventType": "urn:scte:scte35:2013:bin",
          "isLive": true,
-         "depends": ["video"]
+         "depends": ["video-timeline"]
        }
      ]
    }
@@ -2334,8 +2341,7 @@ Table of Contents
    A media timeline track MUST carry a 'type' identifier in the Catalog
    with a value of "mediatimeline".  A media timeline track MUST carry a
    'depends' attribute which contains an array of all track names to
-   which the media timeline track applies.  The mime-type of a media
-   timeline track MUST be specified as "application/json".
+   which the media timeline track applies.
 
 7.3.  Media Timeline track updating
 
@@ -2465,9 +2471,10 @@ Table of Contents
    *  an 'eventType' Section 5.2.5 attribute declaring the type &
       structure of data contained in the event timeline track.
 
-   If an event timeline track is a dependency for other tracks, then it
-   SHOULD carry a 'depends' Section 5.2.14 attribute referencing each of
-   the tracks for which it is a dependency.
+   If an Event Timeline track has an index reference which refers to one
+   or more Media Timeline tracks, then those Media Timline tracks MUST
+   be listed in a 'depends' Section 5.2.14 field within the the Event
+   Timeline track definition.
 
 8.3.  Event Timeline track updating
 
