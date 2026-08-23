@@ -2058,7 +2058,7 @@ the Event Timeline track definition.
 ## Event Timeline track updating
 The mapping of Event Timeline payloads to MOQT Groups is defined by the 'eventType'.
 
-If the data in the event timeline track is to be consumed as a sequence, then the
+If the data in the event timeline track is to be consumed as a sequence, then
 the publisher SHOULD publish an independent event timeline in the first MOQT Object
 of each MOQT Group of an event timeline track. An independent event timeline object
 SHOULD contain all event timeline records accumulated and accessible up to that point, allowing a
