@@ -17,14 +17,14 @@
 <meta content="draft-ietf-moq-msf-latest" name="ietf.draft">
 <!-- Generator version information:
   xml2rfc 3.34.0
-    Python 3.14.5
+    Python 3.14.7
     ConfigArgParse 1.7.5
     google-i18n-address 3.1.1
     intervaltree 3.2.1
     Jinja2 3.1.6
     lxml 6.1.1
     natsort 8.4.0
-    platformdirs 4.11.0
+    platformdirs 4.11.3
     pycountry 24.6.1
     PyYAML 6.0.3
     requests 2.33.1
@@ -1048,7 +1048,7 @@ svg {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Law &amp; Nandakumar</td>
-<td class="center">Expires 5 February 2027</td>
+<td class="center">Expires 24 February 2027</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1061,12 +1061,12 @@ svg {
 <dd class="internet-draft">draft-ietf-moq-msf-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-08-04" class="published">4 August 2026</time>
+<time datetime="2026-08-23" class="published">23 August 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2027-02-05">5 February 2027</time></dd>
+<dd class="expires"><time datetime="2027-02-24">24 February 2027</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1120,7 +1120,7 @@ svg {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 5 February 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 24 February 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1481,7 +1481,7 @@ svg {
                 <p id="section-toc.1-1.8.2.3.1"><a href="#section-8.3" class="auto internal xref">8.3</a>.  <a href="#name-event-timeline-track-updati" class="internal xref">Event Timeline track updating</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.4">
-                <p id="section-toc.1-1.8.2.4.1"><a href="#section-8.4" class="auto internal xref">8.4</a>.  <a href="#name-event-timeline-track-exampl" class="internal xref">Event timeline track examples</a></p>
+                <p id="section-toc.1-1.8.2.4.1"><a href="#section-8.4" class="auto internal xref">8.4</a>.  <a href="#name-event-timeline-track-payloa" class="internal xref">Event timeline track payload examples</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.4.2.1">
                     <p id="section-toc.1-1.8.2.4.2.1.1"><a href="#section-8.4.1" class="auto internal xref">8.4.1</a>.  <a href="#name-event-timeline-track-with-w" class="internal xref">Event timeline track with wallclock time indexing</a></p>
@@ -3808,7 +3808,7 @@ tracks using MoQ Secure Objects with AES-128-GCM.<a href="#section-5.6.8-1" clas
 packaged, time-aligned audio and video tracks, along with a Media Timeline
 which describes the history of those tracks and an Event Timeline providing
 synchronized data.<a href="#section-5.6.9-1" class="pilcrow">¶</a></p>
-<div class="breakable lang-json sourcecode" id="section-5.6.9-2">
+<div class="lang-json sourcecode" id="section-5.6.9-2">
 <pre>
 {
   "version": "draft-01",
@@ -3826,8 +3826,7 @@ synchronized data.<a href="#section-5.6.9-1" class="pilcrow">¶</a></p>
       "namespace": "another-provider/time-synchronized-data",
       "packaging": "eventtimeline",
       "eventType": "com.ai-extraction/appID/v3",
-      "mimeType": "application/json",
-      "depends": ["1080p-video"]
+      "depends": ["history"]
     },
     {
       "name": "1080p-video",
@@ -3922,7 +3921,7 @@ template values to accommodate different group durations.<a href="#section-5.6.1
           </h4>
 <p id="section-5.6.11-1">This example shows a live broadcast with CEA-608 closed captions embedded
 in the video track and a separate SCTE-35 event timeline for ad insertion.<a href="#section-5.6.11-1" class="pilcrow">¶</a></p>
-<div class="lang-json sourcecode" id="section-5.6.11-2">
+<div class="breakable lang-json sourcecode" id="section-5.6.11-2">
 <pre>
 {
   "version": "draft-01",
@@ -3960,13 +3959,18 @@ in the video track and a separate SCTE-35 event timeline for ad insertion.<a hre
       "bitrate": 128000
     },
     {
+      "name": "video-timeline",
+      "packaging": "mediatimeline",
+      "isLive": true,
+      "depends": ["video"]
+      ]
+    },
+    {
       "name": "scte35",
       "packaging": "eventtimeline",
       "eventType": "urn:scte:scte35:2013:bin",
-      "mimeType": "application/json",
       "isLive": true,
-      "role": "eventtimeline",
-      "depends": ["video"]
+      "depends": ["video-timeline"]
     }
   ]
 }
@@ -4072,7 +4076,7 @@ substitution. The following catalog template:<a href="#section-5.6.14-3" class="
       "renderGroup": 1
     },
     {
-      "name": "cmcdv2-%id%",
+      "name": "tracking-%id%",
       "namespace": "advertising-decisions/live-sports/%event%",
       "packaging": "eventtimeline",
       "eventType": "com.example.iab.vast",
@@ -4082,7 +4086,7 @@ substitution. The following catalog template:<a href="#section-5.6.14-3" class="
 }
 </pre><a href="#section-5.6.14-4" class="pilcrow">¶</a>
 </div>
-<p id="section-5.6.14-5">Would be resolved by the subscriber as:<a href="#section-5.6.14-5" class="pilcrow">¶</a></p>
+<p id="section-5.6.14-5">would be resolved by the subscriber as:<a href="#section-5.6.14-5" class="pilcrow">¶</a></p>
 <div class="lang-json sourcecode" id="section-5.6.14-6">
 <pre>
 {
@@ -4096,7 +4100,7 @@ substitution. The following catalog template:<a href="#section-5.6.14-3" class="
       "renderGroup": 1
     },
     {
-      "name": "cmcdv2-bob",
+      "name": "tracking-bob",
       "namespace": "advertising-decisions/live-sports/xyz",
       "packaging": "eventtimeline",
       "eventType": "com.example.iab.vast",
@@ -4403,8 +4407,7 @@ wallclock time is not known, the value <span class="bcp14">SHOULD</span> be 0.<a
         </h3>
 <p id="section-7.2-1">A media timeline track <span class="bcp14">MUST</span> carry a 'type' identifier in the Catalog with a value
 of "mediatimeline". A media timeline track <span class="bcp14">MUST</span> carry a 'depends' attribute which
-contains an array of all track names to which the media timeline track applies.
-The mime-type of a media timeline track <span class="bcp14">MUST</span> be specified as "application/json".<a href="#section-7.2-1" class="pilcrow">¶</a></p>
+contains an array of all track names to which the media timeline track applies.<a href="#section-7.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="media-timeline-track-updating">
@@ -4519,6 +4522,8 @@ Media PTS, wallclock time or MOQT Location.<a href="#section-8-2" class="pilcrow
 <p id="section-8-3">Event timeline tracks are optional. Multiple event timeline tracks can exist inside a
 catalog. The type &amp; structure of the data contained within each event timeline track is
 declared in the catalog, to facilitate client selection and parsing.<a href="#section-8-3" class="pilcrow">¶</a></p>
+<p id="section-8-4">Event timeline tracks can be present in both the 'tracks' and 'publishtracks' arrays,
+implying that can be both consumed and produced by an endpoint.<a href="#section-8-4" class="pilcrow">¶</a></p>
 <div id="eventtimelineformat">
 <section id="section-8.1">
         <h3 id="name-event-timeline-data-format">
@@ -4553,20 +4558,16 @@ track in the Catalog.<a href="#section-8.1-2.2.1" class="pilcrow">¶</a></p>
 <p id="section-8.2-1">An event timeline track <span class="bcp14">MUST</span> carry:<a href="#section-8.2-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-8.2-2.1">
-            <p id="section-8.2-2.1.1">a <a href="#packaging" class="auto internal xref">Section 5.2.4</a> attribute with a value of "eventtimeline".<a href="#section-8.2-2.1.1" class="pilcrow">¶</a></p>
+            <p id="section-8.2-2.1.1">a 'packaging' <a href="#packaging" class="auto internal xref">Section 5.2.4</a> attribute with a value of "eventtimeline".<a href="#section-8.2-2.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-8.2-2.2">
-            <p id="section-8.2-2.2.1">a <a href="#dependencies" class="auto internal xref">Section 5.2.14</a> attribute which contains an array of all track names to which the event
-timeline track applies.<a href="#section-8.2-2.2.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-8.2-2.3">
-            <p id="section-8.2-2.3.1">a <a href="#mimetype" class="auto internal xref">Section 5.2.19</a> attribute with a value of "application/json".<a href="#section-8.2-2.3.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-8.2-2.4">
-            <p id="section-8.2-2.4.1">an <a href="#eventtype" class="auto internal xref">Section 5.2.5</a> attribute declaring the type &amp; structure of data contained in the
-event timeline track.<a href="#section-8.2-2.4.1" class="pilcrow">¶</a></p>
+            <p id="section-8.2-2.2.1">an 'eventType' <a href="#eventtype" class="auto internal xref">Section 5.2.5</a> attribute declaring the type &amp; structure of data contained in the
+event timeline track.<a href="#section-8.2-2.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
+<p id="section-8.2-3">If an Event Timeline track has an index reference which refers to one or more Media Timeline tracks,
+then those Media Timline tracks <span class="bcp14">MUST</span> be listed in a 'depends' <a href="#dependencies" class="auto internal xref">Section 5.2.14</a> field within the
+the Event Timeline track definition.<a href="#section-8.2-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="event-timeline-track-updating">
@@ -4574,19 +4575,24 @@ event timeline track.<a href="#section-8.2-2.4.1" class="pilcrow">¶</a></p>
         <h3 id="name-event-timeline-track-updati">
 <a href="#section-8.3" class="section-number selfRef">8.3. </a><a href="#name-event-timeline-track-updati" class="section-name selfRef">Event Timeline track updating</a>
         </h3>
-<p id="section-8.3-1">The publisher <span class="bcp14">MUST</span> publish an independent event timeline in the first MOQT Object
+<p id="section-8.3-1">The mapping of Event Timeline payloads to MOQT Groups is defined by the 'eventType'.<a href="#section-8.3-1" class="pilcrow">¶</a></p>
+<p id="section-8.3-2">If the data in the event timeline track is to be consumed as a sequence, then
+the publisher <span class="bcp14">SHOULD</span> publish an independent event timeline in the first MOQT Object
 of each MOQT Group of an event timeline track. An independent event timeline object
-<span class="bcp14">MUST</span> contain all event timeline records accumulated and accessible up to that point, allowing a
+<span class="bcp14">SHOULD</span> contain all event timeline records accumulated and accessible up to that point, allowing a
 subscriber joining at any group boundary to receive the accessible event history.
 The publisher <span class="bcp14">MAY</span> publish incremental updates in the second and subsequent Objects
 within each Group. Incremental updates contain only new event timeline records since
-the previous event timeline Object in that Group.<a href="#section-8.3-1" class="pilcrow">¶</a></p>
+the previous event timeline Object in that Group.<a href="#section-8.3-2" class="pilcrow">¶</a></p>
+<p id="section-8.3-3">If the data in the event timeline track is independent of its history, then the
+publisher <span class="bcp14">SHOULD</span> publish each record in its own MOQT Group and use a single MOQT Object
+per MOQT Group.<a href="#section-8.3-3" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="event-timeline-track-examples">
+<div id="event-timeline-track-payload-examples">
 <section id="section-8.4">
-        <h3 id="name-event-timeline-track-exampl">
-<a href="#section-8.4" class="section-number selfRef">8.4. </a><a href="#name-event-timeline-track-exampl" class="section-name selfRef">Event timeline track examples</a>
+        <h3 id="name-event-timeline-track-payloa">
+<a href="#section-8.4" class="section-number selfRef">8.4. </a><a href="#name-event-timeline-track-payloa" class="section-name selfRef">Event timeline track payload examples</a>
         </h3>
 <div id="event-timeline-track-with-wallclock-time-indexing">
 <section id="section-8.4.1">
