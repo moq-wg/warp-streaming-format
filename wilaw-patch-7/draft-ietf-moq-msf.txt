@@ -5,8 +5,8 @@
 Media Over QUIC                                                   W. Law
 Internet-Draft                                                    Akamai
 Intended status: Informational                             S. Nandakumar
-Expires: 12 February 2027                                          Cisco
-                                                          11 August 2026
+Expires: 24 February 2027                                          Cisco
+                                                          23 August 2026
 
 
                          MOQT Streaming Format
@@ -49,7 +49,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 12 February 2027.
+   This Internet-Draft will expire on 24 February 2027.
 
 Copyright Notice
 
@@ -2083,7 +2083,7 @@ Table of Contents
          "renderGroup": 1
        },
        {
-         "name": "ctracking-bob",
+         "name": "tracking-bob",
          "namespace": "advertising-decisions/live-sports/xyz",
          "packaging": "eventtimeline",
          "eventType": "com.example.iab.vast",
