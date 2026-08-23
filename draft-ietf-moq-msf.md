@@ -1457,8 +1457,7 @@ synchronized data.
       "namespace": "another-provider/time-synchronized-data",
       "packaging": "eventtimeline",
       "eventType": "com.ai-extraction/appID/v3",
-      "mimeType": "application/json",
-      "depends": ["1080p-video"]
+      "depends": ["history"]
     },
     {
       "name": "1080p-video",
@@ -1581,13 +1580,18 @@ in the video track and a separate SCTE-35 event timeline for ad insertion.
       "bitrate": 128000
     },
     {
+      "name": "video-timeline",
+      "packaging": "mediatimeline",
+      "isLive": true,
+      "depends": ["video"]
+      ]
+    },
+    {
       "name": "scte35",
       "packaging": "eventtimeline",
       "eventType": "urn:scte:scte35:2013:bin",
-      "mimeType": "application/json",
       "isLive": true,
-      "role": "eventtimeline",
-      "depends": ["video"]
+      "depends": ["video-timeline"]
     }
   ]
 }
@@ -1676,7 +1680,7 @@ substitution. The following catalog template:
       "renderGroup": 1
     },
     {
-      "name": "cmcdv2-%id%",
+      "name": "tracking-%id%",
       "namespace": "advertising-decisions/live-sports/%event%",
       "packaging": "eventtimeline",
       "eventType": "com.example.iab.vast",
@@ -1686,7 +1690,7 @@ substitution. The following catalog template:
 }
 ~~~
 
-Would be resolved by the subscriber as:
+would be resolved by the subscriber as:
 
 ~~~json
 {
@@ -1700,7 +1704,7 @@ Would be resolved by the subscriber as:
       "renderGroup": 1
     },
     {
-      "name": "cmcdv2-bob",
+      "name": "tracking-bob",
       "namespace": "advertising-decisions/live-sports/xyz",
       "packaging": "eventtimeline",
       "eventType": "com.example.iab.vast",
@@ -1942,7 +1946,6 @@ An example media timeline is shown below:
 A media timeline track MUST carry a 'type' identifier in the Catalog with a value
 of "mediatimeline". A media timeline track MUST carry a 'depends' attribute which
 contains an array of all track names to which the media timeline track applies.
-The mime-type of a media timeline track MUST be specified as "application/json".
 
 ## Media Timeline track updating
 The publisher MUST publish an independent media timeline in the first MOQT Object
@@ -2022,6 +2025,9 @@ Event timeline tracks are optional. Multiple event timeline tracks can exist ins
 catalog. The type & structure of the data contained within each event timeline track is
 declared in the catalog, to facilitate client selection and parsing.
 
+Event timeline tracks can be present in both the 'tracks' and 'publishtracks' arrays,
+implying that can be both consumed and produced by an endpoint.
+
 ## Event Timeline data format {#eventtimelineformat}
 An event timeline track is a JSON {{JSON}} document. This document MAY be compressed
 using the MSF_COMPRESSION property ({{compression-signaling}}). The document
@@ -2041,23 +2047,31 @@ the following required fields:
 ## Event Timeline Catalog requirements
 An event timeline track MUST carry:
 
-* a {{packaging}} attribute with a value of "eventtimeline".
-* a {{dependencies}} attribute which contains an array of all track names to which the event
-  timeline track applies.
-* a {{mimetype}} attribute with a value of "application/json".
-* an {{eventtype}} attribute declaring the type & structure of data contained in the
+* a 'packaging' {{packaging}} attribute with a value of "eventtimeline".
+* an 'eventType' {{eventtype}} attribute declaring the type & structure of data contained in the
   event timeline track.
 
+If an Event Timeline track has an index reference which refers to one or more Media Timeline tracks,
+then those Media Timline tracks MUST be listed in a 'depends' {{dependencies}} field within the
+the Event Timeline track definition.
+
 ## Event Timeline track updating
-The publisher MUST publish an independent event timeline in the first MOQT Object
+The mapping of Event Timeline payloads to MOQT Groups is defined by the 'eventType'.
+
+If the data in the event timeline track is to be consumed as a sequence, then
+the publisher SHOULD publish an independent event timeline in the first MOQT Object
 of each MOQT Group of an event timeline track. An independent event timeline object
-MUST contain all event timeline records accumulated and accessible up to that point, allowing a
+SHOULD contain all event timeline records accumulated and accessible up to that point, allowing a
 subscriber joining at any group boundary to receive the accessible event history.
 The publisher MAY publish incremental updates in the second and subsequent Objects
 within each Group. Incremental updates contain only new event timeline records since
 the previous event timeline Object in that Group.
 
-## Event timeline track examples
+If the data in the event timeline track is independent of its history, then the
+publisher SHOULD publish each record in its own MOQT Group and use a single MOQT Object
+per MOQT Group.
+
+## Event timeline track payload examples
 
 ### Event timeline track with wallclock time indexing
 This example shows how sports scores and game information might be defined in a live
