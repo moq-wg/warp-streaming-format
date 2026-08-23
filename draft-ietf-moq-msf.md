@@ -1704,7 +1704,7 @@ would be resolved by the subscriber as:
       "renderGroup": 1
     },
     {
-      "name": "ctracking-bob",
+      "name": "tracking-bob",
       "namespace": "advertising-decisions/live-sports/xyz",
       "packaging": "eventtimeline",
       "eventType": "com.example.iab.vast",
