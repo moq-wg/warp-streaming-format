@@ -2482,7 +2482,7 @@ Table of Contents
    the 'eventType'.
 
    If the data in the event timeline track is to be consumed as a
-   sequence, then the the publisher SHOULD publish an independent event
+   sequence, then the publisher SHOULD publish an independent event
    timeline in the first MOQT Object of each MOQT Group of an event
    timeline track.  An independent event timeline object SHOULD contain
    all event timeline records accumulated and accessible up to that
