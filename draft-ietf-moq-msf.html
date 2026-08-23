@@ -1613,9 +1613,17 @@ svg {
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.2">
                 <p id="section-toc.1-1.14.2.2.1"><a href="#section-14.2" class="auto internal xref">14.2</a>.  <a href="#name-msf-event-timeline-types-re" class="internal xref">"MSF Event Timeline Types" registry</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.2.2.1">
+                    <p id="section-toc.1-1.14.2.2.2.1.1"><a href="#section-14.2.1" class="auto internal xref">14.2.1</a>.  <a href="#name-guidance-for-designated-exp" class="internal xref">Guidance for Designated Experts</a></p>
+</li>
+                </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.3">
-                <p id="section-toc.1-1.14.2.3.1"><a href="#section-14.3" class="auto internal xref">14.3</a>.  <a href="#name-msf_compression-object-prope" class="internal xref">MSF_COMPRESSION Object Property</a></p>
+                <p id="section-toc.1-1.14.2.3.1"><a href="#section-14.3" class="auto internal xref">14.3</a>.  <a href="#name-msf-property-type-values" class="internal xref">MSF Property Type values</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.4">
+                <p id="section-toc.1-1.14.2.4.1"><a href="#section-14.4" class="auto internal xref">14.4</a>.  <a href="#name-msf-compression-algorithms-" class="internal xref">"MSF Compression Algorithms" registry</a></p>
 </li>
             </ul>
 </li>
@@ -4871,36 +4879,29 @@ maintaining efficient MOQT caching and distribution.<a href="#section-10.3-4" cl
         <h3 id="name-well-known-event-timeline-t">
 <a href="#section-10.5" class="section-number selfRef">10.5. </a><a href="#name-well-known-event-timeline-t" class="section-name selfRef">Well-known event timeline types</a>
         </h3>
-<p id="section-10.5-1">Event timelines can carry various types of broadcast metadata synchronized
-with media content. The "MSF Event Timeline Types" registry
-(<a href="#iana-event-timeline-types" class="auto internal xref">Section 14.2</a>) maintains a list of well-known event types.
-Publishers <span class="bcp14">SHOULD</span> use registered types when applicable to ensure
-interoperability.<a href="#section-10.5-1" class="pilcrow">¶</a></p>
-<p id="section-10.5-2">Event timelines can carry data types including but not limited to:<a href="#section-10.5-2" class="pilcrow">¶</a></p>
+<p id="section-10.5-1">Event timelines can carry various types of broadcast metadata
+synchronized with media content. The "MSF Event Timeline Types"
+registry (<a href="#iana-event-timeline-types" class="auto internal xref">Section 14.2</a>) is established by this
+document but has no initial entries; entries are registered by the
+specifications that define each event type, which are expected to
+include:<a href="#section-10.5-1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-10.5-3.1">
-            <p id="section-10.5-3.1.1">Ad insertion signaling (e.g., SCTE-35 splice points) - see <span>[<a href="#SCTE35-MSF" class="cite xref">SCTE35-MSF</a>]</span><a href="#section-10.5-3.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-10.5-2.1">
+            <p id="section-10.5-2.1.1">Ad insertion signaling (e.g., SCTE-35 splice points) - see <span>[<a href="#SCTE35-MSF" class="cite xref">SCTE35-MSF</a>]</span><a href="#section-10.5-2.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-10.5-3.2">
-            <p id="section-10.5-3.2.1">Out-of-band timed-text cues (WebVTT, IMSC1) - see <span>[<a href="#WebVTT-MSF" class="cite xref">WebVTT-MSF</a>]</span> and <span>[<a href="#IMSC1-MSF" class="cite xref">IMSC1-MSF</a>]</span><a href="#section-10.5-3.2.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-10.5-3.3">
-            <p id="section-10.5-3.3.1">Sports scores and game state<a href="#section-10.5-3.3.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-10.5-3.4">
-            <p id="section-10.5-3.4.1">GPS coordinates and telemetry<a href="#section-10.5-3.4.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-10.5-3.5">
-            <p id="section-10.5-3.5.1">Active speaker notifications<a href="#section-10.5-3.5.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-10.5-3.6">
-            <p id="section-10.5-3.6.1">Custom application-specific metadata<a href="#section-10.5-3.6.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-10.5-2.2">
+            <p id="section-10.5-2.2.1">Out-of-band timed-text cues (WebVTT, IMSC1) - see <span>[<a href="#WebVTT-MSF" class="cite xref">WebVTT-MSF</a>]</span> and <span>[<a href="#IMSC1-MSF" class="cite xref">IMSC1-MSF</a>]</span><a href="#section-10.5-2.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-10.5-4">The packaging format and data structure for each event type is defined by
-the specification referenced in the registry. Custom event types not in
-the registry <span class="bcp14">SHOULD</span> use Reverse Domain Name Notation (e.g.,
-"com.example.myeventtype") to avoid naming collisions.<a href="#section-10.5-4" class="pilcrow">¶</a></p>
+<p id="section-10.5-3">Other data types, for example sports scores and game state, GPS
+coordinates and telemetry, active speaker notifications, and custom
+application-specific metadata, <span class="bcp14">MAY</span> also be carried on event timeline
+tracks, defined by their own specifications and registered
+accordingly.<a href="#section-10.5-3" class="pilcrow">¶</a></p>
+<p id="section-10.5-4">The packaging format and data structure for each event type is
+defined by the specification referenced in the registry. Custom event
+types not intended for registration <span class="bcp14">SHOULD</span> use Reverse Domain Name
+Notation (e.g., "com.example.myeventtype") to avoid naming collisions.<a href="#section-10.5-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -5497,13 +5498,20 @@ entry with a type of 'object-property'.<a href="#section-12.2.2-3" class="pilcro
       <h2 id="name-iana-considerations">
 <a href="#section-14" class="section-number selfRef">14. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
       </h2>
+<p id="section-14-1">This document requests IANA to create a new registry group titled
+"MOQT Streaming Format (MSF) Parameters", containing the "MSF Event
+Timeline Types" registry (<a href="#iana-event-timeline-types" class="auto internal xref">Section 14.2</a>) and the "MSF
+Compression Algorithms" registry (<a href="#iana-compression-algorithms" class="auto internal xref">Section 14.4</a>)
+defined below. It also registers one entry in the existing "MOQT URI
+Fragment Types" registry and documents two Property Type values that
+require no IANA action.<a href="#section-14-1" class="pilcrow">¶</a></p>
 <div id="moqt-uri-fragment-types-registry">
 <section id="section-14.1">
         <h3 id="name-moqt-uri-fragment-types-reg">
 <a href="#section-14.1" class="section-number selfRef">14.1. </a><a href="#name-moqt-uri-fragment-types-reg" class="section-name selfRef">"MOQT URI Fragment Types" registry</a>
         </h3>
-<p id="section-14.1-1">This document creates a new entry in the "MOQT URI Fragment Types" registry
-(see <span>[<a href="#MoQTransport" class="cite xref">MoQTransport</a>]</span> Section 14.3).<a href="#section-14.1-1" class="pilcrow">¶</a></p>
+<p id="section-14.1-1">This document registers the following entry in the "MOQT URI Fragment
+Types" registry established by <span>[<a href="#MoQTransport" class="cite xref">MoQTransport</a>], <a href="https://datatracker.ietf.org/doc/html/draft-ietf-moq-transport-19#section-15.3" class="relref">Section 15.3</a></span>:<a href="#section-14.1-1" class="pilcrow">¶</a></p>
 <table class="center" id="table-12">
           <caption><a href="#table-12" class="selfRef">Table 12</a></caption>
 <thead>
@@ -5517,7 +5525,7 @@ entry with a type of 'object-property'.<a href="#section-12.2.2-3" class="pilcro
             <tr>
               <td class="text-left" rowspan="1" colspan="1">msf</td>
               <td class="text-left" rowspan="1" colspan="1">MOQT Streaming Format</td>
-              <td class="text-left" rowspan="1" colspan="1">this</td>
+              <td class="text-left" rowspan="1" colspan="1">This document</td>
             </tr>
           </tbody>
         </table>
@@ -5528,63 +5536,110 @@ entry with a type of 'object-property'.<a href="#section-12.2.2-3" class="pilcro
         <h3 id="name-msf-event-timeline-types-re">
 <a href="#section-14.2" class="section-number selfRef">14.2. </a><a href="#name-msf-event-timeline-types-re" class="section-name selfRef">"MSF Event Timeline Types" registry</a>
         </h3>
-<p id="section-14.2-1">This document establishes the "MSF Event Timeline Types" registry. This registry
-lists the event types that can be used with the eventType field <a href="#eventtype" class="auto internal xref">Section 5.2.5</a>
-in MSF catalogs.<a href="#section-14.2-1" class="pilcrow">¶</a></p>
-<p id="section-14.2-2">New entries in this registry are subject to Expert Review policy as defined in
-<span>[<a href="#RFC8126" class="cite xref">RFC8126</a>]</span>.<a href="#section-14.2-2" class="pilcrow">¶</a></p>
-<p id="section-14.2-3">The initial contents of this registry are:<a href="#section-14.2-3" class="pilcrow">¶</a></p>
-<table class="center" id="table-13">
-          <caption><a href="#table-13" class="selfRef">Table 13</a></caption>
-<thead>
-            <tr>
-              <th class="text-left" rowspan="1" colspan="1">Event Type</th>
-              <th class="text-left" rowspan="1" colspan="1">Description</th>
-              <th class="text-left" rowspan="1" colspan="1">Specification</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">urn:scte:scte35:2013:bin</td>
-              <td class="text-left" rowspan="1" colspan="1">SCTE-35 binary splice_info_section</td>
-              <td class="text-left" rowspan="1" colspan="1">
-                <span>[<a href="#SCTE35-MSF" class="cite xref">SCTE35-MSF</a>]</span>
-</td>
-            </tr>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">urn:scte:scte35:2013:xml</td>
-              <td class="text-left" rowspan="1" colspan="1">SCTE-35 XML representation</td>
-              <td class="text-left" rowspan="1" colspan="1">
-                <span>[<a href="#SCTE35-MSF" class="cite xref">SCTE35-MSF</a>]</span>
-</td>
-            </tr>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">urn:msf:timedtext:webvtt</td>
-              <td class="text-left" rowspan="1" colspan="1">WebVTT timed text cues</td>
-              <td class="text-left" rowspan="1" colspan="1">
-                <span>[<a href="#WebVTT-MSF" class="cite xref">WebVTT-MSF</a>]</span>
-</td>
-            </tr>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">urn:msf:timedtext:imsc1</td>
-              <td class="text-left" rowspan="1" colspan="1">IMSC1 timed text  cues</td>
-              <td class="text-left" rowspan="1" colspan="1">
-                <span>[<a href="#IMSC1-MSF" class="cite xref">IMSC1-MSF</a>]</span>
-</td>
-            </tr>
-          </tbody>
-        </table>
+<p id="section-14.2-1">This document establishes the "MSF Event Timeline Types" registry,
+part of the "MOQT Streaming Format (MSF) Parameters" registry group.
+This registry lists the event types that can be used with the
+eventType field (<a href="#eventtype" class="auto internal xref">Section 5.2.5</a>) in MSF catalogs.<a href="#section-14.2-1" class="pilcrow">¶</a></p>
+<p id="section-14.2-2">New entries in this registry are subject to Expert Review policy as
+defined in <span>[<a href="#RFC8126" class="cite xref">RFC8126</a>]</span>. Each entry contains the following fields:<a href="#section-14.2-2" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-14.2-3.1">
+            <p id="section-14.2-3.1.1">Event Type: the string identifier used in the eventType field.<a href="#section-14.2-3.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-14.2-3.2">
+            <p id="section-14.2-3.2.1">Description: a short human-readable summary of the event type.<a href="#section-14.2-3.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-14.2-3.3">
+            <p id="section-14.2-3.3.1">Change Controller: the entity authorized to modify the entry. For
+registrations made via an IETF-stream document, this is "IETF". For
+other registrations, this is the name and contact information of the
+registrant.<a href="#section-14.2-3.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-14.2-3.4">
+            <p id="section-14.2-3.4.1">Specification: a stable reference to a publicly available document
+defining the format and semantics of the data carried under this
+event type.<a href="#section-14.2-3.4.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="section-14.2-4">The initial contents of this registry are empty. Entries are added by
+the specifications that define each event type; see <a href="#wellknowneventtypes" class="auto internal xref">Section 10.5</a>
+for known examples.<a href="#section-14.2-4" class="pilcrow">¶</a></p>
+<div id="iana-event-timeline-experts">
+<section id="section-14.2.1">
+          <h4 id="name-guidance-for-designated-exp">
+<a href="#section-14.2.1" class="section-number selfRef">14.2.1. </a><a href="#name-guidance-for-designated-exp" class="section-name selfRef">Guidance for Designated Experts</a>
+          </h4>
+<p id="section-14.2.1-1">Designated experts should evaluate registration requests against the
+following criteria, per <span>[<a href="#RFC8126" class="cite xref">RFC8126</a>]</span>, Section 4.5:<a href="#section-14.2.1-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-14.2.1-2.1">
+              <p id="section-14.2.1-2.1.1">The requested Event Type string is unique within the registry and
+does not collide with, or create ambiguity against, an existing
+entry.<a href="#section-14.2.1-2.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-14.2.1-2.2">
+              <p id="section-14.2.1-2.2.1">Requests using the "urn:" scheme conform to an appropriate URN
+namespace (<span>[<a href="#RFC8141" class="cite xref">RFC8141</a>]</span>). Requests intended for narrow or
+vendor-specific use should instead use Reverse Domain Name Notation
+and do not need to be registered at all.<a href="#section-14.2.1-2.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-14.2.1-2.3">
+              <p id="section-14.2.1-2.3.1">The referenced specification is stable, publicly available, and
+describes the data format and semantics carried in the Event
+Timeline track in enough detail to support independent,
+interoperable implementations.<a href="#section-14.2.1-2.3.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-14.2.1-2.4">
+              <p id="section-14.2.1-2.4.1">The registration does not duplicate the function of an existing
+registered type without adequate justification, such as a
+materially different encoding or use case.<a href="#section-14.2.1-2.4.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+<p id="section-14.2.1-3">Experts should reject requests that lack a public specification, that
+reuse an existing Event Type string with different semantics, or that
+leave the data format ambiguous. Registrations are expected to be
+infrequent, and experts <span class="bcp14">MAY</span> consult the MoQ working group mailing list
+(moq@ietf.org) when in doubt.<a href="#section-14.2.1-3" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="iana-object-properties">
+</section>
+</div>
+<div id="iana-properties">
 <section id="section-14.3">
-        <h3 id="name-msf_compression-object-prope">
-<a href="#section-14.3" class="section-number selfRef">14.3. </a><a href="#name-msf_compression-object-prope" class="section-name selfRef">MSF_COMPRESSION Object Property</a>
+        <h3 id="name-msf-property-type-values">
+<a href="#section-14.3" class="section-number selfRef">14.3. </a><a href="#name-msf-property-type-values" class="section-name selfRef">MSF Property Type values</a>
         </h3>
-<p id="section-14.3-1">This document requests IANA to create a new "MSF Compression Algorithms"
-registry with the following initial values:<a href="#section-14.3-1" class="pilcrow">¶</a></p>
-<table class="center" id="table-14">
-          <caption><a href="#table-14" class="selfRef">Table 14</a></caption>
+<p id="section-14.3-1">The MSF_COMPRESSION and MSF_INITIALIZATION Track and Object properties
+(<a href="#compression-signaling" class="auto internal xref">Section 12.1</a>, <a href="#initialization-track-property" class="auto internal xref">Section 12.2.1</a>) use
+Property Type values 0x78 and 0x79 respectively. These values fall
+within the range that <span>[<a href="#MoQTransport" class="cite xref">MoQTransport</a>], <a href="https://datatracker.ietf.org/doc/html/draft-ietf-moq-transport-19#section-15.8" class="relref">Section 15.8</a></span> reserves for
+application-specific use, for which IANA registration is not
+permitted. Accordingly, this document requests no IANA action for
+these Property Type values; they are defined directly by this
+specification and require no coordination with IANA.<a href="#section-14.3-1" class="pilcrow">¶</a></p>
+<p id="section-14.3-2">Implementers should note the caveat in <span>[<a href="#MoQTransport" class="cite xref">MoQTransport</a>], <a href="https://datatracker.ietf.org/doc/html/draft-ietf-moq-transport-19#section-15.8" class="relref">Section 15.8</a></span>
+regarding this range: because application-specific codepoints are not
+coordinated across independently developed extensions, an endpoint
+processing tracks from uncoordinated sources could encounter the same
+Property Type value used with different semantics.<a href="#section-14.3-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="iana-compression-algorithms">
+<section id="section-14.4">
+        <h3 id="name-msf-compression-algorithms-">
+<a href="#section-14.4" class="section-number selfRef">14.4. </a><a href="#name-msf-compression-algorithms-" class="section-name selfRef">"MSF Compression Algorithms" registry</a>
+        </h3>
+<p id="section-14.4-1">This document establishes the "MSF Compression Algorithms" registry,
+part of the "MOQT Streaming Format (MSF) Parameters" registry group.
+This registry lists the values used by the MSF_COMPRESSION Track and
+Object properties (<a href="#compression-signaling" class="auto internal xref">Section 12.1</a>) to identify a
+compression algorithm.<a href="#section-14.4-1" class="pilcrow">¶</a></p>
+<p id="section-14.4-2">New entries with values 2-127 are registered via Standards Action.
+Values 128 and above are reserved for private use and <span class="bcp14">MUST NOT</span> be
+registered.<a href="#section-14.4-2" class="pilcrow">¶</a></p>
+<p id="section-14.4-3">The initial contents of this registry are:<a href="#section-14.4-3" class="pilcrow">¶</a></p>
+<table class="center" id="table-13">
+          <caption><a href="#table-13" class="selfRef">Table 13</a></caption>
 <thead>
             <tr>
               <th class="text-left" rowspan="1" colspan="1">Value</th>
@@ -5596,7 +5651,7 @@ registry with the following initial values:<a href="#section-14.3-1" class="pilc
             <tr>
               <td class="text-left" rowspan="1" colspan="1">0</td>
               <td class="text-left" rowspan="1" colspan="1">None (uncompressed)</td>
-              <td class="text-left" rowspan="1" colspan="1">RFC XXXX</td>
+              <td class="text-left" rowspan="1" colspan="1">This  document</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">1</td>
@@ -5607,8 +5662,6 @@ registry with the following initial values:<a href="#section-14.3-1" class="pilc
             </tr>
           </tbody>
         </table>
-<p id="section-14.3-3">Values 2-127 are available for registration via Standards Action.
-Values 128 and above are reserved for private use.<a href="#section-14.3-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -5666,7 +5719,7 @@ Values 128 and above are reserved for private use.<a href="#section-14.3-3" clas
 <dd class="break"></dd>
 <dt id="MoQTransport">[MoQTransport]</dt>
         <dd>
-<span class="refAuthor">Nandakumar, S.</span>, <span class="refAuthor">Vasiliev, V.</span>, <span class="refAuthor">Swett, I.</span>, and <span class="refAuthor">A. Frindell</span>, <span class="refTitle">"Media over QUIC Transport"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-moq-transport-18</span>, <time datetime="2026-05-12" class="refDate">12 May 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-moq-transport-18">https://datatracker.ietf.org/doc/html/draft-ietf-moq-transport-18</a>&gt;</span>. </dd>
+<span class="refAuthor">Nandakumar, S.</span>, <span class="refAuthor">Vasiliev, V.</span>, <span class="refAuthor">Swett, I.</span>, and <span class="refAuthor">A. Frindell</span>, <span class="refTitle">"Media over QUIC Transport"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-moq-transport-19</span>, <time datetime="2026-07-06" class="refDate">6 July 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-moq-transport-19">https://datatracker.ietf.org/doc/html/draft-ietf-moq-transport-19</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="PrivacyPassAuth">[PrivacyPassAuth]</dt>
         <dd>
@@ -5715,11 +5768,15 @@ Values 128 and above are reserved for private use.<a href="#section-14.3-3" clas
 <dd class="break"></dd>
 <dt id="IMSC1-MSF">[IMSC1-MSF]</dt>
         <dd>
-<span class="refTitle">"IMSC1 Packaging for MOQT Streaming Format"</span>, <time datetime="2026" class="refDate">2026</time>, <span>&lt;<a href="https://github.com/suhasHere/imsc1-msf">https://github.com/suhasHere/imsc1-msf</a>&gt;</span>. </dd>
+<span class="refAuthor">Law, W.</span> and <span class="refAuthor">S. Nandakumar</span>, <span class="refTitle">"IMSC1 Packaging for MOQT Streaming Format"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-law-moq-imsc1-msf-00</span>, <time datetime="2026-07-06" class="refDate">6 July 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-law-moq-imsc1-msf-00">https://datatracker.ietf.org/doc/html/draft-law-moq-imsc1-msf-00</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8141">[RFC8141]</dt>
+        <dd>
+<span class="refAuthor">Saint-Andre, P.</span> and <span class="refAuthor">J. Klensin</span>, <span class="refTitle">"Uniform Resource Names (URNs)"</span>, <span class="seriesInfo">RFC 8141</span>, <span class="seriesInfo">DOI 10.17487/RFC8141</span>, <time datetime="2017-04" class="refDate">April 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8141">https://www.rfc-editor.org/rfc/rfc8141</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="SCTE35-MSF">[SCTE35-MSF]</dt>
         <dd>
-<span class="refTitle">"SCTE-35 over MSF Event Timeline"</span>, <time datetime="2026" class="refDate">2026</time>, <span>&lt;<a href="https://github.com/wilaw/SCTE35-over-MSF-Event-Timeline">https://github.com/wilaw/SCTE35-over-MSF-Event-Timeline</a>&gt;</span>. </dd>
+<span class="refAuthor">Law, W.</span> and <span class="refAuthor">S. Nandakumar</span>, <span class="refTitle">"SCTE35 transmission over MSF Event Timeline"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-wilaw-moq-scte35-event-timeline-00</span>, <time datetime="2026-07-06" class="refDate">6 July 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-wilaw-moq-scte35-event-timeline-00">https://datatracker.ietf.org/doc/html/draft-wilaw-moq-scte35-event-timeline-00</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="SCTE214-1">[SCTE214-1]</dt>
         <dd>
@@ -5727,7 +5784,7 @@ Values 128 and above are reserved for private use.<a href="#section-14.3-3" clas
 <dd class="break"></dd>
 <dt id="WebVTT-MSF">[WebVTT-MSF]</dt>
       <dd>
-<span class="refTitle">"WebVTT Packaging for MOQT Streaming Format"</span>, <time datetime="2026" class="refDate">2026</time>, <span>&lt;<a href="https://github.com/suhasHere/webvtt-msf">https://github.com/suhasHere/webvtt-msf</a>&gt;</span>. </dd>
+<span class="refAuthor">Law, W.</span> and <span class="refAuthor">S. Nandakumar</span>, <span class="refTitle">"WebVTT Packaging for MOQT Streaming Format"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-wilaw-moq-webvtt-msf-00</span>, <time datetime="2026-07-06" class="refDate">6 July 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-wilaw-moq-webvtt-msf-00">https://datatracker.ietf.org/doc/html/draft-wilaw-moq-webvtt-msf-00</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
