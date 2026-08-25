@@ -2743,11 +2743,9 @@ infrequent, and experts MAY consult the MoQ working group mailing list
 
 ## MSF Property Type values {#iana-properties}
 
-The MSF_COMPRESSION and MSF_INITIALIZATION Track and Object properties
-({{compression-signaling}}, {{initialization-track-property}}) use
-Property Type values 0x78 and 0x79 respectively. These values fall
-within the range that {{MoQTransport, Section 15.8}} reserves for
-application-specific use, for which IANA registration is not
+The MSF_COMPRESSION Track and Object properties ({{compression-signaling}})
+use Property Type value 0x78. This value falls within the range that {{MoQTransport, Section 15.8}}
+reserves for application-specific use, for which IANA registration is not
 permitted. Accordingly, this document requests no IANA action for
 these Property Type values; they are defined directly by this
 specification and require no coordination with IANA.
