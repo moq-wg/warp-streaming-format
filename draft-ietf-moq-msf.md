@@ -2580,15 +2580,15 @@ the MOQT Section 1.5 encoding to those bytes.
 
 ### Examples of string-to-byte mappings
 
-| JSON value    | Mapped bytes (hex)      | Note                                      |
-|:--------------|:------------------------|:------------------------------------------|
-| `"video"`     | `76 69 64 65 6f`        |                                           |
-| `"café"`      | `63 61 66 c3 a9`        | U+00E9 written literally                  |
-| `"café"`      | `63 61 66 c3 a9`        | same track as above                       |
-| `"café"`      | `63 61 66 65 cc 81`     | U+0065 U+0301; different track            |
-| `"Video"`     | `56 69 64 65 6f`        | different track from `"video"`            |
-| `""`          | (empty)                 | valid Track Name; invalid namespace field |
-| `"\uDEAD"`    | none                    | invalid; catalog MUST be rejected         |
+| JSON value      | Mapped bytes (hex)   | Note                                          |
+|:----------------|:---------------------|:----------------------------------------------|
+| `"video"`       | `76 69 64 65 6f`     |                                               |
+| `"café"`        | `63 61 66 c3 a9`     | U+00E9 (precomposed), written literally       |
+| `"caf\u00e9"`   | `63 61 66 c3 a9`     | same JSON escape rules: same track as above   |
+| `"cafe\u0301"`  | `63 61 66 65 cc 81`  | U+0065 + U+0301 (decomposed); different track |
+| `"Video"`       | `56 69 64 65 6f`     | different track from `"video"`                |
+| `""`            | (empty)              | valid Track Name; invalid namespace field     |
+| `"\uDEAD"`      | none                 | invalid; catalog MUST be rejected             |
 {: #namemapping-examples title="Example string-to-byte mappings"}
 
 ## Initiating a broadcast
