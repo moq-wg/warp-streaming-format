@@ -33,7 +33,7 @@ author:
     email: snandaku@cisco.com
 
 normative:
-  MoQTransport: I-D.draft-ietf-moq-transport-18
+  MoQTransport: I-D.draft-ietf-moq-transport-19
   LOC: I-D.draft-ietf-moq-loc-02
   SecureObjects: I-D.draft-jennings-moq-secure-objects
   C4M: I-D.draft-ietf-moq-c4m
@@ -61,22 +61,13 @@ normative:
 
 informative:
   E2EE-MLS: I-D.draft-jennings-moq-e2ee-mls
+  WebVTT-MSF: I-D.draft-wilaw-moq-webvtt-msf
+  IMSC1-MSF: I-D.draft-law-moq-imsc1-msf
+  SCTE35-MSF: I-D.draft-wilaw-moq-scte35-event-timeline
   SCTE214-1:
     title: "SCTE 214-1: MPEG DASH for IP-Based Cable Services Part 1 - MPD Constraints and Extensions"
     date: 2022
     target: https://www.scte.org/standards/library/catalog/scte-214-1-mpeg-dash-for-ip-based-cable-services-part-1-mpd-constraints-and-extensions/
-  WebVTT-MSF:
-    title: "WebVTT Packaging for MOQT Streaming Format"
-    date: 2026
-    target: https://github.com/suhasHere/webvtt-msf
-  IMSC1-MSF:
-    title: "IMSC1 Packaging for MOQT Streaming Format"
-    date: 2026
-    target: https://github.com/suhasHere/imsc1-msf
-  SCTE35-MSF:
-    title: "SCTE-35 over MSF Event Timeline"
-    date: 2026
-    target: https://github.com/wilaw/SCTE35-over-MSF-Event-Timeline
 
 --- abstract
 
@@ -246,9 +237,10 @@ advertising their output and for subscribers in consuming that output. The
 payload of the Catalog object is opaque to Relays and can be end-to-end
 encrypted. The Catalog provides the names and namespaces of the tracks being
 produced, along with the relationship between tracks, properties of the tracks
-that consumers may use for selection and any relevant initialization data.
+that consumers may use for selection and any relevant initialization data. A
+catalog track MAY reference other catalog tracks.
 
-The catalog track MUST have a case-sensitive Track Name of "catalog".
+The top-level catalog track MUST have a case-sensitive Track Name of "catalog".
 
 A catalog object MAY be independent of other catalog objects or it MAY represent
 a delta update of a prior catalog object. The first catalog object published
@@ -256,9 +248,15 @@ within a new group MUST be independent and MUST provide a complete catalog that
 does not require any prior catalog object for interpretation. Any catalog updates
 that precede the first Object of the latest Group MUST be ignored.
 
-A catalog object SHOULD be published only when the availability of tracks changes, or
-after a period of time has passed such that the catalog object might fall out of cache
+A catalog object SHOULD be published only when the content of the catalog has changed,
+or after a period of time has passed such that the catalog object might fall out of cache
 in a delivery network.
+
+The catalog track SHOULD have a higher publisher priority than all tracks described
+within the catalog.
+
+A subscriber to a catalog track SHOULD use a higher subscriber priority for the catalog
+subscription than for any other concurrent subscriptions.
 
 Each catalog update MUST be mapped to an MOQT Object. All catalog updates, both
 independent and delta, MUST be mapped to MOQT sub-group 0. The first Object (with
@@ -390,8 +388,7 @@ object has the following fields:
 
 For both the track-property and object-property types, the initialization
 data is serialized as raw binary data and carried in the value field of the
-MSF_INITIALIZATION Object property {{initialization-object-property}} or the
-MSF_INITIALIZATION Track property {{initialization-track-property}}.
+initialization properties, see {#initialization-properties}.
 
 The Initialization Data List, if present, MUST be located after the tracks array in
 the root of the JSON catalog. The purpose of this is to improve the human readability
@@ -471,6 +468,7 @@ as defined in Table 3.
 | Event Timeline  | eventtimeline  | See {{eventtimelinetrack}} |
 | MoQ Log         | moqlog         | See {{MOQLOG}}             |
 | MoQ Metrics     | moqmetrics     | See {{MOQMETRICS}}         |
+| Catalog         | catalog        | See {{catalog}}            |
 
 Table 3: Allowed packaging values
 
@@ -495,19 +493,20 @@ fully describe the content of the track.
 
 Table 4: Reserved track roles
 
-| Role             |   Description                                              |
-|:=================|:===========================================================|
-| audiodescription | An audio description for visually impaired users           |
-| video            | Visual content                                             |
-| audio            | Audio content                                              |
-| mediatimeline    | An MSF media timeline {{mediatimelinetrack}}               |
-| eventtimeline    | An MSF event timeline {{eventtimelinetrack}}               |
-| caption          | A textual representation of the audio track                |
-| subtitle         | A transcription of the spoken dialogue                     |
-| signlanguage     | A visual track for hearing impaired users.                 |
-| log              | A log publishing track per {{MOQLOG}}.                     |
-| metrics          | A metrics publishing track per {{MOQMETRICS}}.             |
-|------------------|------------------------------------------------------------|
+| Role             |   Description                                                     |
+|:=================|:==================================================================|
+| audiodescription | An audio description for visually impaired users                  |
+| video            | Visual content                                                    |
+| audio            | Audio content                                                     |
+| mediatimeline    | An MSF media timeline {{mediatimelinetrack}}                      |
+| eventtimeline    | An MSF event timeline {{eventtimelinetrack}}                      |
+| caption          | A textual representation of the audio track                       |
+| subtitle         | A transcription of the spoken dialogue                            |
+| signlanguage     | A visual track for hearing impaired users.                        |
+| log              | A log publishing track per {{MOQLOG}}.                            |
+| metrics          | A metrics publishing track per {{MOQMETRICS}}.                    |
+| data             | A generic descriptor for tracks carrying application-defined data |
+|------------------|-------------------------------------------------------------------|
 
 Custom roles MAY be used as long as they do not collide with the specified roles.
 
@@ -1448,8 +1447,7 @@ synchronized data.
       "namespace": "another-provider/time-synchronized-data",
       "packaging": "eventtimeline",
       "eventType": "com.ai-extraction/appID/v3",
-      "mimeType": "application/json",
-      "depends": ["1080p-video"]
+      "depends": ["history"]
     },
     {
       "name": "1080p-video",
@@ -1572,13 +1570,18 @@ in the video track and a separate SCTE-35 event timeline for ad insertion.
       "bitrate": 128000
     },
     {
+      "name": "video-timeline",
+      "packaging": "mediatimeline",
+      "isLive": true,
+      "depends": ["video"]
+      ]
+    },
+    {
       "name": "scte35",
       "packaging": "eventtimeline",
       "eventType": "urn:scte:scte35:2013:bin",
-      "mimeType": "application/json",
       "isLive": true,
-      "role": "eventtimeline",
-      "depends": ["video"]
+      "depends": ["video-timeline"]
     }
   ]
 }
@@ -1667,7 +1670,7 @@ substitution. The following catalog template:
       "renderGroup": 1
     },
     {
-      "name": "cmcdv2-%id%",
+      "name": "tracking-%id%",
       "namespace": "advertising-decisions/live-sports/%event%",
       "packaging": "eventtimeline",
       "eventType": "com.example.iab.vast",
@@ -1677,7 +1680,7 @@ substitution. The following catalog template:
 }
 ~~~
 
-Would be resolved by the subscriber as:
+would be resolved by the subscriber as:
 
 ~~~json
 {
@@ -1691,7 +1694,7 @@ Would be resolved by the subscriber as:
       "renderGroup": 1
     },
     {
-      "name": "cmcdv2-bob",
+      "name": "tracking-bob",
       "namespace": "advertising-decisions/live-sports/xyz",
       "packaging": "eventtimeline",
       "eventType": "com.example.iab.vast",
@@ -1766,6 +1769,34 @@ specification.
 }
 ~~~
 
+### A catalog referencing other catalogs
+
+This example shows a catalog referencing three other catalogs, one of which is in
+a different namespace.
+
+~~~json
+{
+  "version": "1",
+  "generatedAt": 1746104606044,
+  "tracks": [
+    {
+      "name": "premium-catalog",
+      "packaging": "catalog"
+    },
+    {
+      "name": "free-catalog",
+      "packaging": "catalog"
+    },
+    {
+      "name": "camera33-catalog",
+      "namespace": "example.com/blimps-R-us",
+      "packaging": "catalog",
+      "label": "Eye From the Sky video feeds"
+    }
+   ]
+}
+
+~~~
 
 ### Publish tracks for logs and metrics
 
@@ -1905,7 +1936,6 @@ An example media timeline is shown below:
 A media timeline track MUST carry a 'type' identifier in the Catalog with a value
 of "mediatimeline". A media timeline track MUST carry a 'depends' attribute which
 contains an array of all track names to which the media timeline track applies.
-The mime-type of a media timeline track MUST be specified as "application/json".
 
 ## Media Timeline track updating
 The publisher MUST publish an independent media timeline in the first MOQT Object
@@ -1985,6 +2015,9 @@ Event timeline tracks are optional. Multiple event timeline tracks can exist ins
 catalog. The type & structure of the data contained within each event timeline track is
 declared in the catalog, to facilitate client selection and parsing.
 
+Event timeline tracks can be present in both the 'tracks' and 'publishtracks' arrays,
+implying that can be both consumed and produced by an endpoint.
+
 ## Event Timeline header data {#eventtimelineheader}
 Certain event payloads require header data to help initialize or give context to the
 payload data, which consists solely of an array of records. This header data is typically
@@ -2005,8 +2038,8 @@ using the MSF_COMPRESSION property ({{compression-signaling}}). The document
 contains an array of records. Each record consists of a JSON Object containing
 the following required fields:
 
-* An index reference, which MUST be either 't' for wallclock time, 'l' for Location or
-  'm' for Media PTS. Only one of these index values may be used within each record. Event
+* An index reference, which MUST be either 'T' for wallclock time, 'L' for Location or
+  'M' for Media PTS. Only one of these index values may be used within each record. Event
   timelines SHOULD use the same index reference type for each record. The definitions for
   wallclock time, Location and Media PTS are identical to those defined for media timeline
   payload {{mediatimelinepayload}}. Wallclock time and media PTS values are JSON Number,
@@ -2018,23 +2051,31 @@ the following required fields:
 ## Event Timeline Catalog requirements
 An event timeline track MUST carry:
 
-* a {{packaging}} attribute with a value of "eventtimeline".
-* a {{dependencies}} attribute which contains an array of all track names to which the event
-  timeline track applies.
-* a {{mimetype}} attribute with a value of "application/json".
-* an {{eventtype}} attribute declaring the type & structure of data contained in the
+* a 'packaging' {{packaging}} attribute with a value of "eventtimeline".
+* an 'eventType' {{eventtype}} attribute declaring the type & structure of data contained in the
   event timeline track.
 
+If an Event Timeline track has an index reference which refers to one or more Media Timeline tracks,
+then those Media Timline tracks MUST be listed in a 'depends' {{dependencies}} field within the
+the Event Timeline track definition.
+
 ## Event Timeline track updating
-The publisher MUST publish an independent event timeline in the first MOQT Object
+The mapping of Event Timeline payloads to MOQT Groups is defined by the 'eventType'.
+
+If the data in the event timeline track is to be consumed as a sequence, then
+the publisher SHOULD publish an independent event timeline in the first MOQT Object
 of each MOQT Group of an event timeline track. An independent event timeline object
-MUST contain all event timeline records accumulated and accessible up to that point, allowing a
+SHOULD contain all event timeline records accumulated and accessible up to that point, allowing a
 subscriber joining at any group boundary to receive the accessible event history.
 The publisher MAY publish incremental updates in the second and subsequent Objects
 within each Group. Incremental updates contain only new event timeline records since
 the previous event timeline Object in that Group.
 
-## Event timeline track examples
+If the data in the event timeline track is independent of its history, then the
+publisher SHOULD publish each record in its own MOQT Group and use a single MOQT Object
+per MOQT Group.
+
+## Event timeline track payload examples
 
 ### Event timeline track with wallclock time indexing
 This example shows how sports scores and game information might be defined in a live
@@ -2043,7 +2084,7 @@ sports broadcast.
 ~~~json
 [
     {
-        "t": 1756885678361,
+        "T": 1756885678361,
         "data": {
             "status": "in_progress",
             "period": 1,
@@ -2054,7 +2095,7 @@ sports broadcast.
         }
     },
     {
-        "t": 1756885981542,
+        "T": 1756885981542,
         "data": {
             "status": "in_progress",
             "period": 1,
@@ -2074,15 +2115,50 @@ This example shows drone GPS coordinates synched with the start of each Group.
 ~~~json
 [
     {
-        "l": [0,0],
+        "L": [0,0],
         "data": [47.1812,8.4592]
     },
     {
-        "l": [1,0],
+        "L": [1,0],
         "data": [47.1662,8.5155]
     }
 ]
 
+~~~
+
+### Event timeline track with media time indexing
+This example shows an object identification track from a hypothetical video
+indexing system.
+
+~~~json
+[
+    {
+        "M": 23051,
+        "data": {
+            "object_id": "obj_00123",
+            "class": "human",
+            "attributes": {
+                "sex": "male",
+                "action": "eating dinner"
+            },
+            "bounding_box": { "x": 312, "y": 140, "width": 180, "height": 260 },
+            "confidence": 0.94
+        }
+    },
+    {
+        "M": 43796,
+        "data": {
+            "object_id": "obj_00124",
+            "class": "object",
+            "attributes": {
+                "type": "dog",
+                "action": "sitting"
+            },
+            "bounding_box": { "x": 20, "y": 300, "width": 120, "height": 90 },
+            "confidence": 0.88
+        }
+    }
+]
 ~~~
 
 # Log track {#logtrack}
@@ -2201,25 +2277,26 @@ A metrics track MAY include:
 
 ## Well-known event timeline types {#wellknowneventtypes}
 
-Event timelines can carry various types of broadcast metadata synchronized
-with media content. The "MSF Event Timeline Types" registry
-({{iana-event-timeline-types}}) maintains a list of well-known event types.
-Publishers SHOULD use registered types when applicable to ensure
-interoperability.
-
-Event timelines can carry data types including but not limited to:
+Event timelines can carry various types of broadcast metadata
+synchronized with media content. The "MSF Event Timeline Types"
+registry ({{iana-event-timeline-types}}) is established by this
+document but has no initial entries; entries are registered by the
+specifications that define each event type, which are expected to
+include:
 
 * Ad insertion signaling (e.g., SCTE-35 splice points) - see {{SCTE35-MSF}}
 * Out-of-band timed-text cues (WebVTT, IMSC1) - see {{WebVTT-MSF}} and {{IMSC1-MSF}}
-* Sports scores and game state
-* GPS coordinates and telemetry
-* Active speaker notifications
-* Custom application-specific metadata
 
-The packaging format and data structure for each event type is defined by
-the specification referenced in the registry. Custom event types not in
-the registry SHOULD use Reverse Domain Name Notation (e.g.,
-"com.example.myeventtype") to avoid naming collisions.
+Other data types, for example sports scores and game state, GPS
+coordinates and telemetry, active speaker notifications, and custom
+application-specific metadata, MAY also be carried on event timeline
+tracks, defined by their own specifications and registered
+accordingly.
+
+The packaging format and data structure for each event type is
+defined by the specification referenced in the registry. Custom event
+types not intended for registration SHOULD use Reverse Domain Name
+Notation (e.g., "com.example.myeventtype") to avoid naming collisions.
 
 # Workflow
 
@@ -2501,11 +2578,12 @@ The specific error codes and retry semantics are defined by the authorization
 scheme specifications. See {{PrivacyPassAuth}} for Privacy Pass error handling
 and {{C4M}} for CAT error handling.
 
-# MSF Properties {#track-properties}
+# MSF Properties {#properties}
 
-MSF defines MOQT Track Properties and Object Properties (see {{MoQTransport}})
-to signal metadata about MSF tracks and objects. These properties allow endpoints
-to learn track and object characteristics before processing payload data.
+MSF uses MOQT Track Properties and Object Properties (see {{MoQTransport}})
+to signal metadata about MSF tracks and objects. These properties are carried in
+MOQT control messages and object headers, allowing endpoints to learn track and
+object characteristics before processing payload data.
 
 ## Compression Signaling {#compression-signaling}
 
@@ -2576,35 +2654,32 @@ MUST treat that object's payload as uncompressed. If the property is present
 with a value the subscriber does not support, the subscriber MUST NOT attempt
 to process that object.
 
-## Initialization properties
+## Initialization properties {#initialization-properties}
 
-MSF provides two mechanisms for signalling initialization data using properties.
+MSF leverages Track properties and Object properties to carry media
+initialization data. These properties are registered in the {{MoQTransport}}
+Sect 15.8.
 
-### MSF_INITIALIZATION Track property {#initialization-track-property}
+VIDEO_CONFIG type 0x0D
+AUIDO_CONFIG type 0x0F
 
-Track Property type: 0x79
+The VIDEO_CONFIG Track & Object property carries the initialization data for a track
+with a track role type of "video".
 
-The MSF_INITIALIZATION Track property carries the initialization data for the track.
-This initialization data is immutable over the life of the track.
+The AUDIO_CONFIG Track & Object property carries the initialization data for a track
+with a track role type of "audio".
 
-Tracks which choose to transmit initialization data using this property MUST include
-an initRef {{initref}} field referencing an Initialization Data List {{initdatalist}}
-entry with a type of 'track-property'.
-
-If used, publishers MUST include the MSF_INITIALIZATION  track property in the PUBLISH
+If this initialization data is immutable over the life of the track, then the property
+MUST be added as a Track property and there MUST be an initRef {{initref}} Track field
+referencing an Initialization Data List {{initdatalist}} entry with a type of
+'track-property'. If used, publishers MUST include the Track property in the PUBLISH
 message (publisher-initiated flow) or SUBSCRIBE_OK message (subscriber-initiated flow).
 
-### MSF_INITIALIZATION Object property {#initialization-object-property}
-
-Object Property type: 0x79
-
-The MSF_INITIALIZATION Object property carries initialization data for the track, when
-that initializaiton data might change over the life of the track. Since subscription
-might occur at any time, this property needs to be repeated. Publishers SHOULD add this
-property to the first Object in each Group.
-
-Tracks which choose to transmit initialization data using this property MUST include
-an initRef {{initref}} field referencing an Initialization Data List {{initdatalist}}
+If this initialization data might change over the life of the track, then the property
+MUST be added as an Object property. Since subscription might occur at any time, this Object
+property needs to be repeated. Publishers SHOULD add this Object property to the first Object
+in each Group. Tracks which choose to transmit initialization data using this Object property
+MUST include an initRef {{initref}} field referencing an Initialization Data List {{initdatalist}}
 entry with a type of 'object-property'.
 
 ## Event Timeline Track properties
@@ -2628,45 +2703,106 @@ ToDo
 
 # IANA Considerations {#IANA}
 
+This document requests IANA to create a new registry group titled
+"MOQT Streaming Format (MSF) Parameters", containing the "MSF Event
+Timeline Types" registry ({{iana-event-timeline-types}}) and the "MSF
+Compression Algorithms" registry ({{iana-compression-algorithms}})
+defined below. It also registers one entry in the existing "MOQT URI
+Fragment Types" registry and documents two Property Type values that
+require no IANA action.
+
 ## "MOQT URI Fragment Types" registry
-This document creates a new entry in the "MOQT URI Fragment Types" registry
-(see {{MoQTransport}} Section 14.3).
+
+This document registers the following entry in the "MOQT URI Fragment
+Types" registry established by {{MoQTransport, Section 15.3}}:
 
 | Fragment Type   |  Description          | Specification  |
 |:================|:======================|:===============|
-| msf             | MOQT Streaming Format | this           |
+| msf             | MOQT Streaming Format | This document        |
 
 ## "MSF Event Timeline Types" registry {#iana-event-timeline-types}
 
-This document establishes the "MSF Event Timeline Types" registry. This registry
-lists the event types that can be used with the eventType field {{eventtype}}
-in MSF catalogs.
+This document establishes the "MSF Event Timeline Types" registry,
+part of the "MOQT Streaming Format (MSF) Parameters" registry group.
+This registry lists the event types that can be used with the
+eventType field ({{eventtype}}) in MSF catalogs.
 
-New entries in this registry are subject to Expert Review policy as defined in
-{{!RFC8126}}.
+New entries in this registry are subject to Expert Review policy as
+defined in {{!RFC8126}}. Each entry contains the following fields:
+
+* Event Type: the string identifier used in the eventType field.
+* Description: a short human-readable summary of the event type.
+* Change Controller: the entity authorized to modify the entry. For
+  registrations made via an IETF-stream document, this is "IETF". For
+  other registrations, this is the name and contact information of the
+  registrant.
+* Specification: a stable reference to a publicly available document
+  defining the format and semantics of the data carried under this
+  event type.
+
+The initial contents of this registry are empty. Entries are added by
+the specifications that define each event type; see {{wellknowneventtypes}}
+for known examples.
+
+### Guidance for Designated Experts {#iana-event-timeline-experts}
+
+Designated experts should evaluate registration requests against the
+following criteria, per {{!RFC8126}}, Section 4.5:
+
+* The requested Event Type string is unique within the registry and
+  does not collide with, or create ambiguity against, an existing
+  entry.
+* Requests using the "urn:" scheme conform to an appropriate URN
+  namespace ({{?RFC8141}}). Requests intended for narrow or
+  vendor-specific use should instead use Reverse Domain Name Notation
+  and do not need to be registered at all.
+* The referenced specification is stable, publicly available, and
+  describes the data format and semantics carried in the Event
+  Timeline track in enough detail to support independent,
+  interoperable implementations.
+* The registration does not duplicate the function of an existing
+  registered type without adequate justification, such as a
+  materially different encoding or use case.
+
+Experts should reject requests that lack a public specification, that
+reuse an existing Event Type string with different semantics, or that
+leave the data format ambiguous. Registrations are expected to be
+infrequent, and experts MAY consult the MoQ working group mailing list
+(moq@ietf.org) when in doubt.
+
+## MSF Property Type values {#iana-properties}
+
+The MSF_COMPRESSION Track and Object properties ({{compression-signaling}})
+use Property Type value 0x78. This value falls within the range that {{MoQTransport, Section 15.8}}
+reserves for application-specific use, for which IANA registration is not
+permitted. Accordingly, this document requests no IANA action for
+these Property Type values; they are defined directly by this
+specification and require no coordination with IANA.
+
+Implementers should note the caveat in {{MoQTransport, Section 15.8}}
+regarding this range: because application-specific codepoints are not
+coordinated across independently developed extensions, an endpoint
+processing tracks from uncoordinated sources could encounter the same
+Property Type value used with different semantics.
+
+## "MSF Compression Algorithms" registry {#iana-compression-algorithms}
+
+This document establishes the "MSF Compression Algorithms" registry,
+part of the "MOQT Streaming Format (MSF) Parameters" registry group.
+This registry lists the values used by the MSF_COMPRESSION Track and
+Object properties ({{compression-signaling}}) to identify a
+compression algorithm.
+
+New entries with values 2-127 are registered via Standards Action.
+Values 128 and above are reserved for private use and MUST NOT be
+registered.
 
 The initial contents of this registry are:
 
-| Event Type                     | Description                        | Specification    |
-|:===============================|:===================================|:=================|
-| urn:scte:scte35:2013:bin       | SCTE-35 binary splice_info_section | {{SCTE35-MSF}}   |
-| urn:scte:scte35:2013:xml       | SCTE-35 XML representation         | {{SCTE35-MSF}}   |
-| urn:msf:timedtext:webvtt       | WebVTT timed text cues             | {{WebVTT-MSF}}   |
-| urn:msf:timedtext:imsc1        | IMSC1 timed text  cues             | {{IMSC1-MSF}}    |
-
-
-## MSF_COMPRESSION Object Property {#iana-object-properties}
-
-This document requests IANA to create a new "MSF Compression Algorithms"
-registry with the following initial values:
-
 | Value | Compression Algorithm | Reference |
 |:======|:======================|:==========|
-| 0     | None (uncompressed)   | RFC XXXX  |
+| 0     | None (uncompressed)   | This  document    |
 | 1     | GZIP                  | {{GZIP}}  |
-
-Values 2-127 are available for registration via Standards Action.
-Values 128 and above are reserved for private use.
 
 --- back
 
