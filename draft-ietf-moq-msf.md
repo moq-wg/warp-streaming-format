@@ -2572,11 +2572,11 @@ track object.
 ### Relationship to the serialized form
 
 The hyphen-and-percent style serialization defined in Section 1.5 of
-{{MoQTransport}} and used in MSF URL fragments ({{urlfragment}}) is an encoding
+{{MoQTransport}} and used in MSF URL fragments ({{namespacenameencoding}}) is an encoding
 of the byte values produced by this section, not of the JSON source text. To
 render a catalog Full Track Name in that form, an implementation first maps each
 namespace element and the track name to bytes as defined above, then applies
-the Section 1.5 encoding to those bytes.
+the MOQT Section 1.5 encoding to those bytes.
 
 ### Examples of string-to-byte mappings
 
