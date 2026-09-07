@@ -2,7 +2,7 @@
 <html lang="en" class="Internet-Draft">
 <head>
 <meta charset="utf-8">
-<meta content="Common,Inherited,Latin" name="scripts">
+<meta content="Common,Latin" name="scripts">
 <meta content="initial-scale=1.0" name="viewport">
 <title>MOQT Streaming Format</title>
 <meta content="Will Law" name="author">
@@ -5375,25 +5375,25 @@ the MOQT Section 1.5 encoding to those bytes.<a href="#section-11.2.4-1" class="
                 <td class="text-left" rowspan="1" colspan="1">
                   <code>63 61 66 c3 a9</code>
 </td>
-                <td class="text-left" rowspan="1" colspan="1">U+00E9 written literally</td>
+                <td class="text-left" rowspan="1" colspan="1">U+00E9 (precomposed), written literally</td>
               </tr>
               <tr>
                 <td class="text-left" rowspan="1" colspan="1">
-                  <code>"café"</code>
+                  <code>"caf\u00e9"</code>
 </td>
                 <td class="text-left" rowspan="1" colspan="1">
                   <code>63 61 66 c3 a9</code>
 </td>
-                <td class="text-left" rowspan="1" colspan="1">same track as above</td>
+                <td class="text-left" rowspan="1" colspan="1">same JSON escape rules: same track as above</td>
               </tr>
               <tr>
                 <td class="text-left" rowspan="1" colspan="1">
-                  <code>"café"</code>
+                  <code>"cafe\u0301"</code>
 </td>
                 <td class="text-left" rowspan="1" colspan="1">
                   <code>63 61 66 65 cc 81</code>
 </td>
-                <td class="text-left" rowspan="1" colspan="1">U+0065 U+0301; different track</td>
+                <td class="text-left" rowspan="1" colspan="1">U+0065 + U+0301 (decomposed); different track</td>
               </tr>
               <tr>
                 <td class="text-left" rowspan="1" colspan="1">
